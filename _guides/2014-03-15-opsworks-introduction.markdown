@@ -36,11 +36,31 @@ App:
 * An AWS OpsWorks app represents code that you want to run on an application server.
 
 
+# CloudFormation support for OpsWorks
+
+
+OpsWorks Example:
+https://s3.amazonaws.com/cloudformation-templates-us-east-1/OpsWorks.template
+
+[Issue Berkshelf not supported, need manual activation](https://forums.aws.amazon.com/thread.jspa?messageID=544082)
+
+# AWS OpsWorks CLI and API
+
+Describe stacks:
+
+~~~ bash
+aws opsworks describe-stacks --region us-east-1
+~~~
+
+
+* Deploy http://docs.aws.amazon.com/opsworks/latest/APIReference/API_CreateDeployment.html
+
+
+
 # Layer Customization
 http://docs.aws.amazon.com/opsworks/latest/userguide/attributes.html
 [HowTo](http://docs.aws.amazon.com/opsworks/latest/userguide/create-custom-deploy.html) app on a custom layer.
 
-[Reinvent 2013: DMG201 - Zero to Sixty: AWS CloudFormation] (https://www.youtube.com/watch?v=-0ELfN-kb7g)
 [AWS OpsWorks Under the Hood (DMG304) | AWS re:Invent 2013](https://www.youtube.com/watch?v=913oT6xV-Qk)
 
 ## Manage a git repo with custom cookbook
@@ -57,7 +77,14 @@ Berkshelf support to Opsworks
 
 [AWS doc about Berkshelf](http://docs.aws.amazon.com/opsworks/latest/userguide/workingcookbook-chef11-10.html)
 
+Include a Berksfile file in your cookbook repository's root directory that specifies which cookbooks to install.
 
+* The built-in cookbooks are installed to /opt/aws/opsworks/current/cookbooks.
+* If your custom cookbook repository contains cookbooks, they are installed to /opt/aws/opsworks/current/site-cookbooks.
+* If you have enabled Berkshelf and your custom cookbook repository contains a Berksfile, the specified cookbooks are installed to /opt/aws/opsworks/current/berkshelf-cookbooks.
+
+This not documented but there is a fourth directory that looks like the
+merge of the previous three: /opt/aws/opsworks/current/merged-cookbooks/
 
 ## Override default templates
 [Opsworks Custom Templates](http://docs.aws.amazon.com/opsworks/latest/userguide/workingcookbook-template-override.html)
@@ -272,14 +299,27 @@ include_recipe "gitlab::database_#{gitlab['database_adapter']}"
 # OpsWorks under the hood
 ref: AWS OpsWorks Under the Hood (DMG304) | AWS re:Invent 2013 [video](https://www.youtube.com/watch?v=913oT6xV-Qk) and [slide](http://www.slideshare.net/AmazonWebServices/aws-opsworks-under-the-hood-dmg304-aws-reinvent-2013)
 
-## Chef Server VS OpsWorks
+## Chef Server VS OpsWorks (with chef 11.10)
 
-OpsWorks doesn't use chef-client and chef-server.
-OpsWorks use an opswork-agent installed on each instance and a custom
-server. The opsworks-agent is similar to chef-client.
-Basically the chef-client is a small superset of the chef-solo tool
-features. It periodically pools the chef-server and instantiate a
+OpsWorks doesn't use chef-server but implements a custom server.
+
+OpsWorks use an opswork-agent installed on each instance to talk with
+the custom server. The opsworks-agent use the chef-client to execute a
+chef-run. The chef-client is a small superset of the chef-solo tool
+features, it periodically pools the chef-server and instantiate a
 chef run when there is a new update. Opsworks-agent do the same with the Opsworks server.
+
+The main difference between OpsWorks and Opscode ends when the chef-client is started. From that point onwards they behaves the same.
+
+NOTE: previous version of the opsworks stack wraps chef-solo
+
+
+Useful directories:
+
+* /opt/aws/opsworks/ : directory with chef and opsworks binaries and
+cookbooks
+* /opt/aws/opsworks/current/bin/chef_command_wrapper.sh : a wrapper to
+execute chef commands and save logs
 
 **TODO** the OpsWorks team claim to use a push model but the opsworks-agent.process_command.log has tons of this log "Polling for command to process". I don't understand why this should not be a polling model...
 
