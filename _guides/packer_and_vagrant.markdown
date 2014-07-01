@@ -236,3 +236,163 @@ Ref: [OpsWorks under the hood](http://www.slideshare.net/AmazonWebServices/aws-o
 
 Coming soon
 http://www.packer.io/docs/builders/amazon-chroot.html
+
+
+# Vagrant
+
+## Vagrantfile
+
+Set the virtualbox provisioner machine name:
+
+~~~
+config.vm.provider :virtualbox do |vb|
+    vb.name = "my_machine"
+  end
+~~~
+
+## Plugins
+
+**WARNING**
+
+* [Vagrant-berkshelf could be deprecated and replaced by TestKitchen](https://sethvargo.com/the-future-of-vagrant-berkshelf/)
+
+
+## Providers
+
+### Docker
+
+[Docker Provisioner](http://docs.vagrantup.com/v2/docker/index.html)
+
+## Provisioner
+
+* vagrant up --provision
+* vagrant provision
+
+### Chef Zero
+
+[Vagrant chef zero plugin](https://github.com/andrewgross/vagrant-chef-zero)
+
+
+I've done some test with this Vagrantfile 
+
+~~~
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+#requires:
+# vagrant plugin install vagrant-chef-zero
+# vagrant plugin install vagrant-berkshelf
+# vagrant plugin install vagrant-omnibus
+
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  #config.vm.box = "opscode-ubuntu-12.04"
+  #config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box"
+
+  config.vm.provider :virtualbox do |vb|
+    vb.name = "PitchtargetCookbooks"
+  end
+
+  config.vm.box = "canonical-ubuntu-14.04"
+  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+
+  config.vm.network :forwarded_port, guest: 4567, host: 4567
+
+  #CHEF
+  config.omnibus.chef_version = :latest
+  config.berkshelf.enabled = true
+  config.chef_zero.enabled = false
+
+  config.vm.provision :chef_client do |chef|
+    #chef.cookbooks_path = ["cookbooks", "site-cookbooks"]
+    #chef.add_recipe "addictive-devel-box-cookbook::default"
+  end
+end
+~~~
+
+but I still get this error:
+
+~~~
+chef client provisioner:
+* Chef server URL must be populated.
+* Validation key path must be valid path to your chef server validation key.
+~~~
+
+[Issue on github](https://github.com/berkshelf/vagrant-berkshelf/issues/14)
+
+
+### Chef Solo
+
+Using Berkshelf is realy easy to provision a VM with chef solo
+
+install vagrant plugins:
+
+* vagrant plugin install vagrant-berkshelf
+* vagrant plugin install vagrant-omnibus
+
+use a box without a provisioner for example:
+
+~~~
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "opscode-ubuntu-12.04"
+  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box"
+
+  config.vm.network :forwarded_port, guest: 4567, host: 4567
+
+  #CHEF
+  config.omnibus.chef_version = "11.10.0"
+  config.berkshelf.enabled = true
+
+  #
+  config.vm.provision "chef_solo" do |chef|
+    chef.cookbooks_path = ["cookbooks", "site-cookbooks"]
+    chef.add_recipe "nodejs::npm"
+    chef.add_recipe "addictive-devel-box-cookbook::default"
+  end
+end
+~~~
+
+
+Add dependent coobooks with Berkshelf and the plugin will vendor them
+for you if you add Berksfile in the same dir of you Vagrantfile.
+Example of a Berksfile:
+
+~~~
+source "https://api.berkshelf.com"
+
+cookbook 'nodejs'
+cookbook 'npm'
+cookbook 'addictive-devel-box-cookbook', path: 'addictive-devel-box-cookbook'
+~~~
+
+An easy way to add a local application cookbook is `berks cookbook addictive-devel-box-cookbook` and `cookbook 'addictive-devel-box-cookbook', path: 'addictive-devel-box-cookbook'`
+
+NB: the application cookbook is also a nice pattern to override node
+attributes: see Application Pattern in the guide [Develop and Test Chef Cookbooks](/guides/chef-cookbooks-develop-and-test.html)
+
+Example to set the npm attribute of the nodejs cookbook:
+
+~~~
+node.set['nodejs']['npm']= "1.4.10"
+~~~
+
+
+To debug you can run from the VM the command: 
+~~~bash
+/opt/chef/embedded/bin/ruby /usr/bin/chef-solo  -c /tmp/vagrant-chef-1/solo.rb -j /tmp/vagrant-chef-1/dna.json
+~~~
