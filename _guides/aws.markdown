@@ -176,7 +176,7 @@ Refs:
 
 # OpsWorks
 
-[see this post](/guides/2014-03-15-opsworks-introduction.html)
+[see this post](/guides/opsworks-introduction.html)
 
 
 # CloudFormation
@@ -326,15 +326,26 @@ Parameters that are predefined by AWS CloudFormation.
 
 ## AWS CLI for CloudFormation
 
+[Doc](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
+
 ~~~bash
 aws cloudformation get-template --stack-name myteststack
 aws cloudformation validate-template --template-body file://OpsWorks.json
+
 aws cloudformation create-stack --stack-name "test" --template-body file://addictive_template.json
+aws cloudformation create-stack --stack-name TestStack --template-body file:///home/local/MyTemplate.template --parameters ParameterKey=InstanceType,ParameterValue=m1.large
+
 aws cloudformation describe-stack-events --stack-name "testConfigurationManagerOk"
 aws cloudformation delete-stack --stack-name "test"
-aws cloudformation get-template --stack-name "testConfigurationManagerOk"
+
 aws cloudformation update-stack --stack-name "testConfigurationManagerOk" --template-body file://addictive_template.json
+
+aws cloudformation get-template --stack-name "testConfigurationManagerOk"
+aws cloudformation list-stacks --stack-status-filter UPDATE_COMPLETE
 ~~~
+
+To read the output parameters ??? What command should I use?
+ 
 
 ## Template validation
 
@@ -363,6 +374,7 @@ running stack may have been updated.
 
 The best practice to avoid unexpected resources updates is use `aws cloudformation get-template` to get the current stack and updated it.
 
+TIPS: install json-diff if you want to check difference : `npm install -g json-diff`
 
 
 ## CloudFormation and OpsWorks
