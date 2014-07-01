@@ -300,30 +300,6 @@ to upload or update roles on server
 knife role from file roles/*.json
 ~~~
 
-## Cookbook management with berkshelf
-
-See [here](https://learnchef.opscode.com/starter-use-cases/multi-node-ec2/) for a complete example
-
-Add the cookbook you need in the Berksfile file, example:
-
-~~~json
-site :opscode
-
-cookbook 'apache2',               '~> 1.6.0'
-cookbook 'database',              '~> 1.3.12'
-cookbook 'git',                   '~> 2.3.0'
-cookbook 'memcached',             '~> 1.3.0'
-cookbook 'passenger_apache2',     '~> 2.0.0'
-cookbook 'redisio',               '~> 1.4.1'
-~~~
-
-and upload cookbooks to the server
-
-~~~
-berks upload
-git add Berksfile.lock
-git commit
-~~~
 
 ## Destroy a node
 
@@ -357,29 +333,6 @@ anything that may need to be persisted in node data between chef-client runs.
 NB: In attributes files the node object can be implicit, you can use
 both `node.default["apache"]["dir"] = "/etc/apache2"` and `default["apache"]["dir"] = "/etc/apache2"`
 
-Attributes can be configured in cookbooks (attribute files and recipes), roles, and environments. In addition, Ohai collects attribute data about each node at the start of the chef-client run. See http://docs.opscode.com/chef_overview_attributes.html for more information about how all of these attributes fit together.
-
-
-Attribute accessor methods are automatically: `default.apache.dir`
-
-* http://docs.opscode.com/essentials_cookbook_attribute_files.html
-* http://docs.opscode.com/chef_overview_attributes.html
-
-## How and where to set chef attributes
-
-Test-Kitchen use a Yaml file to write attributes for each test
-
-~~~yaml
-suites:
-  - name: server
-    run_list:
-      - recipe[test-cookbook::default]
-    attributes:
-      bluepill:
-        bin: /opt/chef/embedded/bin/bluepillll
-~~~
-
-The "attributes" stanza will will the [node object](http://docs.opscode.com/essentials_node_object.html) and you can access them as usual from your recipe:
 
 ~~~yaml
 file "/tmp/something" do
@@ -488,6 +441,29 @@ libraries/
     my_resource.rb # use pure ruby code
     my_provider.rb # use pure ruby code
 providers/
+The `definition` attribute accept is the ruby code that define a
+Backup::Model.
+
+
+* [community page](http://community.opscode.com/cookbooks/backup)
+
+
+
+# Custom Resources and Provider: LWRP or pure ruby code
+Every resource and provider you use in your recipies are instance of
+classes inherited from Chef::Provider and Chef::Resource.
+Chef has two mechanism to create those classes:
+
+* Add ruby code in you cookbook `libraries` directory
+* Use the LWRP DSL language. Files into `providers` and `resources`
+directory are interpreted as LWRP definitions.
+
+~~~
+#Cookbook example that mix both approaches
+libraries/
+    my_resource.rb # use pure ruby code
+    my_provider.rb # use pure ruby code
+providers/
     my_lwrp_provider.rb # LWRP
 resources/
     my_lwrp_resource.rb #LWRP
@@ -521,13 +497,4 @@ Chef development Kit:
 ## chef tool
 http://docs.opscode.com/ctl_chef.html
 
-## Berkshelf
 
-### Q: What happens when you add a dependent cookbook both on the Berksfile and the metadata.rb?
-A: Not sure but I think the Berksfile will override the metadata.rb
-info, I suppose the best solution is use the metadata when you can. If
-you need the Berksfile capability (group, path, git, etc) use the
-Berksfile.
-TODO: read this discussion
-* https://github.com/berkshelf/berkshelf/issues/166
-* https://github.com/sethvargo/community-zero
