@@ -425,28 +425,11 @@ Backup::Model.
 * [community page](http://community.opscode.com/cookbooks/backup)
 
 
-
-# Custom Resources and Provider: LWRP or pure ruby code
-Every resource and provider you use in your recipies are instance of
-classes inherited from Chef::Provider and Chef::Resource.
-Chef has two mechanism to create those classes:
-
-* Add ruby code in you cookbook `libraries` directory
-* Use the LWRP DSL language. Files into `providers` and `resources`
-directory are interpreted as LWRP definitions.
-
-~~~
-#Cookbook example that mix both approaches
-libraries/
-    my_resource.rb # use pure ruby code
-    my_provider.rb # use pure ruby code
-providers/
 The `definition` attribute accept is the ruby code that define a
 Backup::Model.
 
 
 * [community page](http://community.opscode.com/cookbooks/backup)
-
 
 
 # Custom Resources and Provider: LWRP or pure ruby code
