@@ -24,8 +24,8 @@ https://www.khanacademy.org/mission/probability
 
 ### Sample space and events
 
-A **Sample space** is the set of all possible outcome of an experiment.
-An **event** is a subset of the sample space.
+* A **Sample space** is the set of all possible outcome of an experiment.
+* An **event** is a subset of the sample space.
 
 ### Naive defintion of probability
 
