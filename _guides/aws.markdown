@@ -109,6 +109,12 @@ SSLCertificateId="arn:aws:iam::389793176040:server-certificate/fungostudios.com_
 EnvironmentType=LoadBalanced
 ~~~
 
+upload certificate:
+
+~~~
+aws iam upload-server-certificate --server-certificate-name certificate_object_name --certificate-body file://public_key_certificate_file --private-key file://privatekey.pem --certificate-chain file://certificate_chain_file
+~~~
+
 ref: [aws doc server certificates](http://docs.aws.amazon.com/IAM/latest/UserGuide/ManagingServerCerts.html)
 
 ## How to Keep Your AWS Credentials on an EC2 Instance Securely
