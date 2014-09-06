@@ -43,6 +43,32 @@ http://www.linkedin.com/groupAnswers?viewQuestionAndAnswers=&discussionID=211767
 * _Account Storage_  http://www.windowsazure.com/en-us/documentation/articles/storage-whatis-account/
 * _Virtual Network_ http://msdn.microsoft.com/en-us/library/windowsazure/jj156007.aspx
 
+# Remote desktop with Windows Server
+
+Image: Windows 8.1 Enterprise 
+
+Jenkins on Windows Azure
+Before we can create a Virtual Machine with a remote desktop we must create a FungoStudios Virtual Network as required by
+http://msdn.microsoft.com/en-us/library/dn520828.aspx
+Name: FungoStudios
+Affinity Group: FungoStudiosCI
+
+
+"remote desktop connection" is an OSX app
+
+Azure [Remote desktop on windows](http://msdn.microsoft.com/en-us/library/windowsazure/dn535788.aspx)
+Azure [Remote desktop on OSX](http://stackoverflow.com/questions/13248955/cant-rdp-to-azure-on-mac-os-x)
+
+
+
+
+http://taylorcowanonline.com/?p=260
+
+http://blogs.msdn.com/b/gongcheng/archive/2013/04/16/jenkins-on-windows-azure-the-missing-manual-master.aspx
+http://blogs.msdn.com/b/gongcheng/archive/2013/04/16/jenkins-on-windows-azure-the-missing-manual-slave.aspx
+
+
+
 # Commnad line tools: xplat-cli
 
 To install the cli go [here](http://www.windowsazure.com/en-us/documentation/articles/xplat-cli/)
