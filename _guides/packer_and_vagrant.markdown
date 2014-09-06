@@ -12,6 +12,14 @@ categories:
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
+# Quick links
+
+vagrant boxes:
+
+* [Official Ubuntu 14.04](https://cloud-images.ubuntu.com/vagrant/trusty/current/)
+* [Bento Project by OpsCode](https://github.com/opscode/bento): Bento is a project that encapsulates Packer templates for building Vagrant baseboxes, used by Opscode to test Chef. 
+
+
 # Packer VS Vagrant
 
 First off, Packer does not require or even encourage Vagrant usage. Packer stands on its own as a useful tool for its own purposes: namely, building machine images for whatever environment you require.
