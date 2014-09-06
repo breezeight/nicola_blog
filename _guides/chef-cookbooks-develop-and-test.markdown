@@ -30,7 +30,6 @@ source 'https://rubygems.org'
 group :integration do
   gem 'foodcritic', '~> 4.0'
   gem 'berkshelf', '~> 3.1'
-  #gem 'thor-foodcritic', '~> 1.1.0'
   gem 'test-kitchen', '~> 1.2'
   gem 'kitchen-vagrant', '~> 0.14'
 end
@@ -85,10 +84,10 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: ubuntu-12.04
+  - name: opscode_ubuntu-14.04_chef-provisionerless
     driver:
-      box: opscode_ubuntu-12.04_chef-provisionerless
-      box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
+      box: opscode_ubuntu-14.04_chef-provisionerless
+      box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
 
 suites:
   - name: default
@@ -158,6 +157,8 @@ Resources:
 ## TODO
 
 * Chefspec
+  * minimal example, I think is not testing something really useful like recipe inclusion.... http://ngerakines.me/2014/05/02/createing-a-chef-cookbook/
+  
 * Serverspec
 * Guard:  https://github.com/test-kitchen/guard-kitchen
 * Busser: https://github.com/test-kitchen/busser-serverspec 
@@ -418,7 +419,7 @@ provisioner: chef_zero
 * [cookbook nginx](https://github.com/opscode-cookbooks/nginx)
 * [cookbook chef-server](https://github.com/opscode-cookbooks/chef-server)
 * [cookbook runit](https://github.com/hw-cookbooks/runit)
-
+* [httpd](https://github.com/opscode-cookbooks/httpd)
 
 # Leibniz
 Test Kitchen was *not* designed for acceptance testing of infrastructure stacks.
