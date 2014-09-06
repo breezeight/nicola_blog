@@ -15,83 +15,195 @@ categories:
 Test:
 [Create a vagrant box](/blog/2014/03/15/packer_and_vagrant#create-a-vagrant-box-from-an-ubuntu-image-to-test-opsworks)
 
+# TODO
+
+Q: What happens on autoscaling? What applications are deployed ? Does AWS attempt to deploy every app and its layer's reponsability to select the proper one?
+A: ????
+
+
+
 # Basic Concepts
 
-Stack:
+## Stack
 
 * The stack is the top-level AWS OpsWorks entity.
 * It represents a set of instances that you want to manage collectively.
 
-Layer:
+## Layer
 
-* A layer is essentially a blueprint for an Amazon EC2 instance.
+* A layer is essentially a blueprint for an Amazon EC2 instance with
+similar behavior ( recipe/runlist, settings/attributes )
 * Every stack has at least one and usually several layers.
 * Instances can optionally be a member of multiple layers (but not all
 layers are compatible).
+* Similar to **Chef Role**
 * Layers support [Auto Healing](http://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-autohealing.html) of instances 
 
-App:
+## App
 
 * Some of AWS OpsWorks's layers support application servers.
 * An AWS OpsWorks app represents code that you want to run on an application server.
 
+## Deployment
 
-# CloudFormation support for OpsWorks
+# Lifecycle
 
+[DOC](http://docs.aws.amazon.com/opsworks/latest/userguide/workingcookbook-events.html)
+
+
+A layer has a sequence of five lifecycle events, each of which has an associated set of recipes that are specific to the layer. When an event occurs on a layer's instance, AWS OpsWorks automatically runs the appropriate set of recipes.
+
+* **Setup** occurs on a new instance after it successfully boots. AWS OpsWorks runs recipes that set the instance up according to its layer. For example, if the instance is a member of the Rails App Server layer, the Setup recipes install Apache, Ruby Enterprise Edition, Passenger and Ruby on Rails. **Setup includes Deploy** (it means that recipes associated to the deploy event will be appended to the run list during a setup event), which automatically deploys the appropriate recipes to a new instance after setup is complete.
+
+* **Configure** occurs on all of the stack's instances when an instance enters or leaves the online state. For example, suppose that your stack has instances A, B, and C, and you start a new instance, D. After D has finished running its setup recipes, AWS OpsWorks triggers the Configure event on A, B, C, and D. If you subsequently stop A, AWS OpsWorks triggers the Configure event on B, C, and D. AWS OpsWorks responds to the Configure event by running each layer's Configure recipes, which update the instances' configuration to reflect the current set of online instances. The Configure event is therefore a good time to regenerate configuration files. For example, the HAProxy Configure recipes reconfigure the load balancer to accommodate any changes in the set of online application server instances.
+
+* **Deploy** occurs when you run a Deploy command, typically to deploy an application to a set of application server instances. The instances run recipes that deploy the application and any related files from its repository to the layer's instances. For example, for a Rails Application Server instances, the Deploy recipes check out a specified Ruby application and tell Phusion Passenger to reload it. You can also run Deploy on other instances so they can, for example, update their configuration to accommodate the newly deployed app. Note that Setup includes Deploy; it runs the Deploy recipes after setup is complete to automatically deploy the appropriate recipes to a new instance.
+
+* **Undeploy** occurs when you delete an app or run an Undeploy command to remove an app from a set of application server instances. The specified instances run recipes to remove all application versions and perform any required cleanup.
+
+* **Shutdown** occurs after you direct AWS OpsWorks to shut an instance down but before the associated Amazon EC2 instance is actually terminated. AWS OpsWorks runs recipes to perform cleanup tasks such as shutting down services. AWS OpsWorks allows Shutdown recipes 45 seconds to perform their tasks, and then terminates the Amazon EC2 instance.
+
+When an instance is booted opsworks will run the "setup" and the "configure" 
+
+During the configure command the rails recipe will try to deploy existing apps
+
+# API
+
+## Opsworks API
+
+[Opsworks API Doc](http://docs.aws.amazon.com/opsworks/latest/APIReference/Welcome.html)
+
+## CloudFormation support for OpsWorks
+
+WARNING: a lot of params are documented in the [Opsworks API Doc](http://docs.aws.amazon.com/opsworks/latest/APIReference/Welcome.html) not in the cloudformation doc.
 
 OpsWorks Example:
 https://s3.amazonaws.com/cloudformation-templates-us-east-1/OpsWorks.template
 
 [Issue Berkshelf not supported, need manual activation](https://forums.aws.amazon.com/thread.jspa?messageID=544082)
 
-# AWS OpsWorks CLI and API
+##  Stack, Layers, App Attributes vs chef attributes
+
+Stacks, layers, apps have attributes that you can set from console or API, they are NOT chef attributes. But they can affect the list of recipe and chef attributes, for example the RailsStack layer attribute can be used to include recipe for Apache+Passenger or instead for Nginx-Unicorn in a Rails App Layer.
+
+NB: If you use a custom layer you
+ 
+
+* [stack attributes](http://docs.aws.amazon.com/opsworks/latest/APIReference/API_CreateStack.html#opsworks-CreateStack-request-Attributes)
+
+~~~json
+            "Attributes": {
+                "Color": "rgb(45, 114, 184)"
+            }
+~~~
+
+* [app attributes](http://docs.aws.amazon.com/opsworks/latest/APIReference/API_CreateApp.html#opsworks-CreateApp-request-Attributes)
+
+~~~json
+            "Attributes": {
+                "RailsEnv": "production", 
+                "AutoBundleOnDeploy": "true", 
+                "DocumentRoot": "public"
+            }
+~~~
+
+* [layer attributes](http://docs.aws.amazon.com/opsworks/latest/APIReference/API_CreateLayer.html#opsworks-CreateLayer-request-Attributes)
+
+~~~json
+            "Attributes": {
+                "JvmVersion": null, 
+                "RailsStack": "apache_passenger", 
+                "EnableHaproxyStats": null, 
+                "MysqlRootPasswordUbiquitous": null, 
+                "NodejsVersion": null, 
+                "HaproxyHealthCheckUrl": null, 
+                "GangliaPassword": null, 
+                "Jvm": null, 
+                "HaproxyHealthCheckMethod": null, 
+                "RubyVersion": "2.0.0", 
+                "HaproxyStatsPassword": null, 
+                "MysqlRootPassword": null, 
+                "JavaAppServer": null, 
+                "MemcachedMemory": null, 
+                "JavaAppServerVersion": null, 
+                "BundlerVersion": "1.5.3", 
+                "PassengerVersion": "4.0.42", 
+                "ManageBundler": "true", 
+                "HaproxyStatsUrl": null, 
+                "HaproxyStatsUser": null, 
+                "GangliaUser": null, 
+                "JvmOptions": null, 
+                "RubygemsVersion": "2.2.2", 
+                "GangliaUrl": null
+            }
+~~~
+
+
+
+
+## AWS OpsWorks CLI and API
 
 Describe stacks:
 
 ~~~ bash
-aws opsworks describe-stacks --region us-east-1
+aws opsworks describe-layers --region us-east-1 --stack-id 3eb6cdbb-3501-4b21-be1f-dfddf0ef0d94
+aws opsworks describe-stacks --region us-east-1 --stack-id 3eb6cdbb-3501-4b21-be1f-dfddf0ef0d94
+aws opsworks describe-apps --region us-east-1 --stack-id 3eb6cdbb-3501-4b21-be1f-dfddf0ef0d94
 ~~~
 
 
 * Deploy http://docs.aws.amazon.com/opsworks/latest/APIReference/API_CreateDeployment.html
 
 
+# OpsWorks customization
 
-# Layer Customization
+## Extending a Built-in Layer
+### Using Chef Deployment Hooks
+
+[Doc](http://docs.aws.amazon.com/opsworks/latest/userguide/workingcookbook-extend-hooks.html)
+
+Implement one or more Ruby applications and place them in your app's /deploy directory
+
+NB: opsworks_deploy definition internally uses the OpsCode deploy which by default looks into the `deploy` dir, see the [Opscode doc](http://docs.opscode.com/resource_deploy.html#callbacks)
+
+## Creating Custom Layers
 http://docs.aws.amazon.com/opsworks/latest/userguide/attributes.html
 [HowTo](http://docs.aws.amazon.com/opsworks/latest/userguide/create-custom-deploy.html) app on a custom layer.
 
 [AWS OpsWorks Under the Hood (DMG304) | AWS re:Invent 2013](https://www.youtube.com/watch?v=913oT6xV-Qk)
 
-## Manage a git repo with custom cookbook
 
-To manage cookbooks and their dependencies we use berkshelf via Thor
-tasks. See the [addictive-cookbook](https://bitbucket.org/fungostudios/addictive-cookbook) as a good starting point.
+## Manage a git repo with custom cookbook 
 
-To overwrite templates with used the second strategy from this [blog](https://sethvargo.com/using-amazon-opsworks-with-berkshelf/),
-
-[this](https://bitbucket.org/fungostudios/addictive-cookbook/commits/3d40a5747d81e407e6123a893988df58c3fd53d3) and [this](https://bitbucket.org/fungostudios/addictive-cookbook/commits/b22c243f4bf9184e65200754f700a27221057be1) commits show how we handle overwritten templates
-
-## Manage a git repo with custom cookbook with chef 11.10 which adds
-Berkshelf support to Opsworks
+Opsworks support Berkshelf on stack >= 11.10
 
 [AWS doc about Berkshelf](http://docs.aws.amazon.com/opsworks/latest/userguide/workingcookbook-chef11-10.html)
 
-Include a Berksfile file in your cookbook repository's root directory that specifies which cookbooks to install.
+You must turn on the berkshelf support from setting and include a Berksfile file in your cookbook repository's root directory that specifies which cookbooks to install.
 
-* The built-in cookbooks are installed to /opt/aws/opsworks/current/cookbooks.
-* If your custom cookbook repository contains cookbooks, they are installed to /opt/aws/opsworks/current/site-cookbooks.
-* If you have enabled Berkshelf and your custom cookbook repository contains a Berksfile, the specified cookbooks are installed to /opt/aws/opsworks/current/berkshelf-cookbooks.
+* The built-in cookbooks are installed to `/opt/aws/opsworks/current/cookbooks`
+* If your custom cookbook repository contains cookbooks, they are installed to `/opt/aws/opsworks/current/site-cookbooks`
+* If you have enabled Berkshelf and your custom cookbook repository contains a Berksfile, the specified cookbooks are installed to `/opt/aws/opsworks/current/berkshelf-cookbooks`
+* `/opt/aws/opsworks/current/merged-cookbooks/` : the final merge of the previous three dirs.
 
-This not documented but there is a fourth directory that looks like the
-merge of the previous three: /opt/aws/opsworks/current/merged-cookbooks/
+A very good idea is to use the environment pattern ( http://blog.vialstudios.com/the-environment-cookbook-pattern/ ) but I've found some problem on OpsWorks, see [this thread for details](https://forums.aws.amazon.com/thread.jspa?threadID=154020).
+
+Actually the guideline is:
+
+* Don't use the **metadata** keyword in you Berksfile and don't add a
+**metadata.rb** file
+
+
+
 
 ## Override default templates
 [Opsworks Custom Templates](http://docs.aws.amazon.com/opsworks/latest/userguide/workingcookbook-template-override.html)
 
-## Custom layer from default Rails Layer
+## Rails Layer: Custom and default 
 
 ref: http://www.stefanwrobel.com/heroku-to-opsworks
+
+### Default rails layer
 
 The Rails Layer will add those recipies to the standard set of recipes:
 
@@ -101,8 +213,43 @@ The Rails Layer will add those recipies to the standard set of recipes:
 * undeploy: deploy::rails-undeploy
 * shutdown: nginx::stop
 
-for each rails app of the stack 'unicorn::rails' will create opsworks_deploy_user, opsworks_deploy_dir and the unicorn script in this dir `deploy[:deploy_to]}/shared/scripts/unicorn`
 
+#### deploy::rails recipe
+
+~~~ ruby
+node[:deploy].each do |application, deploy|
+
+  if deploy[:application_type] != 'rails'
+    Chef::Log.debug("Skipping deploy::rails application #{application} as it is not a Rails app")
+    next
+  end
+
+  opsworks_deploy_dir do
+    user deploy[:user]
+    group deploy[:group]
+    path deploy[:deploy_to]
+  end
+
+  opsworks_rails do
+    deploy_data deploy
+    app application
+  end
+
+  opsworks_deploy do
+    deploy_data deploy
+    app application
+  end
+end
+~~~
+
+This recipe try to deploy all appliction under the deploy key.
+
+
+
+
+#### MISC
+
+for each rails app of the stack 'unicorn::rails' will create opsworks_deploy_user, opsworks_deploy_dir and the unicorn script in this dir `deploy[:deploy_to]}/shared/scripts/unicorn`
 
 
 'deploy:default' include the recipe 'dependencies:default'
@@ -241,11 +388,10 @@ http://www.slideshare.net/AmazonWebServices/zero-to-sixty-aws-opsworks-dmg202-aw
 
 The Custom JSON contains a keys for each app to be deployed on a layer
 and the gittag
+
 ~~~json
-{
   "app_name_1" : { "gittag" : "v1.2" };
   "app_name_2" : { "gittag" : "v3.5" };
-
 ~~~
 
 * Get the instances by Layer ID
@@ -264,6 +410,42 @@ TODO: [blue green deploy](http://www.intelligrape.com/blog/2014/02/28/blue-green
 TODO: [Kibana and logstash](http://devblog.springest.com/complete-logstash-stack-on-aws-opsworks-in-15-minutes/)
 TODO: check the [artifact cookbook](https://github.com/RiotGames/artifact-cookbook)
 TODO: check the [application cookbook](http://community.opscode.com/cookbooks/application)
+
+# Opsworks Cookbook release process 
+
+This the git repo with all the official Opsworks cookbooks: `git@github.com:aws/opsworks-cookbooks.git`
+
+For each chef version there is a branch:
+
+~~~
+  release-chef-0.9
+  release-chef-11.10
+  release-chef-11.4
+~~~
+
+When a new version is release they tag the version, if you run the `update_custom_cookbooks` command the last release is deployed.
+
+## Simple strategy to run recipes on a single node
+
+### Rails migration
+
+From what I understand you want to chose one and only one instance to do something special during the deploy. And all instances should agree on which instance this is, right?
+
+As all instances get the same information which nodes are available during the deploy, just create a simple algorithm to agree on which one is the special one, e.g. the first one when sorted by name:
+
+~~~ruby
+special_node = node[:opsworks][:layers]['my-layer'][:instances].keys.sort.first
+ 
+if special_node[:hostname] == node[:opsworks][:instance][:hostname] # I'm the special node
+  # do stuff, include recipe, etc
+else
+  # I'm not the special node, do something else
+end
+~~~
+
+see [here for details](https://forums.aws.amazon.com/thread.jspa?threadID=153158&tstart=0)
+
+### Cron Setup on single node
 
 # CI Integration
 
@@ -296,12 +478,60 @@ the gitlab:setup recipe
 include_recipe "gitlab::database_#{gitlab['database_adapter']}"
 
 
+# Debug
+
+/var/lib/aws/opsworks/cache/cookbooks/opsworks_berkshelf/providers/runner.rb
+
+## Opsworks Logs
+
+
+* `/var/log/aws/opsworks/opsworks-agent.keep_alive.log`
+: The agent will send a keep_alive message every minute to the opsworks server
+and log here.
+
+* `/var/log/aws/opsworks/opsworks-agent.statistics.log`
+: The agent will report the instance status(procs, memory, cpu, load) every minute to the opsworks server
+and log here.
+
+* `/var/log/aws/opsworks/installer.log`
+: agent install log, created at boot time. Useful to debug custom AMI.
+
+* `/var/log/aws/opsworks/updater.log`
+: the agent checks every 10 minute if there are agent updated and log
+here.
+
+* `/var/log/aws/opsworks/opsworks-agent.log`
+: the agent logs here its start/stop lifecycle and chef run log uploads
+
+* `/var/log/aws/opsworks/opsworks-agent.process_command.log`
+: the agent pools the server every minute to check if there are new
+commands and logs here. It logs alse the chef solo execution time.
+
+* `/var/log/aws/opsworks/user-data.log`
+: TODO
+
+* `/var/lib/aws/opsworks/chef/YYYY-MM-DD-HH-MM-SS.log`
+: TODO this should be a single chef run log
+
+* `/var/lib/aws/opsworks/chef/YYYY-MM-DD-HH-MM-SS.json`
+: TODO this should be the attribute file
+
+
+
 # OpsWorks under the hood
 ref: AWS OpsWorks Under the Hood (DMG304) | AWS re:Invent 2013 [video](https://www.youtube.com/watch?v=913oT6xV-Qk) and [slide](http://www.slideshare.net/AmazonWebServices/aws-opsworks-under-the-hood-dmg304-aws-reinvent-2013)
 
 ## Chef Server VS OpsWorks (with chef 11.10)
 
 OpsWorks doesn't use chef-server but implements a custom server.
+
+Main differences are:
+
+* Opsworks agent Chef Run are driven by events using a **push model** (see
+note below), Chef Server use a periodical run (chef server Enterprise is
+an exception, it has push jobs ).
+* Opsworks don't have Environments, Encrypted data bag and search as
+limited capabilities (see slide 30-40 [here](http://www.slideshare.net/jweiss/chefconf-2014-aws-opsworks-under-the-hood))
 
 OpsWorks use an opswork-agent installed on each instance to talk with
 the custom server. The opsworks-agent use the chef-client to execute a
@@ -311,21 +541,33 @@ chef run when there is a new update. Opsworks-agent do the same with the Opswork
 
 The main difference between OpsWorks and Opscode ends when the chef-client is started. From that point onwards they behaves the same.
 
+NOTE on push model: the OpsWorks team claim to use a push model but the opsworks-agent.process_command.log has tons of this log "Polling for command to process". It's not a real push model from the implementation point of view. But from an operation point of view you can think it as a push model with a max delay of minute (the actual opsworks polling cycle is 1 minute).
+
 NOTE: previous version of the opsworks stack wraps chef-solo
+
+## OpsWorks AMI and OpsWorks Agent Internals
+
+We have done of hacking on the current version of Opsworks Agent to
+understand ho it works (using `ps auxww` when the agent parse  )
+Most of the commands execute a custom list of chef recipes, so it's easy
+to understand what is going on.
+
+This AMI has the opsworks-agent installed:
+wget -O opsworks-agent.tgz https://opsworks-instance-agent.s3.amazonaws.com:443/214/opsworks-agent-installer.tgz
 
 
 Useful directories:
 
-* /opt/aws/opsworks/ : directory with chef and opsworks binaries and
+* `/opt/aws/opsworks/` : directory with chef and opsworks binaries and
 cookbooks
-* /opt/aws/opsworks/current/bin/chef_command_wrapper.sh : a wrapper to
+* `/opt/aws/opsworks/current/bin/chef_command_wrapper.sh` : a wrapper to
 execute chef commands and save logs
 
-**TODO** the OpsWorks team claim to use a push model but the opsworks-agent.process_command.log has tons of this log "Polling for command to process". I don't understand why this should not be a polling model...
+
 
 
 When a command is executed by the opsworks-agent it will trigger a
-chef-solo run
+chef-zero run
 
 ~~~bash
 ps aux while the agent is executing chef-solo
@@ -342,264 +584,27 @@ chef-solo is runned with this options:
 * attributes file : -j /var/lib/aws/opsworks/chef/2014-03-16-15-28-20-01.json
 * configuration file : -c /opt/aws/opsworks/current/conf/solo.rb
 
-configuration file example:
+
+### update_custom_cookbooks Command 
+
+This command will trigger the execution of a list of recipe (the -o
+option override the run_list). This are the most intersting:
+
+* opsworks_custom_cookbooks::update: download all cookbook into
+different dirs.
+* opsworks_custom_cookbooks::load: merge all cookbooks sources
+* opsworks_berkshelf::install use `berks vendor` to install cookbooks
+* [opsworks_custom_cookbooks](https://github.com/aws/opsworks-cookbooks/tree/release-chef-11.4/opsworks_custom_cookbooks)
+* [opsworks_berkshelf](https://github.com/aws/opsworks-cookbooks/tree/master-chef-11.10/opsworks_berkshelf)
+
 
 ~~~bash
-require 'pathname'
-
-Ohai::Config[:plugin_path] << "#{Pathname.new(__FILE__).realpath.dirname}/../plugins"
-file_cache_path  "#{Pathname.new(__FILE__).realpath.dirname}/.."
-cookbook_path    ["#{Pathname.new(__FILE__).realpath.dirname}/../cookbooks/","#{Pathname.new(__FILE__).realpath.dirname}/../site-cookbooks"]
-log_level        :debug
-
-%w{BUNDLE_GEMFILE GEM_HOME GEM_PATH RUBYLIB RUBYOPT}.each do |env|
-  ENV[env] = nil
-end
-
-# make sure local REE is in path for Chef runs and not Agent stuff
-ENV['PATH'] = "/usr/local/bin:/usr/local/sbin:#{ENV['PATH']}"
-
-File.umask 022
-~~~
-
-The `/opt/aws/opsworks/current` dir contains both the opsworks (cookbook dir) and the
-custom cookbooks (site-cookbooks dir).
-
-attribute file example: /var/lib/aws/opsworks/chef/2014-03-16-11-04-04-01.json
-
-~~~json
-{
-  "ssh_users": {
-  },
-  "opsworks": {
-    "agent_version": "221",
-    "activity": "configure",
-    "valid_client_activities": [
-      "reboot",
-      "stop",
-      "deploy",
-      "setup",
-      "configure",
-      "update_dependencies",
-      "install_dependencies",
-      "update_custom_cookbooks",
-      "execute_recipes"
-    ],
-    "sent_at": 1394966606,
-    "deployment": null,
-    "layers": {
-      "addictive-api": {
-        "name": "addictive-api",
-        "id": "280016e7-9636-43c4-9609-892155db0205",
-        "elb-load-balancers": [
-
-        ],
-        "instances": {
-          "addictive-api2": {
-            "public_dns_name": "ec2-54-72-92-117.eu-west-1.compute.amazonaws.com",
-            "private_dns_name": "ip-172-31-24-122.eu-west-1.compute.internal",
-            "backends": 2,
-            "ip": "54.72.92.117",
-            "private_ip": "172.31.24.122",
-            "instance_type": "t1.micro",
-            "status": "online",
-            "id": "3554f1c2-52d4-45d3-b900-1b96b132cca6",
-            "aws_instance_id": "i-bd90a7fc",
-            "elastic_ip": null,
-            "created_at": "2014-03-15T11:46:56+00:00",
-            "booted_at": "2014-03-15T11:48:11+00:00",
-            "region": "eu-west-1",
-            "availability_zone": "eu-west-1a"
-          },
-          "addictive-api1": {
-            "public_dns_name": "ec2-54-72-13-15.eu-west-1.compute.amazonaws.com",
-            "private_dns_name": "ip-172-31-17-12.eu-west-1.compute.internal",
-            "backends": 6,
-            "ip": "54.72.13.15",
-            "private_ip": "172.31.17.12",
-            "instance_type": "m3.medium",
-            "status": "online",
-            "id": "5a38a023-93a3-48b2-a353-f0a4ba4755e6",
-            "aws_instance_id": "i-3ea0967f",
-            "elastic_ip": null,
-            "created_at": "2014-03-16T10:37:28+00:00",
-            "booted_at": "2014-03-16T10:38:40+00:00",
-            "region": "eu-west-1",
-            "availability_zone": "eu-west-1a"
-          }
-        }
-      }
-    },
-    "applications": [
-      {
-        "name": "addictive-api",
-        "slug_name": "addictive_api",
-        "application_type": "rails"
-      }
-    ],
-    "stack": {
-      "name": "PitchTarget",
-      "id": "4a048479-a67d-47d3-984f-415f4800d268",
-      "vpc_id": "vpc-7df1e21f",
-      "elb-load-balancers": [
-
-      ]
-    },
-    "instance": {
-      "id": "3554f1c2-52d4-45d3-b900-1b96b132cca6",
-      "hostname": "addictive-api2",
-      "instance_type": "t1.micro",
-      "public_dns_name": "ec2-54-72-92-117.eu-west-1.compute.amazonaws.com",
-      "private_dns_name": "ip-172-31-24-122.eu-west-1.compute.internal",
-      "ip": "54.72.92.117",
-      "private_ip": "172.31.24.122",
-      "architecture": "x86_64",
-      "layers": [
-        "addictive-api"
-      ],
-      "backends": 2,
-      "aws_instance_id": "i-bd90a7fc",
-      "region": "eu-west-1",
-      "availability_zone": "eu-west-1a",
-      "subnet_id": "subnet-07647c65"
-    },
-    "ruby_version": "2.0.0",
-    "ruby_stack": "ruby",
-    "rails_stack": {
-      "name": null
-    }
-  },
-  "deploy": {
-    "addictive_api": {
-      "deploy_to": "/srv/www/addictive_api",
-      "application": "addictive_api",
-      "deploying_user": null,
-      "domains": [
-        "addictive_api"
-      ],
-      "application_type": "rails",
-      "mounted_at": null,
-      "rails_env": "production",
-      "ssl_support": false,
-      "ssl_certificate": null,
-      "ssl_certificate_key": null,
-      "ssl_certificate_ca": null,
-      "document_root": "public",
-      "restart_command": null,
-      "sleep_before_restart": 0,
-      "symlink_before_migrate": {
-        "config/database.yml": "config/database.yml",
-        "config/memcached.yml": "config/memcached.yml"
-      },
-      "symlinks": {
-        "system": "public/system",
-        "pids": "tmp/pids",
-        "log": "log"
-      },
-      "database": {
-        "host": null,
-        "database": "addictive_api",
-        "username": "root",
-        "password": null,
-        "reconnect": true
-      },
-      "memcached": {
-        "host": null,
-        "port": 11211
-      },
-      "migrate": false,
-      "auto_bundle_on_deploy": true,
-      "scm": {
-        "scm_type": "git",
-        "repository": "git@bitbucket.org:fungostudios/addictive-api.git",
-        "revision": "develop",
-        "ssh_key": "-----BEGIN RSA PRIVATE KEY-----\n .... \n-----END RSA PRIVATE KEY-----",
-        "user": null,
-        "password": null
-      }
-    }
-  },
-  "opsworks_custom_cookbooks": {
-    "enabled": true,
-    "scm": {
-      "type": "git",
-      "repository": "git@bitbucket.org:fungostudios/addictive-opsworks-cookbooks.git",
-      "user": null,
-      "password": null,
-      "revision": "master",
-      "ssh_key": "-----BEGIN RSA PRIVATE KEY-----\n ...... \n-----END RSA PRIVATE KEY-----"
-    },
-    "recipes": [
-      "opsworks_ganglia::configure-client",
-      "ssh_users",
-      "agent_version",
-      "opsworks_stack_state_sync",
-      "test_suite",
-      "opsworks_cleanup"
-    ]
-  },
-  "recipes": [
-    "opsworks_custom_cookbooks::load",
-    "opsworks_custom_cookbooks::execute"
-  ],
-  "opsworks_rubygems": {
-    "version": "2.2.1"
-  },
-  "opsworks_bundler": {
-    "version": "1.5.1",
-    "manage_package": null
-  }
-}
+/opt/aws/opsworks/current/bin/lockrun --wait --verbose --lockfile /var/lib/aws/opsworks/lockrun.lock -- env HOME=/root sudo /opt/aws/opsworks/current/bin/chef_command_wrapper.sh -s /opt/aws/opsworks/current/bin/chef-client -j /var/lib/aws/opsworks/chef/2014-06-09-14-41-54-01.json -c /var/lib/aws/opsworks/client.rb -o opsworks_custom_cookbooks::update,opsworks_custom_cookbooks::load,opsworks_custom_cookbooks::execute -L /var/lib/aws/opsworks/chef/2014-06-09-14-41-54-01.log -A \n---\n 2>&1
 ~~~
 
 
-# Ubuntu OpsWorks Ami Internal
 
-## opsworks-agent
-This AMI has the opsworks-agent installed:
-wget -O opsworks-agent.tgz https://opsworks-instance-agent.s3.amazonaws.com:443/214/opsworks-agent-installer.tgz
-
-## Log
-
-`/var/log/aws/opsworks` contains the opsworks-agent logs:
-
-* **opsworks-agent.keep_alive.log**
-: The agent will send a keep_alive message every minute to the opsworks server
-and log here.
-
-* **opsworks-agent.statistics.log**
-: The agent will report the instance status(procs, memory, cpu, load) every minute to the opsworks server
-and log here.
-
-* **installer.log**
-: agent install log, created at boot time. Useful to debug custom AMI.
-
-* **updater.log**
-: the agent checks every 10 minute if there are agent updated and log
-here.
-
-* **opsworks-agent.log**
-: the agent logs here its start/stop lifecycle and chef run log uploads
-
-* **opsworks-agent.process_command.log**
-: the agent pools the server every minute to check if there are new
-commands and logs here. It logs alse the chef solo execution time.
-
-* **user-data.log**
-: TODO
-
-
-
-`/var/lib/aws/opsworks/chef` contains the chef run log:
-
-* **YYYY-MM-DD-HH-MM-SS.log**
-: TODO this should be a single chef run log
-
-* **YYYY-MM-DD-HH-MM-SS.json**
-: TODO this should be the attribute file
-
-
-
+### Log Example
 
 /var/lib/aws/opsworks/chef/2014-03-16-11-04-04-01.log
 
@@ -850,13 +855,6 @@ commands and logs here. It logs alse the chef solo execution time.
 ~~~
 
 
-
-
-
-
-
-
-
 ==> opsworks-agent.process_command.log <==
 [2014-03-16 10:56:55]  INFO [opsworks-agent(839)]: process_command: Polling for command to process
 
@@ -871,103 +869,187 @@ commands and logs here. It logs alse the chef solo execution time.
 
 
 
+#APPENDIX A: Deploy json example
 
+~~~json
+{
+  "ssh_users": {
+  },
+  "opsworks": {
+    "agent_version": "221",
+    "activity": "configure",
+    "valid_client_activities": [
+      "reboot",
+      "stop",
+      "deploy",
+      "setup",
+      "configure",
+      "update_dependencies",
+      "install_dependencies",
+      "update_custom_cookbooks",
+      "execute_recipes"
+    ],
+    "sent_at": 1394966606,
+    "deployment": null,
+    "layers": {
+      "addictive-api": {
+        "name": "addictive-api",
+        "id": "280016e7-9636-43c4-9609-892155db0205",
+        "elb-load-balancers": [],
+        "instances": {
+          "addictive-api2": {
+            "public_dns_name": "ec2-54-72-92-117.eu-west-1.compute.amazonaws.com",
+            "private_dns_name": "ip-172-31-24-122.eu-west-1.compute.internal",
+            "backends": 2,
+            "ip": "54.72.92.117",
+            "private_ip": "172.31.24.122",
+            "instance_type": "t1.micro",
+            "status": "online",
+            "id": "3554f1c2-52d4-45d3-b900-1b96b132cca6",
+            "aws_instance_id": "i-bd90a7fc",
+            "elastic_ip": null,
+            "created_at": "2014-03-15T11:46:56+00:00",
+            "booted_at": "2014-03-15T11:48:11+00:00",
+            "region": "eu-west-1",
+            "availability_zone": "eu-west-1a"
+          },
+          "addictive-api1": {
+            "public_dns_name": "ec2-54-72-13-15.eu-west-1.compute.amazonaws.com",
+            "private_dns_name": "ip-172-31-17-12.eu-west-1.compute.internal",
+            "backends": 6,
+            "ip": "54.72.13.15",
+            "private_ip": "172.31.17.12",
+            "instance_type": "m3.medium",
+            "status": "online",
+            "id": "5a38a023-93a3-48b2-a353-f0a4ba4755e6",
+            "aws_instance_id": "i-3ea0967f",
+            "elastic_ip": null,
+            "created_at": "2014-03-16T10:37:28+00:00",
+            "booted_at": "2014-03-16T10:38:40+00:00",
+            "region": "eu-west-1",
+            "availability_zone": "eu-west-1a"
+          }
+        }
+      }
+    },
+    "applications": [
+      {
+        "name": "addictive-api",
+        "slug_name": "addictive_api",
+        "application_type": "rails"
+      }
+    ],
+    "stack": {
+      "name": "PitchTarget",
+      "id": "4a048479-a67d-47d3-984f-415f4800d268",
+      "vpc_id": "vpc-7df1e21f",
+      "elb-load-balancers": [
 
-
-
-# Chef Debug
-~~~bash
-\================================================================================
-Error executing action `deploy` on resource 'deploy[/srv/www/addictive_api]'
-\================================================================================
- 
- 
-Chef::Exceptions::Exec
-\----------------------
-if [ -f Gemfile ]; then echo 'OpsWorks: Gemfile found - running migration with bundle exec' && /usr/local/bin/bundle exec /usr/local/bin/rake db:migrate; else echo 'OpsWorks: no Gemfile - running plain migrations' && /usr/local/bin/rake db:migrate; fi returned 1, expected 0
----- Begin output of if [ -f Gemfile ]; then echo 'OpsWorks: Gemfile found - running migration with bundle exec' && /usr/local/bin/bundle exec /usr/local/bin/rake db:migrate; else echo 'OpsWorks: no Gemfile - running plain migrations' && /usr/local/bin/rake db:migrate; fi ----
-STDOUT: OpsWorks: Gemfile found - running migration with bundle execSTDERR: rake aborted!
-Specified 'mysql' for database adapter, but the gem is not loaded. Add `gem 'mysql'` to your Gemfile.
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activerecord-4.0.4/lib/active_record/connection_adapters/connection_specification.rb:58:in `rescue in resolve_hash_connection'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activerecord-4.0.4/lib/active_record/connection_adapters/connection_specification.rb:55:in `resolve_hash_connection'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activerecord-4.0.4/lib/active_record/connection_adapters/connection_specification.rb:46:in `resolve_string_connection'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activerecord-4.0.4/lib/active_record/connection_adapters/connection_specification.rb:30:in `spec'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activerecord-4.0.4/lib/active_record/connection_handling.rb:39:in `establish_connection'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activerecord-4.0.4/lib/active_record/railtie.rb:176:in `block (2 levels) in <class:Railtie>'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activesupport-4.0.4/lib/active_support/lazy_load_hooks.rb:38:in `instance_eval'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activesupport-4.0.4/lib/active_support/lazy_load_hooks.rb:38:in `execute_hook'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activesupport-4.0.4/lib/active_support/lazy_load_hooks.rb:28:in `block in on_load'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activesupport-4.0.4/lib/active_support/lazy_load_hooks.rb:27:in `each'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activesupport-4.0.4/lib/active_support/lazy_load_hooks.rb:27:in `on_load'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activerecord-4.0.4/lib/active_record/railtie.rb:174:in `block in <class:Railtie>'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/railties-4.0.4/lib/rails/initializable.rb:30:in `instance_exec'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/railties-4.0.4/lib/rails/initializable.rb:30:in `run'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/railties-4.0.4/lib/rails/initializable.rb:55:in `block in run_initializers'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/railties-4.0.4/lib/rails/initializable.rb:54:in `run_initializers'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/railties-4.0.4/lib/rails/application.rb:215:in `initialize!'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/railties-4.0.4/lib/rails/railtie/configurable.rb:30:in `method_missing'
-/srv/www/addictive_api/releases/20140318100845/config/environment.rb:5:in `<top (required)>'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activesupport-4.0.4/lib/active_support/dependencies.rb:229:in `require'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activesupport-4.0.4/lib/active_support/dependencies.rb:229:in `block in require'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activesupport-4.0.4/lib/active_support/dependencies.rb:214:in `load_dependency'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/activesupport-4.0.4/lib/active_support/dependencies.rb:229:in `require'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/railties-4.0.4/lib/rails/application.rb:189:in `require_environment!'
-/home/deploy/.bundler/addictive_api/ruby/2.1.0/gems/railties-4.0.4/lib/rails/application.rb:250:in `block in run_tasks_blocks'
-Tasks: TOP => db:migrate => environment
-(See full trace by running task with --trace)
----- End output of if [ -f Gemfile ]; then echo 'OpsWorks: Gemfile found - running migration with bundle exec' && /usr/local/bin/bundle exec /usr/local/bin/rake db:migrate; else echo 'OpsWorks: no Gemfile - running plain migrations' && /usr/local/bin/rake db:migrate; fi ----
- 
- 
- 
-Resource Declaration:
----------------------
-# In /opt/aws/opsworks/releases/20140306112110_221/cookbooks/deploy/definitions/opsworks_deploy.rb
- 
-65:     deploy deploy[:deploy_to] do
-66:       provider Chef::Provider::Deploy.const_get(deploy[:chef_provider])
-67:       if deploy[:keep_releases]
-68:         keep_releases deploy[:keep_releases]
-69:       end
-70:       repository deploy[:scm][:repository]
- 
- 
- 
-Compiled Resource:
-------------------
-# Declared in /opt/aws/opsworks/releases/20140306112110_221/cookbooks/deploy/definitions/opsworks_deploy.rb:65:in `from_file'
- 
-deploy("/srv/www/addictive_api") do
-repository_cache "cached-copy"
-retries 0
-migrate true
-updated true
-destination "/srv/www/addictive_api/shared/cached-copy"
-cookbook_name :deploy
-create_dirs_before_symlink ["tmp", "public", "config"]
-before_migrate #<Proc:0x00007fc69b807c30@/opt/aws/opsworks/releases/20140306112110_221/cookbooks/deploy/definitions/opsworks_deploy.rb:99>
-recipe_name "rails"
-scm_provider Chef::Provider::Git
-environment {"LC_ALL"=>"C", "RAILS_ENV"=>"production", "HOME"=>"/home/deploy", "RACK_ENV"=>"production", "RUBYOPT"=>""}
-deploy_to "/srv/www/addictive_api"
-revision "develop"
-action [:deploy]
-provider Chef::Provider::Deploy::Timestamped
-keep_releases 5
-purge_before_symlink ["log", "tmp/pids", "public/system"]
-restart_command "sleep 0 && ../../shared/scripts/unicorn clean-restart"
-migration_command "if [ -f Gemfile ]; then echo 'OpsWorks: Gemfile found - running migration with bundle exec' && /usr/local/bin/bundle exec /usr/local/bin/rake db:migrate; else echo 'OpsWorks: no Gemfile - running plain migrations' && /usr/local/bin/rake db:migrate; fi"
-user "deploy"
-enable_submodules true
-current_path "/srv/www/addictive_api/current"
-symlinks {"pids"=>"tmp/pids", "log"=>"log", "system"=>"public/system"}
-params {:name=>nil, :app=>"addictive_api", :deploy_data=>{"rake"=>"/usr/local/bin/rake", "migrate"=>true, "action"=>"deploy", "auto_npm_install_on_deploy"=>true, "puma"=>{"logrotate"=>false}, "chef_provider"=>"Timestamped", "migrate_command"=>"if [ -f Gemfile ]; then echo 'OpsWorks: Gemfile found - running migration with bundle exec' && /usr/local/bin/bundle exec /usr/local/bin/rake db:migrate; else echo 'OpsWorks: no Gemfile - running plain migrations' && /usr/local/bin/rake db:migrate; fi", "shell"=>"/bin/bash", "home"=>"/home/deploy", "enable_submodules"=>true, "symlink_before_migrate"=>{"config/database.yml"=>"config/database.yml", "config/env"=>".env", "config/memcached.yml"=>"config/memcached.yml"}, "nodejs"=>{"restart_command"=>"monit restart node_web_app_addictive_api", "stop_command"=>"monit stop node_web_app_addictive_api"}, "current_path"=>"/srv/www/addictive_api/current", "user"=>"deploy", "deploying_user"=>"arn:aws:iam::470031436598:root", "application_type"=>"rails", "restart_command"=>nil, "keep_releases"=>5, "ignore_bundler_groups"=>["test", "development"], "ssl_certificate_ca"=>nil, "auto_bundle_on_deploy"=>true, "rails_env"=>"production", "delete_cached_copy"=>true, "ssl_support"=>false, "mounted_at"=>nil, "ssl_certificate_key"=>nil, "scm"=>{"password"=>nil, "revision"=>"develop", "scm_type"=>"git", "user"=>nil, "ssh_key"=>"----END RSA PRIVATE KEY-----", "repository"=>"git@bitbucket.org:fungostudios/addictive-api.git"}, "deploy_to"=>"/srv/www/addictive_api", "group"=>"www-data", "domains"=>["addictive_api", "pippo"], "document_root"=>"public", "application"=>"addictive_api", "stack"=>{"needs_reload"=>true}, "ssl_certificate"=>nil, "memcached"=>{"host"=>nil, "port"=>11211}, "absolute_document_root"=>"/srv/www/addictive_api/current/public/", "sleep_before_restart"=>0, "shallow_clone"=>false, "environment"=>{"RAILS_ENV"=>"production", "HOME"=>"/home/deploy", "RACK_ENV"=>"production", "RUBYOPT"=>""}, "symlinks"=>{"pids"=>"tmp/pids", "log"=>"log", "system"=>"public/system"}, "database"=>{"password"=>nil, "host"=>nil, "reconnect"=>true, "username"=>"root", "adapter"=>"pg", "database"=>"addictive_api"}}}
-remote "origin"
-retry_delay 2
-repo "git@bitbucket.org:fungostudios/addictive-api.git"
-updated_by_last_action true
-shared_path "/srv/www/addictive_api/shared"
-group "www-data"
-symlink_before_migrate {"config/database.yml"=>"config/database.yml", "config/env"=>".env", "config/memcached.yml"=>"config/memcached.yml"}
-end
-
+      ]
+    },
+    "instance": {
+      "id": "3554f1c2-52d4-45d3-b900-1b96b132cca6",
+      "hostname": "addictive-api2",
+      "instance_type": "t1.micro",
+      "public_dns_name": "ec2-54-72-92-117.eu-west-1.compute.amazonaws.com",
+      "private_dns_name": "ip-172-31-24-122.eu-west-1.compute.internal",
+      "ip": "54.72.92.117",
+      "private_ip": "172.31.24.122",
+      "architecture": "x86_64",
+      "layers": [
+        "addictive-api"
+      ],
+      "backends": 2,
+      "aws_instance_id": "i-bd90a7fc",
+      "region": "eu-west-1",
+      "availability_zone": "eu-west-1a",
+      "subnet_id": "subnet-07647c65"
+    },
+    "ruby_version": "2.0.0",
+    "ruby_stack": "ruby",
+    "rails_stack": {
+      "name": null
+    }
+  },
+  "deploy": {
+    "addictive_api": {
+      "deploy_to": "/srv/www/addictive_api",
+      "application": "addictive_api",
+      "deploying_user": null,
+      "domains": [
+        "addictive_api"
+      ],
+      "application_type": "rails",
+      "mounted_at": null,
+      "rails_env": "production",
+      "ssl_support": false,
+      "ssl_certificate": null,
+      "ssl_certificate_key": null,
+      "ssl_certificate_ca": null,
+      "document_root": "public",
+      "restart_command": null,
+      "sleep_before_restart": 0,
+      "symlink_before_migrate": {
+        "config/database.yml": "config/database.yml",
+        "config/memcached.yml": "config/memcached.yml"
+      },
+      "symlinks": {
+        "system": "public/system",
+        "pids": "tmp/pids",
+        "log": "log"
+      },
+      "database": {
+        "host": null,
+        "database": "addictive_api",
+        "username": "root",
+        "password": null,
+        "reconnect": true
+      },
+      "memcached": {
+        "host": null,
+        "port": 11211
+      },
+      "migrate": false,
+      "auto_bundle_on_deploy": true,
+      "scm": {
+        "scm_type": "git",
+        "repository": "git@bitbucket.org:fungostudios/addictive-api.git",
+        "revision": "develop",
+        "ssh_key": "-----BEGIN RSA PRIVATE KEY-----\n .... \n-----END RSA PRIVATE KEY-----",
+        "user": null,
+        "password": null
+      }
+    }
+  },
+  "opsworks_custom_cookbooks": {
+    "enabled": true,
+    "scm": {
+      "type": "git",
+      "repository": "git@bitbucket.org:fungostudios/addictive-opsworks-cookbooks.git",
+      "user": null,
+      "password": null,
+      "revision": "master",
+      "ssh_key": "-----BEGIN RSA PRIVATE KEY-----\n ...... \n-----END RSA PRIVATE KEY-----"
+    },
+    "recipes": [
+      "opsworks_ganglia::configure-client",
+      "ssh_users",
+      "agent_version",
+      "opsworks_stack_state_sync",
+      "test_suite",
+      "opsworks_cleanup"
+    ]
+  },
+  "recipes": [
+    "opsworks_custom_cookbooks::load",
+    "opsworks_custom_cookbooks::execute"
+  ],
+  "opsworks_rubygems": {
+    "version": "2.2.1"
+  },
+  "opsworks_bundler": {
+    "version": "1.5.1",
+    "manage_package": null
+  }
+}
 ~~~
