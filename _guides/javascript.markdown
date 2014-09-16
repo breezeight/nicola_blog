@@ -15,15 +15,15 @@ categories: ["javascript"]
 
 
 
-References:
+# References:
 [SOJS] /Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Secrets_of_the_JavaS.pdf    http://www.manning.com/resig/
 
 
-TODO
+# TODO
 typeof -> how does it works?
 
 
-BASIC CONCEPTS
+# Basic Concepts
 Functions
 Function, not objects are at the core of JavaScript
 JS is Functional language, functions are first-class objects
@@ -52,18 +52,13 @@ named global functions are property of the window object
 
 http://www.smashingmagazine.com/2009/08/01/what-you-need-to-know-about-javascript-scope/
 
+# Event Loop
 
 Event Loop: it's executed by the browser.
 Browser event loop processing is single thread (events processed in FIFO order) but the mechanism that manage events before their handlers are executed are not on the same thread
 
 
-
-
-
-
-
-
-Window Object
+# Window Object
 http://www.w3schools.com/js/js_window.asp
 
 The window object is supported by all browsers. It represent the browser's window.
