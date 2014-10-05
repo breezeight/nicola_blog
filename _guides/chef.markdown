@@ -259,6 +259,11 @@ knife azure server create -N MyNewNode --azure-vm-size Small -I b39f27a8b8c64d52
 
 ## Role management
 
+Discussions about chef roles:
+
+* [15 Sep 2014 opscode mailing list](http://lists.opscode.com/sympa/arc/chef/2014-09/msg00144.html)
+
+
 To create a role called "example_role" create a file
 roles/example_role.json
 
