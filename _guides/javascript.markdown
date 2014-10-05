@@ -17,16 +17,24 @@ categories: ["javascript"]
 
 # References:
 
+Books:
+
 * [SOJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Secrets_of_the_JavaS.pdf)    http://www.manning.com/resig/
 * [FJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Functional_JavaScript.pdf)
+
+
+* [Codeacademy](http://www.codecademy.com/en/tracks/javascript)
+
+Blogs:
+
+* http://perfectionkills.com/
+
 
 # TODO
 typeof -> how does it works?
 
 
-# Basic Concepts
-
-## Functions
+# Functions
 
 Function, not objects are at the core of JavaScript
 
@@ -79,6 +87,172 @@ See:
 * http://www.w3schools.com/js/js_hoisting.asp
 
 **NOTE** JavaScript in _strict mode_ does not allow variables to be used if they are not declared.
+
+### Closures
+
+~~~javascript
+      var outerValue = 'ninja';
+      var later;
+
+      function outerFunction() {
+        var innerValue = 'samurai';
+
+        function innerFunction(paramValue) {                       //#1
+          assert(outerValue,"Inner can see the ninja.");
+          assert(innerValue,"Inner can see the samurai.");
+          assert(paramValue,"Inner can see the wakizashi.");       //#2
+          assert(tooLate,"Inner can see the ronin,");              // All variables in an outer scope, even those declared after the function declaration, are included.
+        }
+
+        later = innerFunction;
+      }
+
+      assert(!tooLate,"Outer can't see the ronin");                //#3
+
+      var tooLate = 'ronin';                                       //#4
+
+      outerFunction();
+      later('wakizashi');                                          //#5
+~~~
+
+When we declared innerFunction() inside the outer function a closure was also created that encompasses not only the function declaration, but also all variables that are in scope at the point of the declaration.
+This “bubble,” containing the function and its variables, stays around as long as the function itself does.
+
+Function parameters are included in the closure of that function. (Seems obvi- ous, but now we’ve said it for sure.
+
+* All variables in an outer scope, even those declared after the function declaration, are included.
+* Within the same scope, variables not yet defined cannot be forward-referenced.
+
+#### Private variable using closures
+
+SOJS ch 5.2
+All assert are true, we can use the accessor method to obtain the value of the private variable, but that we cannot access it directly.
+
+~~~javascript
+
+      function Ninja() {                                            //#1
+
+        var feints = 0;                                             //#2
+
+        this.getFeints = function(){                                //#3
+          return feints;                                            //#3
+        };                                                          //#3
+
+        this.feint = function(){                                    //#4
+          feints++;                                                 //#4
+        };                                                          //#4
+      }
+
+      var ninja = new Ninja();                                      //#5
+
+      ninja.feint();                                                //#6
+
+      assert(ninja.feints === undefined,                            //#7
+          "And the private data is inaccessible to us." );          //#7
+
+      assert(ninja.getFeints() == 1,                                //#8
+             "We're able to access the internal feint count." );    //#8
+~~~
+
+#### Timers and callbacks using closures
+
+SOJS ch 5.2.2
+
+In this chapter there are a nice example to avoid pollution of the global scope using closure.
+
+#### Common Errors with events handlers and how to fix them: bind()
+
+SOJS ch 5.3:
+
+~~~javascript
+  var button = {
+    clicked: false,
+    click: function(){
+      this.clicked = true;
+      assert(button.clicked,"The button has been clicked");
+      //FAILS: the context of the click function is not refer- ring to the button object as we intended.
+} };
+  var elem = document.getElementById("test");
+  elem.addEventListener("click",button.click,false);
+~~~
+
+the context of the click function is not refer- ring to the button object as we intended.
+To solve:
+
+~~~javascript
+
+  function bind(context,name){
+    return function(){
+      return context[name].apply(context,arguments);
+    };
+}
+  var button = {
+    clicked: false,
+    click: function(){
+      this.clicked = true;
+      assert(button.clicked,"The button has been clicked");
+      console.log(this);
+} };
+var elem = document.getElementById("test"); elem.addEventListener("click",bind(button,"click"),false);
+
+~~~
+
+
+The secret sauce that we’ve added here is the bind() method. This method is designed to create and return a new anonymous function that calls the original function, using apply(), so that we can force the context to be whatever object we want.
+
+### Prototype
+
+All functions have a prototype property that initially references an empty object. This property doesn’t serve much purpose until the function is used as a constructor (using the `new` operator).
+
+
+
+Instance members created inside a constructor will occlude properties of the same name defined in the prototype.
+
+Each object in JavaScript has an implicit property named `constructor` that references the constructor that was used to create the object. And because the prototype is a property of the constructor, each object has a way to find its prototype.
+
+**NOTE**: _ONLY functions_ have a prototype property, _EVERY object_ has a
+costructor property!
+
+* _instanceof_ operator for a constructed object tests for its constructor.
+
+### JS Scope Exercise
+http://stackoverflow.com/questions/18067742/variable-scope-in-nested-functions-in-javascript
+
+http://doppnet.com/2011/10/10-advanced-javascript-interview-questions/
+
+http://www.codecademy.com/forums/javascript-intro/4/exercises/2
+
+
+### Scope example
+
+#### Ex 1
+
+
+~~~javascript
+var foo;
+function setFoo(val) {
+  var foo = val;
+}
+setFoo(10);
+alert(foo); // print undefined
+~~~
+
+if you remove the var:
+
+~~~javascript
+
+var foo;
+function setFoo(val) {
+   foo = val;  //removed var
+}
+setFoo(10);
+alert(foo); // print 10
+
+~~~
+
+http://www.codecademy.com/forum_questions/4f166ff96390db0001003803
+
+
 
 ## Function invocation
 
@@ -144,7 +318,7 @@ To invoke a function using its `apply()` method, we pass two parameters to apply
 </script>
 ~~~
 
-# How to use functions: usecases
+## How to use functions: usecases
 
 see [SOJS] ch 4
 
@@ -193,3 +367,109 @@ Even the document object (of the HTML DOM) is a property of the window object:
 window.document.getElementById("header");
 is the same as:
 document.getElementById("header");
+
+# Mixin
+
+The Problem:
+* Multi-tiered inheritance hierarchies are occasionally useful for describing the natural order of objects but if the primary motivation is function re-use they can quickly become gnarly labyrinths of meaningless subtypes, frustrating redundancies and unmanageable logic (“is a button a rectangle or is it a control? tell you what, lets make Button inherit from Rectangle, and Rectangle can inherit from Control…wait a minute….”).
+* The most straightforward approach is **delegation**: any public function can be invoked directly via call or apply. However delegation is so convenient that sometimes it actually works against structural discipline in your code; moreover the syntax can get a little wordy.
+
+Here there is a naive implementation:
+
+~~~javascript
+function extend(destination, source) {
+  for (var k in source) {
+    if (source.hasOwnProperty(k)) {
+      destination[k] = source[k];
+    }
+  }
+  return destination;
+}
+~~~~
+
+…which we can call to extend our prototype…
+
+~~~javascript
+var RoundButton = function(radius, label) {
+  this.radius = radius;
+  this.label = label;
+};
+
+extend(RoundButton.prototype, circleFns);
+extend(RoundButton.prototype, buttonFns);
+//etc. ...
+~~~
+
+See [this post](http://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins/) for more about different approach.
+
+See the ember guide for the Ember.Mixin.
+
+
+# ES6
+
+* [Intro](http://www.wintellect.com/blogs/nstieglitz/5-great-features-in-es6-harmony)
+* [ES6 Draft](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)
+* [Easy Summary](http://www.frontendjournal.com/javascript-es6-learn-important-features-in-a-few-minutes/)
+
+## ES6 Modules
+
+Some reference about ES6 module:
+
+* http://www.2ality.com/2013/07/es6-modules.html
+* http://www.2ality.com/2014/09/es6-modules-final.html
+* [Yeuda draft](https://gist.github.com/wycats/51c96e3adcdb3a68cbc3)
+* http://eviltrout.com/2014/05/03/getting-started-with-es6.html
+
+* A **module** is simply a file with JavaScript code in it.
+* By default anything you declare in a file in a ES6 project is not available outside that file. You have to use the export keyword to explicitly make it available.
+* A module can export multiple things by prefixing their declarations with the keyword **export** .
+
+File structure:
+
+~~~ bash
+calculator/
+  lib/
+    calc.js
+  main.js
+~~~
+
+Define a module:
+
+~~~javascript
+//------ lib.js ------
+export const sqrt = Math.sqrt;
+export function square(x) {
+    return x * x;
+}
+export function diag(x, y) {
+    return sqrt(square(x) + square(y));
+}
+~~~
+
+Use a module:
+
+~~~javascript
+//------ main.js ------
+import { square, diag } from 'lib';
+console.log(square(11)); // 121
+console.log(diag(4, 3)); // 5
+~~~
+
+you can also import the whole module and refer to its named exports via property notation:
+
+~~~javascript
+    //------ main.js ------
+    import * as lib from 'lib';
+    console.log(lib.square(11)); // 121
+    console.log(lib.diag(4, 3)); // 5
+~~~
+
+### Traspiler
+The great news is you can use ES6 modules today! You just have to run your code through a **transpiler**
+
+[ES6 module transpiler](https://github.com/esnext/es6-module-transpiler)
+is a JavaScript library for converting JavaScript files written using the ES6 draft specification module syntax to existing library-based module systems such as AMD, CommonJS, or simply globals.
+This [post](http://esnext.github.io/es6-module-transpiler/) introduce how the traspiler works.
+
+The subset of the ES6 module syntax supported by the transpiler is described [here](https://github.com/esnext/es6-module-transpiler#supported-es6-module-syntax)
+
