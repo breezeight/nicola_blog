@@ -13,6 +13,30 @@ categories: [chef, "test-kitchen"]
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
+# Tools Overview
+
+* TestKitchen
+* ChefSpec
+* TestSpec
+
+
+# TODO
+
+* Chefspec
+  * minimal example, I think is not testing something really useful like recipe inclusion.... http://ngerakines.me/2014/05/02/createing-a-chef-cookbook/
+  
+* Serverspec
+* Guard:  https://github.com/test-kitchen/guard-kitchen
+* Busser: https://github.com/test-kitchen/busser-serverspec 
+
+* IDEA: Use `kitchen converge` to provision an application container,
+  save it as image, run `kitchen verify` if everything is ok push the
+container in production. 
+
+* [Sean O'Meara: Cookbook Unit and Acceptance Testing](http://vimeo.com/98938732) from minute 7:20 to 20:27 TK intro, Integration Test
+
+
+
 # Getting started for monkeys: create an application cookbook
 
 This guide will introduce you to cookbook development, a basic knowledge
@@ -153,20 +177,6 @@ Resources:
 * [Kitchen HomePage](http://kitchen.ci/)
 * [Kitchen Drivers](https://rubygems.org/search?utf8=%E2%9C%93&amp;query=kitchen-)
 * [Kitchen Busser Plugins](https://rubygems.org/search?utf8=%E2%9C%93&amp;query=busser-)
-
-## TODO
-
-* Chefspec
-  * minimal example, I think is not testing something really useful like recipe inclusion.... http://ngerakines.me/2014/05/02/createing-a-chef-cookbook/
-  
-* Serverspec
-* Guard:  https://github.com/test-kitchen/guard-kitchen
-* Busser: https://github.com/test-kitchen/busser-serverspec 
-
-* IDEA: Use `kitchen converge` to provision an application container,
-  save it as image, run `kitchen verify` if everything is ok push the
-container in production. 
-
 
 ## Setup a project with Test Kitchen: Init and basic concept
 This is the [official getting started](http://kitchen.ci/docs/getting-started/creating-cookbook)
