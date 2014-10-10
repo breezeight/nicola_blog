@@ -26,7 +26,6 @@ windows and OSX it's a little bit harder and you need to use ONE classical virtu
 
 ### OSX
 
-
 Note: if you are upgrading from boot2docker 0.9.1 or before, please create a new VM using:
 
 ~~~bash
@@ -102,4 +101,36 @@ http://stackoverflow.com/questions/24609139/what-are-the-differences-between-doc
 # Deployment solutions
 
 * [Centurion by Newrelic](https://github.com/newrelic/centurion)
+
+
+# Chef support for docker
+
+
+## Docker container
+
+* [Webinar](https://www.getchef.com/blog/2014/09/10/webinar-recording-chef-for-containers/)
+* [Documentation](http://docs.getchef.com/containers.html)
+* [Docker Images](https://hub.docker.com/u/chef)
+
+Feedback:
+
+* http://github.com/opscode/chef-init
+* http://github.com/opscode/knife-container
+
+FAQ:
+
+* Docker container scope do not include volumes mounting. For this task
+you can use chef-metal or docker.
+* At the moment (oct 2014) chef-server see a container as an host, there is no
+support for clean-up. May be chef-metal can manage something for you.
+
+
+# Manage container clusters
+
+## Apache Mesos and Marathon
+* https://github.com/mesosphere/marathon
+* https://github.com/thefactory/cloudformation-mesos
+
+## Google Kubernetes
+* kubernetes: https://github.com/GoogleCloudPlatform/kubernetes
 

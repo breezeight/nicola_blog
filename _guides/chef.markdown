@@ -485,4 +485,7 @@ Chef development Kit:
 ## chef tool
 http://docs.opscode.com/ctl_chef.html
 
+# Chef support for docker
+See the docker guide: _guides/docker.markdown
+
 
