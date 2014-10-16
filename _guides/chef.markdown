@@ -86,6 +86,11 @@ env-AWS_SECRET_ACCESS_KEY=replace
 env-RACKSPACE_USERNAME=replace
 env-RACKSPACE_API_KEY=replace
 
+
+# Chef Metal for orchestration
+
+[Chef metal Aws driver](https://github.com/opscode/chef-metal-aws)
+
 #azure
 env-AZURE_SUBSCRIPTION_ID=replace
 env-AZURE_MGMT_CERT=replace
