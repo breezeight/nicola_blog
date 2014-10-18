@@ -37,7 +37,7 @@ This will delete your persistent data, but will also ensure that you have the la
 
 
 ### Mount Volumes issues
-Problem: The current version of docker (1.2) support only [data volumes](https://docs.docker.com/userguide/dockervolumes/) mounted from the host running the docker deamon. Boot2docker uses runs the docker client on OSX and the deamon in VirtualBox.
+Problem: The current version of docker (1.2) support only [data volumes](https://docs.docker.com/userguide/dockervolumes/) mounted from the host running the docker deamon. Boot2docker execute the docker client on OSX and the docker deamon in VirtualBox.
 
 Problem: To mount a volume from OSX into a container you need two steps:
 
@@ -47,6 +47,7 @@ Problem: To mount a volume from OSX into a container you need two steps:
 Current solution (not upstream), to mount the /Users directory into the
 boot2docker-vm:
 
+* Install from [here](http://boot2docker.io/)
 * Download the boot2docker iso with VBox addition from [here](https://medium.com/boot2docker-lightweight-linux-for-docker/boot2docker-together-with-virtualbox-guest-additions-da1e3ab2465c) and copy it to `~/.boot2docker/boot2docker.iso`
 * Recreate the boot2docker-vm:  `boot2docker destroy; boot2docker init`
 * Create the VBox share: `VBoxManage sharedfolder add boot2docker-vm -name home -hostpath /Users`
@@ -68,6 +69,22 @@ discussion
 Docker is working on a new proposal that could solve the issue allowing
 docker to mount [remote shared volumes](https://github.com/docker/docker/issues/7249)
 
+### FIG issues
+Fig relies heavly on volumes and variables. I need to understand how to
+manage these issues on OSX.
+
+With the current boot2docker 1.2 we need to map dirs in our home (ex:
+~/figtest), but what does "." means in a fig.yml file??? This solution
+is a trick that maps the Vbox host /Users dir the same VM dir, this way
+you obtain a mirror of the /User dir.
+
+* how could we write a 12 factor app that works with fig and AWS
+Beanstalk??? 
+
+
+TODO: read the make file of this project and implements it in FIG: https://github.com/ricardokirkner/django-12factor-docker
+
+
 
 # Docker
 
@@ -84,6 +101,12 @@ Use-cases:
 
 * development: we can mount our source code inside the container and see our application at work as we change the source code.
 * database
+
+# Fig tool
+
+## For development
+
+* [fig.yml doc](http://www.fig.sh/yml.html)
 
 # DockerHub
 
@@ -123,6 +146,10 @@ FAQ:
 you can use chef-metal or docker.
 * At the moment (oct 2014) chef-server see a container as an host, there is no
 support for clean-up. May be chef-metal can manage something for you.
+
+# AWS support for docker
+
+* [Oct 2014: Running Docker on AWS OpsWorks](http://blogs.aws.amazon.com/application-management/post/Tx2FPK7NJS5AQC5/Running-Docker-on-AWS-OpsWorks)
 
 
 # Manage container clusters
