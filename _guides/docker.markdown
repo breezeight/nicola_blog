@@ -15,6 +15,7 @@ categories: ["docker"]
 
 # References:
 
+* [Cheatsheet](https://github.com/wsargent/docker-cheat-sheet)
 
 # TODO
 
@@ -26,17 +27,34 @@ windows and OSX it's a little bit harder and you need to use ONE classical virtu
 
 ### OSX
 
-Note: if you are upgrading from boot2docker 0.9.1 or before, please create a new VM using:
 
-~~~bash
-boot2docker delete; boot2docker download; boot2docker up.
-~~~
-
+You can upgrade your existing Boot2Docker VM without data loss by running: `boot2docker upgrade`
 This will delete your persistent data, but will also ensure that you have the latest VirtualBox configuration.
 
 
+### Mount Volumes issues on OSX
 
-### Mount Volumes issues
+Boot2docker 1.3 supports volumes mounting but with some limitation:
+
+* limited to boot2docker’s virtualbox configuration
+* cannot be managed dynamically, and only works for directories in **/Users**
+* Expect this area to improve drastically in the next few releases.
+
+`docker run -v /Users/bob/myapp/src:/src [...]` Will mount the directory /Users/bob/myapp/src from your Mac into the container.
+
+$ ls /Users/nicolabrisotto/fig_django_test
+django-12factor-docker
+$ docker run -v /Users/nicolabrisotto/fig_django_test/:/pippo ubuntu:trusty  ls pippo
+django-12factor-docker
+
+
+There are still some limitations:
+
+
+
+
+
+
 Problem: The current version of docker (1.2) support only [data volumes](https://docs.docker.com/userguide/dockervolumes/) mounted from the host running the docker deamon. Boot2docker execute the docker client on OSX and the docker deamon in VirtualBox.
 
 Problem: To mount a volume from OSX into a container you need two steps:
