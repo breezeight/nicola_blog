@@ -267,6 +267,18 @@ config.vm.provider :virtualbox do |vb|
 
 ## Providers
 
+## VirtualBox
+
+* official doc: http://docs.vagrantup.com/v2/virtualbox/configuration.html
+* tutorial: http://kvz.io/blog/2013/01/16/vagrant-tip-keep-virtualbox-guest-additions-in-sync/
+* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) is a Vagrant plugin which automatically installs the host's VirtualBox Guest Additions on the guest system.
+* `vagrant plugin install vagrant-vbguest`
+
+
+
+
+
+
 ### Docker
 
 [Docker Provisioner](http://docs.vagrantup.com/v2/docker/index.html)
