@@ -20,11 +20,11 @@ Main concepts:
 
 * _group_ : is a collection of users, when a user belong to a group has
 all the group's permission
-* _user_ : A IAM user is really just an identity with associated permission (can be people or application). A users is provided with credentials to uniquely identify themselves to AWS. 
+* _user_ : A IAM user is really just an identity with associated permission (can be people or application). A users is provided with credentials to uniquely identify themselves to AWS.
 * _security credential_ : each user can have different credentials (IAM—passwords, access keys, certificates, and MFA...). To create a new credential users need to be authorized.
 * _permission_ : a permission authorizes or denies a user to perform any AWS actions or to access any AWS resources.
 * _roles_ : A role lets you define a set of permissions to access the resources that a user or service needs, but the permissions are not attached to an IAM user or group. Instead, at run time, applications or AWS services (like Amazon EC2) can programmatically assume a role. When a role is assumed, AWS returns temporary security credentials that the user or application can use to make programmatic requests to AWS. Consequently, you don't have to share long-term security credentials (for example, by creating an IAM user) for each entity that requires access to a resource.
-* _instance profiles_ : An instance profile is a container for an IAM role. Instance profiles are used to pass role information to an Amazon EC2 instance when the instance starts. 
+* _instance profiles_ : An instance profile is a container for an IAM role. Instance profiles are used to pass role information to an Amazon EC2 instance when the instance starts.
 
 
 refs:
@@ -183,6 +183,8 @@ Refs:
 # OpsWorks
 
 [see this post](/guides/opsworks-introduction.html)
+
+# SES
 
 
 # CloudFormation
@@ -386,3 +388,7 @@ TIPS: install json-diff if you want to check difference : `npm install -g json-d
 ## CloudFormation and OpsWorks
 
 [AWS::OpsWorks::Stack Resource Type](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-opsworks-stack.html)
+
+# AWS support for docker
+
+see _guides/docker.markdown
