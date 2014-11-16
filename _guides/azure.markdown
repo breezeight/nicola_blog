@@ -3,7 +3,7 @@ layout: post
 title: "azure"
 date: 2014-03-30 14:55:42 +0200
 comments: true
-categories: 
+categories: "DevOps"
 ---
 
 # Contents
@@ -41,7 +41,38 @@ http://www.linkedin.com/groupAnswers?viewQuestionAndAnswers=&discussionID=211767
 * _Storage Account_
 * _Affinity Group_  is a name you can use to tie together resource on the same region for performace reason. All services within an affinity group will be located in the same data center. An affinity group is required in order to create a virtual network. [doc](http://msdn.microsoft.com/en-us/library/windowsazure/jj156209.aspx)
 * _Account Storage_  http://www.windowsazure.com/en-us/documentation/articles/storage-whatis-account/
+
+## Networking
+
+### Affinity group
+
+### Virtual Networks
+
 * _Virtual Network_ http://msdn.microsoft.com/en-us/library/windowsazure/jj156007.aspx
+
+### VPN
+
+### Endpoints
+
+### CLOUD SERVICE
+A cloud service is a container for one or more virtual machines you create. You can create a cloud service for a single virtual machine, or you can load balance multiple virtual machines by placing them in the same cloud service.
+
+
+### VIRTUAL MACHINE LOCATIONS
+Choose the region, affinity group, or virtual network in which you want to deploy the virtual machine.
+Affinity groups
+Virtual networks
+
+
+### VIRTUAL MACHINE AVAILABILITY SETS
+An availability set is a group of virtual machines that are deployed across fault domains and update domains. An availability set makes sure that your application is not affected by single points of failure, like the network switch or the power unit of a rack of servers.
+
+
+
+### Load Balanced Virtual Machines
+
+http://azure.microsoft.com/en-us/documentation/articles/virtual-machines-load-balance/
+
 
 # Remote desktop with Windows Server
 
