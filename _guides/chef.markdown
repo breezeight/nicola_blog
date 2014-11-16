@@ -87,9 +87,42 @@ env-RACKSPACE_USERNAME=replace
 env-RACKSPACE_API_KEY=replace
 
 
-# Chef Metal for orchestration
+# Chef Provisioning for orchestration
 
-[Chef metal Aws driver](https://github.com/opscode/chef-metal-aws)
+NB: Chef Metal has been renamed from chef-metal to chef-provisioning
+since [version 0.15](https://github.com/opscode/chef-provisioning/blob/v0.15/CHANGELOG.md)
+
+Intro: https://www.getchef.com/blog/2014/11/12/chef-provisioning-infrastructure-as-code/
+
+Chef provisioning drivers for:
+
+* [Aws](https://github.com/opscode/chef-provisioning-aws)
+* [Fog](https://github.com/opscode/chef-provisioning-fog)
+* [Azure](https://github.com/opscode/chef-provisioning-azure)
+* [Docker](https://github.com/opscode/chef-provisioning-docker)
+* [Vagrant](https://github.com/opscode/chef-provisioning-vagrant)
+
+If you are working with chefDK you need to install this driver, ex: `chef gem install chef-provisioning-docker`
+
+~~~
+Sto testando qua:  /devel/SRC/DOCKER/CHEF_PROVISIONING
+CHEF_DRIVER=docker chef-client -z docker_ubuntu_image.rb
+~~~
+
+
+Known issue "Could not find the file /etc/chef/client.pem in container" : https://github.com/opscode/chef-provisioning-docker/issues/13
+
+# Chef Init
+
+PID1 for your Chef containers
+
+https://github.com/opscode/chef-init
+
+## Test Clusters with Test Kitchen
+
+Chef Provisioning also works with Test Kitchen, allowing you to test
+entire clusters.
+The repository for the kitchen-metal gem is https://github.com/doubt72/kitchen-metal.
 
 #azure
 env-AZURE_SUBSCRIPTION_ID=replace
