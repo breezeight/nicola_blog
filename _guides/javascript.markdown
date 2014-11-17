@@ -21,7 +21,8 @@ Books:
 
 * [SOJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Secrets_of_the_JavaS.pdf)    http://www.manning.com/resig/
 * [FJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Functional_JavaScript.pdf)
-
+* [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
+    Mozilla Developer Network - Javascript
 
 * [Codeacademy](http://www.codecademy.com/en/tracks/javascript)
 
@@ -90,6 +91,42 @@ See:
 
 ### Closures
 
+A closure is a special kind of object that combines two things:
+
+* a function
+* the environment in which that function was created.
+
+
+~~~javascript
+function makeAdder(x) {
+  return function(y) { // is the inner function, a closure
+    return x + y;      // x is the local variable
+  };
+}
+
+var add5 = makeAdder(5);
+var add10 = makeAdder(10);
+
+console.log(add5(2));  // 7
+console.log(add10(2)); // 12
+~~~
+
+
+
+This is an example of lexical scoping: in JavaScript, the scope of a variable is defined by its location within the source code (it is apparent lexically) and nested functions have access to variables declared in their outer scope.
+
+See a more detailed explanation in the [MDN
+guide](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Closures)
+
+There is a critical difference between a C pointer to a function, and a
+JavaScript reference to a function. In JavaScript, you can think of a
+function reference variable as having both a pointer to a function as
+well as a hidden pointer to a closure. In C, and most other common languages after a function returns, all the local variables are no longer accessible because the stack-frame is destroyed.
+
+#### Closure Example
+
+This example taken from SOJS is more advanced:
+
 ~~~javascript
       var outerValue = 'ninja';
       var later;
@@ -115,7 +152,9 @@ See:
       later('wakizashi');                                          //#5
 ~~~
 
-When we declared innerFunction() inside the outer function a closure was also created that encompasses not only the function declaration, but also all variables that are in scope at the point of the declaration.
+`open /devel/SRC/JAVASCRIPT/ninja-code/chapter-5/listing-5.3.html`
+
+When we declared `innerFunction()` inside the outer function a closure was also created that encompasses not only the function declaration, but also all variables that are in scope at the point of the declaration.
 This “bubble,” containing the function and its variables, stays around as long as the function itself does.
 
 Function parameters are included in the closure of that function. (Seems obvi- ous, but now we’ve said it for sure.
@@ -123,9 +162,142 @@ Function parameters are included in the closure of that function. (Seems obvi- o
 * All variables in an outer scope, even those declared after the function declaration, are included.
 * Within the same scope, variables not yet defined cannot be forward-referenced.
 
-#### Private variable using closures
+#### Closure Example: Common mistake in for loops
 
-SOJS ch 5.2
+~~~html
+<p id="help">Helpful notes will appear here</p>
+<p>E-mail: <input type="text" id="email" name="email"></p>
+<p>Name: <input type="text" id="name" name="name"></p>
+<p>Age: <input type="text" id="age" name="age"></p>
+~~~
+
+~~~javascript
+function showHelp(help) {
+  document.getElementById('help').innerHTML = help;
+}
+
+function setupHelp() {
+  var helpText = [
+      {'id': 'email', 'help': 'Your e-mail address'},
+      {'id': 'name', 'help': 'Your full name'},
+      {'id': 'age', 'help': 'Your age (you must be over 16)'}
+    ];
+
+  for (var i = 0; i < helpText.length; i++) {
+    var item = helpText[i];
+    document.getElementById(item.id).onfocus = function() {
+      showHelp(item.help);
+    }
+  }
+}
+
+setupHelp();
+~~~
+
+[View On JsFiddle](http://jsfiddle.net/v7gjv)
+
+If you try this code out, you'll see that it doesn't work as expected. No matter what field you focus on, the message about your age will be displayed.
+
+The reason for this is that the functions assigned to onfocus are closures; they consist of the function definition and the captured environment from the setupHelp function's scope. Three closures have been created, but each one shares the same single environment.
+
+The `for` statement don't define a new scope, the `vat item` is defined
+only once.
+
+To fix the above example we need to define a new scope for each
+interation in the for loop using a function factory:
+
+~~~javascript
+function showHelp(help) {
+  document.getElementById('help').innerHTML = help;
+}
+
+function makeHelpCallback(help) {
+  return function() {
+    showHelp(help);
+  };
+}
+
+function setupHelp() {
+  var helpText = [
+      {'id': 'email', 'help': 'Your e-mail address'},
+      {'id': 'name', 'help': 'Your full name'},
+      {'id': 'age', 'help': 'Your age (you must be over 16)'}
+    ];
+
+  for (var i = 0; i < helpText.length; i++) {
+    var item = helpText[i];
+    document.getElementById(item.id).onfocus = makeHelpCallback(item.help);
+  }
+}
+
+setupHelp()
+~~~
+
+[View On JsFiddle](http://jsfiddle.net/v7gjv/1)
+
+This works as expected. Rather than the callbacks all sharing a single environment, the makeHelpCallback function creates a new environment for each one in which help refers to the corresponding string from the helpText array.
+
+This doesn't works, see comments to understand why:
+~~~javascript
+function showHelp(help) {
+  document.getElementById('help').innerHTML = help;
+}
+
+function makeHelpCallback(help) { //This return undefined but executes
+showHelp that change the 
+    showHelp(help);
+}
+
+function setupHelp() {
+  var helpText = [
+      {'id': 'email', 'help': 'Your e-mail address'},
+      {'id': 'name', 'help': 'Your full name'},
+      {'id': 'age', 'help': 'Your age (you must be over 16)'}
+    ];
+
+  for (var i = 0; i < helpText.length; i++) {
+    var item = helpText[i];
+    document.getElementById(item.id).onfocus = makeHelpCallback(item.help);
+  }
+}
+
+setupHelp()
+~~~
+
+Also this doesn't work, WHY?
+
+~~~javascript
+
+function showHelp(help) {
+  document.getElementById('help').innerHTML = help;
+}
+
+function setupHelp() {
+  var helpText = [
+      {'id': 'email', 'help': 'Your e-mail address'},
+      {'id': 'name', 'help': 'Your full name'},
+      {'id': 'age', 'help': 'Your age (you must be over 16)'}
+    ];
+
+  for (var i = 0; i < helpText.length; i++) {
+    var item = helpText[i];
+    document.getElementById(item.id).onfocus = function() {
+      var help = item.help; //mi sa che questa non funziona perchè ho
+      portato item nello scope.... infatti l'unico modo per non portarsi
+      dietro item è la soluzione proposta...
+      showHelp(help);
+    }
+  }
+}
+
+setupHelp();
+~~~
+
+
+#### Closure Example: Private variable using closures
+
+See [MDN Guide](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Closures#Emulating_private_methods_with_closures)
+See SOJS ch 5.2
 All assert are true, we can use the accessor method to obtain the value of the private variable, but that we cannot access it directly.
 
 ~~~javascript
