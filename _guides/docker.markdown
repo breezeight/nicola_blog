@@ -19,9 +19,56 @@ categories: ["docker"]
 
 # TODO
 
+* make a guide for TLS
+* make a guide for docker host
+  * app for aws:reinvent demo by Nathan Le Claire https://github.com/nathanleclaire/awsapp
+  * Proposal: Host management https://github.com/docker/docker/issues/8681
+  * Proposal: Container groups https://github.com/docker/docker/issues/8637
+  * as of Nov 22 2014 you need this docker branch to test docker host https://github.com/nathanleclaire/docker
+* make a guide for panamax, see here a
+    [draft]({{site.url}}/guides/panamax.html)
+
+# Docker intro
+
+WHY DOCKER IS USEFUL: Really good intro to docker from an usage point of view: http://www.infoq.com/articles/docker-containers/
+
+http://docs.docker.io/introduction/understanding-docker/   
+
+Docker provides a way to run almost any application securely isolated into a container. The isolation and security allows you to run many containers simultaneously on your host. The lightweight nature of containers, which run without the extra overload of a hypervisor, means you can get more out of your hardware.
+
+Docker major components:
+
+* `Docker containers`:    You can consider Docker containers the run portion of the Docker framework.
+* `Docker images`:   You can consider Docker images to be the build portion of the Docker framework.
+* `Docker registries`:   You can consider Docker registries the share portion of the Docker framework.
+* `Docker daemon`: creates, builds and manages containers (takes
+    advantage of some neat Linux kernel and operating system features,
+    like namespaces and cgroups)
+* `Docker client`: is the commandline tool you use to send command to
+    one or more
+
+
+(Highlevel point of view)
+http://www.docker.io/learn_more/
+At page 21,22 there are a lot of examples
+
+Shipping container cargo methaphore: separation of concerns, the developer can package the container, the sysadmin ship it
+see also "Gabriel Monroy" comment here https://groups.google.com/forum/#!topic/docker-user/NF86nnPMZ6k
+
+Copy on write
+
+The Docker daemon, which is a server process and which manages all the containers, and the Docker client, which acts as a remote control on the daemon.
+
+
+
 # Install Docker
 On recent linux Docker is really easy to install but on OS like
 windows and OSX it's a little bit harder and you need to use ONE classical virtual machine to run Linux and Docker.
+
+## Install Fig
+
+* pip uninstall fig
+* pip install fig
 
 ## boot2docker
 
@@ -42,41 +89,29 @@ Boot2docker 1.3 supports volumes mounting but with some limitation:
 
 `docker run -v /Users/bob/myapp/src:/src [...]` Will mount the directory /Users/bob/myapp/src from your Mac into the container.
 
+~~~bash
 $ ls /Users/nicolabrisotto/fig_django_test
 django-12factor-docker
 $ docker run -v /Users/nicolabrisotto/fig_django_test/:/pippo ubuntu:trusty  ls pippo
 django-12factor-docker
+~~~
 
 
-There are still some limitations:
+This mount problem is caused by the limited capabilities of the current
+version of docker (1.3). It support only [data volumes](https://docs.docker.com/userguide/dockervolumes/) mounted from the host running the docker deamon.
 
+But Boot2docker execute the docker client on OSX and the docker deamon in VirtualBox.
 
-
-
-
-
-Problem: The current version of docker (1.2) support only [data volumes](https://docs.docker.com/userguide/dockervolumes/) mounted from the host running the docker deamon. Boot2docker execute the docker client on OSX and the docker deamon in VirtualBox.
-
-Problem: To mount a volume from OSX into a container you need two steps:
+Boot2Docker 1.3 solve this problem with a trick:
 
 * Share the directory between OSX and VBox
-* Share the same directory from the VBox vm and the docker container
-
-Current solution (not upstream), to mount the /Users directory into the
-boot2docker-vm:
-
-* Install from [here](http://boot2docker.io/)
-* Download the boot2docker iso with VBox addition from [here](https://medium.com/boot2docker-lightweight-linux-for-docker/boot2docker-together-with-virtualbox-guest-additions-da1e3ab2465c) and copy it to `~/.boot2docker/boot2docker.iso`
-* Recreate the boot2docker-vm:  `boot2docker destroy; boot2docker init`
-* Create the VBox share: `VBoxManage sharedfolder add boot2docker-vm -name home -hostpath /Users`
-
-If you want to create a custom share and automount it at boot, create a
-new script like `/etc/rc.d/vbox-guest-additions-permanent-mount`
-
-Ref:
-
-* [VBox shared folders](https://www.virtualbox.org/manual/ch04.html#sharedfolders)
+  * [VBox shared folders](https://www.virtualbox.org/manual/ch04.html#sharedfolders)
 `sharedfolder  add <uuid|vmname> --name <name> --hostpath <hostpath> [--transient] [--readonly] [--automount]`
+* Share the same directory from the VBox vm and the docker container
+* Follow a naming convention to mount the OSX `/Users` directory in the
+    same path on the VBox virtual machine
+
+
 
 A temporary solution will be pushed upstream with boot2docker 1.3:
 
@@ -97,18 +132,18 @@ is a trick that maps the Vbox host /Users dir the same VM dir, this way
 you obtain a mirror of the /User dir.
 
 * how could we write a 12 factor app that works with fig and AWS
-Beanstalk??? 
+Beanstalk???
 
 
 TODO: read the make file of this project and implements it in FIG: https://github.com/ricardokirkner/django-12factor-docker
 
 
 
-# Docker
+# Docker Guide
 
 ## Volumes
 
-[volumes](https://docs.docker.com/userguide/dockervolumes/) 
+[volumes](https://docs.docker.com/userguide/dockervolumes/)
 
 There are two primary ways you can manage data in Docker.
 
@@ -119,6 +154,199 @@ Use-cases:
 
 * development: we can mount our source code inside the container and see our application at work as we change the source code.
 * database
+
+## How Docker integrates with the Boot and Root Filesystems of a guest
+
+http://docs.docker.io/en/latest/terms/filesystem/
+
+### Layers
+http://docs.docker.io/en/latest/terms/layer/
+When Docker mounts the rootfs, it starts read-only, as in a traditional Linux boot, but then, instead of changing the file system to read-write mode, it takes advantage of a union mount to add a read-write file system over the read-only file system. In fact there may be multiple read-only file systems stacked on top of each other. We think of each one of these file systems as a layer.
+
+
+
+## Container
+You can think about containers as a process in a box. The box contains everything the process might need, so it has the filesystem, system libraries, shell and such, but by default none of it is started or run.
+
+Once you start a process in Docker from an Image, Docker fetches the image and its Parent Image, and repeats the process until it reaches the Base Image. Then the Union File System adds a read-write layer on top. That read-write layer, plus the information about its Parent Image and some additional information like its unique id, networking configuration, and resource limits is called a container.
+
+When a container is running, the idea of a “container” also includes a tree of processes running on the CPU, isolated from the other processes running on the host.
+
+You can start, stop, and restart a container. The processes restart from scratch (their memory state is not preserved in a container), but the file system is just as it was when the container was stopped.
+
+Each container has a unique ID which is more or less analogous to a git commit hash.
+
+## Images
+http://docs.docker.io/en/latest/terms/image/
+In Docker terminology, a read-only Layer is called an image. An image never changes.
+All images are identified by a 64 hexadecimal digit string
+An image that has no parent is a base image
+Each image may depend on one more image which forms the layer beneath it. We sometimes say that the lower image is the parent of the upper image.
+
+Using the Public/Private registry you can share images
+
+## Registry
+Docker registries hold images. These are public (or private!) stores that you can upload or download images to and from.
+Every installation of docker has a local repository (or should I call it registry?), you can push and pull images between your repository remote repository (like the index.docker.io or your private one ) with "docker push/pull"
+
+https://github.com/dotcloud/docker-registry
+
+See here to create your own private repository: http://blog.docker.io/2013/07/how-to-use-your-own-registry/
+Docker Public Index: https://index.docker.io/
+
+You can find public images at the official docker registry, ex: ubuntu https://index.docker.io/_/ubuntu/
+
+### How does Image's tag works?
+A lot of command accept tags
+You can group your images together using names and tags, and then upload them to Share Images via Repositories.
+http://docs.docker.io/reference/commandline/cli/#tag
+
+### Private registry on Azure
+http://azure.microsoft.com/blog/2014/11/11/deploying-your-own-private-docker-registry-on-azure/
+http://azure.microsoft.com/blog/tag/docker/
+
+
+## Networking
+
+Docker neworking 
+http://docs.docker.io/use/networking/
+
+capire se pipeworks ha ancora senso o meno
+https://github.com/jpetazzo/pipework
+
+Docker-user ›
+container needs to know daemon's dynamically selected port from -p, and hosts 'public' ip address
+https://groups.google.com/forum/#!topic/docker-user/KUbcMt1lARE
+
+### PORT FORWARDING on Boot2Docker
+The last update of may 2014 (you must init again the VM) will create an host adpter and this make easy to connect locally to ports exposed by docker.
+To get the VM host adpter address:
+boot2docker ssh ip addr show dev eth1
+
+
+
+
+# COMMON TASKS
+
+## Docker getting started:
+http://www.docker.io/gettingstarted/
+
+## SEARCH
+
+Container repo:
+https://index.docker.io/
+Usage: docker search TERM
+Search the docker index for images
+
+## PULL - COMMAND
+
+Download an existing container:
+docker pull learn/tutorial
+
+When you pull you'll see that Docker has downloaded a number of layers. In Docker all images (except the base image) are made up of several cumulative layers. 
+
+A group of special, trusted images such as the ubuntu base image can be retrieved by just their name <repository>.
+For images from the central index, the name you specify is constructed as <username>/<repository>  
+
+## BUILD IMAGES from DOCKERFILE
+http://docs.docker.io/reference/builder/
+A Dockerfile is a simple text file consisting of instructions on how to build the image from a base image.
+Executing docker build will run your steps and commit them along the way, giving you a final image.
+
+Dockerfile  VS other build tools
+https://groups.google.com/forum/#!topic/docker-user/3pcVXU4hgko
+
+## RUN / STOP / KILL - COMMANDs
+
+You 'start' a container by running a process in it. This process is the only process run, so when it completes the container is fully stopped.
+The command docker run takes a minimum of two arguments. An image name, and the command you want to execute within that image.
+
+Docker can run a container and detach from it:    -d, --detach=false: Detached mode: Run container in the background, print new container id
+EX: docker run -d -v /home/dokku/rails-app/cache:/cache dokku/rails-app /build/builder
+
+Docker can run a container
+  -v, --volume=[]: Bind mount a volume (e.g. from the host: -v /host:/container, from docker: -v /container)
+
+## Attach/Detach
+
+Ex dokku:
+dokku-38-    id=$(docker run -d -v $CACHE_DIR:/cache $IMAGE /build/builder)
+dokku:39:    docker attach $id
+
+Interactive session:
+docker run -i -t  my_image /bin/bash
+
+To stop a container, use docker stop
+
+To kill the container, use docker kill
+
+
+## WAIT UNTIL a CONTAINER STOPS
+http://docs.docker.io/reference/commandline/cli/#wait
+docker wait [OPTIONS] NAME
+
+MAKE MODIFICATION INTO THE CONTAINER
+Next we are going to install a simple program (ping) in the container. The image is based upon ubuntu, so you can run the command apt-get install -y ping in the container.
+Note that even though the container stops right after a command completes, the changes are not forgotten.  
+docker version 
+docker run learn/tutorial apt-get install -y ping 
+
+## CREATE IMAGES : COMMIT CHANGES (LAYERS)
+http://docs.docker.io/reference/commandline/cli/#commit
+docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+
+With Docker, the process of saving the state is called committing. Commit basically saves the difference between the old image and the new state. The result is a new image. 
+
+## RUN FROM OTHER IMAGES
+Now you have basically setup a complete, self contained environment with the 'ping' program installed.Your image can now be run on any host that runs Docker.Lets run this image on this machine:
+
+docker run learn/ping ping google.com
+Note that normally you can use Ctrl-C to disconnect. The container will keep running.  
+
+## CHECK RUNNING IMAGES
+You now have a running container. Let's see what is going on.Using docker ps we can see a list of all running containers, and using docker inspect we can see all sorts of useful information about this container. 
+docker inspect <container id> 
+You can see the ip-address, status and other information. 
+
+## PUSH IMAGES
+TODO
+
+Move images and container without a registry (export/import  save/load)
+
+A Docker image and its entire history can be saved to a tarball and loaded back again. This will preserve the history of the image:
+# save the image to a tarball
+docker save <IMAGE NAME> > /home/save.tar
+# load it back
+docker load <IMAGE NAME> < /home/save.tar
+
+
+Trick to flatten the image story:
+ID=$(docker run -d image-name /bin/bash)
+docker export $ID | docker import – flat-image-name
+
+If you want to save it for backup you can use gzip to compress the image.
+ID=$(docker run -d image-name /bin/bash)
+(docker export $ID | gzip -c > image.tgz)
+gzip -dc image.tgz | docker import - flat-image-name
+
+
+refs:
+http://blog.intercityup.com/downsizing-docker-containers/
+http://tuhrig.de/flatten-a-docker-container-or-image/
+
+
+## DOCKER DIFF
+TODO
+
+## REMOVE IMAGES / CONTAINERS
+sudo docker rmi <image_name>
+docker rm <container>
+
+remove stopped containers:
+docker rm $(docker ps -a -q)
+
+In the process of running docker I had accumulated several images that are not tagged. To remove these I use this command:
+ docker ps -q -a | xargs docker rm
 
 # Fig tool
 
@@ -153,8 +381,8 @@ http://stackoverflow.com/questions/24609139/what-are-the-differences-between-doc
 * [Documentation](http://docs.getchef.com/containers.html)
 * [Docker Images](https://hub.docker.com/u/chef)
 
-Feedback:
 
+Feedback:
 * http://github.com/opscode/chef-init
 * http://github.com/opscode/knife-container
 
