@@ -177,13 +177,25 @@ You can start, stop, and restart a container. The processes restart from scratch
 Each container has a unique ID which is more or less analogous to a git commit hash.
 
 ## Images
-http://docs.docker.io/en/latest/terms/image/
-In Docker terminology, a read-only Layer is called an image. An image never changes.
-All images are identified by a 64 hexadecimal digit string
-An image that has no parent is a base image
-Each image may depend on one more image which forms the layer beneath it. We sometimes say that the lower image is the parent of the upper image.
 
-Using the Public/Private registry you can share images
+[What is a Docker Image](http://docs.docker.io/en/latest/terms/image/)
+
+* In Docker terminology, a read-only Layer is called an image. An image never changes.
+* All images are identified by a 64 hexadecimal digit string
+* An image that has no parent is a `base image`
+* Each image may depend on one more image which forms the layer beneath it. We sometimes say that the lower image is the parent of the upper image.
+* Using the `Public/Private registry` you can share images
+* Docker stores downloaded images on the `Docker host`.
+
+NB: Docker HUB is more than a Docker Index, it has its [registry
+](https://registry.hub.docker.com/), but it add other sevices to manage
+the community.
+
+[Docker Guide to Images]https://docs.docker.com/userguide/dockerimages/
+covers:
+* Managing and working with images locally on your Docker host;
+* Creating basic images;
+* Uploading images to [Docker Hub](https://hub.docker.com/).
 
 ## Registry
 Docker registries hold images. These are public (or private!) stores that you can upload or download images to and from.
@@ -192,7 +204,8 @@ Every installation of docker has a local repository (or should I call it registr
 https://github.com/dotcloud/docker-registry
 
 See here to create your own private repository: http://blog.docker.io/2013/07/how-to-use-your-own-registry/
-Docker Public Index: https://index.docker.io/
+
+* [Docker Public Index](https://registry.hub.docker.com/)
 
 You can find public images at the official docker registry, ex: ubuntu https://index.docker.io/_/ubuntu/
 
@@ -255,6 +268,11 @@ Executing docker build will run your steps and commit them along the way, giving
 
 Dockerfile  VS other build tools
 https://groups.google.com/forum/#!topic/docker-user/3pcVXU4hgko
+
+## LIST Docker host images
+
+docker images
+
 
 ## RUN / STOP / KILL - COMMANDs
 
@@ -355,6 +373,10 @@ In the process of running docker I had accumulated several images that are not t
 * [fig.yml doc](http://www.fig.sh/yml.html)
 
 # DockerHub
+
+## Github and Bitbucket integration
+
+
 
 ## Language Stacks
 

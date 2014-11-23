@@ -250,12 +250,42 @@ http://www.packer.io/docs/builders/amazon-chroot.html
 
 ## Vagrantfile
 
-Set the virtualbox provisioner machine name:
+NOTE: all relative path in the Vagrantfile are relative to the
+Vagrantfile's parent directory
+
+[Vagrant file documentation](https://docs.vagrantup.com/v2/vagrantfile/machine_settings.html)
+
+To set the virtualbox provisioner machine name:
 
 ~~~
 config.vm.provider :virtualbox do |vb|
     vb.name = "my_machine"
   end
+~~~
+
+### Storage
+
+https://www.virtualbox.org/manual/ch08.html#vboxmanage-storageattach
+storageattach attaches/modifies/removes a storage medium connected to a storage controller that was previously added with the storagectl command
+
+This example attach a vdi disk image
+
+~~~
+imagesDisk = "#{ENV['PMX_VAR_DIR']}/images.vdi" || 'images.vdi'
+vb.customize ['storageattach', :id, '--storagectl', 'IDE Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', imagesDisk]
+~~~
+
+https://www.virtualbox.org/manual/ch08.html#vboxmanage-storagectl
+
+### Shared Folders
+
+config.vm.synced_folder
+https://docs.vagrantup.com/v2/synced-folders/
+
+If you have vbox addition the easiest way to mount and share a dir is:
+
+~~~
+    config.vm.synced_folder "/Users/nicolabrisotto/tmp", "/Users/nicolabrisotto/tmp"
 ~~~
 
 ## Plugins
