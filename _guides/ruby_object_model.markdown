@@ -14,11 +14,13 @@ categories: ["ruby"]
 
 # References
 
-* [Ruby Hacking Guide](http://ruby-hacking-guide.github.io/preface.html) This book explores several themes with the following goals in mind:
+* [Ruby Hacking Guide](http://ruby-hacking-guide.github.io) This book explores several themes with the following goals in mind:
   * To have knowledge of the structure of ruby
   * To gain knowledge about language processing systems in general
   * To acquire skills in reading source code
+  * use **ruby 1.7.3**
 * [Ruby under a microscope](/Volumes/ArchiveDisk/Archive/Misc/ebook/ruby/RubyUnderaMicroscope.pdf)
+  * user **ruby 2.0**
 
 
 # The Ruby Object model
@@ -284,6 +286,209 @@ TODO: http://stackoverflow.com/questions/17552915/ruby-mixins-extend-and-include
 # MRI Internals
 
 This chapter is summary of [Ruby Hack Guide](http://ruby-hacking-guide.github.io/object.html)
+and Ruby under a Microscope
+
+## YARV
+
+To execute your code MRI ruby will go through 3 steps:
+
+* `tokenizes` your code, which means it reads the text characters in your code file and converts them into `tokens`
+* `parses` these tokens; that is, it groups the tokens into meaningful Ruby `statements` just as one might group words into sentences.
+* `compiles` these statements into `low-level instructions` that it can execute later using a virtual machine.
+
+### Code Tokenization and Parsing
+
+See Ch1 of Ruby Under a microscope.
+
+Ruby don't use Lex, the core team wrote the Ruby tokenization code by
+hand, whether for performance reasons or because Ruby’s tokenization
+rules required spe- cial logic that Lex couldn’t provide.
+
+For parsing Ruby uses an LALR parser generator called `Bison`.
+
+As Ruby parses your code, matching one grammar rule after another, it
+converts the tokens in your code file into a complex internal data
+structure called an `abstract syntax tree (AST)`
+
+#### Ripper
+`Ripper` makes it very easy to see what tokens Ruby creates for
+different code files. Ripper is a library introduced in MRI Ruby 1.9 that hooks directly into Ruby 1.9's parser and which can provide you with abstract syntax trees or simple lexical analysis of the code that you provide
+
+Ripper is not well documented, here you can find some doc:
+
+* http://ruby-doc.org/stdlib-2.0/libdoc/ripper/rdoc/Ripper.html
+* http://www.rubyinside.com/using-ripper-to-see-how-ruby-is-parsing-your-code-5270.html
+
+
+~~~ruby
+Ripper.sexp("your ruby code")
+
+[
+    [0] :program,
+    [1] [...]
+]
+~~~
+
+
+The `sexp` method parses src and create S-exp tree. It always return an
+array of size 2, where the first element is the `:program` symbol and
+the second is an array that contains one element for each statement of
+the code. For example:
+
+~~~ruby
+require 'ripper'
+require 'pp'
+
+code = <<STR
+puts "Hello"   ## one statements
+STR
+
+ast = Ripper.sexp(code)
+puts ast[1].size
+=> 1
+
+code = <<STR
+puts "Hello "  ## two statements
+puts "World!";
+STR
+
+ast = Ripper.sexp(code)
+puts ast[1].size
+=> 2
+~~~
+
+
+This example defines a class
+
+~~~ruby
+require 'ripper'
+require 'pp'
+
+code = <<STR
+class A < Array; end;
+STR
+
+pp Ripper.sexp(code)
+~~~
+
+~~~ruby
+[
+    [0] :program,
+    [1] [
+        [0] [
+            [0] :class,
+            [1] [
+                [0] :const_ref,
+                [1] [
+                    [0] :@const,
+                    [1] "A",
+                    [2] [
+                        [0] 1,
+                        [1] 6
+                    ]
+                ]
+            ],
+            [2] [
+                [0] :var_ref,
+                [1] [
+                    [0] :@const,
+                    [1] "Array",
+                    [2] [
+                        [0] 1,
+                        [1] 10
+                    ]
+                ]
+            ],
+            [3] [
+                [0] :bodystmt,
+                [1] [
+                    [0] [           #### In this example the Class has no method, so the array has size 1 with and empty statement
+                        [0] :void_stmt
+                    ]
+                ],
+                [2] nil,
+                [3] nil,
+                [4] nil
+            ]
+        ]
+    ]
+]
+~~~
+
+
+If we add a couple of method the `:bodystmt` will contain 2 elements,
+one for each method:
+
+~~~ruby
+require 'ripper'
+require 'pp'
+
+code = <<STR
+class A < Array;
+  def first
+  end
+
+  def second
+  end
+end;
+STR
+
+pp Ripper.sexp(code)
+~~~
+
+
+~~~ruby
+.....
+            [3] [
+                [0] :bodystmt,
+                [1] [
+                    [0] [                 #### FIRST METHOD
+                        [0] :def,         #### the :def symbol will tell you that this statement is a method definition
+                        [1] [
+                            [0] :@ident,  #### this t
+                            [1] "first",
+                            [2] [
+                                [0] 2,
+                                [1] 6
+                            ]
+                        ],
+                        [2] [
+                            [0] :params,  #### method parames
+                            [1] nil,
+                            [2] nil,
+                            [3] nil,
+                            [4] nil,
+                            [5] nil,
+                            [6] nil,
+                            [7] nil
+                        ],
+                        [3] [
+                            [0] :bodystmt, #### method body
+                            [1] [
+                                [0] [
+                                    [0] :void_stmt
+                                ]
+                            ],
+                            [2] nil,
+                            [3] nil,
+                            [4] nil
+                        ]
+                    ],
+                    [1] [                 #### SECOND METHOD
+                        [0] :def,
+                        [1] [
+                            [0] :@ident,
+                            [1] "second",
+.....
+~~~
+
+
+### Code Compilation
+
+### Code Execution
+
+http://patshaughnessy.net/2012/6/29/how-ruby-executes-your-code
+
 
 ## What is an Object
 

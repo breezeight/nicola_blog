@@ -15,7 +15,7 @@ categories: ["ruby"]
 # References
 
 * [Official Ruby reference](http://www.ruby-doc.org/)
-
+* [Ruby Forum](https://www.ruby-forum.com/)
 * RUAM: RubyUnderaMicroscope.pdf
 
 https://www.youtube.com/user/CooperPress/videos
