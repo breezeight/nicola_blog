@@ -288,8 +288,7 @@ TODO: http://stackoverflow.com/questions/17552915/ruby-mixins-extend-and-include
 This chapter is summary of [Ruby Hack Guide](http://ruby-hacking-guide.github.io/object.html)
 and Ruby under a Microscope
 
-## YARV
-
+## Ruby code interpretation
 To execute your code MRI ruby will go through 3 steps:
 
 * `tokenizes` your code, which means it reads the text characters in your code file and converts them into `tokens`
@@ -482,13 +481,16 @@ pp Ripper.sexp(code)
 .....
 ~~~
 
+#### ruby --dump parsetree
 
-### Code Compilation
+`ruby --dump parsetree /tmp/class.rb` this command will dump the AST
 
-### Code Execution
+This command will show the same information of Ripper but instead of
+showing symbols it will show the actual AST Nodes names from the C code.
 
-http://patshaughnessy.net/2012/6/29/how-ruby-executes-your-code
+### YARV: Code Compilation and Execution
 
+See the [YARV Guide]({{site.url}}/guides/ruby_yarv.html)
 
 ## What is an Object
 
@@ -872,6 +874,341 @@ The solution is to use `prepend`. When you prepend a module:
 * moves all of the methods from the original class to the origin class, which means that those methods may now be overridden by methods with the same name in the prepended module.
 
 ![ruby_prepend_module]({{ site.url }}/guides/images/ruby_prepend_module.jpg)
+
+## Lexical Scope and Costant Lookup
+
+Note: See
+[Here]({{site.url}}/guides/languages_analogies_and_differences.html#scope-and-binding)
+for the definition of scope
+
+Ruby use `Lexical scope`.
+
+### Why Constants are really important
+
+Constant Lookup is very important because constants, like modules and
+classes, are central to the way Ruby works internally and to the way we
+use Ruby:
+
+* Whenever you define a module or class, you also define a constant.
+* And whenever you refer to or use a module or class, Ruby has to look up the corresponding constant.
+
+Ruby can find a Constant defined in a Superclass:
+
+~~~ruby
+class MyClass
+  SOME_CONSTANT = "Some value..."
+end
+
+class Subclass < MyClass
+  p SOME_CONSTANT
+end
+
+=> "Some value..."
+~~~
+
+or in a parent Class or Module:
+
+~~~ruby
+module Namespace
+  SOME_CONSTANT = "Some value..."
+  class Subclass
+    p SOME_CONSTANT
+  end
+end
+
+=> "Some value..."
+~~~
+
+### How the costant Lookup works: mapping between code and scopes
+
+A `syntactical section` in Ruby defines a scope. Think of your Ruby
+program as a series `syntactical section` that defines a scope:
+
+* one for each module or class that you create
+  * `class X; <<<<---- This is a synthactical section ------>>>> end`
+  * `module X; <<<<---- This is a syntactical section ------>>>> end`
+* and another for the default, top-level lexical scope.
+
+Ruby compiles the code within the `syntactical section` into a YARV
+instruction snippet and then attaches to it a couple of pointers to keep
+track of the scope:
+
+* `nd_next` pointer is set to the parent or surrounding lexical scope.
+* `nd_clss` pointer indicates which Ruby class or module corresponds to this scope.
+
+Scope is the set of all constant that are are visible within the
+`syntactical section`. When ruby looks for a constant it will:
+
+* iterates over the linked list formed by the nd_next pointers in each lexical scope (nd_next)
+  * for each scope’s class check for `autoload`
+* iterates through superclass chain (`nd_clss`)
+  * for each superclass check for `autoload`
+
+If the constant is found the iteation will end, otherwise
+`const_missing` is called.
+
+If Ruby loops through the entire lexical scope chain without finding the given constant or a corresponding autoload keyword, it then iterates
+up the superclass chain. This allows you to load constants defined in a superclass. Ruby once again honors any autoload key- word that might exist in any of those superclasses, loading an additional file if necessary.
+Finally, if all else fails and the constant still isn’t found, Ruby
+calls the `const_missing` method on your module if you provided one
+
+
+Scope Example: define MyClass using the class
+keyword. Ruby sets the `nd_clss` pointer to the RClass structure
+corresponding to MyClass and `nd_next` to the top level scope:
+
+~~~ruby
+class MyClass
+  SOME_CONSTANT = "Some value..."
+end
+~~~
+
+![ruby_lexical_scope_nd_next_nd_clss]({{ site.url }}/guides/images/ruby_lexical_scope_nd_next_nd_clss.jpg)
+
+
+Summary:
+
+* Ruby uses both the lexical scope tree and the superclass hierarchy to find constants that your code refers to.
+* Ruby uses the class tree to find the methods that your code (and Ruby’s own internal code) calls
+
+
+### Load, Require, Autoload
+
+**TODO**:
+
+* forse l'autoload è morto: https://www.ruby-forum.com/topic/3036681
+* http://www.slideshare.net/DonSchado/ruby-require-autoloadload
+
+refs:
+
+* http://ruby-doc.org/core-2.1.0/Kernel.html#method-i-require
+* http://ruby-doc.org/core-2.1.0/Kernel.html#method-i-autoload
+* http://ruby-doc.org/core-2.1.0/Kernel.html#method-i-auto
+
+`autoload` works in a similar way to `require`, but it only loads the file specified when a constant of your choosing is accessed/used for the first time.
+
+If you use `require` the `thin/command` file is evaluated immediadly,
+the execution is synchronous and the `Command` class will be available
+in the current lexical scope.
+
+~~~ruby
+require 'thin/command'
+~~~
+
+If you use `autoload` the `thin/command` file will be evauated only when
+another piece of code will look for the `Command` constant:
+
+~~~ruby
+autoload :Command, 'thin/command'
+~~~
+
+
+
+
+## Closures
+
+REF: Ruby under a microscope ch8
+
+* Why don't ruby methods have lexical scope? http://stackoverflow.com/questions/9089414/why-dont-ruby-methods-have-lexical-scope
+* http://joshcheek.com/blog/1_lambda_proc_and_proc_new
+
+{% github_sample_ref /ruby/ruby/blob/v2_2_0_preview2/vm_core.h %}
+{% highlight c %}
+{% github_sample /ruby/ruby/blob/v2_2_0_preview2/vm_core.h 533 540 %}
+{% endhighlight %}
+
+Closure is a the computer science concept introduced in Lisp long before
+Ruby was created in the 1990s. Here’s how Sussman and Steele defined the
+term closure in 1975:
+
+* A “lambda expression” that is, a function that takes a set of arguments
+* An environment to be used when calling that lambda or function
+
+Ruby’s rb_block_t structure contains two important values that maps to
+the same concepts:
+
+* A pointer to a snippet of YARV code instructions the `iseq pointer`. iseq is a pointer to a lambda expression
+* A pointer to a location on YARV’s internal stack, the location that was at the top of the stack when the block was created the EP pointer. EP is a pointer to the environment to be used when calling that lambda or function—that is, a pointer to the surrounding stack frame.
+
+### Blocks implementation
+
+Ruby represents each block using a C structure called `rb_block_t`.
+
+The behavior of blocks is that they can access variables in the
+surrounding or parent Ruby scope. To implment this behavior YARV tracks
+the location of variables using the EP, or environment pointer, located
+in the `rb_control_frame_t` of the code that call a method with a block.
+
+When you call a method with a block argument:
+
+* ruby initializes a new `rb_block_t` structure to represent the block.
+* copies the current value of the EP into the new `rb_block_t` structure (saving the location of the current stack frame in the new block.)
+* create a new `rb_control_frame_t` frame for the method
+* Each time the method invoke `yield`:
+  * Ruby’s internal yield code copies the EP from the block into the new stack frame
+  * the ruby bloa
+
+
+Thanks to this ruby can dynamically access variables from blocks, see:
+[Local and Dynamic Access of Ruby Variables]({{ site.url }}/guides/ruby_yarv.html#local-and-dynamic-access-of-ruby-variables)
+
+### Lambda and Proc
+
+Lambda example:
+
+~~~ruby
+def message_function
+  str = "The quick brown fox"
+  lambda do |animal|
+    puts "#{str} jumps over the lazy #{animal}."
+  end
+end
+function_value = message_function
+function_value.call('dog')
+~~~
+
+In ruby `lambda` is a method of the [Kernel module](http://www.ruby-doc.org/core-2.1.5/Kernel.html#method-i-lambda).
+It is equivalent to Proc.new, except:
+
+* the resulting Proc objects check the number of parameters passed when called.
+* the resulting Proc object method `is_lambda?` return `true`
+
+The `function_value` is an is an example of “treating a function as a
+first-class citizen”:
+
+* a reference to the block is stored in the Proc object.
+* we can invoke it with the `Proc#call` method.
+
+With the `lambda` method or the equivalent `proc` Ruby allows you to convert a block into a data value in this way.
+
+
+When you call lambda, Ruby copies the entire contents of the current
+YARV stack frame into the heap.
+
+In fact, along with the copy of the stack frame, Ruby creates two other new objects in the heap:
+
+* An internal environment object, represented by the rb_env_t C structure at the lower left of the figure. It’s essentially a wrapper for the heap copy of the stack. As we’ll see in Chapter 9, you can access this environment object indirectly in your programs using the Binding class.
+* A Ruby proc object, represented by the rb_proc_t structure. This is the actual return value from the lambda keyword; it’s what the message_function function returns.
+
+#### How a Proc is intenally stored
+
+Ruby saves your data in two places:
+
+*  on the stack
+*  in the heap
+
+When you create a Proc with lamba ruby:
+
+* create an internal environment object represented by a `rb_env_t` C structure. It's essentially a wrapper of a copy of the stack.
+* the current stack 
+* a ruby `Proc` object represented by the `rb_proc_t` structure, which contains:
+  * a `rb_block_t` with the `EP` pointer set to the heap copy of the stack.
+
+Think of a proc as a kind of Ruby object that wraps up a block.
+
+![ruby_create_lambda]({{ site.url }}/guides/images/ruby_create_lambda.jpg)
+
+
+#### How ruby call a Proc
+
+When Ruby executes the `Proc#call` method on the proc object, it executes
+its block as well:
+
+* new stack frame and sets the EP to the block’s referencing environment.
+* that environment is a copy of a stack frame previously copied into the heap; the new stack frame contains an EP that points to the heap.
+* now the block code has access to all the variables it had access when it was created.
+
+Example:
+
+~~~ruby
+def message_function
+   str = "The quick brown fox"
+   lambda do |animal|
+     puts "#{str} jumps over the lazy #{animal}."
+   end
+end
+function_value = message_function
+function_value.call('dog')
+
+=> The quick brown fox jumps over the lazy dog.  ### The block executed by the lambda still have access to the str variable
+~~~
+
+#### Changing Local Variables After Calling lambda
+
+When you create a proc Ruby should have copied the stack frame to the
+heap but Ruby allow us to modify the new persistent copy of the stack
+once it’s been created.
+
+~~~ruby
+def message_function
+  str = "The quick brown fox"
+  func = lambda do |animal|
+    puts "#{str} jumps over the lazy #{animal}."
+  end
+  str = "The sly brown fox"                     ##### update str after Proc is istantiated
+  func
+end
+function_value = message_function
+function_value.call('dog')
+
+=> "The sly brown fox jumps over the lazy dog." #####  the Proc's block uses the updated version of the str variable
+~~~
+
+How it is possible? We should work on the copy of the stack...
+
+This is beacause the new copy of the stack is meant to persist on the
+heap not to be different for each Proc.
+Once Ruby creates the new heap copy of the stack (the new rb_env_t
+structure or internal environment object), it resets the EP in the
+rb_control_frame_t structure to point to the copy, so the current ISEQ
+will work on the same stack copy of the Proc.
+
+But how many copies of the stack does ruby create if we create multiple
+Proc?
+
+Only one!
+
+Let's experiment a little bit:
+
+~~~ruby
+i= 0
+increment_function = lambda do
+  puts "Incrementing from #{i} to #{i+1}"
+  i += 1
+end
+
+decrement_function = lambda do
+  i -= 1
+  puts "Decrementing from #{i+1} to #{i}"
+end
+~~~
+
+If Ruby made a separate copy of the stack frame for each call to lambda, each function would operate on a separate copy of i.
+
+Instead the exact opposite happens:
+
+~~~ruby
+increment_function.call
+=> Incrementing from 0 to 1
+
+decrement_function.call
+=> Decrementing from 1 to 0
+
+increment_function.call
+=> Incrementing from 0 to 1
+
+increment_function.call
+=> Incrementing from 1 to 2
+
+decrement_function.call
+=> Decrementing from 2 to 1
+~~~
+
+#### Summary
+
+* `blocks` implement the computer science concept of closure in Ruby
+* Ruby allows you to treat functions or code as first- class citizens using the `lambda` keyword, which converts a block into a data value that you can pass, save, and reuse.
+
 
 ## Advanced Object management
 
