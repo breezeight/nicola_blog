@@ -226,6 +226,74 @@ Refs:
 
 [see this post](/guides/opsworks-introduction.html)
 
+# ECS: EC2 Container Service
+
+Doc: https://aws.amazon.com/ecs/
+Guide: http://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html
+API: http://docs.aws.amazon.com/AmazonECS/latest/APIReference/Welcome.html
+
+
+
+
+
+
+## Preview version
+
+* Intro: http://aws.amazon.com/blogs/aws/ec2-container-service-in-action/?sc_ichannel=ha&sc_ipage=homepage&sc_icountry=en&sc_isegment=c&sc_iplace=hero1&sc_icampaigntype=product_launch&sc_icampaign=ha_en_ECS_Launch&sc_icategory=none&sc_idetail=ha_en_281_1&sc_icontent=ha_281&
+
+
+
+### Boot via cloud formation
+
+NOTE: the template below don't create the ECS Cluster, you must create
+it manually because Cloudformation still not support the ECS resource.
+
+/Users/nicolabrisotto/.local/lib/aws/bin/aws ecs create-cluster --cluster-name TestCluster --profile pt --region us-east-1
+
+~~~
+aws cloudformation create-stack --stack-name TestEC2Container --template-body https://s3.amazonaws.com/amazon-ecs-cloudformation/Amazon_ECS_Quickstart.template --parameters ParameterKey=ClusterName,ParameterValue=TestCluster ParameterKey=KeyName,ParameterValue="pt_virginia" ParameterKey=InstanceType,ParameterValue=t2.micro --region us-east-1 --profile pt
+~~~
+
+### JOIN the cluster from an EC2 instance
+
+When you boot the ami you must add the cluster name to
+`/etc/ecs/ecs.config`, for example with cloudformation you can use
+`UserData`:
+
+~~~json
+    "ContainerInstance" : {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "IamInstanceProfile" : { "Ref" : "ECSIamInstanceProfile" },
+        "ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" },
+                          { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] },
+        "InstanceType"   : { "Ref" : "InstanceType" },
+        "SecurityGroups" : [ {"Ref" : "ECSQuickstartSecurityGroup"} ],
+        "KeyName"        : { "Ref" : "KeyName" },
+        "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [
+             "#!/bin/bash -xe\n",
+             "echo ECS_CLUSTER=", { "Ref" : "ClusterName" },
+             " >> /etc/ecs/ecs.config\n"
+        ]]}}
+      }
+    },
+~~~
+
+When the ecs service of the instance boots it will join the cluster
+
+/Users/nicolabrisotto/.local/lib/aws/bin/aws ecs list-container-instances --cluster TestCluster  --region us-east-1 --profile pt
+
+
+### Docker Agent
+
+The ecs docker agent runs as a docker container
+
+* `/etc/ecs/ecs-init` is the script that start the agent the script
+* `/etc/ecs/ecs.config`
+* this is the command that runs the agent: `docker run --name ecs-agent -v /var/run/docker.sock:/var/run/docker.sock -v /var/log/ecs:/log -p 127.0.0.1:51678:51678 --env-file /etc/ecs/ecs.config -e ECS_LOGFILE=/log/ecs-agent.log amazon/amazon-ecs-agent:latest`
+* `/var/log/ecs/ecs-agent.log` is the log
+
+
 # SES
 
 
