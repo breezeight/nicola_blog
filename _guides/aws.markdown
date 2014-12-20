@@ -132,11 +132,53 @@ TODO: Why should we keep them in a laptop ?
 
 # AWS Cli
 
+
+
 The AWS Command Line Interface is a unified tool to manage your AWS services [reference](http://docs.aws.amazon.com/cli/latest/reference/).
 
 NB: some service endpoint is available only in some region(OpsWorks only us-east-1 as of march 2014).
 
 ## Configuration and credentials for multiple accounts 
+
+### NEW DEFINITIVE SOLUTION
+
+Now aws cli support multiple profiles, the doc is [here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-multiple-profiles).
+
+**TODO**: sinceramente non ho ben capito quale file serve... se metto le
+credenziali solo in `~/.aws/credentials` non me le trova da awscli ... le ho messe
+in  `~/.aws/config` e adesso le becca.... boh!! cmq metterle in
+`~/.aws/config` fa funzionare la cli
+
+The following example shows a credentials file with two profiles `~/.aws/credentials`:
+
+~~~json
+[default]
+aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+[user2]
+aws_access_key_id=AKIAI44QH8DHBEXAMPLE
+aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
+~~~
+
+To set default region and output for each profile `~/.aws/config`:
+
+~~~
+[default]
+region=us-west-1
+output=json
+
+[profile user2]
+region=us-east-1
+output=text
+~~~
+
+example:
+
+~~~
+aws ec2 describe-instances --profile user2
+~~~
+
 
 ### Solution A: work by dirs
 * add to bashrc AWS_CONFIG_FILE=.aws/config, this will override the
