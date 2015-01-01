@@ -20,6 +20,17 @@ categories: ["ruby"]
 
 https://www.youtube.com/user/CooperPress/videos
 
+# Ruby Reference
+
+http://ruby-doc.org/
+
+In Ruby everything is an object, also classes are objects. A class in ruby is an instance of the class Class.
+
+When an object is an instance of a class, it has all the methods defined by that class object.These methods are called `instance methods` and they are prefixed in the documentation with `#`.
+
+Instead when the method is a method of the class object it will be prefixed with `::`. These methods can be invoked on the class, not on objects instance of the class.
+
+
 # Intro to Ruby for Java developers
 
 Java:
@@ -113,10 +124,154 @@ constant is referenced.
 
 load vs require: http://stackoverflow.com/questions/804297/when-to-use-require-load-or-autoload-in-ruby
 
+# Variable Assignment 
+
+REF: 
+* http://ruby-doc.org/core-2.1.3/doc/syntax/assignment_rdoc.html#label-Assignment+Methods
+* http://po-ru.com/diary/destructuring-assignment-in-ruby/
+
+Arguments:
+
+
+# Control expressions: if, unless, etc...
+
+REF: http://ruby-doc.org/core-2.1.3/doc/syntax/control_expressions_rdoc.html
+
+
+# The Splat operator
+
+The splat operator is `*`
+
+## In method definition
+
+REF: [Official Ruby doc: Calling methods](http://ruby-doc.org/core-2.1.3/doc/syntax/calling_methods_rdoc.html)
+
+The splat operator can be used to create methods that accept a variable number of arguments.
+
+You can use the splat operator to slurp up method arguments:
+
+~~~ruby
+def shout_out(message, *friends)
+  friends.each { |f| puts "#{f}: #{message}" }
+end
+ 
+shout_out("Hi there!", "Bob", "Steve", "Dave") 
+=> Bob: Hi there!
+=> Steve: Hi there!
+=> Dave: Hi there!
+
+~~~
+
+The arguments collected by the splat operator will be accessible as an array in the method body:
+
+~~~ruby
+def add(*nums)
+  puts nums.class
+end
+
+add(1,2,3)
+=> Array
+~~~
+
+Ruby doesn’t allow more than one parameter is using the splat operator:
+
+~~~ruby
+def shout_out(*messages, *friends)
+  ...
+end
+
+=> SyntaxError: (irb):1: syntax error, unexpected *
+~~~
+
+You can mix required params with the splat operator:
+
+~~~ruby
+def combo(x, y, *args)
+  puts "x: #{x}"
+  puts "y: #{y}"
+  puts "args: #{args}"
+end
+ 
+combo(2, 3, 7, 8, 9)
+=> x: 2
+=> y: 3
+=> args: [7, 8, 9]
+~~~
+
+You can use without any param name, see here why http://www.raysrashmi.com/2013/11/06/splat-operator-as-an-argument : `def initialize(*)`
+
+
+
+Being able to use the splat operator is really just syntactic sugar – it allows us to pass in additional parameters without having to put those parameters into an array.
+
+## Turn an array into an argument list for a method
+
+~~~ruby
+def full_name(first_name, last_name, title)
+  "#{first_name} #{last_name}, #{title}"
+end
+ 
+person = ["Jess", "Spaceman", "M.D."]
+
+full_name(*person)        # OK
+=> "Jess Spaceman, M.D."
+
+full_name(person)         # ERROR
+raises an ArgumentError
+~~~
+
+## To decontruct an Array
+
+You can use splats with multiple assignment to extract various elements from a `Array`:
+
+~~~ruby
+first, *list = [1,2,3,4]          # first= 1, list= [2,3,4]
+*list, last  = [1,2,3,4]          # list= [1,2,3], last= 4
+first, *center, last = [1,2,3,4]  # first= 1, center= [2,3], last=4
+~~~
+
+
+## To convert hash to array and viceversa
+
+When you apply the splat operator to an hash each key/value pair will be converted in an array of two element: `[key, value]`
+
+~~~ruby
+h = {:a => 1, :b => 2}
+a=*h
+=> [[:a,1], [:b,2]]
+~~~
+
+This conversion is not recursive:
+
+~~~ruby
+h = {:a => {:c=>1, :d => 3}, :b => 2}
+a=*h
+=> [[:a,{:c => 1, :d => 3}],   ## The most internal hash is not converted into an Array
+    [[:b,2]
+]
+ 
+
+
+
+## To call methods with arrays which aren’t really expecting them
+TODO
+
+
+## Summary
+
+The splat operator can definitely be used effectively in a few niche scenarios it’s very rare to see it being used outside of method definitions.
+
+To be honest, I would be careful of using it outside of method definitions, since we don’t want to make the code more complex just to save a few characters here and there.
+
+# The ** operator
+TODO, see here : http://ruby-doc.org/core-2.1.3/doc/syntax/calling_methods_rdoc.html
+
 # Ruby Closure: Block, Proc, Lambda
 
 See the [Ruby Object model]({{site.url}}/guides/ruby_object_model.html)
 for a deep analisys.
+
+## Block
 
 The Ruby implementation of closures is `block`, it act like drop-in
 code snippets and has a reference to the environment it was created in.
@@ -128,8 +283,10 @@ end
 
 * you can provide **ONLY ONE** block to a ruby method
 * every ruby method can be invoked with a block param
+* You can define a block only when you call a method
 
-To invoke a block a must use the `yield` keyword:
+
+A method can invoke a block with the `yield` keyword:
 
 ~~~ruby
 def.my_method(arg0, arg1) do
@@ -137,6 +294,30 @@ def.my_method(arg0, arg1) do
   yeild(a, arg0, arg1) if block_given?
 end
 ~~~
+
+`Kernel#block_given?`: to ask Ruby whether the current call includes a block
+
+~~~ruby
+def a_method
+  return yield if block_given? 'no block'
+end
+~~~
+
+### Binding examples
+
+~~~ruby
+def my_method
+  x = "Goodbye" yield("cruel") 
+end
+
+x = "Hello"
+my_method {|y| "#{x}, #{y} world" } # => "Hello, cruel world"
+~~~
+
+The code in the block sees the x that was around when the block was defined, not the method’s x, which is not visible at all in the block.
+
+
+## Proc and lambda
 
 `Proc` is a class that can save a block for later execution.
 `lambda` is a method of the Kernel module that return a Proc that will
@@ -436,7 +617,6 @@ Calling code is syntactically equal to calling a method with hash arguments, whi
 
 # Connascence in Ruby
 
-
 “Two software components are connascent if a change in one would require the other to be modified in order to maintain the overall correctness of the system. Connascence is a way to characterize and reason about certain types of complexity in software systems.”
 
 Below I’ve listed out the various kinds of connascence in order from weakest to strongest.
@@ -456,11 +636,17 @@ See here for more detaisl http://blog.rubybestpractices.com/posts/gregory/056-is
 This chapeter is only a brief summary, see RubyUnderaMicroscope.pdf for
 more info
 
-## Compile ruby code
+# FAQ
 
-* Starting with version 1.9, Ruby compiles your code before executing it.
-* Ruby core team introduced **Yet Another Ruby Virtual Machine (YARV)**,
-    which actually executes your Ruby code. Similar at highlevel to a
-    JVM
-* YARV Produce **bytecode** : YARV instructions
-* RubyVM::InstructionSequence object
+## Method lookup 
+
+### Example 1
+
+~~~ruby
+def self.my_method
+  my_other_method(...) 
+end
+~~~
+
+
+

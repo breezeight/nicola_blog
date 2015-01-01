@@ -6,27 +6,26 @@ node [shape=box];
 
 subgraph cluster_1 {
   Animal; Dog; Object; BasicObject; nil 
+  style = "invisible";
 }
 
 
 subgraph cluster_2 {
   Class; Module
+  style = "invisible";
 }
 
 
-Animal -> Object [ label = "superclass" color="red" ];
-Dog -> Animal [ label = "superclass" color="red" ];
-Class -> Module [ label = "superclass" color="red" ];
-Module -> Object [ label = "superclass" color="red" ];
-Object -> BasicObject [ label = "superclass" color="red" ];
-BasicObject -> nil [ label = "superclass" color="red" ];
+Dog -> Animal [ label = "superclass" color="red" fontcolor = "red" ];
+Animal -> Object [ label = "superclass" color="red" fontcolor = "red" ];
+Class -> Module [ label = "superclass" color="red" fontcolor = "red"  ];
+Module -> Object [ label = "superclass" color="red" fontcolor = "red"  ];
+Object -> BasicObject [ label = "superclass" color="red" fontcolor = "red"  ];
+BasicObject -> nil [ label = "superclass" color="red" fontcolor = "red"  ];
 
-Object -> Class [ label = "class" color="blue" ];
-Class -> Class [ label = "class" color="blue" ];
-Module -> Class [ label = "class" color="blue" ];
-BasicObject -> Class [ label = "class" color="blue" ];
-Dog -> Class [ label = "class" color="blue" ];
-Animal -> Class [ label = "class" color="blue" ];
+
+
+{ Dog, Animal, BasicObject, Object, Class, Module } -> Class [ label = "class" color="blue" fontcolor = "blue" ];
 
 
 rankdir=BT;

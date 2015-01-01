@@ -1,0 +1,49 @@
+##Command to produce the output: "dot -Tpng thisfile > thisfile.png"
+
+digraph RubyObjectModel {
+node [shape=circle,fixedsize=true,width=1.1]; nil;
+node [shape=box,fixedsize=true];
+
+subgraph cluster_1 {
+  dory; Animal; Dog; Object; BasicObject; nil 
+  style = "invisible";
+}
+
+subgraph cluster_2 {
+  Class; Module
+  style = "invisible";
+}
+
+subgraph cluster_3 {
+  "#<Class:Dog>"; "#<Class:Animal>"; "#<Class:Object>"; "#<Class:BasicObject>";
+  style = "invisible";
+}
+
+
+"#<Class:#<Dog:0x007fecb75663e0>>" -> Dog [ label = "superclass" color="red" fontcolor = "red" ];
+"#<Class:Dog>" -> "#<Class:Animal>" [ label = "superclass" color="red" fontcolor = "red" ];
+"#<Class:Animal>" -> "#<Class:Object>"  [ label = "superclass" color="red" fontcolor = "red" ];
+"#<Class:Object>" -> "#<Class:BasicObject>" [ label = "superclass" color="red" fontcolor = "red" ];
+"#<Class:BasicObject>" -> Class [ label = "superclass" color="red" fontcolor = "red" ];
+
+Dog -> Animal [ label = "superclass" color="red" fontcolor = "red" ];
+Animal -> Object [ label = "superclass" color="red" fontcolor = "red" ];
+Class -> Module [ label = "superclass" color="red" fontcolor = "red"  ];
+Module -> Object [ label = "superclass" color="red" fontcolor = "red"  ];
+Object -> BasicObject [ label = "superclass" color="red" fontcolor = "red"  ];
+BasicObject -> nil [ label = "superclass" color="red" fontcolor = "red"  ];
+
+{ "#<Class:Dog>", "#<Class:Animal>", "#<Class:Object>", "#<Class:BasicObject>", "#<Class:#<Dog:0x007fecb75663e0>>", Dog, Animal, BasicObject, Object, Class, Module } -> Class [ label = "class" color="blue" fontcolor = "blue" ];
+dory -> Dog [ label = "class" color="blue" fontcolor = "blue" ];
+dory -> "#<Class:#<Dog:0x007fecb75663e0>>" [ label = "singleton_class" color="green" fontcolor = "green" ];
+Dog -> "#<Class:Dog>"  [ label = "singleton_class" color="green" fontcolor = "green" ];
+Animal -> "#<Class:Animal>" [ label = "singleton_class" color="green" fontcolor = "green" ];
+Object -> "#<Class:Object>" [ label = "singleton_class" color="green" fontcolor = "green" ];
+BasicObject -> "#<Class:BasicObject>" [ label = "singleton_class" color="green" fontcolor = "green" ];
+
+
+rankdir=BT;
+overlap=false
+label="Ruby Object Model"
+fontsize=12;
+}
