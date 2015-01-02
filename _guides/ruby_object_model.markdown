@@ -793,9 +793,6 @@ To call a class method:
 
 ## Invoke method
 
-
-
-
 ### Ambiguity between local variables and methods
 
 Ref: http://stackoverflow.com/questions/44715/why-do-ruby-setters-need-self-qualification-within-the-class
@@ -1257,6 +1254,17 @@ Ruby implements extend in exactly the same way of `include`, except the included
 
 /Volumes/ArchiveDisk/Archive/Misc/ebook/ruby/concern.pdf
 
+## Object Model Hooks
+
+The object model is an eventful place. Lots of methods are invoked as your code runs as a feedback to other event in the code: classes are inherited, modules are mixed into classes, and methods are defined, undefined, and removed. For example:
+
+* `Class#inherited`
+* `Module#prepended`
+* `Module#included`
+* ....
+
+SEE Ruby Metaprogramming pag 157
+
 ## Blocks
 
 ## Proc and lambda
@@ -1303,6 +1311,109 @@ double(p) # => LocalJumpError
 The previous program tries to return from the scope where p is defined. Because you can’t return from the top-level scope, the program fails.
 
 **You can avoid this kind of mistake if you avoid using explicit returns**: `p = Proc.new { 10 }`
+
+## Metaprogramming
+
+Some of the meta-programming features of ruby are:
+
+* query informations about methods, instance variables, and superclasses.
+* define classes
+* define methods
+* define constants
+* write new Ruby code from scratch, calling the parser and compiler at run time
+*
+
+
+### Binding and eval
+
+`Binding` is a whole scope packaged as an object. You can execute code in that scope by using the Binding object in conjunction with eval.
+
+`Kernel#eval` evaluates strings of code.
+
+`TOPLEVEL_BINDING` is the binding of the top level scope
+
+See: Ruby Metaprogamming ch6 for more
+
+### List methods
+
+* `Module#instance_methods` return all instance method of a **class or module**
+* `Module#instance_methods(false)` return only instance method defined by the class and not by its superclass
+
+
+
+~~~ruby
+   module A
+     def method1()  end
+   end
+   class B
+     def method2()  end
+   end
+   class C < B
+     def method3()  end
+   end
+
+   A.instance_methods                #=> [:method1]
+   B.instance_methods(false)         #=> [:method2]
+   C.instance_methods(false)         #=> [:method3]
+   C.instance_methods(true).length   #=> 43
+~~~
+
+
+Instead to get all the method that we can invoke on an object:
+
+* `Kernel#methods(true)`
+* `Kernel#methods(true)`
+
+~~~ruby
+class C
+end
+
+c = C.new
+
+puts C.methods(true).count     #=> 99 
+puts C.methods(false).count    #=> 0
+
+puts c.methods(true).count     #=> 55
+puts c.methods(false).count    #=> 0
+
+class C
+  def instance_method
+  end
+end
+
+puts C.methods(true).count     #=> 99
+puts C.methods(false).count    #=> 0
+
+puts c.methods(true).count     #=> 56
+puts c.methods(false).count    #=> 0
+
+
+class C
+  def self.class_method
+  end
+end
+
+puts C.methods(true).count     #=> 100
+puts C.methods(false).count    #=> 1
+
+puts c.methods(true).count     #=> 56
+puts c.methods(false).count    #=> 0
+~~~
+
+
+
+* `Kernel#singleton_methods` to get only singleton methods
+* `Kernel#protected_methods`
+* `Kernel#private_methods`
+* `Kernel#public_methods`
+
+### List instance variable
+
+* `Object`
+
+### Manipulate instance variables
+
+`Object#instance_variable_get` and `Object#instance_variable_set`
 
 
 # MRI Internals
@@ -1779,55 +1890,6 @@ decrement_function.call
 
 * `blocks` implement the computer science concept of closure in Ruby
 * Ruby allows you to treat functions or code as first- class citizens using the `lambda` keyword, which converts a block into a data value that you can pass, save, and reuse.
-
-### Metaprogramming
-
-Some of the meta-programming features of ruby are:
-
-* query informations about methods, instance variables, and superclasses.
-* define classes
-* define methods
-* define constants
-* write new Ruby code from scratch, calling the parser and compiler at run time
-*
-
-#### Define methods
-
-##### Normal method definition: def keyword
-
-~~~ruby
-class Quote
-  def display
-    puts "The quick brown fox jumped over the lazy dog."
-  end
-end
-~~~
-
-* Ruby executes the class keyword, it creates a new lexical scope for the Quote class
-* sets the `nd_clss` pointer in the lexical scope to point to an RClass structure for the new Quote class
-* ruby compile a YARV snipet for the code of the method
-* uses the **current lexical scope** to obtain a pointer to a class or module.
-* saves the new method’s name in the method table for that class
-
-##### method definition with prefix: def keyword with prefix
-
-~~~ruby
-def prefix.method_name
-end
-~~~
-
-This prefix tells Ruby to add the method to the class of the object you specify in the prefix rather than using the current lexical scope.
-
-**TODO** rileggersi pag 223-230 di Ruby under a Microscope, parla nel
-dettaglio di questa cose e di come funziona `class <<`
-
-Sarebbe da dare una riletta anche a questo: http://stackoverflow.com/questions/6182628/ruby-class-inheritance-what-is-double-less-than
-
-
-
-#### How does self change with lexical scope ?
-
-
 
 ## Advanced Object management
 
