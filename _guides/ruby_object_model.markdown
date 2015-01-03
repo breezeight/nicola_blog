@@ -1313,17 +1313,42 @@ Some of the meta-programming features of ruby are:
 
 
 
-### Binding and the eval family
-
+### Binding
 `Binding` is a whole scope packaged as an object. You can execute code in that scope by using the Binding object in conjunction with eval.
-
-`Kernel#eval` evaluates strings of code.
 
 `TOPLEVEL_BINDING` is the binding of the top level scope
 
-See: Ruby Metaprogamming ch6 for more
 
-#### class_eval
+### The eval family
+
+All variations of `{instance|module|class}_{eval|exec}` change the current object and/or the current class.
+
+The `eval` version evaluates a string containing Ruby source code:
+
+~~~ruby
+String.class_eval("def foo; end")
+String.instance_methods.grep(/foo/)
+~~~
+
+or the given block:
+
+~~~ruby
+String.class_eval{def foo; end}
+String.instance_methods.grep(/foo/)
+~~~
+
+
+While the `exec` versions requires a block and allow you to pass parameters to it:
+
+~~~ruby
+42.instance_exec("Hello"){|mess| puts "#{mess} world"; puts self}
+~~~
+
+`Kernel#eval` evaluates strings of code.
+
+Ref: Ruby Metaprogamming ch6 for more
+
+#### class_eval and class_exec
 
 * `C.class_eval`
   * current class: change in `C`
@@ -1331,6 +1356,13 @@ See: Ruby Metaprogamming ch6 for more
   * scope: same of before
   * NOTE: it's a method of module, it's not available to every object (`Module#class_eval`)
 
+Use case: add an instance method to a class
+
+~~~ruby
+String.class_eval("def foo; end")
+String.instance_methods.grep(/foo/)
+String.method_defined?(:foo) => true
+~~~
 
 #### instance_eval and instance_exec
 
@@ -1339,7 +1371,6 @@ See: Ruby Metaprogamming ch6 for more
   * current object: change in `C` or `obj`
   * scope: same
   * NOTE: it's a method of BasicObject, it's available to every Object (`BasicObject#instance_eval`)
-
 
 `instance_eval` has a slightly more flexible twin brother named `instance_exec` that allows you to pass arguments to the block.
 
