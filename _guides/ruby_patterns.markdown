@@ -17,17 +17,9 @@ categories: ["ruby"]
 
 # Add class method including a module
 
-Using only `include MyModule`, this pattern will allow you to add methods both to:
-
-* the Student class singleton_class
-* the objects instance of the Student class
-
-To obtain this result you need a module `ClassMethods` nested into the `MyModule`. MyModule will use the `included` hook of `MyModule` to extend the including class.
-
-**TODO**: check if this pattern is deprecated by `refinements`
-
+This pattern 
 ~~~ruby
-module MyModule
+module Base
   def self.included(klass)
     klass.extend ClassMethods
   end
@@ -40,10 +32,24 @@ module MyModule
 end
 
 class Student
-  include MyModule
+  include Base
 
   has_many :books
 end
 ~~~
 
 ref: http://stackoverflow.com/questions/4074962/class-vs-module-in-designing-ruby-api
+
+
+# Monadas
+
+* http://codon.com/refactoring-ruby-with-monads
+* https://www.youtube.com/watch?v=J1jYlPtkrqQ&feature=share
+
+
+
+## Some Minor pattern you can find in code
+
+### Singleton classes
+
+`(class << self; self; end)` : return the singleton class of `self`
