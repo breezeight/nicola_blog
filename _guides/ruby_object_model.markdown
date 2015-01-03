@@ -723,6 +723,12 @@ This is a list of keyword and methods that change the current object and/or the 
 
 ## Method definition
 
+Refs:
+
+* http://yugui.jp/articles/846
+* http://yehudakatz.com/2009/11/15/metaprogramming-in-ruby-its-all-about-the-self/
+* http://www.slideshare.net/burkelibbey/ruby-internals slides 57-70
+
 In Ruby a method can be defined in multiple ways:
 
 * the `def` keyword
@@ -735,26 +741,8 @@ In Ruby a method can be defined in multiple ways:
 
 All the other syntax that you can find on books and online are syntax to change the current class on which the method is defined.
 
-NOTE: target can be a generic ruby object it's not required to be instance of Class, the 
-
-TODO: default definee
-
-http://yugui.jp/articles/846
-http://www.slideshare.net/burkelibbey/ruby-internals
-http://yehudakatz.com/2009/11/15/metaprogramming-in-ruby-its-all-about-the-self/
-
-
-* `def foo` define on the default definee
-* `def target.bar` define on the `target.singleton_class`
-
-`default definee` != `self`
-
-`default definee` is the target for method definitions with no target.
-
-http://www.slideshare.net/burkelibbey/ruby-internals slides 57-70
-
-
-Secondo queste slide http://www.slideshare.net/burkelibbey?utm_campaign=profiletracking&utm_medium=sssite&utm_source=ssslideview pag 22: Singleton class, metaclass, eigenclasses sono la stessa cosa
+NOTE: target can be a generic ruby object it's not required to be instance of Class
+NOTE: `current class` != `self`
 
 ### Examples
 
@@ -1324,7 +1312,8 @@ Some of the meta-programming features of ruby are:
 *
 
 
-### Binding and eval
+
+### Binding and the eval family
 
 `Binding` is a whole scope packaged as an object. You can execute code in that scope by using the Binding object in conjunction with eval.
 
@@ -1333,6 +1322,58 @@ Some of the meta-programming features of ruby are:
 `TOPLEVEL_BINDING` is the binding of the top level scope
 
 See: Ruby Metaprogamming ch6 for more
+
+#### class_eval
+
+* `C.class_eval`
+  * current class: change in `C`
+  * current object: change in `C`
+  * scope: same of before
+  * NOTE: it's a method of module, it's not available to every object (`Module#class_eval`)
+
+
+#### instance_eval and instance_exec
+
+* `C.instance_eval` or `obj.instance_eval`
+  * current class: change in `C.singleton_class` or `obj.singleton_class`
+  * current object: change in `C` or `obj`
+  * scope: same
+  * NOTE: it's a method of BasicObject, it's available to every Object (`BasicObject#instance_eval`)
+
+
+`instance_eval` has a slightly more flexible twin brother named `instance_exec` that allows you to pass arguments to the block.
+
+~~~ruby
+class C
+  def initialize
+    @x = 1
+    end
+  end
+
+class D
+  def twisted_method
+    @y = 2
+    C.new.instance_eval { "@x: #{@x}, @y: #{@y}" } 
+  end
+end
+
+D.new.twisted_method # => "@x: 1, @y: "
+~~~
+
+The code inside the block interprets @y as an instance variable of C that hasn’t been initialized, and as such is nil (and prints out as an empty string).
+
+To merge @x and @y in the same scope, you can use instance_exec to pass @y’s value to the block:
+
+~~~ruby
+class D
+  def twisted_method
+    @y = 2
+    C.new.instance_exec(@y) {|y| "@x: #{@x}, @y: #{y}" } 
+  end
+end
+
+D.new.twisted_method # => "@x: 1, @y: 2"
+~~~
 
 ### List methods
 
