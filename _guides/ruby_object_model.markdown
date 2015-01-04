@@ -746,6 +746,8 @@ NOTE: `current class` != `self`
 
 ### Examples
 
+Define an instance method with `define_method`:
+
 class C
   define_method :id do
     @id
@@ -807,6 +809,100 @@ a = A.new
 a.use_variable # returns 5
 a.use_method   # returns 4
 ~~~
+## Declaring Methods Visibility
+
+http://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Classes#Declaring_Visibility
+
+`public`:
+
+* its the default
+
+`private`:
+
+* In Ruby, “private” visibility is similar to what “protected” is in Java. Private methods in Ruby are accessible from children. You can’t have truly private methods in Ruby; you can’t completely hide a method.
+* in C++, “private” means “private to this class”, while in Ruby it
+    means “private to this instance”. What this means, in C++ from code in class A, you can access any private method for any other object of type A. In Ruby, you cannot: you can only access private methods for your instance of object, and not for any other object instance (of class A).
+* Only accessible within the scope of a single object in which it is defined (truly private)
+* Rule of thumb: private methods can only be called with implicit receiver
+* for class methods (those that are declared using def
+    ClassName.method_name), you need to use another function:
+    `private_class_method`
+
+~~~ruby
+class Speaker
+  def talk
+    self.confident? ? "lecture..." : "Abscond!"
+  end
+private   # all methods that follow will be made private
+  def confident?
+    true
+  end
+end
+~~~
+
+~~~ruby
+Speaker.new.talk
+NoMethodError: private method 'confident?' called for #<Speaker:0x007fbcc484f430>
+~~~
+
+`protected`:
+
+* [tender love post about protected methods](http://tenderlovemaking.com/2012/09/07/protected-methods-and-ruby-2-0.html)
+
+[Method Visiblity Example]({{site.url}}/guides/ruby_examples/visibility.rb)
+
+### Syntax
+
+For instance methods:
+
+~~~ruby
+private   # all methods that follow will be made private
+  def confident?
+~~~
+
+~~~ruby
+  def methodP
+  end
+
+   private :methodP   # Only this method is private
+~~~
+
+For private class methods:
+
+~~~ruby
+class SingletonLike
+  private_class_method :new
+
+  def SingletonLike.create(*args, &block)
+    @@inst = new(*args, &block) unless @@inst
+    return @@inst
+  end
+end
+~~~
+
+### Use Case: Make new private for singleton
+
+~~~ruby
+ class SingletonLike
+    private_class_method :new
+ 
+    def SingletonLike.create(*args, &block)
+      @@inst = new(*args, &block) unless @@inst
+      return @@inst
+    end
+  end
+~~~
+
+## Accessors Methods
+
+[Accessor](http://www.rubyist.net/~slagell/ruby/accessors.html)
+
+ruby has shortcut:
+
+* `attr_reader :v` expands to: `def v; @v; end`
+* `attr_writer :v` expands to: `def v=(value); @v=value; end`
+* `attr_accessor :v` expands to: `attr_reader :v; attr_writer :v`
+* `attr_accessor :v, :w` expands to `attr_accessor :v; attr_accessor :w` 
 
 ## Scope
 
@@ -1113,102 +1209,6 @@ end
 ### Global Variables
 
 `$my_variable`
-
-
-## Declaring Methods Visibility
-
-http://en.wikibooks.org/wiki/Ruby_Programming/Syntax/Classes#Declaring_Visibility
-
-`public`:
-
-* its the default
-
-`private`:
-
-* In Ruby, “private” visibility is similar to what “protected” is in Java. Private methods in Ruby are accessible from children. You can’t have truly private methods in Ruby; you can’t completely hide a method.
-* in C++, “private” means “private to this class”, while in Ruby it
-    means “private to this instance”. What this means, in C++ from code in class A, you can access any private method for any other object of type A. In Ruby, you cannot: you can only access private methods for your instance of object, and not for any other object instance (of class A).
-* Only accessible within the scope of a single object in which it is defined (truly private)
-* Rule of thumb: private methods can only be called with implicit receiver
-* for class methods (those that are declared using def
-    ClassName.method_name), you need to use another function:
-    `private_class_method`
-
-~~~ruby
-class Speaker
-  def talk
-    self.confident? ? "lecture..." : "Abscond!"
-  end
-private   # all methods that follow will be made private
-  def confident?
-    true
-  end
-end
-~~~
-
-~~~ruby
-Speaker.new.talk
-NoMethodError: private method 'confident?' called for #<Speaker:0x007fbcc484f430>
-~~~
-
-`protected`:
-
-* [tender love post about protected methods](http://tenderlovemaking.com/2012/09/07/protected-methods-and-ruby-2-0.html)
-
-[Method Visiblity Example]({{site.url}}/guides/ruby_examples/visibility.rb)
-
-### Syntax
-
-For instance methods:
-
-~~~ruby
-private   # all methods that follow will be made private
-  def confident?
-~~~
-
-~~~ruby
-  def methodP
-  end
-
-   private :methodP   # Only this method is private
-~~~
-
-For private class methods:
-
-~~~ruby
-class SingletonLike
-  private_class_method :new
-
-  def SingletonLike.create(*args, &block)
-    @@inst = new(*args, &block) unless @@inst
-    return @@inst
-  end
-end
-~~~
-
-### Use Case: Make new private for singleton
-
-~~~ruby
- class SingletonLike
-    private_class_method :new
- 
-    def SingletonLike.create(*args, &block)
-      @@inst = new(*args, &block) unless @@inst
-      return @@inst
-    end
-  end
-~~~
-
-## Accessors Methods
-
-[Accessor](http://www.rubyist.net/~slagell/ruby/accessors.html)
-
-ruby has shortcut:
-
-* `attr_reader :v` expands to: `def v; @v; end`
-* `attr_writer :v` expands to: `def v=(value); @v=value; end`
-* `attr_accessor :v` expands to: `attr_reader :v; attr_writer :v`
-* `attr_accessor :v, :w` expands to `attr_accessor :v; attr_accessor :w` 
 
 
 ## Making Copies of Objects
