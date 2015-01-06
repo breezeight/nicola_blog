@@ -32,21 +32,27 @@ categories: ["docker"]
 
 WHY DOCKER IS USEFUL: Really good intro to docker from an usage point of view: http://www.infoq.com/articles/docker-containers/
 
-http://docs.docker.io/introduction/understanding-docker/   
+http://docs.docker.io/introduction/understanding-docker/
+
+Docker is a platform for developers and sysadmins to develop, ship, and run applications. Docker lets you quickly assemble applications from components and eliminates the friction that can come when shipping code. Docker lets you get your code tested and deployed into production as fast as possible.
 
 Docker provides a way to run almost any application securely isolated into a container. The isolation and security allows you to run many containers simultaneously on your host. The lightweight nature of containers, which run without the extra overload of a hypervisor, means you can get more out of your hardware.
 
-Docker major components:
+Docker uses a client-server architecture. The Docker client talks to the Docker daemon, which does the heavy lifting of building, running, and distributing your Docker containers.
 
-* `Docker containers`:    You can consider Docker containers the run portion of the Docker framework.
-* `Docker images`:   You can consider Docker images to be the build portion of the Docker framework.
-* `Docker registries`:   You can consider Docker registries the share portion of the Docker framework.
-* `Docker daemon`: creates, builds and manages containers (takes
+Docker consists of:
+
+* `Docker Engine` which major components are:
+  * `Docker containers`:    You can consider Docker containers the run portion of the Docker framework.
+  * `Docker images`:   You can consider Docker images to be the build portion of the Docker framework.
+  * `Docker registries`:   You can consider Docker registries the share portion of the Docker framework.
+  * `Docker daemon`: creates, builds and manages containers (takes
     advantage of some neat Linux kernel and operating system features,
     like namespaces and cgroups)
-* `Docker client`: is the commandline tool you use to send command to
+  * `Docker client`: is the commandline tool you use to send command to
     one or more
-
+* `Docker Hub`: a SaaS service for sharing and managing application
+    stacks. [DockerHub homepage](https://hub.docker.com/).
 
 (Highlevel point of view)
 http://www.docker.io/learn_more/
@@ -55,11 +61,70 @@ At page 21,22 there are a lot of examples
 Shipping container cargo methaphore: separation of concerns, the developer can package the container, the sysadmin ship it
 see also "Gabriel Monroy" comment here https://groups.google.com/forum/#!topic/docker-user/NF86nnPMZ6k
 
-Copy on write
+# Intro how docker works
 
-The Docker daemon, which is a server process and which manages all the containers, and the Docker client, which acts as a remote control on the daemon.
+See the [official doc](https://docs.docker.com/introduction/understanding-docker/#so-how-does-docker-work
+) for a light intro to:
 
+* How does a Docker Image work?
+* How does a Docker registry work?
+* How does a container work?
+* What happens when you run a container?
 
+# Docker Underlying technology
+
+* Namespaces
+* Control groups (cgroups)
+* Union file systems
+* Container format
+
+These technologies composes the building blocks of docker containers and
+images.
+
+## Container
+
+Docker combines these components (namespaces, cgroups, UFS) into a wrapper we call a container
+format. The default container format is called `libcontainer`.
+
+You can think about containers as a process in a box. The box contains everything the process might need, so it has the filesystem, system libraries, shell and such, but by default none of it is started or run.
+
+Once you start a process in Docker from an Image, Docker fetches the image and its Parent Image, and repeats the process until it reaches the Base Image. Then the Union File System adds a read-write layer on top. That read-write layer, plus the information about its Parent Image and some additional information like its unique id, networking configuration, and resource limits is called a container.
+
+When a container is running, the idea of a “container” also includes a tree of processes running on the CPU, isolated from the other processes running on the host.
+
+You can start, stop, and restart a container. The processes restart from scratch (their memory state is not preserved in a container), but the file system is just as it was when the container was stopped.
+
+Each container has a unique ID which is more or less analogous to a git commit hash.
+
+### Pid system within a container
+
+container's primary process has `PID 1`, a lot of docker's commands
+interact directly with this process (stop, kill, start, etc...)
+
+## Images
+
+[What is a Docker Image](http://docs.docker.io/en/latest/terms/image/)
+
+* In Docker terminology, a read-only Layer is called an image. An image never changes.
+* All images are identified by a 64 hexadecimal digit string
+* An image that has no parent is a `base image`
+* Each image may depend on one more image which forms the layer beneath it. We sometimes say that the lower image is the parent of the upper image.
+* Using the `Public/Private registry` you can share images
+* Docker stores downloaded images on the `Docker host`.
+
+NB: Docker HUB is more than a Docker Index, it has its [registry
+](https://registry.hub.docker.com/), but it add other sevices to manage
+the community.
+
+[Docker Guide to Images]https://docs.docker.com/userguide/dockerimages/
+covers:
+* Managing and working with images locally on your Docker host;
+* Creating basic images;
+* Uploading images to [Docker Hub](https://hub.docker.com/).
+
+### Layers
+http://docs.docker.io/en/latest/terms/layer/
+When Docker mounts the rootfs, it starts read-only, as in a traditional Linux boot, but then, instead of changing the file system to read-write mode, it takes advantage of a union mount to add a read-write file system over the read-only file system. In fact there may be multiple read-only file systems stacked on top of each other. We think of each one of these file systems as a layer.
 
 # Install Docker
 On recent linux Docker is really easy to install but on OS like
@@ -74,10 +139,8 @@ windows and OSX it's a little bit harder and you need to use ONE classical virtu
 
 ### OSX
 
-
 You can upgrade your existing Boot2Docker VM without data loss by running: `boot2docker upgrade`
 This will delete your persistent data, but will also ensure that you have the latest VirtualBox configuration.
-
 
 ### Mount Volumes issues on OSX
 
@@ -111,8 +174,6 @@ Boot2Docker 1.3 solve this problem with a trick:
 * Follow a naming convention to mount the OSX `/Users` directory in the
     same path on the VBox virtual machine
 
-
-
 A temporary solution will be pushed upstream with boot2docker 1.3:
 
 * see [here](https://github.com/boot2docker/boot2docker/pull/534) the
@@ -134,16 +195,23 @@ you obtain a mirror of the /User dir.
 * how could we write a 12 factor app that works with fig and AWS
 Beanstalk???
 
-
 TODO: read the make file of this project and implements it in FIG: https://github.com/ricardokirkner/django-12factor-docker
 
 
+# Docker Guides and Articles
+[CLI Commands reference](https://docs.docker.com/reference/commandline/cli)
 
-# Docker Guide
 
-## Volumes
+Here there is a list of the [official Docker
+guides](https://docs.docker.com/userguide/) and the [list of official
+Docker articles](https://docs.docker.com/articles/basics/)
 
-[volumes](https://docs.docker.com/userguide/dockervolumes/)
+Here I will collect some integration to those guides and reference to
+other third parties guides.
+
+## Managing Data in Containers (Volumes)
+
+[Docekr guide: Managing Data in Containers ](https://docs.docker.com/userguide/dockervolumes/)
 
 There are two primary ways you can manage data in Docker.
 
@@ -155,59 +223,126 @@ Use-cases:
 * development: we can mount our source code inside the container and see our application at work as we change the source code.
 * database
 
+## Controlling containers
+
+https://docs.docker.com/articles/basics/#controlling-containers
+
+
+## Docker CLI Commands
+
+[The docker command line reference documentation](https://docs.docker.com/reference/commandline/cli/)
+
+## Run
+
+When an operator executes `docker run`, he starts a process with:
+
+* its own file system
+* its own networking
+* its own isolated process tree.
+
+
+This process is the only process run, so when it completes the container is fully stopped.
+
+[Docker RUN reference](https://docs.docker.com/reference/run/), see here
+for:
+
+* Detached vs Foreground
+  * Detached (-d)
+  * Foreground
+* Container Identification
+* Name (--name)
+* PID Equivalent
+* Network Settings
+* Clean Up (--rm)
+* Runtime Constraints on CPU and Memory
+* Runtime Privilege, Linux Capabilities, and LXC Configuration
+
+The command docker run takes a minimum of two arguments. An image name, and the command you want to execute within that image.
+
+The image defines defaults but `docker run` **can** override those default:
+
+* `CMD` (Default Command or Options)
+* `ENTRYPOINT` (Default Command to Execute at Runtime)
+* `EXPOSE` (Incoming Ports)
+* `ENV` (Environment Variables)
+* `VOLUME` (Shared Filesystems)
+* `USER`
+* `WORKDIR`
+
+Four of the Dockerfile commands **cannot** be overridden at runtime:
+
+* `FROM`
+* `MAINTAINER`
+* `RUN`
+* `ADD`
+
+#### CMD vs ENTRYPOINT
+
+http://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile
+
+`sudo docker run [OPTIONS] IMAGE[:TAG] [COMMAND] [ARG...]`
+
+The command is optional because the person who created the IMAGE may have already provided a default COMMAND using the Dockerfile CMD instruction. As the operator (the person running a container from the image), you can override that CMD instruction just by specifying a new COMMAND.
+
+If the image also specifies an ENTRYPOINT then the CMD or COMMAND get appended as arguments to the ENTRYPOINT.
+
+The ENTRYPOINT of an image is similar to a COMMAND because it specifies what executable to run when the container starts, but it is (purposely) more difficult to override. The ENTRYPOINT gives a container its default nature or behavior, so that when you set an ENTRYPOINT you can run the container as if it were that binary, complete with default options, and you can pass in more options via the COMMAND. But, sometimes an operator may want to run something else inside the container, so you can override the default ENTRYPOINT at runtime by using a string to specify the new ENTRYPOINT.
+
+
+
+### Start
+
+[Attach command Docker
+reference]()
+
+### Stop / Kill
+
+* [Stop command Docker
+    reference](https://docs.docker.com/reference/commandline/cli/#stop)
+  * send `SIGTERM` and then `SIGKILL` after a grace period.
+* [Kill command Docker
+reference](
+https://docs.docker.com/reference/commandline/cli/#kill)
+  * with kill you can send any signal.
+
+You can use this two commands to send signals to the main process of a
+container no matter if you are attached to it.
+
+### Attach
+
+[Attach command Docker
+reference](https://docs.docker.com/reference/commandline/cli/#attach)
+
+TODO: capire se alla fine questo comando è utile solo per collegarsi via
+bash al container o anceh per altro
+
 ## How Docker integrates with the Boot and Root Filesystems of a guest
 
 http://docs.docker.io/en/latest/terms/filesystem/
 
-### Layers
-http://docs.docker.io/en/latest/terms/layer/
-When Docker mounts the rootfs, it starts read-only, as in a traditional Linux boot, but then, instead of changing the file system to read-write mode, it takes advantage of a union mount to add a read-write file system over the read-only file system. In fact there may be multiple read-only file systems stacked on top of each other. We think of each one of these file systems as a layer.
+## Docker Registry
 
+Docker-Registry is a simple Python app that holds docker images: https://github.com/docker/docker-registry
 
+You can upload or download images to and from it with `push` and `pull` commands.
 
-## Container
-You can think about containers as a process in a box. The box contains everything the process might need, so it has the filesystem, system libraries, shell and such, but by default none of it is started or run.
+Every installation of docker can store images locally and then push them to a registry.
 
-Once you start a process in Docker from an Image, Docker fetches the image and its Parent Image, and repeats the process until it reaches the Base Image. Then the Union File System adds a read-write layer on top. That read-write layer, plus the information about its Parent Image and some additional information like its unique id, networking configuration, and resource limits is called a container.
+The registry has the following characteristics:
 
-When a container is running, the idea of a “container” also includes a tree of processes running on the CPU, isolated from the other processes running on the host.
+* It stores the images and the graph for a set of repositories
+* It does not have user accounts data
+* It has no notion of user accounts or authorization
+* It delegates authentication and authorization to the Docker Hub Auth service using tokens
+* It supports different storage backends (S3, cloud files, local FS)
+* It doesn't have a local database
 
-You can start, stop, and restart a container. The processes restart from scratch (their memory state is not preserved in a container), but the file system is just as it was when the container was stopped.
+By default docker tools use a public installation of a docker registry hosted at Docker.com
+[Docker Public Index](https://registry.hub.docker.com/). But you can use other registries. See here to create your own private repository: http://blog.docker.io/2013/07/how-to-use-your-own-registry/
 
-Each container has a unique ID which is more or less analogous to a git commit hash.
+NOTE: the docker hub is a separate project that allow to search, share and collaborate with other. 
 
-## Images
-
-[What is a Docker Image](http://docs.docker.io/en/latest/terms/image/)
-
-* In Docker terminology, a read-only Layer is called an image. An image never changes.
-* All images are identified by a 64 hexadecimal digit string
-* An image that has no parent is a `base image`
-* Each image may depend on one more image which forms the layer beneath it. We sometimes say that the lower image is the parent of the upper image.
-* Using the `Public/Private registry` you can share images
-* Docker stores downloaded images on the `Docker host`.
-
-NB: Docker HUB is more than a Docker Index, it has its [registry
-](https://registry.hub.docker.com/), but it add other sevices to manage
-the community.
-
-[Docker Guide to Images]https://docs.docker.com/userguide/dockerimages/
-covers:
-* Managing and working with images locally on your Docker host;
-* Creating basic images;
-* Uploading images to [Docker Hub](https://hub.docker.com/).
-
-## Registry
-Docker registries hold images. These are public (or private!) stores that you can upload or download images to and from.
-Every installation of docker has a local repository (or should I call it registry?), you can push and pull images between your repository remote repository (like the index.docker.io or your private one ) with "docker push/pull"
-
-https://github.com/dotcloud/docker-registry
-
-See here to create your own private repository: http://blog.docker.io/2013/07/how-to-use-your-own-registry/
-
-* [Docker Public Index](https://registry.hub.docker.com/)
-
-You can find public images at the official docker registry, ex: ubuntu https://index.docker.io/_/ubuntu/
+Docker registry [SPEC](https://docs.docker.com/reference/api/hub_registry_spec/)
 
 ### How does Image's tag works?
 A lot of command accept tags
@@ -218,6 +353,99 @@ http://docs.docker.io/reference/commandline/cli/#tag
 http://azure.microsoft.com/blog/2014/11/11/deploying-your-own-private-docker-registry-on-azure/
 http://azure.microsoft.com/blog/tag/docker/
 
+## Docker Hub
+
+* [Docker guide: Working with Docker Hub](https://docs.docker.com/userguide/dockerrepos/)
+* [Intro to DockerHub](https://docs.docker.com/userguide/dockerhub/)
+
+Docker HUB is a SaaS that provide you:
+
+* Docker image hosting.
+* A public Docker Registry with more than 15000 images
+* User authentication, team collaboration.
+* Automated image builds and work-flow tools such as build triggers and web hooks.
+* Integration with GitHub and BitBucket.
+* ...
+
+### Repository
+
+REF: [Official Docker doc about repositories](http://docs.docker.com/docker-hub/repos/)
+
+What is a `repository` on Docker Hub? Essentialy it's a layer on top of a the docker registry that enables a set of collaboration and integration feature on a set of images:
+
+* A web page at "https://registry.hub.docker.com/u/<username>/<repo_name>/" with a description and other info.
+* Stats (numer of download, etc)
+* Bookmarks
+* Automatic builds
+* Webhooks
+* Collaborators and their role
+
+Each repository has an image and how many image tag you want.
+
+
+### Docker Official images: Docker Library
+
+REF:
+
+* http://stackoverflow.com/questions/24609139/what-are-the-differences-between-dockerfile-and-stackbrew-users-on-docker-hub
+* https://docs.docker.com/articles/dockerfile_best-practices/
+* https://docs.docker.com/docker-hub/official_repos/
+
+
+Docker and its network of partners maintain a set of official images.
+
+All the repositories of these images are listed here https://registry.hub.docker.com/repos/stackbrew/?s=stars
+
+This images are built using `bashbrew` or `stackbrew`. Stackbrew is a web-application that performs continuous building of the docker standard library [repo](https://github.com/docker-library/official-images/tree/master/stackbrew).
+
+The [docker-library](https://github.com/docker-library) github organization contains most of the repo used by this automated build system:
+
+* [official images library](https://github.com/docker-library/official-images/tree/master/library) is a directory on manifest file, one for each official image.
+* each manifest points to a separate git repository with a set of Dockerfile, most of them are under this organization (ex rails: https://github.com/docker-library/rails)
+* [doc for each image](https://github.com/docker-library/docs) 
+
+
+#### How to find the Dockerfile of an official image
+
+
+Go to the library dir: https://github.com/docker-library/official-images/tree/master/library
+
+Open the manifest, for example the Postgres manifest is https://github.com/docker-library/official-images/blob/master/library/postgres
+
+~~~
+.....
+
+9.3.5: git://github.com/docker-library/postgres@c9d9f4c1a0d33a161fefda666f041ef0dc4dc9f8 9.3
+9.3: git://github.com/docker-library/postgres@c9d9f4c1a0d33a161fefda666f041ef0dc4dc9f8 9.3
+
+9.4.0: git://github.com/docker-library/postgres@c9d9f4c1a0d33a161fefda666f041ef0dc4dc9f8 9.4
+9.4: git://github.com/docker-library/postgres@c9d9f4c1a0d33a161fefda666f041ef0dc4dc9f8 9.4
+9: git://github.com/docker-library/postgres@c9d9f4c1a0d33a161fefda666f041ef0dc4dc9f8 9.4
+latest: git://github.com/docker-library/postgres@c9d9f4c1a0d33a161fefda666f041ef0dc4dc9f8 9.4
+~~~
+
+The format of each line is `<docker-tag>: <git-url>@<git-tag-or-commit-id> <dockerfile-dir>`:
+
+* Generated image will be tagged as `<docker-tag>`
+* Optionally, if `<dockerfile-dir>` is present:
+  * Stackbrew will look for the Dockerfile inside the specified subdirectory instead of at the root 
+  * `<dockerfile-dir>` will be used as the "context" for the build).
+
+This mean that to find the postgres:9.4 image Dockerfile you must go here: https://github.com/docker-library/postgres/blob/master/9.4/Dockerfile
+
+#### Language Stacks
+
+Language stacks are a set of official images designed to make easy:
+
+* to find a particular version following this image tagging convention: tag with the version of the language you will find in the image. ie: `docker pull java:8u40`
+* decouple your code from the stack using [ONBUILD](https://docs.docker.com/reference/builder/#onbuild)
+* you’ll see that most of the language stacks are based on the buildpack-deps image, a collection of common build dependencies including development header packages. 
+
+For more details see this blog post: [See the announcement on the blog](http://blog.docker.com/2014/09/docker-hub-official-repos-announcing-language-stacks/)
+
+### Automated builds: Github and Bitbucket integration
+
+http://docs.docker.com/docker-hub/builds/
 
 ## Networking
 
@@ -237,12 +465,27 @@ To get the VM host adpter address:
 boot2docker ssh ip addr show dev eth1
 
 
+## Execute an interactive bash
+
+* `docker run --rm -i -t ubuntu:14.04 /bin/bash`
+  * `--rm` Automatically remove the container when it exits (incompatible with -d)
+
+## Cleanup containers and images
+
+http://blog.stefanxo.com/2014/02/clean-up-after-docker/
+
+## Starting a long-running worker process
+
+https://docs.docker.com/articles/basics/#starting-a-long-running-worker-process
+
+## Listing containers
+
+https://docs.docker.com/articles/basics/#listing-containers
 
 
-# COMMON TASKS
+### See details of the last container started
 
-## Docker getting started:
-http://www.docker.io/gettingstarted/
+* `docker ps -l`
 
 ## SEARCH
 
@@ -256,10 +499,10 @@ Search the docker index for images
 Download an existing container:
 docker pull learn/tutorial
 
-When you pull you'll see that Docker has downloaded a number of layers. In Docker all images (except the base image) are made up of several cumulative layers. 
+When you pull you'll see that Docker has downloaded a number of layers. In Docker all images (except the base image) are made up of several cumulative layers.
 
 A group of special, trusted images such as the ubuntu base image can be retrieved by just their name <repository>.
-For images from the central index, the name you specify is constructed as <username>/<repository>  
+For images from the central index, the name you specify is constructed as <username>/<repository>
 
 ## BUILD IMAGES from DOCKERFILE
 http://docs.docker.io/reference/builder/
@@ -274,29 +517,6 @@ https://groups.google.com/forum/#!topic/docker-user/3pcVXU4hgko
 docker images
 
 
-## RUN / STOP / KILL - COMMANDs
-
-You 'start' a container by running a process in it. This process is the only process run, so when it completes the container is fully stopped.
-The command docker run takes a minimum of two arguments. An image name, and the command you want to execute within that image.
-
-Docker can run a container and detach from it:    -d, --detach=false: Detached mode: Run container in the background, print new container id
-EX: docker run -d -v /home/dokku/rails-app/cache:/cache dokku/rails-app /build/builder
-
-Docker can run a container
-  -v, --volume=[]: Bind mount a volume (e.g. from the host: -v /host:/container, from docker: -v /container)
-
-## Attach/Detach
-
-Ex dokku:
-dokku-38-    id=$(docker run -d -v $CACHE_DIR:/cache $IMAGE /build/builder)
-dokku:39:    docker attach $id
-
-Interactive session:
-docker run -i -t  my_image /bin/bash
-
-To stop a container, use docker stop
-
-To kill the container, use docker kill
 
 
 ## WAIT UNTIL a CONTAINER STOPS
@@ -371,23 +591,6 @@ In the process of running docker I had accumulated several images that are not t
 ## For development
 
 * [fig.yml doc](http://www.fig.sh/yml.html)
-
-# DockerHub
-
-## Github and Bitbucket integration
-
-
-
-## Language Stacks
-
-[See the announcement on the blog](http://blog.docker.com/2014/09/docker-hub-official-repos-announcing-language-stacks/)
-
-## Stackbrew
-
-Stackbrew is a web-application that performs continuous building of the docker standard library [repo](https://github.com/docker-library/official-images/tree/master/stackbrew).
-
-http://stackoverflow.com/questions/24609139/what-are-the-differences-between-dockerfile-and-stackbrew-users-on-docker-hub
-
 
 # Deployment solutions
 
