@@ -138,7 +138,7 @@ The AWS Command Line Interface is a unified tool to manage your AWS services [re
 
 NB: some service endpoint is available only in some region(OpsWorks only us-east-1 as of march 2014).
 
-## Configuration and credentials for multiple accounts 
+## Configuration and credentials for multiple accounts
 
 ### NEW DEFINITIVE SOLUTION
 
@@ -502,3 +502,25 @@ TIPS: install json-diff if you want to check difference : `npm install -g json-d
 # AWS support for docker
 
 see _guides/docker.markdown
+
+
+
+# Route 53
+
+## Registar
+
+In order for Route 53 DNS to become active for your application you need to tell your domain registrar (GoDaddy, DNSimple, NameCheap, 1&1 etc…) to use your hosted zone’s Route 53 nameservers.
+
+## Redirect Naked/root domain to www
+
+ref: https://devcenter.heroku.com/articles/route-53
+
+Route 53 supports Alias records which use Amazon S3 static websites to dynamically resolve naked domains to their www counterparts using a 301 redirect. E.g. example.com to www.example.com.
+
+name the bucket the exact same as the hosted zone. E.e. the hosted zone example.com and a bucket named example.com.
+
+click the “properties tab” and open the “Static Website Hosting” section.
+Click “Redirect all requests to another host name”, www.example.com will be pre-filled. If it is not, enter www.example.com here.
+
+Save the redirect settings, then open your Route 53 hosted zone for example.com.
+Create a new record set, leave the name blank, select A type. Turn alias to yes and select example.com from the S3 Website Endpoints section of the Alias Target dropdown.
