@@ -347,6 +347,10 @@ Examples:
 * [Template Snippets](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/CHAP_TemplateQuickRef.html)
 * [Full Examples](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/example-templates.html)
 
+### Parameters type
+
+NOTE: use parameter type as much as possible, this will prevent most of the errors in a early stage of the creation procedure: http://blogs.aws.amazon.com/application-management/post/Tx3DV2UYG9SC38G/Using-the-New-CloudFormation-Parameter-Types
+
 
 ### Resources and Resource properties
 
@@ -436,6 +440,60 @@ Parameters that are predefined by AWS CloudFormation.
 * AWS::StackName
 * ...
 
+### Conditions
+
+http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/conditions-section-structure.html
+
+Example:
+
+~~~json
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description" : "Condition Example",
+  "Parameters" : {
+    "CreateRoleParam": {
+      "Default": "false",
+      "Description" : "Create Database",
+      "Type": "String",
+      "AllowedValues" : [ "true", "false" ],
+      "ConstraintDescription" : "must be either true or false."
+    }
+  },
+  "Conditions" : {
+    "CreateRoleCondition" : {"Fn::Equals" : [{"Ref" : "CreateRoleParam"}, "true"]}
+  },
+  "Resources": {
+    "OpsWorksInstanceRole": {
+      "Type": "AWS::IAM::Role",
+      "Condition" : "CreateRoleCondition",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "ec2.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/"
+      }
+    }
+  }
+}
+~~~
+
+To test: `aws cloudformation --profile=pt create-stack --stack-name "test2" --template-body file://prova_conditional.json --parameters ParameterKey=CreateRoleParam,ParameterValue=true --capabilities CAPABILITY_IAM`
+
+### Capabilities
+
+
 
 ### How to execute code on EC2 instances
 
@@ -445,6 +503,8 @@ Parameters that are predefined by AWS CloudFormation.
 ## AWS CLI for CloudFormation
 
 [Doc](http://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
+
+NOTE: use parameter type as much as possible, this will prevent most of the errors in a early stage of the creation procedure: http://blogs.aws.amazon.com/application-management/post/Tx3DV2UYG9SC38G/Using-the-New-CloudFormation-Parameter-Types
 
 ~~~bash
 aws cloudformation get-template --stack-name myteststack
