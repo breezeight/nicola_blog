@@ -115,6 +115,13 @@ upload certificate:
 aws iam upload-server-certificate --server-certificate-name certificate_object_name --certificate-body file://public_key_certificate_file --private-key file://privatekey.pem --certificate-chain file://certificate_chain_file
 ~~~
 
+delete certificate:
+
+
+~~~
+aws --profile=pt iam  delete-server-certificate --server-certificate-name "fungostudios.com_STAR"
+~~~
+
 ref: [aws doc server certificates](http://docs.aws.amazon.com/IAM/latest/UserGuide/ManagingServerCerts.html)
 
 ## How to Keep Your AWS Credentials on an EC2 Instance Securely
@@ -493,7 +500,10 @@ To test: `aws cloudformation --profile=pt create-stack --stack-name "test2" --te
 
 ### Capabilities
 
+### Nested Stacks
 
+* http://www.rightbrainnetworks.com/blog/cloudformation-zen-nested-stacks/
+* http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-stack.html
 
 ### How to execute code on EC2 instances
 
@@ -554,6 +564,9 @@ The best practice to avoid unexpected resources updates is use `aws cloudformati
 
 TIPS: install json-diff if you want to check difference : `npm install -g json-diff`
 
+## CloudFormation and RDS snapshots
+
+http://blog.jasonantman.com/2014/12/aws-cloudformation-and-rds-snapshots/
 
 ## CloudFormation and OpsWorks
 
