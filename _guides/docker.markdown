@@ -547,7 +547,7 @@ boot2docker ssh ip addr show dev eth1
 Ref:
 
 * [Docker doc: image definition](https://docs.docker.com/terms/image/)
-
+* [Official Image Spec](https://github.com/docker/docker/blob/master/image/spec/v1.md)
 
 * an `image` is a _read-only_ layer.
 * An image never changes.
@@ -577,6 +577,19 @@ Images are just [templates for docker containers](https://docs.docker.com/introd
 
 Docker image ids are [sensitive information](https://medium.com/@quayio/your-docker-image-ids-are-secrets-and-its-time-you-treated-them-that-way-f55e9f14c1a4) and should not be exposed to the outside world.  Treat them like passwords.
 
+### Repository
+
+A collection of tags grouped under a common prefix (the name component
+before `:`). For example, in an image tagged with the name
+`my-app:3.1.4`, `my-app` is the _Repository_
+component of the name. Acceptable values for repository name are
+implementation specific, but they SHOULD be limited to the set of
+alphanumeric characters `[a-zA-z0-9]`, and punctuation
+characters `[._-]`, however it MAY contain additional
+`/` and `:` characters for organizational
+purposes, with the last `:` character being interpreted
+dividing the repository component of the name from the tag suffic
+component.
 
 ### SEARCH images on the Docker Hub registry
 
