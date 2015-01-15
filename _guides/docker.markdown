@@ -139,8 +139,17 @@ windows and OSX it's a little bit harder and you need to use ONE classical virtu
 
 ### OSX
 
+Read here installation instruction: http://docs.docker.com/installation/mac/
+
 You can upgrade your existing Boot2Docker VM without data loss by running: `boot2docker upgrade`
 This will delete your persistent data, but will also ensure that you have the latest VirtualBox configuration.
+
+If you run a container with an exposed port: `docker run --rm -i -t -p 80:80 nginx`
+then you should be able to access that Nginx server using the IP address reported by: `$ boot2docker ip`
+
+### Filesystem resize
+
+https://docs.docker.com/articles/b2d_volume_resize/
 
 ### Mount Volumes issues on OSX
 
@@ -197,129 +206,7 @@ Beanstalk???
 
 TODO: read the make file of this project and implements it in FIG: https://github.com/ricardokirkner/django-12factor-docker
 
-
-# Docker Guides and Articles
-[CLI Commands reference](https://docs.docker.com/reference/commandline/cli)
-
-
-Here there is a list of the [official Docker
-guides](https://docs.docker.com/userguide/) and the [list of official
-Docker articles](https://docs.docker.com/articles/basics/)
-
-Here I will collect some integration to those guides and reference to
-other third parties guides.
-
-## Managing Data in Containers (Volumes)
-
-[Docekr guide: Managing Data in Containers ](https://docs.docker.com/userguide/dockervolumes/)
-
-There are two primary ways you can manage data in Docker.
-
-* Data volumes
-* Data volume containers
-
-Use-cases:
-
-* development: we can mount our source code inside the container and see our application at work as we change the source code.
-* database
-
-## Controlling containers
-
-https://docs.docker.com/articles/basics/#controlling-containers
-
-
-## Docker CLI Commands
-
-[The docker command line reference documentation](https://docs.docker.com/reference/commandline/cli/)
-
-## Run
-
-When an operator executes `docker run`, he starts a process with:
-
-* its own file system
-* its own networking
-* its own isolated process tree.
-
-
-This process is the only process run, so when it completes the container is fully stopped.
-
-[Docker RUN reference](https://docs.docker.com/reference/run/), see here
-for:
-
-* Detached vs Foreground
-  * Detached (-d)
-  * Foreground
-* Container Identification
-* Name (--name)
-* PID Equivalent
-* Network Settings
-* Clean Up (--rm)
-* Runtime Constraints on CPU and Memory
-* Runtime Privilege, Linux Capabilities, and LXC Configuration
-
-The command docker run takes a minimum of two arguments. An image name, and the command you want to execute within that image.
-
-The image defines defaults but `docker run` **can** override those default:
-
-* `CMD` (Default Command or Options)
-* `ENTRYPOINT` (Default Command to Execute at Runtime)
-* `EXPOSE` (Incoming Ports)
-* `ENV` (Environment Variables)
-* `VOLUME` (Shared Filesystems)
-* `USER`
-* `WORKDIR`
-
-Four of the Dockerfile commands **cannot** be overridden at runtime:
-
-* `FROM`
-* `MAINTAINER`
-* `RUN`
-* `ADD`
-
-#### CMD vs ENTRYPOINT
-
-http://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile
-
-`sudo docker run [OPTIONS] IMAGE[:TAG] [COMMAND] [ARG...]`
-
-The command is optional because the person who created the IMAGE may have already provided a default COMMAND using the Dockerfile CMD instruction. As the operator (the person running a container from the image), you can override that CMD instruction just by specifying a new COMMAND.
-
-If the image also specifies an ENTRYPOINT then the CMD or COMMAND get appended as arguments to the ENTRYPOINT.
-
-The ENTRYPOINT of an image is similar to a COMMAND because it specifies what executable to run when the container starts, but it is (purposely) more difficult to override. The ENTRYPOINT gives a container its default nature or behavior, so that when you set an ENTRYPOINT you can run the container as if it were that binary, complete with default options, and you can pass in more options via the COMMAND. But, sometimes an operator may want to run something else inside the container, so you can override the default ENTRYPOINT at runtime by using a string to specify the new ENTRYPOINT.
-
-
-
-### Start
-
-[Attach command Docker
-reference]()
-
-### Stop / Kill
-
-* [Stop command Docker
-    reference](https://docs.docker.com/reference/commandline/cli/#stop)
-  * send `SIGTERM` and then `SIGKILL` after a grace period.
-* [Kill command Docker
-reference](
-https://docs.docker.com/reference/commandline/cli/#kill)
-  * with kill you can send any signal.
-
-You can use this two commands to send signals to the main process of a
-container no matter if you are attached to it.
-
-### Attach
-
-[Attach command Docker
-reference](https://docs.docker.com/reference/commandline/cli/#attach)
-
-TODO: capire se alla fine questo comando è utile solo per collegarsi via
-bash al container o anceh per altro
-
-## How Docker integrates with the Boot and Root Filesystems of a guest
-
-http://docs.docker.io/en/latest/terms/filesystem/
-
+# Docker components and Services
 ## Docker Registry
 
 Docker-Registry is a simple Python app that holds docker images: https://github.com/docker/docker-registry
@@ -344,14 +231,16 @@ NOTE: the docker hub is a separate project that allow to search, share and colla
 
 Docker registry [SPEC](https://docs.docker.com/reference/api/hub_registry_spec/)
 
-### How does Image's tag works?
-A lot of command accept tags
-You can group your images together using names and tags, and then upload them to Share Images via Repositories.
-http://docs.docker.io/reference/commandline/cli/#tag
 
-### Private registry on Azure
-http://azure.microsoft.com/blog/2014/11/11/deploying-your-own-private-docker-registry-on-azure/
-http://azure.microsoft.com/blog/tag/docker/
+### Private registries
+
+* On Azure: http://azure.microsoft.com/blog/2014/11/11/deploying-your-own-private-docker-registry-on-azure/  and http://azure.microsoft.com/blog/tag/docker/
+* Core OS Enterprise Registry behind the firewall: https://coreos.com/products/enterprise-registry/plans/
+* Quay.io
+* Private registry with NGINX: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-14-04
+
+
+See "working with images" to push/pull from a private registry.
 
 ## Docker Hub
 
@@ -367,11 +256,11 @@ Docker HUB is a SaaS that provide you:
 * Integration with GitHub and BitBucket.
 * ...
 
-### Repository
+### Repositories on DockerHub
 
 REF: [Official Docker doc about repositories](http://docs.docker.com/docker-hub/repos/)
 
-What is a `repository` on Docker Hub? Essentialy it's a layer on top of a the docker registry that enables a set of collaboration and integration feature on a set of images:
+What is a `repository` on Docker Hub? Essentialy it's a layer on top of a the repository of the registry that enables a set of collaboration and integration features:
 
 * A web page at "https://registry.hub.docker.com/u/<username>/<repo_name>/" with a description and other info.
 * Stats (numer of download, etc)
@@ -447,6 +336,194 @@ For more details see this blog post: [See the announcement on the blog](http://b
 
 http://docs.docker.com/docker-hub/builds/
 
+
+
+# Basic Docker Guides and Articles
+
+References:
+
+* [CLI Commands reference](https://docs.docker.com/reference/commandline/cli)
+* list of the [official Docker guides](https://docs.docker.com/userguide/)
+* [list of official Docker articles](https://docs.docker.com/articles/basics/)
+* [Cheatsheet](https://github.com/wsargent/docker-cheat-sheet) 
+
+## Volumes: Managing Data in Containers 
+
+[Docekr guide: Managing Data in Containers ](https://docs.docker.com/userguide/dockervolumes/)
+
+Nice article about volumes: http://crosbymichael.com/advanced-docker-volumes.html
+
+So is a volume?
+
+A volume can be a directory that is located outside of the root filesystem of your container. This allows you to import this directory in other containers. You can also use volumes to mount directories from your host machine inside a container.
+
+
+There are two primary ways you can manage data in Docker.
+
+* Data volumes
+* Data volume containers
+
+### Under the hood
+
+
+### Use Cases
+
+* development: we can mount our source code inside the container and see our application at work as we change the source code.
+* database: we can use the volume as data directory for the database, this will by-pass the COW filesystem and will increase performance.
+
+
+## Working with Containers
+
+Cheatsheet:
+
+* `docker ps` - Lists containers.
+* `docker logs` - Shows us the standard output of a container.
+* `docker stop` - Stops running containers.
+
+https://docs.docker.com/articles/basics/#controlling-containers
+
+### RUN a container
+
+When an operator executes `docker run`, he starts a process with:
+
+* its own file system
+* its own networking
+* its own isolated process tree.
+
+
+This process is the only process run, so when it completes the container is fully stopped.
+
+[Docker RUN reference](https://docs.docker.com/reference/run/), see here for:
+
+* Detached vs Foreground
+  * Detached (-d)
+  * Foreground
+* Container Identification
+* Name (--name)
+* PID Equivalent
+* Network Settings
+* Clean Up (--rm)
+* Runtime Constraints on CPU and Memory
+* Runtime Privilege, Linux Capabilities, and LXC Configuration
+
+The command docker run takes a minimum of two arguments. An image name, and the command you want to execute within that image.
+
+When the image is built its `Dockerfile` defines a set of defaults
+
+* `CMD` (Default Command or Options)
+* `ENTRYPOINT` (Default Command to Execute at Runtime)
+* `EXPOSE` (Incoming Ports)
+* `ENV` (Environment Variables)
+* `VOLUME` (Shared Filesystems)
+* `USER`
+* `WORKDIR`
+
+but `docker run` **can** override those default or add new values:
+
+* `CMD` is overridden by `docker run <your cmd>`
+* `ENTRYPOINT` is overridden by  `docker run --entrypoint`
+* `EXPOSE` can be overridden by  `docker run -p` 
+* `ENV` can overridden by  `docker run -e`
+* `VOLUME` can be overridden by  `docker run -v`
+
+Four of the Dockerfile commands **cannot** be overridden at runtime:
+
+* `FROM`
+* `MAINTAINER`
+* `RUN`
+* `ADD`
+
+#### CMD vs ENTRYPOINT
+
+http://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile
+
+`sudo docker run [OPTIONS] IMAGE[:TAG] [COMMAND] [ARG...]`
+
+The command is optional because the person who created the IMAGE may have already provided a default COMMAND using the Dockerfile CMD instruction. As the operator (the person running a container from the image), you can override that CMD instruction just by specifying a new COMMAND.
+
+If the image also specifies an ENTRYPOINT then the CMD or COMMAND get appended as arguments to the ENTRYPOINT.
+
+The ENTRYPOINT of an image is similar to a COMMAND because it specifies what executable to run when the container starts, but it is (purposely) more difficult to override. The ENTRYPOINT gives a container its default nature or behavior, so that when you set an ENTRYPOINT you can run the container as if it were that binary, complete with default options, and you can pass in more options via the COMMAND. But, sometimes an operator may want to run something else inside the container, so you can override the default ENTRYPOINT at runtime by using a string to specify the new ENTRYPOINT.
+
+#### Starting a long-running worker process
+
+https://docs.docker.com/articles/basics/#starting-a-long-running-worker-process
+
+
+### Container lifecycle
+
+* [`docker create`](http://docs.docker.io/reference/commandline/cli/#create) creates a container but does not start it.
+* [`docker run`](http://docs.docker.io/reference/commandline/cli/#run) creates and starts a container in one operation.
+* [`docker start`](http://docs.docker.io/reference/commandline/cli/#start) will start it again.
+* [`docker restart`](http://docs.docker.io/reference/commandline/cli/#restart) restarts a container.
+* [`docker rm`](http://docs.docker.io/reference/commandline/cli/#rm) deletes a container.
+* [`docker attach`](http://docs.docker.io/reference/commandline/cli/#attach) will connect to a running container.
+  * TODO: capire se alla fine questo comando è utile solo per collegarsi via bash al container o anceh per altro
+* [`docker wait`](http://docs.docker.io/reference/commandline/cli/#wait) blocks until container stops.
+
+
+* [`docker kill`](http://docs.docker.io/reference/commandline/cli/#kill) sends a `SIGKILL` to a container.
+* [`docker stop`](http://docs.docker.io/reference/commandline/cli/#stop) send `SIGTERM` and then `SIGKILL` after a grace period.
+
+
+You can use this two commands to send signals to the main process of a container no matter if you are attached to it.
+
+
+If you want to run and then interact with a container, `docker start`, then spawn a shell as described in [Executing Commands](https://github.com/wsargent/docker-cheat-sheet/#executing-commands).
+
+If you want a transient container, `docker run --rm` will remove the container after it stops.
+
+If you want to run an interactive shell into an image, `docker run -t -i <myimage> <myshell>` to open a tty:
+
+* `docker run --rm -i -t ubuntu:14.04 /bin/bash`
+  * `--rm` Automatically remove the container when it exits (incompatible with -d)
+
+
+If you want to map a directory on the host to a docker container, `docker run -v $HOSTDIR:$DOCKERDIR`.  Also see [Volumes](https://github.com/wsargent/docker-cheat-sheet/#volumes).
+
+If you want to integrate a container with a [host process manager](http://docs.docker.io/use/host_integration/), start the daemon with `-r=false` then use `docker start -a`.
+
+If you want to expose container ports through the host, see the [exposing ports](https://github.com/wsargent/docker-cheat-sheet#exposing-ports) section.
+
+Restart policies on crashed docker instances are [covered here](http://container42.com/2014/09/30/docker-restart-policies/).
+
+### Info
+
+REF:  https://docs.docker.com/articles/basics/#listing-containers
+
+* [`docker ps`](http://docs.docker.io/reference/commandline/cli/#ps) shows running containers.
+* [`docker inspect`](http://docs.docker.io/reference/commandline/cli/#inspect) looks at all the info on a container (including IP address).
+* [`docker logs`](http://docs.docker.io/reference/commandline/cli/#logs) gets logs from container.
+* [`docker events`](http://docs.docker.io/reference/commandline/cli/#events) gets events from container.
+* [`docker port`](http://docs.docker.io/reference/commandline/cli/#port) shows public facing port of container.
+* [`docker top`](http://docs.docker.io/reference/commandline/cli/#top) shows running processes in container.
+* [`docker diff`](http://docs.docker.io/reference/commandline/cli/#diff) shows changed files in the container's FS.
+
+* `docker ps -a` shows running and stopped containers.
+* `docker ps -l` Show only the latest created container, include non-running ones
+
+### Import / Export
+
+There doesn't seem to be a way to use docker directly to import files into a container's filesystem.  The closest thing is to mount a host file or directory as a data volume and copy it from inside the container.
+
+* [`docker cp`](http://docs.docker.io/reference/commandline/cli/#cp) copies files or folders out of a container's filesystem.
+* [`docker export`](http://docs.docker.io/reference/commandline/cli/#export) turns container filesystem into tarball.
+
+### Executing Commands
+
+* [`docker exec`](https://docs.docker.com/reference/commandline/cli/#exec) to execute a command in container.
+
+To enter a running container, attach a new shell process to a running container called foo, use: `docker exec -it foo /bin/bash`.
+
+### Remove containers 
+
+REF: http://blog.stefanxo.com/2014/02/clean-up-after-docker/
+
+* `docker rm <container>` 
+* `docker rm $(docker ps -a -q)`  remove all stopped containers
+  * `-q, --quiet=false`           Only display numeric IDs
+
+
 ## Networking
 
 Docker neworking 
@@ -465,46 +542,110 @@ To get the VM host adpter address:
 boot2docker ssh ip addr show dev eth1
 
 
-## Execute an interactive bash
+## Working with images
 
-* `docker run --rm -i -t ubuntu:14.04 /bin/bash`
-  * `--rm` Automatically remove the container when it exits (incompatible with -d)
+Ref:
 
-## Cleanup containers and images
-
-http://blog.stefanxo.com/2014/02/clean-up-after-docker/
-
-## Starting a long-running worker process
-
-https://docs.docker.com/articles/basics/#starting-a-long-running-worker-process
-
-## Listing containers
-
-https://docs.docker.com/articles/basics/#listing-containers
+* [Docker doc: image definition](https://docs.docker.com/terms/image/)
 
 
-### See details of the last container started
+* an `image` is a _read-only_ layer.
+* An image never changes.
+* All images are identified by a 64 hexadecimal digit string (internally a 256bit value).
 
-* `docker ps -l`
 
-## SEARCH
+An image that has no parent is a `base image`.
 
-Container repo:
-https://index.docker.io/
-Usage: docker search TERM
-Search the docker index for images
 
-## PULL - COMMAND
+Images are just [templates for docker containers](https://docs.docker.com/introduction/understanding-docker/#how-does-a-docker-image-work).
 
-Download an existing container:
-docker pull learn/tutorial
+### Lifecycle
 
-When you pull you'll see that Docker has downloaded a number of layers. In Docker all images (except the base image) are made up of several cumulative layers.
+* [`docker images`](http://docs.docker.io/reference/commandline/cli/#images) shows all images.
+* [`docker import`](http://docs.docker.io/reference/commandline/cli/#import) creates an image from a tarball.
+* [`docker build`](http://docs.docker.io/reference/commandline/cli/#build) creates image from Dockerfile.
+* [`docker commit`](http://docs.docker.io/reference/commandline/cli/#commit) creates image from a container.
+* [`docker rmi`](http://docs.docker.io/reference/commandline/cli/#rmi) removes an image.
+* [`docker insert`](http://docs.docker.io/reference/commandline/cli/#insert) inserts a file from URL into image. (kind of odd, you'd think images would be immutable after create)
+* [`docker load`](http://docs.docker.io/reference/commandline/cli/#load) loads an image from a tar archive as STDIN, including images and tags (as of 0.7).
+* [`docker save`](http://docs.docker.io/reference/commandline/cli/#save) saves an image to a tar archive stream to STDOUT with all parent layers, tags & versions (as of 0.7).
 
-A group of special, trusted images such as the ubuntu base image can be retrieved by just their name <repository>.
-For images from the central index, the name you specify is constructed as <username>/<repository>
+### Info
 
-## BUILD IMAGES from DOCKERFILE
+* [`docker history`](http://docs.docker.io/reference/commandline/cli/#history) shows history of image.
+* [`docker tag`](http://docs.docker.io/reference/commandline/cli/#tag) tags an image to a name (local or registry).
+
+Docker image ids are [sensitive information](https://medium.com/@quayio/your-docker-image-ids-are-secrets-and-its-time-you-treated-them-that-way-f55e9f14c1a4) and should not be exposed to the outside world.  Treat them like passwords.
+
+
+### SEARCH images on the Docker Hub registry
+
+* search online on [Docker Hub](https://hub.docker.com/)
+* `docker search TERM` Search the Docker Hub index for images 
+
+### Image ID and Image tags
+
+A lot of command accept tags. You can group your images together using a basic name and tags. 
+
+For example postgres uses:
+
+* basic name: `postgres`
+* tags: `9.2`, `9.3`, ... , `latest`
+* ex: `postgres:9.2`
+
+From the docker point of view every tagged image is totally different from the other, the tagging system is only a naming convention.
+
+On Docker Hub every repository can host multiple tag.
+http://docs.docker.io/reference/commandline/cli/#tag
+
+
+
+**Tip** : We recommend you always use a specific tagged image, for example ubuntu:12.04. That way you always know exactly what variant of an image is being used.
+
+
+IDs are globally unique but they may be accessible via different image
+names, in different security contexts. So from a security point of view we
+can't allow direct unqualified access to a given ID. (ref: https://github.com/docker/docker/pull/7262)
+
+If you commit multiple times the same container with different tag names, it will produce images with different ids:
+
+~~~bash
+docker commit 4d0a2c78d7ab quay.io/breezeight/test:1.0
+docker commit 4d0a2c78d7ab quay.io/breezeight/test:1.1
+docker images
+REPOSITORY                          TAG                  IMAGE ID            CREATED             VIRTUAL SIZE
+quay.io/breezeight/test             1.1                  3db75a60921e        3 minutes ago       2.433 MB
+quay.io/breezeight/test             1.0                  60fa11675848        4 minutes ago       2.433 MB
+~~~
+
+### PULL - COMMIT - PUSH - TAG
+
+* `docker pull <username>/<repository>` Download an existing image from dockerhub.
+* `docker pull <YOUR-DOMAIN>:8080/test-image` download from a private repository (docker detects the domain regexp).
+
+A group of special, trusted images such as the ubuntu base image can be retrieved by just their name <repository>. For images from the central index, the name you specify is constructed as <username>/<repository>
+
+
+* `docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]` creates image from a container.
+* http://docs.docker.io/reference/commandline/cli/#commit
+
+With Docker, the process of saving the state is called committing. Commit basically saves the difference between the old image and the new state. The result is a new image. 
+
+Docker has an unusual mechanism for specifying which registry to push to. You have to tag an image with the private registry's location in order to push to it. Let's tag our image to our private registry:
+
+* `docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]` Tag an image into a repository
+* `docker tag test-image YOUR-DOMAIN:8080/test-image` 
+
+NOTE: the `tag` command is different from an image tag.
+
+Now we can push that image to our registry. This time we're using the tag name only:
+
+* `docker push <YOUR-DOMAIN>:8080/test-image`
+
+Note: you need to login before you can push, see here some example:https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-14-04
+
+### BUILD IMAGES from DOCKERFILE
+
 http://docs.docker.io/reference/builder/
 A Dockerfile is a simple text file consisting of instructions on how to build the image from a base image.
 Executing docker build will run your steps and commit them along the way, giving you a final image.
@@ -512,53 +653,17 @@ Executing docker build will run your steps and commit them along the way, giving
 Dockerfile  VS other build tools
 https://groups.google.com/forum/#!topic/docker-user/3pcVXU4hgko
 
-## LIST Docker host images
-
-docker images
-
-
-
-
-## WAIT UNTIL a CONTAINER STOPS
-http://docs.docker.io/reference/commandline/cli/#wait
-docker wait [OPTIONS] NAME
-
-MAKE MODIFICATION INTO THE CONTAINER
-Next we are going to install a simple program (ping) in the container. The image is based upon ubuntu, so you can run the command apt-get install -y ping in the container.
-Note that even though the container stops right after a command completes, the changes are not forgotten.  
-docker version 
-docker run learn/tutorial apt-get install -y ping 
-
-## CREATE IMAGES : COMMIT CHANGES (LAYERS)
-http://docs.docker.io/reference/commandline/cli/#commit
-docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
-
-With Docker, the process of saving the state is called committing. Commit basically saves the difference between the old image and the new state. The result is a new image. 
-
-## RUN FROM OTHER IMAGES
-Now you have basically setup a complete, self contained environment with the 'ping' program installed.Your image can now be run on any host that runs Docker.Lets run this image on this machine:
-
-docker run learn/ping ping google.com
-Note that normally you can use Ctrl-C to disconnect. The container will keep running.  
-
-## CHECK RUNNING IMAGES
-You now have a running container. Let's see what is going on.Using docker ps we can see a list of all running containers, and using docker inspect we can see all sorts of useful information about this container. 
-docker inspect <container id> 
-You can see the ip-address, status and other information. 
-
-## PUSH IMAGES
-TODO
-
-Move images and container without a registry (export/import  save/load)
+### Save and load an image to a tarball
 
 A Docker image and its entire history can be saved to a tarball and loaded back again. This will preserve the history of the image:
-# save the image to a tarball
-docker save <IMAGE NAME> > /home/save.tar
-# load it back
-docker load <IMAGE NAME> < /home/save.tar
 
+* `docker save <IMAGE NAME> > /home/save.tar`
+* `docker load <IMAGE NAME> < /home/save.tar`
 
-Trick to flatten the image story:
+Usecase: Move images and container without a registry (export/import  save/load)
+
+### Trick to flatten the image story
+
 ID=$(docker run -d image-name /bin/bash)
 docker export $ID | docker import – flat-image-name
 
@@ -573,18 +678,45 @@ http://blog.intercityup.com/downsizing-docker-containers/
 http://tuhrig.de/flatten-a-docker-container-or-image/
 
 
-## DOCKER DIFF
+### DOCKER DIFF
+
 TODO
 
-## REMOVE IMAGES / CONTAINERS
-sudo docker rmi <image_name>
-docker rm <container>
+### REMOVE IMAGES
 
-remove stopped containers:
-docker rm $(docker ps -a -q)
+* `docker rmi <image_name>` 
 
-In the process of running docker I had accumulated several images that are not tagged. To remove these I use this command:
- docker ps -q -a | xargs docker rm
+## Monitoring and Stats TODO
+
+* `docker info` 
+* `docker version`
+* https://docs.docker.com/articles/runmetrics/ 
+
+# Advanced Guides
+
+## How Docker integrates with the Boot and Root Filesystems of a guest
+
+http://docs.docker.io/en/latest/terms/filesystem/
+
+##  How to create a base OS image
+
+https://docs.docker.com/articles/baseimages/
+
+## Security
+
+* [Docker Secure Deployment Guidelines](https://github.com/GDSSecurity/Docker-Secure-Deployment-Guidelines)
+
+# My images
+
+## Pitchtarget
+
+The postgres image will use the default image volume, this means that it will bypass the COW filesystem and will store it in the 
+
+## Postgres
+
+https://davidamick.wordpress.com/2014/07/19/docker-postgresql-workflow/
+
+
 
 # Fig tool
 
