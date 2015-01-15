@@ -502,8 +502,10 @@ To test: `aws cloudformation --profile=pt create-stack --stack-name "test2" --te
 
 ### Nested Stacks
 
+* [AWS blog post jan 2015 about ](http://blogs.aws.amazon.com/application-management/post/Tx1T9JYQOS8AB9I/Use-Nested-Stacks-to-Create-Reusable-Templates-and-Support-Role-Specialization)
 * http://www.rightbrainnetworks.com/blog/cloudformation-zen-nested-stacks/
 * http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-stack.html
+* http://blog.mikebabineau.com/2014/05/05/cloudformation-nested-stacks-gotcha/
 
 ### How to execute code on EC2 instances
 
