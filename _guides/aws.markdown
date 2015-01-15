@@ -545,6 +545,12 @@ To read the output parameters ??? What command should I use?
 aws cloudformation validate-template --template-body file://OpsWorks.json
 ~~~
 
+### Common Errors
+
+####  Value of property SecurityGroupIds must be of type List of String
+
+If SecGroup is a param of type list you should use `"SecurityGroupIds": { "Ref" : "SecGroup" }` instead of `"SecurityGroupIds": [{ "Ref" : "SecGroup" }]`.
+
 ## CloudFormer
 
 If you already have AWS resources running, AWS provide a CloudFormer tool that lets you create a template from your existing resources. This allows you to capture and redeploy applications you already have running.
