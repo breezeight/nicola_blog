@@ -361,8 +361,26 @@ NOTE: use parameter type as much as possible, this will prevent most of the erro
 
 ### Resources and Resource properties
 
+* [AWS: definition of a resource](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html)
 * [AWS Resource Types Reference](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)
 * [Resource Property Types Reference](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-product-property-reference.html)
+
+A resource have:
+
+* `Logical ID`: The logical ID must be alphanumeric (A-Za-z0-9) and unique within the template.
+* `Resource type`
+* `Properties` 
+
+~~~
+"Resources" : {
+    "Logical ID" : {
+        "Type" : "Resource type",
+        "Properties" : {
+            Set of properties
+        }
+    }
+}
+~~~
 
 NB: Every resource must have a Type key but properties doesn't require
 it, for example this snippet has an error
@@ -511,6 +529,98 @@ To test: `aws cloudformation --profile=pt create-stack --stack-name "test2" --te
 
 * [AWS CloudFormation and Cloud-Init](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-waitcondition-article.html)
 * [CloudFormation Helper Scripts Reference](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-helper-scripts-reference.html)
+
+## Stack Policy
+
+* [AWS DOC](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/protect-stack-resources.html)
+
+`stack policies` take the form of JSON documents which prohibit or permit various operations to specific or general resources within the existing CloudFormation stack (they are not used in stack creation, only during updates).
+
+
+* After you set a stack policy, all resources in the stack are protected by default
+* You can define only one stack policy per stack
+* a single policy protects multiple resources
+
+Reference:
+
+~~~json
+{
+  "Statement" : [
+    {
+      "Effect" : "<Deny_or_Allow>",
+      "Action" : "update_actions",
+      "Principal" : "*",
+      "Resource" : "LogicalResourceId/ <resource_logical_ID> ",
+      "Condition" : {        #Optional
+        "<StringEquals_or_StringLike>" : {
+          "ResourceType" : [resource_type, ...]
+        }
+      }
+    }
+  ]
+}
+~~~
+
+
+Example `--stack-policy-body file://stack_policy.json` :
+
+~~~json 
+{
+  "Statement" : [
+    {
+      "Effect" : "Deny",
+      "Action" : "Update:*",
+      "Principal": "*",
+      "Resource" : "LogicalResourceId/DBInstance"
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : "Update:*",
+      "Principal": "*",
+      "Resource" : "*"
+    }
+  ]
+}
+~~~
+
+### Updating Protected Resources
+
+You can update protected resources by lifting their protections with a temporary policy (You must have permission to the AWS CloudFormation SetStackPolicy action).
+
+The override policy should specify an Allow for the protected resources that you want to update. The override policy is a temporary policy that is applied only during this update.
+
+* If you want to update protected resources, specify a temporary overriding stack policy during this update.
+* If you do not specify a stack policy, the current policy that is associated with the stack will be used.
+* You can specify either the stack-policy-during-update-body or the stack-policy-during-update-url parameter, but not both.
+
+`aws cloudformation update-stack --stack-policy-during-update-url file://stack_policy_tmp.json`
+
+### Revove Stack Policies
+
+you must update the stack with this policy:
+
+~~~json
+{
+  "Statement" : [
+    {
+      "Effect" : "Allow",
+      "Action" : "Update:*",
+      "Principal": "*",
+      "Resource" : "*"
+    }
+  ]
+}
+~~~
+
+## Update resources
+
+Some test:
+
+* change `DBClass` do not destroy the RDS instance, it enter into the "modifying" state. TODO: capire se i dati e gli snapshot vengono toccati.
+
+## Backup and restore RDS snapshots
+
+* [](http://blogs.aws.amazon.com/application-management/post/Tx2W35XGG70IIQI/Delete-Your-Stacks-But-Keep-Your-Data)
 
 ## AWS CLI for CloudFormation
 
