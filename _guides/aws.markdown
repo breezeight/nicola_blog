@@ -414,6 +414,16 @@ the right version is:
 
 TIPS: to escape string for json format use the irb console
 
+#### Name Type
+
+http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-name.html
+
+* For some resources, you can specify a custom name.
+* By default, AWS CloudFormation generates a unique physical ID to name a resource.
+* Resource names must be unique across all of your active stacks.
+* You can't perform an update that causes a custom-named resource to be replaced.
+
+
 ### Resource Dependency
 
 [DependsOn attribute](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-dependson.html)
@@ -593,7 +603,7 @@ The override policy should specify an Allow for the protected resources that you
 * If you do not specify a stack policy, the current policy that is associated with the stack will be used.
 * You can specify either the stack-policy-during-update-body or the stack-policy-during-update-url parameter, but not both.
 
-`aws cloudformation update-stack --stack-policy-during-update-url file://stack_policy_tmp.json`
+`aws cloudformation update-stack --stack-policy-during-update-body file://stack_policy_tmp.json`
 
 ### Revove Stack Policies
 
@@ -620,7 +630,37 @@ Some test:
 
 ## Backup and restore RDS snapshots
 
-* [](http://blogs.aws.amazon.com/application-management/post/Tx2W35XGG70IIQI/Delete-Your-Stacks-But-Keep-Your-Data)
+* [keep a snapshot when the entire stack is deleted](http://blogs.aws.amazon.com/application-management/post/Tx2W35XGG70IIQI/Delete-Your-Stacks-But-Keep-Your-Data)
+* [Back and restore](http://blog.jasonantman.com/2014/12/aws-cloudformation-and-rds-snapshots/)
+
+**WARNING** If you make a change to one of the DBInstance properties that requires a resource replacement to take effect, the RDS instance will be replaced with a new one, and **all of the data and automatic snapshots from the old one will be DELETED!!!**:
+
+**Best Practice*** if you set `DBInstanceIdentifier` you cannot do updates that require this resource to be replaced. If you wanto to avoid any possibility that the DB is replaced give it a name
+
+*  automatic snapshots (the daily ones created by RDS) are tied to the instance;
+*  if the instance is replaced by CloudFormation, you lose all automatic (backup) snapshots with it.
+
+Update a stack (built using a RDS snapshot), without losing data:
+
+~~~
+$ aws cloudformation update-stack --stack-name mystack --template-body file:///home/myuser/cloudformation_template.json --parameters ParameterKey=DBSnapshotIdentifier,UsePreviousValue=true
+~~~
+
+Load a RDS snapshot into an existing stack (that isn’t already using this snapshot):
+
+~~~
+$ aws cloudformation update-stack --stack-name mystack --template-body file:///home/myuser/cloudformation_template.json --parameters ParameterKey=DBSnapshotIdentifier,ParameterValue='my-snapshot-identifier'
+~~~
+
+Load a RDS snapshot into an existing stack again (i.e. restore from the same snapshot a second time; this one is a kludge):
+
+~~~
+$ # re-create the RDS instance with a blank DB (DBName)
+$ aws cloudformation update-stack --stack-name mystack --template-body file:///home/myuser/cloudformation_template.json --parameters ParameterKey=DBSnapshotIdentifier,ParameterValue=''
+$ # then load the snapshot again
+$ aws cloudformation update-stack --stack-name mystack --template-body file:///home/myuser/cloudformation_template.json --parameters ParameterKey=DBSnapshotIdentifier,ParameterValue='my-snapshot-identifier'
+~~~
+
 
 ## AWS CLI for CloudFormation
 
@@ -681,10 +721,6 @@ running stack may have been updated.
 The best practice to avoid unexpected resources updates is use `aws cloudformation get-template` to get the current stack and updated it.
 
 TIPS: install json-diff if you want to check difference : `npm install -g json-diff`
-
-## CloudFormation and RDS snapshots
-
-http://blog.jasonantman.com/2014/12/aws-cloudformation-and-rds-snapshots/
 
 ## CloudFormation and OpsWorks
 
