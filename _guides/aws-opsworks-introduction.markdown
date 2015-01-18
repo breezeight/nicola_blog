@@ -154,6 +154,31 @@ aws opsworks describe-apps --region us-east-1 --stack-id 3eb6cdbb-3501-4b21-be1f
 
 * Deploy http://docs.aws.amazon.com/opsworks/latest/APIReference/API_CreateDeployment.html
 
+# Auto-healing, load instances, and load balancer
+
+Ref: http://serverfault.com/questions/568384/aws-opsworks-auto-healing-load-instances-and-load-balancer
+
+Autohealing is a feature enabled on a layer basis, for which it applies to all EC2 instances that belong to one layer. The way it works is that if the AWS OpsWorks agent that is installed on every EC2 fails to establish communication with OpsWorks, that instance is terminated and replaced.
+
+http://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-autohealing.html
+
+The checks done by an Elastic Load Balancer are TCP/HTTP based, for which they test connectivity to specific ports, and the action performed by the ELB is that incoming traffic is routed to healthy instances in the layer the ELB is attached to until the unhealthy instance passes the ping test done by the ELB.
+
+http://docs.aws.amazon.com/opsworks/latest/userguide/load-balancer.html
+
+Load balanced instances are instances that are launched when load related triggers that you configure occur. For example you can configure a layer to add a new instance when incoming traffic for that layer makes online instances exceede CPU usage by 80%.
+
+Q: Will an instance that is counted as unresponsive in the load balancer get replaced by the auto healing?
+A:  if an instance is considered unhealthy by an ELB, it is not replaced.
+
+## How to test what happens when auto h
+
+This will broke the opsworks health check and the machine will be restarted:
+
+* `mv /opt/aws/opsworks /opt/aws/opsworks_old`
+* `service opsworks-agent restart` 
+
+NOTE: the opsworks-agent is monitored by monit `/etc/monit/conf.d/opsworks-agent.monitrc` which restart the service is you try to turn it off from upstart 
 
 # OpsWorks customization
 
@@ -249,7 +274,7 @@ This recipe try to deploy all appliction under the deploy key.
 
 #### MISC
 
-for each rails app of the stack 'unicorn::rails' will create opsworks_deploy_user, opsworks_deploy_dir and the unicorn script in this dir `deploy[:deploy_to]}/shared/scripts/unicorn`
+for each rails app of the stack 'unicorn::rails' will create opsworks_deploy_user, opsworks_deploy_dir and the unicorn script in this dir "deploy[:deploy_to]}/shared/scripts/unicorn"
 
 
 'deploy:default' include the recipe 'dependencies:default'
