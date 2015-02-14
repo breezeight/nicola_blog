@@ -29,7 +29,8 @@ Ember-cli components:
 * JS modules, based on ES6 Module Transpiler
   * [ES6 Module Transpiler Homepage](https://github.com/esnext/es6-module-transpiler)
   * [Internals](http://eviltrout.com/2014/05/03/getting-started-with-es6.html)
-* Asset compilation: is based on [Broccoli.js](evernote:///view/11497273/s106/1bf59758-e5f6-4a28-82c2-e63f62944f95/1bf59758-e5f6-4a28-82c2-e63f62944f95/)
+* Asset compilation: is based on [Broccoli.js]
+  * [Nicola Broccoli Guide]({{site.url}}/guides/broccoli.html)
 * Testing:
   * [QUnit](http://qunitjs.com/)
   * [Ember Testing package](http://emberjs.com/guides/testing/integration/)
