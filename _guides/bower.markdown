@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Ember.js"
+title: "Bower"
 date: 2014-04-20 09:31:50 +0200
 comments: true
-categories: ["javascript"]
+categories: ["javascript", "css"]
 ---
 
 # Contents
