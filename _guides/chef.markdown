@@ -3,7 +3,7 @@ layout: post
 title: "chef"
 date: 2014-03-16 19:59:15 +0100
 comments: true
-categories: 
+categories:
 ---
 # Contents
 {:.no_toc}
@@ -72,7 +72,7 @@ git add * .chef/knife.rb .gitignore
 Lock the ruby version, setup an isolated gemset and lock gems.
 rvm --create --versions-conf use ruby-2.1.0@your-organization
 
-append env variables into: .versions.conf 
+append env variables into: .versions.conf
 
 ~~~
 ruby=ruby-2.1.0
@@ -124,13 +124,12 @@ Chef Provisioning also works with Test Kitchen, allowing you to test
 entire clusters.
 The repository for the kitchen-metal gem is https://github.com/doubt72/kitchen-metal.
 
-#azure
-env-AZURE_SUBSCRIPTION_ID=replace
+env-AZURE_SUBSCRIPTION_ID=replace   #azure
+
 env-AZURE_MGMT_CERT=replace
 evn-AZURE_API_HOST_NAME=replace
 
-#aws
-env-AWS_ACCESS_KEY_ID=replace
+env-AWS_ACCESS_KEY_ID=replace       #aws
 env-AWS_SECRET_ACCESS_KEY=replace
 ~~~
 
@@ -150,17 +149,15 @@ source 'https://rubygems.org'
 gem 'chef', '11.10.4'
 gem 'berkshelf', '~> 2.0'
 
-#aws
-gem 'knife-ec2'
+gem 'knife-ec2'       #AWS
 
-#azure
-gem 'knife-azure'
+gem 'knife-azure'     #azure
 gem 'knife-windows
 ~~~
 
 
 bundle install
-git add Gemfile Gemfile.lock 
+git add Gemfile Gemfile.lock
 
 
 Change the .berkshelf/config.json config removing the chef key so it will read the knife config we just created
@@ -182,7 +179,7 @@ backup your pem:
 ~~~
 cd .chef
 gpg -c placecommander-validator.pem
-gpg -c opscode_pc.pem 
+gpg -c opscode_pc.pem
 mkdir -p ~/Dropbox/FunGoStudiosWallet/CHEF_ORGANIZATIONS/placecommander
 mv *.gpg ~/Dropbox/FunGoStudiosWallet/CHEF_ORGANIZATIONS/placecommander
 ~~~
@@ -239,7 +236,7 @@ Now the pc-frontend.cloudapp.net is bootstrapped:
 
 * chef-client is installed
 * a new client identity is generated using the validator.pem (see knife
-client list) 
+client list)
 * a new node is created: pc-frontend.pc-frontend.a5.internal.cloudapp.net
 
 To keep your configuration on revision controll you can download the
@@ -258,7 +255,7 @@ instead edit the local file and upload it to the server:
 vi noded/pc-frontend.pc-frontend.a5.internal.cloudapp.net.json
 git add noded/pc-frontend.pc-frontend.a5.internal.cloudapp.net.json &&
 git commit -m "..."
-knife node from file nodes/pc-frontend.pc-frontend.a5.internal.cloudapp.net.json 
+knife node from file nodes/pc-frontend.pc-frontend.a5.internal.cloudapp.net.json
 Updated Node pc-frontend.pc-frontend.a5.internal.cloudapp.net!
 ~~~
 or to update all nodes in one command:
@@ -349,7 +346,7 @@ knife role from file roles/*.json
 If you are using azure you can delete both the virtual machine and the
 chef node with one command:
 
-knife azure server delete MyNewNode --purge 
+knife azure server delete MyNewNode --purge
 
 ## Run chef client on nodes
 
@@ -362,27 +359,113 @@ knife ssh -i ~/.ssh/placecommander_azure_rsa -a "azure.public_ip" --ssh-user ubu
 ~~~
 
 
+# Chef events and execution order
+
+REF: http://frankmitchell.org/2013/02/chef-events/
+
+* Chef executes resources in the order they appear in a recipe.
+
+## Notify Resources
+
 # Attributes
-One of the most annoying concept of chef is understanding how to read
-and write attributes.
 
-An attribute is a specific detail about a node, such as an IP address, a host name, a list of loaded kernel modules, the version(s) of available programming languages that are available, and so on. An attribute may be unique to a specific node or it can be identical across every node in the organization. Attributes are most commonly set from a cookbook, by using Knife, or are retrieved by Ohai from each node prior to every chef-client run. All attributes are indexed for search on the Chef server. Good candidates for attributes include:
+Ref:
 
-any cross-platform abstraction for an application, such as the path to a configuration files
-default values for tunable settings, such as the amount of memory assigned to a process or the number of workers to spawn
-anything that may need to be persisted in node data between chef-client runs.
+* https://www.chef.io/blog/2013/02/05/chef-11-in-depth-attributes-changes/
+* https://docs.chef.io/attributes.html
+
+One of the most annoying concept of chef is understanding how to read and write attributes.
+
+An attribute is a specific detail about a node, such as an IP address, a host name, a list of loaded kernel modules, the version(s) of available programming languages that are available, and so on.An attribute may be unique to a specific node or it can be identical across every node in the organization.
+
+Attributes are most commonly set:
+
+* from a cookbook, by using Knife
+* or are retrieved by Ohai from each node prior to every chef-client run.
+
+All attributes are indexed for search on the Chef server. Good candidates for attributes include:
+
+* any cross-platform abstraction for an application, such as the path to a configuration files
+* default values for tunable settings, such as the amount of memory assigned to a process or the number of workers to spawn
+* anything that may need to be persisted in node data between chef-client runs.
 
 
-NB: In attributes files the node object can be implicit, you can use
-both `node.default["apache"]["dir"] = "/etc/apache2"` and `default["apache"]["dir"] = "/etc/apache2"`
+## Attributes API
+
+Chef 11 NOTE:
+
+* since chef 11 read and write have been separated syntactically.
+* node.default.an_attribute("value") is removed
+* order of evaluation: attributes are evaluated in order based on your run list and cookbooks’ dependencies; all of a cookbook’s dependencies appear before it in the final sort order, but the overall order is otherwise controlled by the run list
+* https://www.chef.io/blog/2013/02/05/chef-11-in-depth-attributes-changes/
 
 
-~~~yaml
+* you must specify which precedence level you want to write to when setting attributes;
+* When reading attributes, a merged view of the components is generated.merged attributes are made read-only
+
+
+* All files in the `attributes/` folder are loaded in order during the start of the Chef Client run, except the `the default.rb` will always be loaded first.
+
+
+For attributes debug, see: https://www.chef.io/blog/2013/02/05/chef-11-in-depth-attributes-changes/
+
+Attributes are provided to the chef-client from the following locations:
+
+* Nodes (collected by Ohai at the start of each chef-client run)
+* Attribute files (in cookbooks)
+* Recipes (in cookbooks)
+* Environments
+* Roles
+
+Api syntax:
+
+* In attributes files the `node` object can be implicit 
+* you can use both `node.default["apache"]["dir"] = "/etc/apache2"` and `default["apache"]["dir"] = "/etc/apache2"`
+
+
+Attributes definition can have different level of priority, based on the type. [See here for a full list of types]( https://docs.chef.io/attributes.html#attribute-types):
+
+* `default`
+* `normal`
+* `set` is an alias of `normal` 
+* override
+* ...
+
+Write api `node.<TYPE>["foo"]["bar"] = "my value"`:
+
+~~~ruby
+node.default["apache"]["dir"] = "/etc/apache2
+~~~
+
+
+Read api:
+
+~~~ruby
 file "/tmp/something" do
   ....
   content node["bluepill"]["bin"]
 end
 ~~~
+
+Attributes precedence https://docs.chef.io/attributes.html#attribute-precedence :
+
+* A default attribute located in a cookbook attribute file
+* A default attribute located in a recipe
+* A default attribute located in an environment
+* A default attribute located in role
+* A force_default attribute located in a cookbook attribute file
+* A force_default attribute located in a recipe
+* A normal attribute located in a cookbook attribute file
+* A normal attribute located in a recipe
+* An override attribute located in a cookbook attribute file
+* An override attribute located in a recipe
+* An override attribute located in a role
+* An override attribute located in an environment
+* A force_override attribute located in a cookbook attribute file
+* A force_override attribute located in a recipe
+* An automatic attribute identified by Ohai at the start of the chef-client run
+
+## Attributes in Vagrant
 
 TODO: documentare da qualche parte un parallelo tra un vagrant file con
 chef-solo e un node.json, qua c'è un bell'esempio https://gist.github.com/halcyonCorsair/3644826
@@ -455,6 +538,49 @@ see [Develop and Test Chef Cookbooks](/blog/2014/03/10/develop-and-test-chef-coo
 * [service](http://docs.opscode.com/chef/resources.html#service)
 * [remote_file](http://docs.opscode.com/resource_remote_file.html) used to transfer a file from a remote location using file specificity
 
+
+## Monit
+
+NOTE: each time a cookbook must send a notification to a service like monit, you need to make that resource available, the easiest and safest way to do it is to add it with action `:nothing`:
+
+~~~
+service 'monit' do
+  action :nothing
+end
+~~~
+
+Examples:
+
+* [Opsworks NodeJS example](https://github.com/aws/opsworks-cookbooks/blob/release-chef-11.10/deploy/definitions/opsworks_nodejs.rb#L5)
+* [Gitlab monit example](https://gitlab.com/gitlab-com/cookbook-gitlab-opsworks/blob/master/gitlab/recipes/deploy.rb)
+
+### Monit Cookbook
+
+It looks that Monit-ng is more advanced than this cookbook:
+
+* https://supermarket.chef.io/cookbooks/monit
+
+
+define :opsworks_nodejs
+
+### Monit-ng Cookbook
+
+* https://github.com/bbg-cookbooks/monit-ng
+* https://supermarket.chef.io/cookbooks/monit-ng
+
+### Implementation
+
+* use testkitchen
+* use serverspec
+* in `libraries` there is there is the `monit_check` resource implementation
+* The core of this cookbook is the `monit_check` resource.
+* A pool of recipes manage different kinds of monit installations
+* A poll of recipes offers some defaul for most common services (sshd, etc...)
+
+
+## Service
+
+
 ## Backup Cookbook
 
 This cookbook install and configure the Backup Ruby Gem. Here you can
@@ -474,18 +600,43 @@ Backup::Model.
 
 * [community page](http://community.opscode.com/cookbooks/backup)
 
+# Ruby
+## Ruby from source
 
-# Custom Resources and Provider: LWRP or pure ruby code
-Every resource and provider you use in your recipies are instance of
-classes inherited from Chef::Provider and Chef::Resource.
+* [Ruby build Cookbook](https://supermarket.chef.io/cookbooks/ruby_build) with LWRP resources, used also by gitlab
+
+## Ruby from brightbox
+
+* https://launchpad.net/~brightbox/+archive/ubuntu/ruby-ng
+* https://github.com/phusion/passenger-docker/blob/master/image/enable_repos.sh
+
+
+# Customizing Chef
+
+**BEST REFERENCE** : /Volumes/ArchiveDisk/Archive/Misc/ebook/Customizing_Chef.pdf
+
+* http://tech.yipit.com/2013/05/09/advanced-chef-writing-heavy-weight-resource-providers-hwrp/
+
+## Definition : code reuse
+
+* http://docs.chef.io/definitions.html
+* http://stackoverflow.com/questions/21120495/chaining-grouping-resources-in-chef
+
+* A definition is code that is reused across recipes, similar to a compile-time macro.
+* A definition is then used in one (or more) recipes as if it were a resource.
+* The definition will be replaced by all the resources that are specified within the definition.
+
+## Custom Resources and Provider: LWRP or HWRP
+
+Every resource and provider you use in your recipies are instance of classes inherited from Chef::Provider and Chef::Resource.
 Chef has two mechanism to create those classes:
 
 * Add ruby code in you cookbook `libraries` directory
-* Use the LWRP DSL language. Files into `providers` and `resources`
-directory are interpreted as LWRP definitions.
+* Use the LWRP DSL language. Files into `providers` and `resources` directory are interpreted as LWRP definitions.
+
+Cookbook example that mix both approaches:
 
 ~~~
-#Cookbook example that mix both approaches
 libraries/
     my_resource.rb # use pure ruby code
     my_provider.rb # use pure ruby code
@@ -500,18 +651,23 @@ metadata.rb
 
 [This post](http://tech.yipit.com/2013/05/09/advanced-chef-writing-heavy-weight-resource-providers-hwrp/) show how to implement the same resource using these two mechanasism.
 
-The final result is the same you can choose the mechanism that best fit
-your need, generally LWRP is easier to implement instead pure ruby code
-is more flexible.
+The final result is the same you can choose the mechanism that best fit your need, generally LWRP is easier to implement instead pure ruby code is more flexible.
 
 * The [LWRP naming convention](http://docs.opscode.com/lwrp_custom.html#file-locations) is described here.
 * The [LWRP resource DLS doc](http://docs.opscode.com/lwrp_custom_resource.html)
 * The [LWRP provider DLS doc](http://docs.opscode.com/lwrp_custom_provider.html)
 
 
-Other refs: 
+Other refs:
 * [Intro exampe](http://dougireton.com/blog/2012/12/31/creating-an-lwrp/)
 * [Tutorial: how to test LWRP](http://neethack.com/2013/10/understand-chef-lwrp-heavy-version/)
+
+### HWRP Cheatsheat
+
+
+* set_or_return  https://github.com/chef/chef/blob/master/lib/chef/mixin/params_validate.rb#L84
+
+
 
 
 # Tools
