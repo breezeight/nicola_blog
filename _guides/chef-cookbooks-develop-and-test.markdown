@@ -35,7 +35,7 @@ container in production.
 
 * [Sean O'Meara: Cookbook Unit and Acceptance Testing](http://vimeo.com/98938732) from minute 7:20 to 20:27 TK intro, Integration Test
 
-
+* [Test Kitchen with Docker by Mandi Walls](http://www.slideshare.net/lnxchk/testable-infrastructure-with-chef-test-kitchen-and-docker)
 
 # Getting started for monkeys: create an application cookbook
 
@@ -100,7 +100,6 @@ The new cookbook will contains
 set .kitchen.yml to:
 
 ~~~yaml
----
 driver:
   name: vagrant
 
@@ -158,6 +157,14 @@ http://dracoater.blogspot.it/2013/09/testing-chef-cookbooks-part-1-foodcritic.ht
 
 # Test Kitchen
 
+## Cheatsheet
+
+* `kitchen init`
+* `kitchen destroy`
+* `kitchen converge`
+
+## Into
+
 Test Kitchen is designed to:
 
 * automate the testing process of chef cookbooks (not infrastucture! see )
@@ -174,6 +181,7 @@ Platforms are supported by a plugin architecture.
 Resources:
 
 * [Book](http://shop.oreilly.com/product/0636920020042.do)
+* [Kitchen Getting Started](https://github.com/test-kitchen/test-kitchen/wiki/Getting-Started)
 * [Kitchen HomePage](http://kitchen.ci/)
 * [Kitchen Drivers](https://rubygems.org/search?utf8=%E2%9C%93&amp;query=kitchen-)
 * [Kitchen Busser Plugins](https://rubygems.org/search?utf8=%E2%9C%93&amp;query=busser-)
@@ -211,51 +219,52 @@ suites:
 * `suites`: This section defines what we want to test.  It includes the Chef run-list and any node attribute setups that we want run on each **Platform** above. For example, we might want to test the MySQL client cookbook code seperately from the server cookbook code for maximum isolation.
 * `instance` A Test Kitchen Instance is a pairwise combination of a Suite and a Platform as laid out in your .kitchen.yml file. Test Kitchen has auto-named your only instance by combining the Suite name ("default") and the Platform name ("ubuntu-12.04") into a form that is safe for DNS and hostname records, namely "default-ubuntu-1204".
 
+## Configuration File Structure
+
+[Configuration File Structure](https://github.com/test-kitchen/test-kitchen/wiki/Getting-Started#structure)
+
 ## Write Test: busser and the suites stanza
 
-Busser is the component that helps facilitate testing on your instances,
-it's a ruby gem.
-Busser has a plugin based architecture (busser-bats, etc).
+Busser is the component that helps facilitate testing on your instances,it's a ruby gem. Busser has a plugin based architecture (busser-bats, etc).
 
 To create a test suite you need to create:
 
-* An entry in the suite stanza of .kitchen.yml
+* An entry in the suite stanza of `.kitchen.yml`
 * One (or more? ) input file for the busser plugin you are using
 
 input file must be created following this naming convention:
 
-* test/integration: Test Kitchen will look for tests to run under this directory. It allows you to put unit or other tests in test/unit, spec, acceptance, or wherever without mixing them up. This is configurable, if desired.
-* < suite name > : This corresponds exactly to the Suite name we set up in the .kitchen.yml file. If we had a suite called "server-only", then you would put tests for the server only suite under test/integration/server-only.
-* < busser plugin > : This tells Test Kitchen (and Busser) which Busser runner plugin needs to be installed on the remote instance. For example the bats directory name will cause Busser to install busser-bats from RubyGems.
+* `test/integration`: Test Kitchen will look for tests to run under this directory. It allows you to put unit or other tests in test/unit, spec, acceptance, or wherever without mixing them up. This is configurable, if desired.
+* `< suite name >` : This corresponds exactly to the Suite name we set up in the .kitchen.yml file. If we had a suite called "server-only", then you would put tests for the server only suite under test/integration/server-only.
+* `< busser plugin >` : This tells Test Kitchen (and Busser) which Busser runner plugin needs to be installed on the remote instance. For example the bats directory name will cause Busser to install busser-bats from RubyGems.
 
-~~~bash
-mkdir test/integration/< suite name >/< busser plugin >
-~~~
+
+* To add a new test in a suite: `mkdir test/integration/< suite name >/< busser plugin >/<test file>`
+
+A suite has:
+
+* `run_list array`
+* `attributes hash` 
+
+It corresponds to the name of the directory under test/integration as shown above. It will be used in a convergence action Your test will be runned after the provising step:
 
 ~~~yaml
----
-driver:
-  name: vagrant
-
-provisioner:
-  name: chef_solo
-
-platforms:
-  - name: ubuntu-12.04
-    driver:
-      box: opscode-ubuntu-12.04
-      box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box
-
 suites:
   - name: < suite name >
     run_list:
-      - recipe[git::default]
-    attributes:
+      < array of recipes >
+    attributes: < attribute hash >
 ~~~
 
- 
+~~~yaml
+suites:
+  - name: my_suite
+    run_list:
+      - recipe[my_cookbook::default]
+      - recipe[my_cookbook::do_something]
+    attributes: { foo: "bar" }
+~~~
 
-A Suite is a Chef run_list and attribute hash that will be used in a convergence action Your test will be runned after the provising step.
 NB: also a platform in the platforms stanza can define a run_list, this
 list will be merged with the suite run_list and can affect you test!
 
@@ -367,6 +376,56 @@ depends "runit", "~> 1.4.0"
 
 ## Driver
 
+### Docker
+
+[Kitchen-Docker Homepage](https://github.com/portertech/kitchen-docker)
+
+Tips: To start from an image with chef ominubus installed you can use this custom Dockerfile:
+
+~~~
+FROM  breezeight/test-kitchen-ubuntu-14.04:chef-11.10.4
+~~~
+
+And add it to your `.kitchen.yml` :
+
+~~~yaml
+driver:
+  name: docker
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-14.04
+    driver_config:
+      platform: ubuntu
+      require_chef_omnibus: false    # Skip omnibus
+      dockerfile: Dockerfile         # use custom Dockerfile
+
+suites:
+  - name: default
+    run_list:
+      - recipe[opsworks_sidekiq::configure]
+~~~
+
+NOTE: the image param is only a param for the built-in Dockerfile, you need to add a custom Dockerfile
+
+#### Debug: inspect the container
+
+Kitchen will keep the container running so you can use: `docker exec -i -t <CONTAINER_ID> /bin/bash`
+
+#### Custom image with opsworks agent
+
+
+chef-11.10.4-opsworks
+
+get the last opsworks agent:
+
+* Login into a just booted Opsworks instance, /var/log/boot.log contains the url
+* ls /opt/aws/opsworks/releases you should see list of dir like 20141216163306_33300020141216163306
+* 33300020141216163306 is the the number for the download that you should place in the dockerfile
+
+
 ### Vagrant and Test Kitchen command reference
 
 [Here](https://github.com/test-kitchen/kitchen-vagrant) you can find the kitchen-vagrant drive documentation.
@@ -374,7 +433,7 @@ depends "runit", "~> 1.4.0"
 
 | Vagrant command                           | Test Kitchen command          |                                          |
 | ----------------------------------------- |:-----------------------------:| ----------------------------------------:|
-| `vagrant ssh [vm-name]`                   | `kitchen login INSTANCE`      | Log in to one machine                    |
+| `vagrant ssh [vm-name]`                   | `kitchen login INSTANCE`      | Log in to one machine (password:kitchen) |
 | `vagrant destroy [vm-name]`               | `kitchen destroy INSTANCE`    | Destroy machine                          |
 | `vagrant up [vm-name]` --no-provision     | `kitchen converge INSTANCE`   | Create a machine without provisioning it |
 
@@ -430,6 +489,13 @@ provisioner: chef_zero
 * [cookbook chef-server](https://github.com/opscode-cookbooks/chef-server)
 * [cookbook runit](https://github.com/hw-cookbooks/runit)
 * [httpd](https://github.com/opscode-cookbooks/httpd)
+
+
+## OpsWorks Cookbook development
+
+http://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-opsworks-mock.html
+
+`ls -l1 |xargs -I % echo cookbook \'%\', path: \'../opsworks-cookbooks/%\' >> /tmp/echo1`
 
 # Leibniz
 Test Kitchen was *not* designed for acceptance testing of infrastructure stacks.
@@ -538,7 +604,7 @@ Tasks: TOP => db:migrate => environment
  
 Resource Declaration:
 ---------------------
-# In /opt/aws/opsworks/releases/20140306112110_221/cookbooks/deploy/definitions/opsworks_deploy.rb
+In /opt/aws/opsworks/releases/20140306112110_221/cookbooks/deploy/definitions/opsworks_deploy.rb
  
 65:     deploy deploy[:deploy_to] do
 66:       provider Chef::Provider::Deploy.const_get(deploy[:chef_provider])
@@ -549,7 +615,7 @@ Resource Declaration:
 
 Compiled Resource:
 ------------------
-# Declared in /opt/aws/opsworks/releases/20140306112110_221/cookbooks/deploy/definitions/opsworks_deploy.rb:65:in `from_file'
+Declared in /opt/aws/opsworks/releases/20140306112110_221/cookbooks/deploy/definitions/opsworks_deploy.rb:65:in `from_file'
  
 deploy("/srv/www/addictive_api") do
 repository_cache "cached-copy"
