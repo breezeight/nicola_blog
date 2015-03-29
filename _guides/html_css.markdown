@@ -584,6 +584,65 @@ Refs:
 # BootStrap
 
 * CSS: http://getbootstrap.com/css/
+* list of tutorials: http://www.quora.com/Are-there-any-good-tutorials-on-using-Twitter-Bootstrap
+* [Github Repo](https://github.com/twbs/bootstrap)
+* Full Tutorial guide: http://www.w3resource.com/twitter-bootstrap/CSS-overview.php
+
+## Workflows to work with Bootstrap
+
+### Use Boostrap with Less 
+
+**THIS IS MY PREFERRED WORKFLOW**
+
+REF: http://www.helloerik.com/bootstrap-3-less-workflow-tutorial
+
+Just create a less file that only imports other Less files:
+
+In this example we call it site.less:
+
+~~~
+@import "bootstrap/bootstrap.less";
+@import "font-awesome/font-awesome.less";
+ 
+@import "myproject-variables.less";
+@import "myproject-mixins.less";
+@import "myproject-nav.less";
+@import "myproject-header.less";
+@import "myproject-footer.less";
+~~~
+
+It almost always goes the Bootstrap folder first, then font-awesome, then my own variables and mixins.
+
+* When importing my own files, variables are first, so they can be used on anything below.
+* Even though this file is named the same as the Bootstrap variables.less file, it won’t overwrite anything unless you specifically name the variable the same. 
+* You can override existing Bootstrap variables with your own, or just start creating what you need. 
+
+#### EX: Middleman + Less + Bootstrap
+
+I used it also with middleman which use sprocket, just add:
+
+* `gem "sprockets-less"` : merge the sprocket dependency graph with the less `@import` dependency graph. This allow you to use livereload with less files and to use mixins. Sprocket will now detect the less file extention and use the proper compiler.
+* `gem "less"` : less compiler to compile less files
+
+Ask sprocket to require your `source/stylesheets/all.css`
+
+~~~
+/*
+*= require site
+*/
+~~~
+
+### Use Bootstrap dist
+
+pro: 
+
+* super fast implementation (just import bootstrap.css, no dependencies for less)
+
+cons:
+
+* cannot override less variables
+* cannot use bootstrap mixin
+
 
 ## Mobile
 
