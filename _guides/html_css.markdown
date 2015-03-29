@@ -653,21 +653,440 @@ cons:
 
 Bootstrap sets basic global display, typography, and link styles. They can be found within scaffolding.less
 
-## Container
-
-* Fixed
-* Fluid full width
 
 ## Grid System
 
 * http://www.helloerik.com/the-subtle-magic-behind-why-the-bootstrap-3-grid-works
-* http://getbootstrap.com/css/#grid
+* [Bootstrap doc](http://getbootstrap.com/css/#grid)
 * https://scotch.io/tutorials/understanding-the-bootstrap-3-grid-system
+* [Simple tutorial](http://blog.jetstrap.com/2013/08/bootstrap-3-grids-explained/)
 
+
+
+TODO:
+
+* gutter (grondaia)
+* default VS fluid layout
+* breakpoint media query
+* Offsetting columns http://getbootstrap.com/css/#grid-offsetting
+
+### The grid system is mobile First
+
+The grid is made of rows and columns classes. 
+
+"Mobile First", meaning that almost everything has been designed to start from a lower screen size and scale up. Columns classes are designed to cascades up from mobile devices.
+
+
+There are four family of classes, each defines a Grid Systems.
+The width of the viewport is the parameter that trigger the switch from a grid to another ( it uses media queries, see [internals]({{site.url}}/guides/html_css.html#internals)).
+
+The default widths that set the frontiers between one grid and another are the follows:
+
+* Extra small devices - Phones `(< 768px)`
+* Small devices - Tablets `(>= 768px)`
+* Medium devices - Desktops `(>= 992px)`
+* Large devices - Desktops `(>= 1200px)`
+
+All these widths are less variable that can be customized.
+
+
+Each of the different supported viewports have a particular class prefix to address it, as follows:
+
+* `col-xs-*` - Extra small devices
+* `col-sm-*` - Small devices
+* `col-md-*` - Medium devices
+* `col-lg-*` - Large devices
+
+Each of this family provide a set of 
+
+To make use of the Grid System you'd need a container element, with a class "container", and inside a second container with a class "row"
+
+
+
+### Internals
+
+#### Mobile first and media queries
+
+Bootstrap 3 is a mobile-first front-end framework. I’ve included the correct order for the Media Queries below, but I’ve also included at the bottom of them the non-mobile first breakpoints in case some people aren’t used to the mobile-first methodology since technically both will work.
+
+To understand how Bootstrap uses media query remember that :
+
+* `Min-Width` media query: Refers to everything greater than or equal to the amount given.
+* `Max-Width` media query: Refers to everything less than or equal to the amount given.
+* The order in which stylesheet properties can determine which is applied: 
+  * if two declarations have the same weight, origin and specificity, the latter specified wins.
+  * Declarations in imported style sheets are considered to be before any declarations in the style sheet itself.
+  * Ref: [W3C: cascading order](http://www.w3.org/TR/2011/REC-CSS2-20110607/cascade.html#cascading-order)
+
+Responsive classes are declared:
+
+* from the smaller class to the larger class 
+* guarded from media queries that are true only on devices greater than the grid break point
+
+For example each column class redefine the 
+
+~~~
+/*==========  Mobile First Method  ==========*/
+ 
+	/* Custom, iPhone Retina */
+	@media only screen and (min-width : 320px){
+    ....  class declaration .....
+	}
+ 
+	/* Extra Small Devices, Phones */
+	@media only screen and (min-width : 480px){
+    ....  class declaration ..... 
+	}
+ 
+	/* Small Devices, Tablets */
+	@media only screen and (min-width : 768px){
+    ....  class declaration ..... 
+	}
+ 
+	/* Medium Devices, Desktops */
+	@media only screen and (min-width : 992px){
+    ....  class declaration ..... 
+	}
+ 
+	/* Large Devices, Wide Screens */
+	@media only screen and (min-width : 1200px){
+    ....  class declaration .....
+	}
+
+
+ 
+/*==========  Non-Mobile First Method  ==========*/
+ 
+	/* Large Devices, Wide Screens */
+	@media only screen and (max-width : 1200px){
+    ....  class declaration .....
+	}
+ 
+	/* Medium Devices, Desktops */
+	@media only screen and (max-width : 992px){
+    ....  class declaration .....
+	}
+ 
+	/* Small Devices, Tablets */
+	@media only screen and (max-width : 768px){
+    ....  class declaration .....
+	}
+ 
+	/* Extra Small Devices, Phones */
+	@media only screen and (max-width : 480px){
+    ....  class declaration .....
+	}
+ 
+	/* Custom, iPhone Retina */
+	@media only screen and (max-width : 320px){
+    ....  class declaration .....
+	}
+~~~
+
+#### Container, rows and cols
+
+`grid.less` defines the `.container*` classes, that MUST contains all the grid system classes:
+
+* elements of the `.container` contain element of class `.row`
+* elements of class `.row` contain elements of class `.col-*-*`
+* elements of class  `.col-*-*` may contain other element of class `.row`  
+
+
+Bootstrap uses the following media queries to create the key breakpoints in the grid system:
+
+~~~
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) { ... }
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) { ... }
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) { ... }
+~~~
+
+
+The `.container` class has a fixed width that depends on the viewport size, this relationship is implemented using media queries. Because `@screen-sm-min` > ` @screen-md-min` > ` @screen-lg-min` on larger viewport the latest width value will override the previous one:
+
+~~~
+.container {
+  .container-fixed();
+
+  @media (min-width: @screen-sm-min) { // this query is true only if width > @screen-sm-min
+    width: @container-sm;
+  }
+  @media (min-width: @screen-md-min) { // 
+    width: @container-md;
+  }
+  @media (min-width: @screen-lg-min) {
+    width: @container-lg;               
+  }
+}
+
+.container-fixed(@gutter: @grid-gutter-width) {
+  margin-right: auto;            //auto margin to center the container horizontally
+  margin-left: auto;             
+  padding-left:  (@gutter / 2);  // padding to compensate the row negative margin
+  padding-right: (@gutter / 2);
+  &:extend(.clearfix all);
+}
+~~~
+
+The `.row` class is quite simple, it add only a negative margin:
+
+~~~
+.row {
+  .make-row();
+}
+
+// Creates a wrapper for a series of columns
+.make-row(@gutter: @grid-gutter-width) {
+  margin-left:  (@gutter / -2);
+  margin-right: (@gutter / -2);
+  &:extend(.clearfix all);
+}
+~~~
+
+
+Col-*-* classes are defined here by two functions `.make-grid-columns()` and `.make-grid(...);` :
+
+~~~
+
+// Common styles for small and large grid columns
+.make-grid-columns();
+
+// Columns, offsets, pushes, and pulls for extra small devices
+.make-grid(xs);
+
+
+//small device range
+@media (min-width: @screen-sm-min) {
+  .make-grid(sm);
+}
+// desktop device range.
+@media (min-width: @screen-md-min) {
+  .make-grid(md);
+}
+//large desktop device range.
+@media (min-width: @screen-lg-min) {
+  .make-grid(lg);
+}
+~~~
+
+
+`.make-grid-columns()` doesn't use media queries and defines all the properties available also below the breakpoint of each grid. Note that the `float` property is not set here so below the breakpoint all col classes behave like normal blocks and will stack one below the other. 
+
+
+Below there is a self contained version of `.make-grid-columns()` that you can compile for test:
+
+~~~
+@grid-columns: 12;      //added to be selfcontained
+@grid-gutter-width: 15; //added to be selfcontained
+
+.make-grid-columns() {
+  // Common styles for all sizes of grid columns, widths 1-12
+  .col(@index) { // initial
+    @item: ~".col-xs-@{index}, .col-sm-@{index}, .col-md-@{index}, .col-lg-@{index}";
+    .col((@index + 1), @item);
+  }
+  .col(@index, @list) when (@index =< @grid-columns) { // general; "=<" isn't a typo
+    @item: ~".col-xs-@{index}, .col-sm-@{index}, .col-md-@{index}, .col-lg-@{index}";
+    .col((@index + 1), ~"@{list}, @{item}");
+  }
+  .col(@index, @list) when (@index > @grid-columns) { // terminal
+    @{list} {
+      position: relative;
+      // Prevent columns from collapsing when empty
+      min-height: 1px;
+      // Inner gutter via padding
+      padding-left:  (@grid-gutter-width / 2);
+      padding-right: (@grid-gutter-width / 2);
+    }
+  }
+  .col(1); // kickstart it
+}
+
+.make-grid-columns(); //added to be selfcontained
+
+~~~
+
+compiled will output all the common properties for column classes:
+
+~~~
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+  position: relative;
+  min-height: 1px;
+  padding-left: 7.5;
+  padding-right: 7.5;
+}
+~~~
+
+
+Then the `.make-grid(...)` function will compile each grid system, example `.make-grid(xs)`:
+
+~~~
+.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+  float: left;
+}
+.col-xs-12 {
+  width: 100%;
+}
+.col-xs-11 {
+  width: 91.66666667%;
+}
+.col-xs-10 {
+  width: 83.33333333%;
+}
+....
+.col-xs-1 {
+  width: 8.33333333%;
+}
+
+
+.col-xs-pull-12 {
+  right: 100%;
+}
+.col-xs-pull-11 {
+  right: 91.66666667%;
+}
+....
+.col-xs-pull-1 {
+  right: 8.33333333%;
+}
+.col-xs-pull-0 {
+  right: auto;
+}
+
+
+.col-xs-push-12 {
+  left: 100%;
+}
+.col-xs-push-11 {
+  left: 91.66666667%;
+}
+....
+.col-xs-push-1 {
+  left: 8.33333333%;
+}
+.col-xs-push-0 {
+  left: auto;
+}
+
+
+.col-xs-offset-12 {
+  margin-left: 100%;
+}
+.col-xs-offset-11 {
+  margin-left: 91.66666667%;
+}
+....
+.col-xs-offset-1 {
+  margin-left: 8.33333333%;
+}
+.col-xs-offset-0 {
+  margin-left: 0%;
+}
+
+~~~
+
+
+Note that for col class `width` is a percentage calculated as `@index / @grid-columns`:
+~~~
+  .col-@{class}-@{index} {
+    width: percentage((@index / @grid-columns));
+  }
+~~~
+
+A row will always have space for the maximum number of colums (`@grid-columns`). For example, if `@grid-columns=12`, and you put a `.col-xs-10` and a `.col-xs-2` in a row the total width will be `83.33333333 + 16.666667 = (10/12 + 2/12) = 100%`
+
+
+Pull and Push classes use `auto` for the index 0 and `left` or `right` for the the other indexes:
+
+* `.col-@{class}-pull-0` and `.col-@{class}-push-0` will reset to auto (which means no offset)
+* `right` and `left` will offset the floated div from the its computed position [see here](http://stackoverflow.com/questions/2635426/css-position-relative-and-float-left) 
+
+~~~
+  .col-@{class}-pull-@{index} {
+    right: percentage((@index / @grid-columns));
+  }
+
+.calc-grid-column(@index, @class, @type) when (@type = push) and (@index > 0) {
+  .col-@{class}-push-@{index} {
+    left: percentage((@index / @grid-columns));
+  }
+}
+~~~
+
+Offset classes use a `margin-left` in percentage:
+
+~~~
+  .col-@{class}-offset-@{index} {
+    margin-left: percentage((@index / @grid-columns));
+  }
+~~~
+
+
+
+
+
+
+### Container
+
+* `.container` : Fixed width
+* `.container-fluid` : Fluid full width
+
+### Column classes
+
+* xs classes target mobile devices
+* sm targets tablets
+* md targets laptops and smaller desktop screens
+* lg targets large desktop screens.
+
+
+The best way to think about the new grid classes is that they work from mobile up, rather than from desktop down: For example, using .col-lg-4 means your grid will stay stacked on mobile, tablet, and small desktop screens. Only until the large desktop breakpoint is reached will the grid go horizontal.
+
+### Column Wrapping: more than 12 columns
+
+Column wrapping: http://getbootstrap.com/css/#grid-example-wrapping
+
+### Nesting grids
+
+One nice side effect of the 100% fluid grid on Bootstrap 3 is that nesting grids is now incredibly easy.
+
+With the new grid (and the old fluid one), you just use the same grid column sizes, and think of percentages of the parent column. For example, .col-xs-6 inside of a .col-xs-6 is just 50% of that 50% column. Much more intuitive!
+
+
+### Offset
+
+* [doc](http://getbootstrap.com/css/#grid-offsetting)
+
+The .col-xs=* classes don’t support offsets, but they are easily replicated by using an empty cell.
+
+To use offsets on large displays, use the .col-md-offset-* classes.
+
+### Column Ordering : push/pull
+
+http://getbootstrap.com/css/#grid-column-ordering
+
+* `push` classes use the `right` property to offset a column, you can reset this property to the defaul `auto` value using the `push-0` class.
+* viceversa the `pull` class uses `left` 
+
+Use case: the 500x500 pixel imagese in this [example](http://getbootstrap.com/examples/carousel/) are positioned using push and pull classes.
+
+### Grid examples
+
+4 column layout on desktop, 2 on tablet, 1 on mobile : http://blog.jetstrap.com/2013/08/bootstrap-3-grids-explained/
+
+## How Bootstrap use less to calculate column class
+
+http://www.helloerik.com/bootstrap-3-less-workflow-tutorial
 
 ## Components
 
-### Nav
+### Navs
 
 Doc:
 
@@ -675,6 +1094,10 @@ Doc:
 * http://getbootstrap.com/components/#navbar
 * [what's the difference between using NAV and DIV around Bootstrap 3 navbars](http://stackoverflow.com/questions/18628097/whats-the-difference-between-using-nav-and-div-around-bootstrap-3-navbars)
 
+With bootstrap you can create:
+
+* static navbars with simple navigation
+* navbars with dropdown menus and search boxes.
 
 What is the difference between the navbar and nav pills?
 
@@ -682,3 +1105,30 @@ What is the difference between the navbar and nav pills?
 * Basically, navbar is unique and provides links to main parts of your site. Nav pills may provide internal links to your page anchors...
 * But this is your decision anyway, depending on your preferences for menu rendering.
 * http://stackoverflow.com/questions/14022135/in-twitter-bootstrap-what-is-the-difference-between-the-navbar-and-nav-pills
+
+### Navbar
+
+
+### TODO
+
+Capire meglio:
+
+* classes:  navbar navbar-default, "navbar-header", "navbar-brand"
+* classes: collapse navbar-collapse
+* attributes: data-target, data-toggle
+
+## Custom Bootstrap Theme
+
+* [Tutorial](https://divshot.com/blog/open-source/bootstrap3/themestrap-lightweight-theme-kit-for-bootstrap-3/)
+
+## Bootstrap Themes
+
+Worthy:
+
+* https://github.com/Html-Coder/Worthy
+* http://htmlcoder.me/preview/worthy/v.1.0/
+* http://bootstrapzero.com/bootstrap-template/worthy
+
+# Responsive Designs Gallery
+
+* http://mediaqueri.es/
