@@ -388,6 +388,12 @@ Note: If two positioned elements overlap without a z-index specified, the elemen
 * NICE ARTICLE with practical usecases: http://designshack.net/articles/css/everything-you-never-knew-about-css-floats/
 * Another nice article with a lot of examples: http://www.richinstyle.com/proposals/floatproposal.html
 
+~~~
+.sidebar {
+  float: right;			
+}
+~~~
+
 Why does floats exists? 
 Floats are used to create the appearance of elements flowing around one another. They can be used in three main ways:
 
@@ -509,18 +515,71 @@ The best box-sizing value to use is border-box:
 
 The only drawback to using the box-sizing property is that as part of the CSS3 specification, it isn’t supported in every browser; it especially lacks support in older browsers. Fortunately this is becoming less and less relevant as new browsers are released. Chances are we’re safe to use the box-sizing property, but should we notice any issues, it’s worth looking into which browser those issues are occurring with
 
-## Common CSS properties
+### Common CSS properties
 
 * http://learn.shayhowe.com/html-css/getting-to-know-css/#css-property-values
   * colors
   * lenght (pixels, Percentages, ... )
+
+#### Margin
+
+https://css-tricks.com/almanac/properties/m/margin/
+
+`margin: <margin-top> || <margin-right> || <margin-bottom> || <margin-left>`
+
+~~~
+  margin-top: 20px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+~~~
+
+`auto` is handy for horizontal centering.
+
+### CSS media queries
+
+* https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Media_queries
+
+When a media query is true, the corresponding style sheet or style rules are applied
+
+In this example the style sheet is applied only if the viewport is less than 800px 
+
+~~~html
+<!-- CSS media query on a link element -->
+<link rel="stylesheet" media="(max-width: 800px)" href="example.css" />
+~~~
+
+
+
 
 
 ## Browser-Specific Properties & Values: moz, ms, webkit
 
 As CSS3 was introduced, browsers gradually began to support different properties and values, including the box-sizing property, by way of vendor prefixes. As parts of the CSS3 specification are finalized and new browser versions are released, these vendor prefixes become less and less relevant. As time goes on, vendor prefixes are unlikely to be a problem; however, they still provide support for some of the older browsers that leveraged them. We may run across them from time to time, and we may even want to use them should we wish to support older browsers.
 
+# Advanced CSS
 
+## Clearfix Trick
+
+The Problem: When a float is contained within a container box that has a visible border or background, that float does not automatically force the container's bottom edge down as the float is made taller. Instead the float is ignored by the container and will hang down out of the container bottom like a flag. 
+
+[Example](http://themergency.com/clearfix/clearfix_demo_1_none.htm)
+
+There are a lot of different solution to this issue, bootstrap 3.x uses the one called "Micro clearfix hack" described [here](http://nicolasgallagher.com/micro-clearfix-hack/)
+
+* http://perishablepress.com/lessons-learned-concerning-the-clearfix-css-hack/
+* https://css-tricks.com/all-about-floats/
+
+Solution: using the `:after` pseudo-selector 
+
+Refs: 
+
+* https://developer.mozilla.org/en-US/docs/Web/CSS/::after
+
+
+## Tooltip using pure CSS
+
+* https://developer.mozilla.org/en-US/docs/Web/CSS/::after#Tooltips
 
 # BootStrap
 
