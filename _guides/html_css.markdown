@@ -21,8 +21,6 @@ categories: ["javascript", "html", "css"]
 html tags:
 
 * button
-*
-*
 
 html attributes:
 
@@ -76,17 +74,31 @@ Within CSS, all styles cascade from the top of a style sheet to the bottom, allo
 
 Html example for basic selector types `<p class="key" id="principal">`:
 
-* tag selector `p {}`
+* tag selector `p {}`: select all p elements
+* multi tag selecto `div, p {}` : Selects all div and p elements
 * class selector `.key {}`
 * id selector `#principal {}`
 * pseudo class selector: `selector:pseudo-class`
+* ... 
+
+Attributes selectors:
+
+* `[attribute]` Selects all elements with the specified attribute
+* `[attribute=value]` Selects all elements where the specified attribute is equal to value
+* ...
 
 Selector based on relationships:
 
 * `A E` : Any E element that is a descendant of an A element (that is: a child, or a child of a child, etc.)
+* `A, E` : will apply to any element that matches either of the selectors, each selector is separated by comma `,`
 * `A > E` : Any E element that is a child of an A element
 * `E:first-child` : Any E element that is the first child of its parent
 * `A + E` : Any E element that is the next sibling of a B element (that is: the next child of the same parent)
+* ....
+
+
+* more selector : http://www.cheetyr.com/css-selectors
+
 
 relationship rules:
 
@@ -103,11 +115,12 @@ Spaces Within Selectors:
 
 More about selectors:
 
+* http://www.cheetyr.com/css-selectors
 * https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_started/Selectors
 * [Combining selectors](http://learn.shayhowe.com/html-css/getting-to-know-css/#combining-selectors)
 * [w3schools CSS selector](http://www.w3schools.com/cssref/css_selectors.asp)
 
-## Selector Specificity (or selector weight)
+### Selector Specificity (or selector weight)
 
 * https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
 * http://stackoverflow.com/questions/12743458/efficient-algorithm-to-compare-specificity-of-css-rules
@@ -150,6 +163,13 @@ Comparison algorithm:
 When an !important rule is used on a style declaration, this declaration overrides any other declaration made in the CSS, wherever it is in the declaration list. Although, !important has nothing to do with specificity.  Using !important is bad practice because it makes debugging hard since you break the natural cascading in your stylesheets.
 
 https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity#The_!important_exception
+
+### Selector examples
+
+* `.container div` Select any div element that is a child of any element with a class name of "container" [exmaple](https://css-tricks.com/whats-the-difference/)
+
+* `div.container` Select any div element that has a class name of "container" [exmaple](https://css-tricks.com/whats-the-difference/)
+
 
 ## Replaced and non replaced elements 
 
