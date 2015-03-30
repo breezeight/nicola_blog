@@ -36,7 +36,7 @@ bootstrap classes:
 
 The two languages—HTML and CSS—are independent of one another and should remain that way.
 
-## Basic Html  Intro
+## Basic Html Intro
 
 http://learn.shayhowe.com/html-css/building-your-first-web-page/
 
@@ -194,7 +194,35 @@ CSS handles replaced elements specifically in some cases, like when calculating 
 
 Note that some replaced elements, but not all, have intrinsic dimensions or a defined baseline, which is used by some CSS properties like vertical-align.
 
-## Box Model
+## CSS Visual Formatting Model
+
+Ref:
+
+* [W3C CSS 2.1](http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html)
+* [W3C CSS 3](CSS level 3) **TODO** rileggerlo bene 
+  * This module describes the basic types of boxes, with their padding and margin, and the normal “flow” (i.e., the sequence of blocks of text with margins in-between).
+  * It also defines “floating” boxes, but other kinds of layout, such as tables, absolute positioning, ruby annotations, grid layouts, columns and numbered pages, are described by other modules.
+  * Also, the layout of text inside each line (including the handling of left-to-right and right-to-left scripts) is defined elsewhere.
+* [MDN](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Visual_formatting_model)
+
+
+The **CSS visual formatting model** is the algorithm used to process a document and display it on a visual media.
+
+In the visual formatting model, each element in the document tree generates zero or more boxes according to the box model. The layout of these boxes is governed by:
+
+* its box dimensions: precisely defined or constrained, or not;
+* its box type: an inline, inline-level, atomic inline-level, block box;
+* the positioning scheme: in the normal flow, a float or absolute positioning;
+* the other elements in the tree: its children and neighbours;
+* the viewport size and position;
+* intrinsic dimensions of contained images;
+* other external information.
+
+A box is rendered relatively to the edge of its containing block. Usually a box establishes the containing block for its descendants. Note that a box is not constrained by its containing block; when its layout goes outside it, it is said to `overflow`.
+
+
+
+### Box Model
 
 Refs: 
 
@@ -205,6 +233,11 @@ According to the box model concept:
 
 * **every element** on a page is a rectangular box
 * and may have width, height, padding, borders, and margins.
+
+Box generation is the part of the CSS visual formatting model that creates boxes from the document's elements. Generated boxes are of different types, which will affect how the visual formatting is done.
+
+The `type of the box` generated depends of the value of the `display` CSS property.
+
 
 `Total width and height` of an element can be calculated using the following formula: 
 
@@ -231,57 +264,32 @@ The [Normal Flow](http://webdesign.about.com/od/cssglossary/g/bldefnormalflow.ht
 * determines how elements are displayed.
 *  Every element has a default display property value.
 *  There are quite a few values for the display property, but the most common are
-  *  `block`, 
-  *  `inline`, 
-  *  `inline-block`, 
-  *  `none` : hide an element and render the page as if that element doesn’t exist
-
-* Static positioning
-* Float positioning: http://css.maxdesign.com.au/floatutorial/introduction.htm
-  * Float examples http://css.maxdesign.com.au/floatutorial/introduction.htm
-  * You should always set a width on floated items (except if applied directly to an image - which has implicit width)
-  * CSS and Float: http://css.maxdesign.com.au/floatutorial/
-
-## CSS Visual Formatting Model
-
-Ref:
-
-* [W3C CSS 2.1](http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html)
-* [W3C CSS 3](CSS level 3) **TODO** rileggerlo bene 
-  * This module describes the basic types of boxes, with their padding and margin, and the normal “flow” (i.e., the sequence of blocks of text with margins in-between).
-  * It also defines “floating” boxes, but other kinds of layout, such as tables, absolute positioning, ruby annotations, grid layouts, columns and numbered pages, are described by other modules.
-  * Also, the layout of text inside each line (including the handling of left-to-right and right-to-left scripts) is defined elsewhere.
-* [MDN](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Visual_formatting_model)
-
-The **CSS visual formatting model** is the algorithm used to process a document and display it on a visual media.
-
-In the visual formatting model, each element in the document tree generates zero or more boxes according to the box model. The layout of these boxes is governed by:
-
-* box `dimensions` and `type`.
-* positioning scheme (normal flow, float, and absolute positioning).
-* relationships between elements in the document tree.
-* external information (e.g., viewport size, intrinsic dimensions of images, etc.).
+  *  `block`: This value causes an element to generate a block box.
+  *  `inline`: This value causes an element to generate one or more inline boxes.
+  *  `inline-block`: This value causes an element to generate an inline-level block container. The inside of an inline-block is formatted as a block box, and the element itself is formatted as an atomic inline-level box.
+  *  `none` : hide an element and render the page as if that element doesn’t exist.  Descendant elements do not generate any boxes either; the element and its content are removed from the formatting structure entirely. This behavior cannot be overridden by setting the 'display' property on the descendants.
+  *  `list-item`: This value causes an element (e.g., LI in HTML) to generate a principal block box and a marker box.
+  *  `table, inline-table, table-row-group, table-column, table-column-group, table-header-group, table-footer-group, table-row, table-cell, and table-caption`: These values cause an element to behave like a table element
 
 ### Controlling box generation
+
+Ref: http://www.w3.org/TR/CSS2/visuren.html#block-boxes
 
 Box's type affects its behavior in the visual formatting model.
 
 The `display` property specifies a box's type.
+
 The following values of the 'display' property make an element block-level:
 
-* `block` : This value causes an element to generate a block box.
-* `list-item` : This value causes an element (e.g., LI in HTML) to generate a principal block box and a marker box.
-*
-* `table`, inline-table, table-row-group, table-column, table-column-group, table-header-group, table-footer-group, table-row, table-cell, and table-caption : These values cause an element to behave like a table element
-* `inline-block` : This value causes an element to generate an inline-level block container. The inside of an inline-block is formatted as a block box, and the element itself is formatted as an atomic inline-level box.
-* `inline` : This value causes an element to generate one or more inline boxes.
-* `none` : This value causes an element to not appear in the formatting structure (i.e., in visual media the element generates no boxes and has no effect on layout). Descendant elements do not generate any boxes either; the element and its content are removed from the formatting structure entirely. This behavior cannot be overridden by setting the 'display' property on the descendants.
+* `block`
+* `list-item` 
+* `table`
 
 `Block-level boxes` are boxes that participate in a block formatting context.
 
 Each block-level element generates:
 
-* a principal block-level box that contains descendant boxes and generated content and is also the box involved in any positioning scheme. 
+* a `principal block-level box` that contains descendant boxes and generated content and is also the box involved in any positioning scheme. 
 * may generate additional boxes in addition to the principal box: 'list-item' elements. These additional boxes are placed with respect to the principal box.
 
 a `Block formatting context`:
@@ -369,10 +377,23 @@ http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#viewport
 
 * https://developer.mozilla.org/en-US/docs/Web/CSS/position
 
-* `static` (default): A static positioned element is always positioned according to the normal flow of the page.
+Once boxes are generated, the CSS engine needs to position them on the layout. In order to do that, it will use one of the following algorithm: normal, float, absolute
+
+The `normal flow` in which it will lay each box one after the other:
+
+* In a block formatting context, they are laid out vertically
+* in an inline formatting context, they are laid out horizontally
+* The normal flow is triggered when the CSS position is set to the value `static` or `relative`, and if the CSS `float` is set to the value `none`.
+* when position is `static` (default): A static positioned element is always positioned according to the normal flow of the page.
+* when position is `relative`: positioned relative to its normal position (normal flow). The boxes are drawn with an offset defined by the top, bottom, left and right CSS properties.
+
+
+The `floats algorithm` which will extract the box from the normal flow and put it to the side of the containing box.
+
+The `absolute positioning` scheme in which a box is absolutely positioned within a coordinate system established by its containing element. An absolutely positioned element can cover other elements. The `position` property has one of these value:
+
 * `fixed`: is positioned relative to the browser window, and will not move even if the window is scrolled.
-* `relative`: positioned relative to its normal position (normal flow). The boxes are drawn with an offset defined by the top, bottom, left and right CSS properties.
-* `absolute`
+* `absolute`: boxes are entirely removed from the flow and don't interact with it at all. They are positioned relative to their containing block using the top, bottom, left and right CSS properties.
 
 Note: Elements that are positioned relatively are still considered to be in the normal flow of elements in the document. In contrast, an element that is positioned absolutely is taken out of the flow and thus takes up no space when placing other elements.
 
