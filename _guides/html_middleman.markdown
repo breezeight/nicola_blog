@@ -127,10 +127,17 @@ blog index: https://github.com/middleman/middleman-blog/blob/master/fixtures/pag
 
 ## Multiblog
 
+Each blog must:
+
+* you must create a dir `source/name_of_the_blog`
+* you must create an index for your blog; `source/name_of_the_blog/index.html`
+
+
 Blog index for a multiproduct example:
 
  * https://github.com/middleman/middleman-blog/blob/master/fixtures/paginate-multiblog-app/source/blog1/index.html.erb
  * https://github.com/middleman/middleman-blog/blob/master/fixtures/paginate-multiblog-app/source/blog2/index.html.erb
+ 
  
 ## Haml Templates
 
