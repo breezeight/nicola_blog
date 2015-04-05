@@ -34,6 +34,7 @@ page = agent.get('http://www.kelkoo.it/mp-12469913-amazon-electronics')
 page.search('//p[@class="store-name"]/a/@href')
 ~~~
 
+Example "Pitchtarget Kelkoo crawler": `git clone git@bitbucket.org:pitchtarget/pitchtarget-kelkoo-scraper.git`
 
 # Wombat
 
