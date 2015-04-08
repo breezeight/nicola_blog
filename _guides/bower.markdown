@@ -31,6 +31,43 @@ Bower configuration files:
 
 Bower command line documentation:  http://bower.io/docs/api/
 
+# Install packages
+
+TODO: 
+
+* how to persist with --save
+* how to add development dependencies
+
+## From the registry
+
+TODO
+
+## Install a package for a local or remote git
+
+In your main project edit bower.json file to add (or expand):
+
+~~~
+  "dependencies": {
+    …
+    "you-need-me":  "file:///path/to/you-need-me/.git/"
+    "you-need-me-windows":  "C:/path/to/you-need-me-windows/.git/"
+  }
+~~~
+
+So you don’t give a version, but a local or remote git endpoint:
+
+If you use local path you MUST  these requi:
+
+* specify the subdirectory **.git/**
+* use an absolute directory
+
+Instead of a version you can specify:
+
+* `tag` : "bootstrap": "https://github.com/twbs/bootstrap.git#v3.0.0"
+* `commit sha` : "bootstrap": "https://github.com/twbs/bootstrap.git#b67a4ec28b9cb0f16cd88f34491284dd15826d33"
+* `branch name` : "bootstrap": "https://github.com/twbs/bootstrap.git#clean_super_clean"
+
+
 # Create a bower package
 
 * http://bower.io/docs/creating-packages/
@@ -46,30 +83,41 @@ Package content:
 * Typically you have a build script that generates that module into a dist folder, one thats minified, and one thats not.
 * main???????
 
-## Test a package from a local git
+## Live update a dependency with bower link
 
-http://blog.edouard-lopez.com/testing-bower-dot-json-locally-before-registering-package/
+REF:
 
-Then in your main project, the one that need the you-need-me dependency, edit bower.json file to add (or expand):
+* https://oncletom.io/2013/live-development-bower-component/
+
+This is particularly useful for the following use cases:
+
+* prototyping a Bower component before releasing it in the wild (you can link it even if it’s not yet available in the bower registry)
+* testing a new feature in a live project
+* checking why a component is failing to work as expected despite its unit and functional tests are fine
+
+The link functionality allows developers to easily test their packages (ex: bootstrap-theme-pitchtarget). Linking is a two-step process:
+    
+1) Using `bower link` in the local development folder of the package will create a global link. This will "register" the package in a kind of local registry.
 
 ~~~
-  "dependencies": {
-    …
-    "you-need-me":  "file:///path/to/you-need-me/.git/"
-    "you-need-me-windows":  "C:/path/to/you-need-me-windows/.git/"
-  }
+12:11 ~/SRC/ADDICTIVE/bootstrap-theme-pitchtarget (develop)$ bower link
+bower                    link /Users/nicolabrisotto/.local/share/bower/links/bootstrap-theme-pitchtarget > /Users/nicolabrisotto/SRC/ADDICTIVE/bootstrap-theme-pitchtarget
 ~~~
 
-So you don’t give a version, but an local git endpoint:
 
-* you must specify subdirectory **.git/**
-* the directory be absolute
+2) Then to use the local linked package in some other package use `bower link <name>`. It will create a link in the bower_components folder pointing to the previously created link.
+    
+This allows to easily test a package because changes will be reflected immediately.
 
-available options are:
+~~~
+bower link bootstrap-theme-pitchtarget
+bower bootstrap#~3.3.2          cached git://github.com/twbs/bootstrap.git#3.3.2
+bower bootstrap#~3.3.2        validate 3.3.2 against git://github.com/twbs/bootstrap.git#~3.3.2
+bower                    link /Users/nicolabrisotto/SRC/ADDICTIVE/middleman/pitchtarget_www_middleman/bower_components/bootstrap-theme-pitchtarget > /Users/nicolabrisotto/.local/share/bower/links/bootstrap-theme-pitchtarget
+~~~
 
-* `tag` : "bootstrap": "https://github.com/twbs/bootstrap.git#v3.0.0"
-* `commit sha` : "bootstrap": "https://github.com/twbs/bootstrap.git#b67a4ec28b9cb0f16cd88f34491284dd15826d33"
-* `branch name` : "bootstrap": "https://github.com/twbs/bootstrap.git#clean_super_clean"
+When the link is no longer necessary, simply remove it with `bower uninstall <name>` or `bower update` to restore the version listed in `bower.json`.
+
 
 
 
