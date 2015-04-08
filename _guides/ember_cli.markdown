@@ -41,7 +41,31 @@ Ember-cli components:
 
 See deeper intro http://www.ember-cli.com 
 
+# Debug Ember-CLI
+
+Because the `ember` executable is smart enough to detect that a local version is installed in `$PROJECT_HOME/node_modules/emebr-cli` we can safely locale ember-cli files and add a `console.log` statements.
+
 # Ember cli internals
+
+## Ember executable
+
+* `lib/tasks/`
+* `lib/commands/`
+
+Build:
+
+### Build Command
+
+
+## Node Bundle
+
+Ember-cli uses bundleddependencies to include most of its dependencies and keep them stables, see here for details:
+
+* https://docs.npmjs.com/files/package.json#bundleddependencies
+* ....
+
+I noticed that if I use `bower install` the global bower is used instead using `ember install:bower` ember will use the bundled version
+
 
 ## Shims
 
@@ -56,6 +80,35 @@ Ember-cli defines its owns shims:
 
 * https://github.com/stefanpenner/ember-cli-shims
 
+## ES6 modules
+
+TODO: Understand if embercli is still using `es6-module-transpiler`. It looks that the ember-cli web site is outdate:
+
+* https://github.com/ember-cli/ember-cli/commit/c6b65278bea0cbd05a12e9997291808d35418f64
+* http://discuss.emberjs.com/t/working-with-docker-ember-cli-in-development/7658
+
+
+## Resolver
+
+Ember-cli 0.22 uses this Resolver: https://github.com/ember-cli/ember-resolver
+
+See doc: http://www.ember-cli.com/#using-modules
+
+The Ember Resolver is the mechanism responsible for looking up code in your application and converting its naming conventions into the actual:
+
+* classes
+* functions
+* templates 
+
+that Ember needs to resolve its dependencies, for example, what template to render for a given route.
+
+Actually the Ember-cli 0.22 Resolver extends `Ember.DefaultResolver`. See the code into `ember-resolver/packages/ember-resolver/lib/core.js:` :
+
+~~~
+var Resolver = Ember.DefaultResolver.extend
+~~~
+
+TODO: capire perchè ember usa babel ma poi ne disabilita il support per i  modules https://github.com/babel/ember-cli-babel
 
 # Why Ember-cli?
 
