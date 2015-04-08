@@ -46,6 +46,18 @@ http://learn.shayhowe.com/html-css/building-your-first-web-page/
 * [semantic of html5 tags](http://learn.shayhowe.com/html-css/getting-to-know-html/): header, nav, article, ....
 * Links (href): http://learn.shayhowe.com/html-css/getting-to-know-html/
 
+### By Browser default element property
+
+It's different for each browser, so:
+
+* Firefox (Gecko): http://mxr.mozilla.org/mozilla-central/source/layout/style/html.css. Or, browse to resource://gre-resources/ and look at html.css.
+* Chrome/Safari (WebKit): http://trac.webkit.org/browser/trunk/Source/WebCore/css/html.css
+* Internet Explorer (Trident), all versions: http://www.iecss.com/
+
+A lot of frameworks use a reset css that try to fix inconsistencies
+
+REF: http://stackoverflow.com/questions/6867254/browsers-default-css-for-html-elements
+
 ## ARIA attributes
 
 https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA
