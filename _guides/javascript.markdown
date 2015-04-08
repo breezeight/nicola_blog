@@ -430,17 +430,16 @@ http://www.codecademy.com/forum_questions/4f166ff96390db0001003803
 
 
 
-## Function invocation
+## Function invocation and "this"
 
 Function can be invoked as:
 
 + functions
 + methods
 + constructors
-+ via call() or apply()
++ via `call()` or `apply()`
 
-The main difference between different kind of invocation is the object
-referenced by `this`.
+The main difference between different kind of invocation is the object referenced by `this`.
 
 **this** is the function context:
 
@@ -452,7 +451,7 @@ Functions can be invoked in various ways, and the invocation mechanism determine
 + When invoked as a simple function, the context is the global object (window).
 + When invoked as a method, the context is the object owning the method.
 + When invoked as a constructor, the context is a newly allocated object.
-+ When invoked via the apply() or call() methods of the function, the context can be whatever the heck we want.
++ When invoked via the `apply()` or `call()` methods of the function, the context can be whatever the heck we want.
 
 **arguments** : 
 
@@ -464,12 +463,12 @@ Functions can be invoked in various ways, and the invocation mechanism determine
 A function can invoked with:
 
 * more arguments than in the function signature: is allowed...yes ???
-* less arguments than in the function signature: is allowed. Missing params are set
-to `undefined`.
+* less arguments than in the function signature: is allowed. Missing params are set to `undefined`.
 
 
 ### call() and apply()
-see [SOJS] paragraph 3.3.5
+
+REF: see [SOJS] paragraph 3.3.5
 
 Usecases: implement a "foreach", implement a callback system
 
@@ -547,8 +546,9 @@ document.getElementById("header");
 # Mixin
 
 The Problem:
+
 * Multi-tiered inheritance hierarchies are occasionally useful for describing the natural order of objects but if the primary motivation is function re-use they can quickly become gnarly labyrinths of meaningless subtypes, frustrating redundancies and unmanageable logic (“is a button a rectangle or is it a control? tell you what, lets make Button inherit from Rectangle, and Rectangle can inherit from Control…wait a minute….”).
-* The most straightforward approach is **delegation**: any public function can be invoked directly via call or apply. However delegation is so convenient that sometimes it actually works against structural discipline in your code; moreover the syntax can get a little wordy.
+* The most straightforward approach is **delegation**: any public function can be invoked directly via `call` or `apply`. However delegation is so convenient that sometimes it actually works against structural discipline in your code; moreover the syntax can get a little wordy.
 
 Here there is a naive implementation:
 
@@ -561,9 +561,9 @@ function extend(destination, source) {
   }
   return destination;
 }
-~~~~
+~~~
 
-…which we can call to extend our prototype…
+which we can call to extend our prototype…
 
 ~~~javascript
 var RoundButton = function(radius, label) {
