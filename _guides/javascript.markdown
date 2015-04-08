@@ -34,6 +34,11 @@ Blogs:
 # TODO
 typeof -> how does it works?
 
+# Equality operator
+
+http://dorey.github.io/JavaScript-Equality-Table/?utm_content=buffer4f1b9&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
+
+Always use 3 equals unless you have a good reason to use 2.
 
 # Functions
 
@@ -343,12 +348,13 @@ SOJS ch 5.3:
       this.clicked = true;
       assert(button.clicked,"The button has been clicked");
       //FAILS: the context of the click function is not refer- ring to the button object as we intended.
-} };
+    } 
+  };
   var elem = document.getElementById("test");
   elem.addEventListener("click",button.click,false);
 ~~~
 
-the context of the click function is not refer- ring to the button object as we intended.
+the context of the click function is not referring to the button object as we intended.
 To solve:
 
 ~~~javascript
@@ -375,8 +381,6 @@ The secret sauce that we’ve added here is the bind() method. This method is de
 ### Prototype
 
 All functions have a prototype property that initially references an empty object. This property doesn’t serve much purpose until the function is used as a constructor (using the `new` operator).
-
-
 
 Instance members created inside a constructor will occlude properties of the same name defined in the prototype.
 
