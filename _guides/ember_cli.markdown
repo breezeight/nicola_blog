@@ -88,6 +88,8 @@ TODO: Understand if embercli is still using `es6-module-transpiler`. It looks th
 * http://discuss.emberjs.com/t/working-with-docker-ember-cli-in-development/7658
 
 
+See [Javascript Traspiler]({{ site.url }}/guides/javascript.html#traspiler) for more details about how different transpilers work.
+
 ## Resolver
 
 Ember-cli 0.22 uses this Resolver: https://github.com/ember-cli/ember-resolver
