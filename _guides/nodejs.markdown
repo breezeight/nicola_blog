@@ -16,7 +16,44 @@ categories: ["javascript", "nodejs"]
 
 # Debug
 
-https://github.com/joyent/node/wiki/Using-Eclipse-as-Node-Applications-Debugger
+REFS:
+
+* http://www.100percentjs.com/best-way-debug-node-js/
+*
+* https://github.com/joyent/node/wiki/Using-Eclipse-as-Node-Applications-Debugger
+
+## Node Native Debugger
+
+It's really similar to pry-byebug. Add a `debugger` statement to your code:
+
+~~~
+// myscript.js
+x = 5;
+setTimeout(function () {
+  debugger;
+  console.log("world");
+}, 1000);
+console.log("hello");
+~~~
+
+Then run you script with `node debug`:
+
+~~~
+node debug server.js
+~~~
+
+And then you are able to step through the code in your terminal by using the following commands:
+
+* `cont, c` - Continue execution
+* `next, n` - Step next
+* `step, s` - Step in
+* `out, o` - Step out
+* `pause` - Pause running code (like pause button in Developer Tools)
+
+## Node Inspector
+
+More advanced ui than the Native Node Debugger but it doesn't properly handle `ember`, it stops in the wrog line (9 apr 2015)
+
 
 # REPL Console
 
