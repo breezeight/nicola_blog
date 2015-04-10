@@ -436,6 +436,12 @@ TODO: [Kibana and logstash](http://devblog.springest.com/complete-logstash-stack
 TODO: check the [artifact cookbook](https://github.com/RiotGames/artifact-cookbook)
 TODO: check the [application cookbook](http://community.opscode.com/cookbooks/application)
 
+# Fast debug with the opsworks-agent-cli
+
+* `sudo opsworks-agent-cli list_commands`
+* `sudo opsworks-agent-cli run_command update_custom_cookbooks`
+* `sudo opsworks-agent-cli run_command execute_recipes <recipe name>`
+
 # Opsworks Cookbook release process 
 
 This the git repo with all the official Opsworks cookbooks: `git@github.com:aws/opsworks-cookbooks.git`
