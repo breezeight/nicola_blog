@@ -70,7 +70,124 @@ the IAM system
 
 ## IAM Policies
 
-[TODO](http://docs.aws.amazon.com/IAM/latest/UserGuide/PermissionsAndPolicies.html)
+* [TODO](http://docs.aws.amazon.com/IAM/latest/UserGuide/PermissionsAndPolicies.html)
+* [List of policies common errors](http://blogs.aws.amazon.com/security/post/Tx1LYOT2FQML4UG/Back-to-School-Understanding-the-IAM-Policy-Grammar)
+
+A policy can be attached to:
+
+* a group, a user
+* a resource
+
+Each policy have a `principal` which is the Identity to which the policy apply. The `Principal` element is unnecessary in an IAM policy attached directly to an Identity, because the principal is by default the entity that the IAM policy is attached to. It can be a IAM user, federated user, or assumed-role user), AWS account, AWS service, or other principal entity.
+
+[AWS reference; Principal](http://docs.aws.amazon.com/IAM/latest/UserGuide/AccessPolicyLanguage_ElementDescriptions.html#Principal)
+
+Pricipal examples:
+
+~~~
+"Principal": {
+        "AWS": ["arn:aws:iam::111122223333:user/Alice",
+                "arn:aws:iam::111122223333:root"]
+      },
+~~~
+
+### Policy Version
+
+Ref: http://docs.aws.amazon.com/IAM/latest/UserGuide/AccessPolicyLanguage_ElementDescriptions.html#Version
+
+The only allowed values are these:
+
+* `2012-10-17` This is the current version of the policy language, and you should use this version number for all policies.
+* `2008-10-17` This was an earlier version of the policy language. You might see this version on existing policies. Do not use this version for any new policies or any existing policies that you are updating.
+
+### S3 Policies
+
+Ref:
+
+* [S3 Resource doc](http://docs.aws.amazon.com/AmazonS3/latest/dev/s3-arn-format.html)
+* [S3 Actions doc](http://docs.aws.amazon.com/AmazonS3/latest/dev/using-with-s3-actions.html)
+* [ Grant access to user-specific folders in an Amazon S3 bucket](http://blogs.aws.amazon.com/security/post/Tx1P2T3LFXXCNB5/Writing-IAM-policies-Grant-access-to-user-specific-folders-in-an-Amazon-S3-bucke) 
+
+~~~
+{
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListAllMyBuckets",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "arn:aws:s3:::*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::BUCKET-NAME",
+      "Condition": {"StringLike": {"s3:prefix": [
+        "",
+        "home/",
+        "home/${aws:username}/"
+      ]}}
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::BUCKET-NAME/home/${aws:username}",
+        "arn:aws:s3:::BUCKET-NAME/home/${aws:username}/*"
+      ]
+    }
+~~~
+
+#### IAM Policy Simulator
+
+[Simulator URL](https://policysim.aws.amazon.com/home/index.jsp?#)
+
+* Select "Mode: new policy" from the dropdown menù
+* Insert the PolicyDocument, ex:
+
+~~~
+{
+  "Version" : "2012-10-17",
+  "Statement": [ {
+    "Effect": "Allow",
+    "Action": ["s3:ListBucket","s3:GetObject","s3:GetObjectVersion"],
+    "Resource": "arn:aws:s3:::testnicolaprovaa-21.aaa/*"
+  } ]
+}
+~~~
+
+* Set the resource you want to test in `Simulation Test`
+* Set the service and the api you want to test
+* Run the simulation
+
+#### Test S3 with FOG
+
+
+~~~
+require 'fog'
+
+# path_style param solve ssl issues, see : http://stackoverflow.com/questions/18340551/amazon-s3-hostname-does-not-match-the-server-certificate-opensslsslsslerr
+
+connection = Fog::Storage.new({
+  :provider => 'AWS',
+  :use_iam_profile => true,
+  :region => "eu-west-1",
+  :path_style => true  
+})
+
+connection.directories.get("testnicolaprovaa-21.aaa").files.each{ |f| puts f.key }
+~~~
+
+
+### S3: IAM Policies VS Bucket Policies VS S3 ACL
+
+Ref: http://blogs.aws.amazon.com/security/post/TxPOJBY6FE360K/IAM-policies-and-Bucket-Policies-and-ACLs-Oh-My-Controlling-Access-to-S3-Resourc
+
+If you’re unsure of which to use, consider which audit question is most important to you:
+
+* If you’re more interested in “What can this user do in AWS?” then IAM policies are probably the way to go. You can easily answer this by looking up an IAM user and then examining their IAM policies to see what rights they have.
+* If you’re more interested in “Who can access this S3 bucket?” then S3 bucket policies will likely suit you better. You can easily answer this by looking up a bucket and examining the bucket policy.
+* If you want to manage permissions on individual objects within a bucket, S3 ACLs enable you to apply policies on the objects themselves, whereas bucket policies can only be applied at the bucket level.
+
 
 ## SLAM Providers
 
@@ -124,8 +241,42 @@ aws --profile=pt iam  delete-server-certificate --server-certificate-name "fungo
 
 ref: [aws doc server certificates](http://docs.aws.amazon.com/IAM/latest/UserGuide/ManagingServerCerts.html)
 
-## How to Keep Your AWS Credentials on an EC2 Instance Securely
-http://shlomoswidler.com/2009/08/how-to-keep-your-aws-credentials-on-ec2.html
+## How to Keep Your AWS Credentials on an EC2 Instance Securely: Instance Profile and Roles
+
+* https://aws.amazon.com/blogs/aws/iam-roles-for-ec2-instances-simplified-secure-access-to-aws-service-apis-from-ec2/
+* http://shlomoswidler.com/2009/08/how-to-keep-your-aws-credentials-on-ec2.html
+
+Basically EC2 will provide some local URL that the instance can use to retrieve credentials that are rotate periodically.
+
+Ref: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html#instancedata-dynamic-data-retrieval
+
+### Example Ruby Carrierwave setup
+
+Ref: http://www.spacevatican.org/2012/6/25/iam-roles/
+
+config/initializers/carrierwave.rb:
+
+~~~
+CarrierWave.configure do |config|
+  config.storage = :fog
+  config.fog_credentials = {
+    :provider              => 'AWS',
+    :aws_access_key_id     => ENV['AWS_ACCESS_KEY_ID'],
+    :aws_secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],
+    :region                => ENV['AWS_REGION'],
+  }
+  config.fog_directory = ENV['AWS_BUCKET']
+end
+
+# See https://github.com/carrierwaveuploader/carrierwave#testing-with-carrierwave
+if Rails.env.test?
+  CarrierWave.configure do |config|
+    config.storage = :file
+    config.enable_processing = false
+  end
+en
+~~~
+
 
 ## How to Keep Your AWS Credentials on an laptop Securely
 
@@ -531,6 +682,7 @@ To test: `aws cloudformation --profile=pt create-stack --stack-name "test2" --te
 ### Nested Stacks
 
 * [AWS blog post jan 2015 about ](http://blogs.aws.amazon.com/application-management/post/Tx1T9JYQOS8AB9I/Use-Nested-Stacks-to-Create-Reusable-Templates-and-Support-Role-Specialization)
+* http://cloudacademy.com/blog/understanding-nested-cloudformation-stacks/
 * http://www.rightbrainnetworks.com/blog/cloudformation-zen-nested-stacks/
 * http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-stack.html
 * http://blog.mikebabineau.com/2014/05/05/cloudformation-nested-stacks-gotcha/
