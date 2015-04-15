@@ -76,6 +76,12 @@ http://azure.microsoft.com/en-us/documentation/articles/virtual-machines-load-ba
 
 # Remote desktop with Windows Server
 
+!!!! USE the NEW Microsoft Remote Desktop for OSX, it works for sure with Windows 7 N:
+https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417
+
+
+## Old
+
 Image: Windows 8.1 Enterprise 
 
 Jenkins on Windows Azure
@@ -89,9 +95,6 @@ Affinity Group: FungoStudiosCI
 
 Azure [Remote desktop on windows](http://msdn.microsoft.com/en-us/library/windowsazure/dn535788.aspx)
 Azure [Remote desktop on OSX](http://stackoverflow.com/questions/13248955/cant-rdp-to-azure-on-mac-os-x)
-
-
-
 
 http://taylorcowanonline.com/?p=260
 
