@@ -465,6 +465,10 @@ Attributes precedence https://docs.chef.io/attributes.html#attribute-precedence 
 * A force_override attribute located in a recipe
 * An automatic attribute identified by Ohai at the start of the chef-client run
 
+## Derived attributes
+
+
+
 ## Attributes in Vagrant
 
 TODO: documentare da qualche parte un parallelo tra un vagrant file con
@@ -529,6 +533,114 @@ see [Develop and Test Chef Cookbooks](/blog/2014/03/10/develop-and-test-chef-coo
 * [Resources doc](http://docs.opscode.com/chef/resources.html)
 * [Resource source code](https://github.com/opscode/chef/tree/master/lib/chef/resource)
 * [Provider source code](https://github.com/opscode/chef/tree/master/lib/chef/provider)
+
+
+# Deploy Rails application
+
+ref:
+
+* http://www.concreteinteractive.com/how-to-deploy-a-rails-application-anywhere-with-chef/
+*
+* https://github.com/poise/application_ruby
+* https://github.com/poise/application
+
+
+TODO:
+
+* https://github.com/yourabi/chef-puma
+
+## Application Cookbook < 4.1.6
+
+NOTE: NOAH KANTROWITZ started in jan 2015 a major refactor of the Application cookbook, see below.
+
+The application cookbook is designed to work with sub-resources.
+
+REF:
+
+* http://nathenharvey.com/blog/2012/12/14/learning-chef-part-3/
+
+TODO:
+
+* review this commit that add a sinatra test app using serverspec https://github.com/poise/application_ruby/commit/a044ed74ae87538d37701fabb07ceacb891dec05
+
+
+## Design notes
+
+There are a lot of different ways to install Ruby on your server and each of them has pros and cons.  In this example we choose to build Ruby from source, but here are some options and our opinions on their merits:
+
+* RVM/rbenv system-wide or user install. While these tools are really great for development environments because they allow you to manage multiple Ruby installations they are not that great on server side. Both RVM/rbenv require you to setup your shell environment in some ways to be able to manage Rubies for you. That’s simple to do on your development machine – just customize the shell you use. However on server side you run processes as different users and they can be invoked from different scripts. For example you have monit/runit or just init.d script that runs your app server that’s usually started as root, then you have tasks invoked by cron by a different user and then you probably have your deploy user running tasks like db:migrate. You need to make sure everything is RVM/rbenv aware.
+* apt/yum package – installs Ruby system-wide. Packages are usually pretty old so you cannot use latest Ruby versions. It’s possible to have multiple rubies but you can only change Ruby version system wide.
+* build from source code yourself – this option has the same problems as package installation but lets you install latest Ruby versions.
+
+### NOAH KANTROWITZ and Andrea Campi redesign of the application Cookbook
+
+* https://coderanger.net/application-cookbooks/
+* https://github.com/poise/application_ruby
+* https://github.com/poise/application
+* http://www.slideshare.net/coderanger/reusable-cookbook-patterns
+* ChefConf 2014: Noah Kantrowitz, ["Poise: Reusable Cookbook Patterns"](https://www.youtube.com/watch?v=vVsSAKtgOYs)
+
+NOTE: `v4.1.6` is the last version of the application cookbook without the halite gem.
+
+* The application_ruby cookbook depends on the application cookbook.
+
+Internals:
+
+* The application cookbook is writter as a gems that generate a cookbook using halite: 
+  * https://github.com/coderanger/halite
+  * https://github.com/poise/poise
+
+
+* Define the BundleInstall resource
+
+Poise provides:
+
+* https://github.com/poise/poise#notifying-block
+* https://github.com/poise/poise#include-recipe
+* Lazy inizializer https://github.com/poise/poise#lazy-initializers
+* Option collector https://github.com/poise/poise#option-collector
+* Subresources (see the chef 2014 video)
+* Resource DSL like LWRP
+  * `actions` and `default_action` are just like in LWRPs, though default_action is rarely needed as the first action becomes the default.
+  * `attribute` is also available just like in LWRPs, but with some enhancements noted below.  
+
+
+#### Poise Cookbook 
+
+* [The poise cookbook](https://github.com/poise/poise)
+
+The poise cookbook is a set of libraries for writing reusable cookbooks. It providers helpers for common patterns and a standard structure to make it easier to create flexible cookbooks using HWRP.
+
+Rather than LWRPs, Poise promotes the idea of using normal, or "heavy weight" resources, while including helpers to reduce much of boilerplate needed for this.
+
+The chef ecosystem use "Fork", "cookbook wrapper" and "reqind" to allow cookbook extensibility
+, Poise introduces a new strategy; **inheritance**. Resources are classes so the Poise filosophy is to inherite.
+
+NOTE: The downside of this approach is that we **cannot use LWRP** because LWRP are defined using the DSL, instead HWRP uses pure ruby code.
+
+Poise makes heavy use of mixins in order to load:
+
+~~~ruby
+class Chef
+  class Resource::MyApp < Resource
+    include Poise
+    ...
+  end
+
+  class Provider::MyApp < Provider
+    include Poise
+    ...
+  end
+~~~
+
+
+TODO:
+
+* `notifying_block`
+* `converge_by`
+* Berkshelf extension : http://23.92.17.78/github/RiotGames/berkshelf/Berkshelf/Berksfile#extension-instance_method<F4>
+*
+
 
 
 # Resources most used by PITCHTARGET
@@ -600,6 +712,37 @@ Backup::Model.
 
 * [community page](http://community.opscode.com/cookbooks/backup)
 
+## Apt
+
+https://github.com/opscode-cookbooks/apt
+
+Setup PPA and install package:
+
+~~~
+apt_repository 'ruby-brightbox' do
+  uri          'http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu'
+  distribution node['lsb']['codename']
+  components   ['main']
+  keyserver    'keyserver.ubuntu.com'
+  key          'C3173AA6'
+  deb_src      true
+end
+
+package "ruby2.2"
+~~~
+
+
+## gem_package resource
+
+Ref: [Chef doc](https://docs.chef.io/resource_gem_package.html)
+
+~~~
+## Install the Bundler Gem:
+gem_package "bundler" do
+  options "--no-ri --no-rdoc"
+end
+~~~
+
 # Ruby
 ## Ruby from source
 
@@ -627,6 +770,8 @@ Backup::Model.
 * The definition will be replaced by all the resources that are specified within the definition.
 
 ## Custom Resources and Provider: LWRP or HWRP
+
+REF: /Volumes/ArchiveDisk/Archive/Misc/ebook/Customizing_Chef.pdf
 
 Every resource and provider you use in your recipies are instance of classes inherited from Chef::Provider and Chef::Resource.
 Chef has two mechanism to create those classes:
@@ -666,7 +811,7 @@ Other refs:
 
 
 * set_or_return  https://github.com/chef/chef/blob/master/lib/chef/mixin/params_validate.rb#L84
-
+* `new_resource.updated_by_last_action(true)` when an action update a resource
 
 
 
