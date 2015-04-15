@@ -105,14 +105,21 @@ http://blogs.msdn.com/b/gongcheng/archive/2013/04/16/jenkins-on-windows-azure-th
 
 # Commnad line tools: xplat-cli
 
-To install the cli go [here](http://www.windowsazure.com/en-us/documentation/articles/xplat-cli/)
+To install the cli go [here](http://www.windowsazure.com/en-us/documentation/articles/xplat-cli/): npm install azure-cli -g
 To get started, just type `azure` in a new Terminal window.
 
 Command Reference is available on [github readme](https://github.com/WindowsAzure/azure-sdk-tools-xplat) and [azure website](
 http://www.windowsazure.com/en-us/documentation/articles/command-line-tools/=).
 
-To download your credential use from command line:
-azure account download
+To download your credential use from command line (this example is for the user bizspark2):
+
+* I keep all account data here `~/AZURE_ACCOUNTS/ADDICTIVE/bizspark2`
+* login into the account from your default browser
+* azure account download
+* `mv ~/Downloads/sub2-4-15-2015-credentials.publishsettings ~/AZURE_ACCOUNTS/ADDICTIVE/bizspark2`
+* `azure account import ~/AZURE_ACCOUNTS/ADDICTIVE/bizspark2/sub2-4-15-2015-credentials.publishsettings`
+* Now you MUST remove the `~/AZURE_ACCOUNTS/ADDICTIVE/bizspark2/sub2-4-15-2015-credentials.publishsettings`, you don't need it, it's only a security risk.
+
 
 ~~~
 azure account list
@@ -132,6 +139,38 @@ to switch account:
 azure account set XXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 ~~~
 
+## Azure and Docker-machine 
+
+* [Azure Doc](https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-docker-machine/)
+
+Prerequisites:
+
+* See the guide above to create `mycert.pem`
+* NOTE: 
+
+To create a machine:
+
+~~~
+docker-machine -D create -d azure --azure-subscription-id="c34c63c0-7d8b-4ce1-9217-4b7a65c12ff9" --azure-subscription-cert=mycert.pem machine-name2
+
+INFO[0006] Creating Azure machine...                    
+DEBU[0024] Generating certificate for Azure...          
+DEBU[0024] executing: /usr/bin/ssh-keygen ssh-keygen -t rsa -N  -f /Users/nicolabrisotto/.docker/machine/machines/machine-name2/id_rsa
+ 
+Generating public/private rsa key pair.
+Your identification has been saved in /Users/nicolabrisotto/.docker/machine/machines/machine-name2/id_rsa.
+Your public key has been saved in /Users/nicolabrisotto/.docker/machine/machines/machine-name2/id_rsa.pub.
+DEBU[0025] Adding Linux provisioning...                 
+DEBU[0025] Authorizing ports...                         
+DEBU[0025] added Docker endpoint (port 2376) to configuration 
+DEBU[0025] Creating VM...   
+~~~
+
+To point your Docker client at it, run this in your shell:
+
+~~~
+$(docker-machine env machine-name2) 
+~~~
 
 ## Affinity Group
 

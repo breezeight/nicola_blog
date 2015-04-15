@@ -770,7 +770,17 @@ The postgres image will use the default image volume, this means that it will by
 
 https://davidamick.wordpress.com/2014/07/19/docker-postgresql-workflow/
 
+# Docker Swarm
 
+TODO
+
+# Docker Machine
+
+TODO
+
+## Docker Machine on Azure
+
+[Docker Machine on Azure]({{ site.url }}/guides/azure.html#azure-and-docker-machine)
 
 # Docker Compose (ex Fig tool)
 
@@ -778,7 +788,6 @@ TODO:
 
 * http://docs.docker.com/compose/install/
 * http://blog.docker.com/2015/02/announcing-docker-compose/
-
 
 ## For development
 
