@@ -182,6 +182,19 @@ NOTE: the opsworks-agent is monitored by monit `/etc/monit/conf.d/opsworks-agent
 
 # OpsWorks customization
 
+## Security
+
+By default OpsWorks associates the AWS OpsWorks built-in security groups with the stack's layers. These groups open a lot of ports like 80 and 22 to 0.0.0.0/0.
+
+AWS OpsWorks provides a standard set of built-in security groups—one for each layer— which are associated with layers by default. Use OpsWorks security groups allows you to instead provide your own custom security groups. For more information on security groups, see Amazon EC2 Security Groups. Use OpsWorks security groups has the following settings:
+
+* Yes - AWS OpsWorks automatically associates the appropriate built-in security group with each layer (default setting).You can associate additional security groups with a layer after you create it but you cannot delete the built-in security group.
+
+* No - AWS OpsWorks does not associate built-in security groups with layers. You must create appropriate EC2 security groups and associate a security group with each layer that you create. However, you can still manually associate a built-in security group with a layer on creation; custom security groups are required only for those layers that need custom settings.
+
+Cloudformation `AWS::OpsWorks::Stack` option : `UseOpsworksSecurityGroups` boolean
+
+
 ## Extending a Built-in Layer
 ### Using Chef Deployment Hooks
 
