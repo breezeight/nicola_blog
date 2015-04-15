@@ -232,13 +232,21 @@ NOTE: the docker hub is a separate project that allow to search, share and colla
 Docker registry [SPEC](https://docs.docker.com/reference/api/hub_registry_spec/)
 
 
-### Private registries
+### Private registries and docker login
 
 * On Azure: http://azure.microsoft.com/blog/2014/11/11/deploying-your-own-private-docker-registry-on-azure/  and http://azure.microsoft.com/blog/tag/docker/
 * Core OS Enterprise Registry behind the firewall: https://coreos.com/products/enterprise-registry/plans/
 * Quay.io
 * Private registry with NGINX: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-14-04
 
+
+See here also
+http://www.activestate.com/blog/2014/01/deploying-your-own-private-docker-registry
+
+* `docker login` can work with any website that support `basic auth`. After you login into your registry the auth token is stored here `~/.dockercfg`: `{"quay.io":{"auth":"XXXXXXXXXXXXXXXXXXXXXX","email":"nicolabrisotto@gmail.com"}}`
+
+ 
+* see also: https://github.com/docker/docker-registry#authentication-options
 
 See "working with images" to push/pull from a private registry.
 
@@ -526,8 +534,38 @@ REF: http://blog.stefanxo.com/2014/02/clean-up-after-docker/
 
 ## Networking
 
-Docker neworking 
-http://docs.docker.io/use/networking/
+refs:
+
+* [Docker neworking](http://docs.docker.io/use/networking/)
+
+
+### -P flag
+
+When that container was created, the -P flag was used to automatically map any network ports inside it to a random high port from the range 49153 to 65535 on our Docker host. 
+
+`sudo docker run -d -P training/webapp python app.py` :
+
+~~~
+ sudo docker ps nostalgic_morse
+CONTAINER ID  IMAGE                   COMMAND       CREATED        STATUS        PORTS                    NAMES
+bc533791f3f5  training/webapp:latest  python app.py 5 seconds ago  Up 2 seconds  0.0.0.0:49155->5000/tcp  nostalgic_morse
+~~~
+
+### -p flag
+
+* `sudo docker run -d -p 5000:5000 training/webapp python app.py` :  bind a container's ports to a specific docker host port 
+
+* you can also specify a binding to a specific interface, for example only to the localhost: `sudo docker run -d -p 127.0.0.1:5000:5000 training/webapp python app.py`
+* to bind port 5000 of the container to a dynamic port but only on the localhost: `sudo docker run -d -p 127.0.0.1::5000 training/webapp python app.py`
+* You can also bind UDP ports by adding a trailing /udp : `sudo docker run -d -p 127.0.0.1:5000:5000/udp training/webapp python app.py`
+
+### docker port
+
+`docker port`: showed us the current port bindings
+
+
+
+###
 
 capire se pipeworks ha ancora senso o meno
 https://github.com/jpetazzo/pipework
@@ -666,6 +704,9 @@ Executing docker build will run your steps and commit them along the way, giving
 Dockerfile  VS other build tools
 https://groups.google.com/forum/#!topic/docker-user/3pcVXU4hgko
 
+* `docker build -t breezeight/test-kitchen-ubuntu .` 
+* `docker build --no-cache=true -t pippolippo .` build without using cache
+
 ### Save and load an image to a tarball
 
 A Docker image and its entire history can be saved to a tarball and loaded back again. This will preserve the history of the image:
@@ -731,7 +772,13 @@ https://davidamick.wordpress.com/2014/07/19/docker-postgresql-workflow/
 
 
 
-# Fig tool
+# Docker Compose (ex Fig tool)
+
+TODO: 
+
+* http://docs.docker.com/compose/install/
+* http://blog.docker.com/2015/02/announcing-docker-compose/
+
 
 ## For development
 
