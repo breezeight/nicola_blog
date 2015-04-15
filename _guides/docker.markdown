@@ -772,11 +772,28 @@ https://davidamick.wordpress.com/2014/07/19/docker-postgresql-workflow/
 
 # Docker Swarm
 
-TODO
+TODO:
+
+* https://github.com/docker/swarm
+
+Docker Swarm is native clustering for Docker. It turns a pool of Docker hosts into a single, virtual host.
+
+
 
 # Docker Machine
 
-TODO
+REF:
+
+* https://docs.docker.com/machine/
+* https://github.com/docker/machine
+
+Machine makes it really easy to create Docker hosts on your cloud providers and inside your own data center:
+
+* It creates servers (it has integration with Azure, AWS, ...)
+* installs Docker on them
+* then configures the Docker client to talk to them (TLS config).
+
+Docker Machine can also provision Swarm clusters. This can be used with any driver and will be secured with TLS.
 
 ## Docker Machine on Azure
 
