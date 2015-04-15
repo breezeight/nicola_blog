@@ -353,6 +353,18 @@ First we need to define acceptance criteria:
 * A process is listening on port 9418 (the default Git daemon port).
 * A service is running called "git-daemon". This name is arbitrary but shouldn't surprise anyone using this cookbook.
 
+## Test HWRP or LWRP Library cookbook
+
+* http://stackoverflow.com/questions/26153197/testing-library-chef-cookbooks
+* Example from the [application cookbook](https://github.com/poise/application/blob/master/test/cookbooks/application_test/recipes/default.rb)
+
+* You'll need a 'test' cookbook that exercises your LWRP or HWRP. Generally that would be test-mylwrp_cookbook or mylwrp_cookbook-test in the `mylwrp_cookbook/test/cookbooks` directory.
+* I typically have one recipe in my test cookbook for each resource in my library cookbook.
+
+You then use the test cookbook recipes in ChefSpec or TestKitchen. Also, be sure to add the `mylwrp_cookbook/test` directory to your `.chefignore` file so that you don't bloat the cookbooks that are uploaded to your chef-server by knife/berkshelf.
+
+
+
 ## Cookbook dependency management with Berkshelf
 
 If you have a Berksfile in your project directory Test Kitchen will use Berkshelf to resolve dependencies.
