@@ -38,7 +38,9 @@ http://willschenk.com/building-sites-with-middleman/
 
 # Use LESS with custom botstrap theme
 
-EDIT source/stylesheets/all.css:
+**WARNING** : don't use full path `@import "source/stylesheets/custom.less";` but  `@import "custom.less";` otherwise the wather don't work (is it a bug?).
+
+You should EDIT source/stylesheets/all.css:
 
 ~~~
 /*
@@ -49,7 +51,11 @@ ADD  source/stylesheets/site.less
 @import "bootstrap-theme-pitchtarget/less/pitchtarget-theme.less";
 @import "bootstrap-theme-pitchtarget/less/pitchtarget-variables.less";
 @import "bootstrap-theme-pitchtarget/less/pitchtarget-bootstrap.less";
-EDIT Gemfile:
+~~~
+
+You should EDIT Gemfile:
+
+~~~
 +#Less
 +gem "sprockets-less"
 +gem "less"
