@@ -49,6 +49,8 @@ Use case:
 * blog.default_extension = ".markdown.erb"   to use haml block into the markdown engine
 * put  `activate :directory_indexes` after all `activate blog`, it doen't work otherwise https://coderwall.com/p/qgnwzw/directory-indexes-with-middleman-blog
 * Use `![Amazing picture](<%= current_page.url %>some-image.png)` in markdown, see the warning [here](https://middlemanapp.com/advanced/pretty_urls/)
+* You are using `directory_indexes` you could easly add each post images into `<blog_dir>/<post_dir>/image.png`
+
 
 # Debug
 
@@ -186,7 +188,7 @@ Listing all articles:
 * `middleman article TITLE`
 * `middleman article -b BLOG TITLE`
 
-middleman help article
+If you are using `directory_indexes` you could easly add each post images into `<blog_dir>/<post_dir>/image.png`
 
 Options:
 
