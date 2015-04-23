@@ -103,9 +103,13 @@ activate :blog do |blog|
 end
 ~~~
 
-will read its articles from  "source/news"
+will read its articles from `source/news`
+
 To create articles in the news blog:
+
+~~~
 middleman article --blog news "Prova Articolo" 
+~~~
 
 Listing all articles:
 
@@ -117,13 +121,83 @@ Listing all articles:
 
 ## Create Blog Post summary
 
-The blogging extension looks for the string READMORE in your article body and shows only the content before this text on the homepage.
+The blogging extension looks for the string `READMORE` in your article body and shows only the content before this text on the homepage.
 
 ## Multiblog pagination example
+
+In Middleman, blog pagination uses dynamic pages, which are exactly like typical server side dynamic pages might be, except the result is evaluated ahead of time and saved as static HTML.
 
 https://github.com/middleman/middleman-blog/tree/master/fixtures/paginate-multiblog-app
 
 blog index: https://github.com/middleman/middleman-blog/blob/master/fixtures/paginate-multiblog-app/source/blog1/index.html.erb
+
+A template will be split into pages if it has:
+
+~~~
+
+---
+pageable: true
+blog: name_of_the_blog
+---
+
+~~~
+
+
+NOTE: the `blog` key in the header will set the default for multiple pager, for example `paginate()`. This is much more DRY than pass the param to each method call 
+
+
+Here’s the code for the blog index page, in HAML. To find the URL to previous and subsequent pages we follow the chain of prev_page and next_page until we get to the one we want. This allows this pagination code to be reused for paginating tags (as opposed to if we had used a hardcoded URL pattern for the numbers page links.)
+
+(NOTE: the code below uses bootstrap 2)
+
+~~~
+
+---
+pageable: true
+per_page: 10
+layout: blog
+---
+
+%h1.header
+  Blog
+  %hr
+- page_articles.each do |current_article|
+  .post
+    .row
+      .span4
+        %a{:href => current_article.url}
+          %h3= current_article.title
+        %p= current_article.summary
+        .post_info
+          .date
+            = current_article.date.strftime('%b %d, %Y')
+    %a.btn{:href => current_article.url} Read
+
+.pagination
+  %ul
+    %li{:class => prev_page ? "" : "disabled"}
+      - if prev_page
+        =link_to "Prev", prev_page.url
+      - else
+        %span Prev
+    - (page_number - 2 .. page_number + 2).select{|i| i > 0 && i <= num_pages}.each do |i|
+      - if i == page_number
+        %li.active
+          %span= i
+      - else
+        %li
+          - p = nil
+          - (i ... page_number).each do p = p ? p.metadata[:locals]['prev_page'] : prev_page; end
+          - (page_number ... i).each do p = p ? p.metadata[:locals]['next_page'] : next_page; end
+          =link_to "#{i}", p && p.url
+    %li{:class => next_page ? "" : "disabled"}
+      - if next_page
+        =link_to "Next", next_page.url
+      - else
+        %span Next
+
+~~~
+
 
 ## Multiblog
 
