@@ -34,7 +34,31 @@ bundle exec middleman console
 Enable bootstrap and deploy:
 http://willschenk.com/building-sites-with-middleman/
 
+# Why Static?
 
+https://www.discovermeteor.com/blog/three-middleman-hacks-were-using-on-this-site/
+
+Easy to host, but you can still save data in yml files.
+
+Use case:
+
+* promo code with middleman: https://www.discovermeteor.com/blog/three-middleman-hacks-were-using-on-this-site/
+
+# Best practices
+
+* blog.default_extension = ".markdown.erb"   to use haml block into the markdown engine
+* put  `activate :directory_indexes` after all `activate blog`, it doen't work otherwise https://coderwall.com/p/qgnwzw/directory-indexes-with-middleman-blog
+* Use `![Amazing picture](<%= current_page.url %>some-image.png)` in markdown, see the warning [here](https://middlemanapp.com/advanced/pretty_urls/)
+
+# Debug
+
+To debug a page compilation you can use `pry-byebug`. For example this is a markdown.erb blog entry:
+
+~~~
+![The Purchase Funnel](<%= current_page.url
+binding.pry
+%> purchase_funnel.jpg)
+~~~
 
 # Use LESS with custom botstrap theme
 
@@ -90,6 +114,38 @@ https://github.com/middleman/middleman-guides/blob/master/source/basics/blogging
 https://middlemanapp.com/basics/partials/
 Partial files are prefixed with an underscore
 
+# Sitemap
+
+https://middlemanapp.com/advanced/sitemap/
+
+# Calendar
+
+[Doc]("https://middlemanapp.com/basics/blogging/#sts=Calendar Pages")
+
+
+# Pretty URLs (Directory Indexes)
+
+* [Doc](https://middlemanapp.com/advanced/pretty_urls/)
+
+**Warning** : put  `activate :directory_indexes` after all `activate blog`, it doen't work otherwise https://coderwall.com/p/qgnwzw/directory-indexes-with-middleman-blog
+
+
+It makes `about-us.html.erb` accessible both at: `http://example.com/about-us.html` and `http://example.com/about-us`.
+
+**Warning about assets path**
+
+# Redirect support
+
+https://github.com/middleman/middleman/commit/d86dffa7c64e64eff77eb24b9b34ad22960d7d8c
+
+
+redirect "2014/10/09/pitchtarget-wins-openaxel-madrid.html", :to => "blog/2014/10/09/pitchtarget-wins-openaxel-madrid.html"
+redirect "2014/09/11/measuring-success.html", :to => 
+redirect "2014/09/04/its-all-about-funnels.html", :to => 
+redirect "2014/08/28/bid-high-spend-less.html", :to => 
+redirect "2014/08/21/pitchtarget-is-all-new.html", :to => 
+
+
 # Blog
 
 https://github.com/middleman/middleman-guides/blob/master/source/basics/blogging.html.markdown
@@ -125,9 +181,29 @@ Listing all articles:
     %li= article.title
 ~~~
 
+## Crete a new article
+
+* `middleman article TITLE`
+* `middleman article -b BLOG TITLE`
+
+middleman help article
+
+Options:
+
+* -d, [--date=DATE]  # The date to create the post with (defaults to now)
+* -l, [--lang=LANG]  # The language to create the post with (defaults to I18n.default_locale if avaliable)
+* -b, [--blog=BLOG]  # The name of the blog to create the post inside (for multi-blog apps, defaults to the only blog in single-blog apps)
+
+## Mix HAML and Markdown
+
+Haml support filters:
+http://haml.info/docs/yardoc/file.REFERENCE.html#markdown-filter
+
 ## Create Blog Post summary
 
 The blogging extension looks for the string `READMORE` in your article body and shows only the content before this text on the homepage.
+
+And use the `summary` method.
 
 ## Multiblog pagination example
 
