@@ -896,6 +896,16 @@ Docker Machine can also provision Swarm clusters. This can be used with any driv
 
 # Docker Compose (ex Fig tool)
 
+Install: If you install from pip you will get an SSL error. Use brew install docker-compose
+
+Compose is great for:
+
+* development environments
+* staging servers
+* CI server. 
+
+We don't recommend that you use it in production yet (april the 18th).
+
 TODO: 
 
 * http://docs.docker.com/compose/install/
