@@ -302,7 +302,7 @@ The [docker-library](https://github.com/docker-library) github organization cont
 * [doc for each image](https://github.com/docker-library/docs) 
 
 
-#### How to find the Dockerfile of an official image
+### How to find the Dockerfile of an official image
 
 
 Go to the library dir: https://github.com/docker-library/official-images/tree/master/library
@@ -330,15 +330,89 @@ The format of each line is `<docker-tag>: <git-url>@<git-tag-or-commit-id> <dock
 
 This mean that to find the postgres:9.4 image Dockerfile you must go here: https://github.com/docker-library/postgres/blob/master/9.4/Dockerfile
 
-#### Language Stacks
+### Language Stacks
 
 Language stacks are a set of official images designed to make easy:
 
 * to find a particular version following this image tagging convention: tag with the version of the language you will find in the image. ie: `docker pull java:8u40`
-* decouple your code from the stack using [ONBUILD](https://docs.docker.com/reference/builder/#onbuild)
+* decouple your code from the stack using [ONBUILD](https://docs.docker.com/reference/builder/#onbuild), which adds to the image a trigger instruction to be executed at a later time, when the image is used as the base for another build.
 * you’ll see that most of the language stacks are based on the buildpack-deps image, a collection of common build dependencies including development header packages. 
 
 For more details see this blog post: [See the announcement on the blog](http://blog.docker.com/2014/09/docker-hub-official-repos-announcing-language-stacks/)
+
+You can use `docker inspect` and `jq` to easly inspect ONBUILD triggers:
+
+~~~
+docker inspect ruby:2.2.2-onbuild|jq .[0].Config.OnBuild
+[
+  "COPY Gemfile /usr/src/app/",
+  "COPY Gemfile.lock /usr/src/app/",
+  "RUN bundle install",
+  "COPY . /usr/src/app"
+]
+
+~~~
+
+#### Ruby Language Stack
+
+This stack make easy to dockerize a ruby application that use bundler.
+
+* https://registry.hub.docker.com/_/ruby/
+* Old Problem with caching ADD and how to make ti : http://ilikestuffblog.com/2014/01/06/how-to-skip-bundle-install-when-deploying-a-rails-app-to-docker/
+  * It should be fixed in modern ruby language images:  https://github.com/docker-library/ruby/blob/master/2.2/onbuild/Dockerfile
+
+The ruby language stack image is based on this images:
+
+* `buildpack-deps:jessie` : https://registry.hub.docker.com/_/buildpack-deps/
+  * is a debian jessie image with some basic tool (git, mercurial, curl, etc)
+
+* `ruby:X.Y` : ex: https://github.com/docker-library/ruby/blob/master/2.2/Dockerfile
+  * FROM buildpack-deps:jessie
+  * install ruby from source, setup bundler 
+
+* `ruby:X.Y-onbuild` : ex: https://github.com/docker-library/ruby/blob/master/2.2/onbuild/Dockerfile
+  * FROM ruby:2.2
+  * it configure bundler for production, copy the application code and run bundle install
+  * If your Dockerfile is from this image each time you run `docker build` all the commands tagged `ONBUILD` from the `ruby:2.2.2-onbuild` image will be executed
+  * the image copy the Gemfile before the application code, this will cache the bundle install command if the application code is changed but not the Gemfile( [see here for build caching](#docker-build-cache) )
+  
+`ruby:2.2.2-onbuild` Dockerfile:
+
+~~~
+FROM ruby:2.2.2
+
+# configure bundler to throw errors if the Gemfile has been modified since Gemfile.lock
+RUN bundle config --global frozen 1
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+ONBUILD COPY Gemfile /usr/src/app/
+ONBUILD COPY Gemfile.lock /usr/src/app/
+ONBUILD RUN bundle install
+
+ONBUILD COPY . /usr/src/app
+~~~
+
+TODO: capire quale dovrebbe essere il workflow corretto sia con Docker-Compose che senza.
+TODO: capire come funziona il caching dei comandi, come escluderlo etc
+
+This image will check if the Gemfile was modified: https://github.com/docker-library/ruby/blob/master/2.2/onbuild/Dockerfile
+
+You can use `docker inspect` and `jq` to easly inspect ONBUILD triggers:
+
+~~~
+docker inspect ruby:2.2.2-onbuild|jq .[0].Config.OnBuild
+[
+  "COPY Gemfile /usr/src/app/",
+  "COPY Gemfile.lock /usr/src/app/",
+  "RUN bundle install",
+  "COPY . /usr/src/app"
+]
+
+~~~
+
+
 
 ### Automated builds: Github and Bitbucket integration
 
@@ -706,6 +780,27 @@ https://groups.google.com/forum/#!topic/docker-user/3pcVXU4hgko
 
 * `docker build -t breezeight/test-kitchen-ubuntu .` 
 * `docker build --no-cache=true -t pippolippo .` build without using cache
+
+
+#### Docker Build cache
+
+Ref:
+
+* http://www.centurylinklabs.com/caching-docker-images/
+
+Docker creates a commit for each line of instruction in Dockerfile. All these command are cached and subsequent invocations will be faster. The caching mechanism store the command to be executed and the image produced by the previous command.
+
+When does the cache is invalidated ?:
+
+* changing any instruction in a RUN 
+* changing any file of a COPY/ADD instruction
+*  If you cause cache invalidation at one instruction, subsequent instructions doesn’t use cache. This is inevitable because Dockerfile uses the image built by the previous instruction as a parent image to execute next instruction
+
+
+Possible issues:
+
+* Cache is used for non-idempotent instructions: If you run a command that has external dependencies, docker will not detect changes to those deps, you need to to force  `docker build --no-cache=true`. Ex: you use `apt-get update`, 3 months later, Ubuntu made some security updates to their repository, so you rebuild the image by using the same Dockerfile hoping your new image includes the security updates. However, this doesn’t pick up the updates.
+
 
 ### Save and load an image to a tarball
 
