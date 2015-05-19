@@ -599,6 +599,34 @@ Four of the Dockerfile commands **cannot** be overridden at runtime:
 * `RUN`
 * `ADD`
 
+#### Environment variables
+
+REF: https://docs.docker.com/userguide/dockerlinks/#environment-variables
+
+You can set env variables when you run a container using:
+
+* the ENV commands in the source container's Dockerfile
+* the `-e`, `--env` and `--env-file` options on the docker run command when the source container is started
+* Order of these three flags, the --env-file are processed first, and then -e, --env flags.
+
+Example:
+
+~~~
+cat ./env.list
+TEST_FOO=BAR
+$ sudo docker run --env TEST_FOO="This is a test" --env-file ./env.list busybox env | grep TEST_FOO
+TEST_FOO=This is a test
+~~~
+
+NOTE: 
+
+* Docker creates several environment variables when you link containers. Docker automatically creates environment variables in the target container based on the `--link` parameters.
+* Warning: It is important to understand that all environment variables originating from Docker within a container are made available to any container that links to it. This could have serious security implications if sensitive data is stored in them.
+
+
+TODO: capire bene come funziona questa naming convention delle variabili
+
+
 #### CMD vs ENTRYPOINT
 
 http://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile
