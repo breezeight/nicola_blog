@@ -409,10 +409,7 @@ docker inspect ruby:2.2.2-onbuild|jq .[0].Config.OnBuild
   "RUN bundle install",
   "COPY . /usr/src/app"
 ]
-
 ~~~
-
-
 
 ### Automated builds: Github and Bitbucket integration
 
@@ -435,18 +432,105 @@ References:
 
 Nice article about volumes: http://crosbymichael.com/advanced-docker-volumes.html
 
-So is a volume?
+What is a volume?
 
 A volume can be a directory that is located outside of the root filesystem of your container. This allows you to import this directory in other containers. You can also use volumes to mount directories from your host machine inside a container.
 
 
-There are two primary ways you can manage data in Docker.
+There are two primary ways you can give access of Docker host storage to a Docker container:
 
 * Data volumes
 * Data volume containers
 
-### Under the hood
+Data volumes is a trick that you can use to make easier the volume management.
 
+### Data volumes
+
+When you define a volume a directory of the docker host is mounted into a directory of a docker container.
+When a Docker container is deleted, relaunching the image will start a fresh container without any of the changes made in the previously running container. In order to be able to save (persist) data and share data between containers, Docker came up with the concept of volumes. 
+
+
+You can define a data volume using:
+
+* `VOLUME` in the Dockerfile
+* `-v`, `--volume` option of docker run
+
+If you don't specify which directory of the host you want to mount, docker will create one for you, usually into `/mnt/sda1/var/lib/docker/vfs/dir/`.
+WARNING: Docker never automatically delete volumes when you remove a container, nor will it "garbage collect" volumes that are no longer referenced by a container. You could fill you disk space very quickly. Use `docker rm -v` to remove both the container and its volumes.
+
+* `docker run -v /webapp` or `VOLUME /webapp`: will mount a randomly generated host directory into the `/webapp` dir (ex: `/mnt/sda1/var/lib/docker/vfs/dir/14119ff8f75bd5050ffd3c7fe37ee7ed1eb76513e9933208162cfc75788390f7`).
+
+* `docker run -v /docker_host_dir:/webapp`: will mount the dockerhost `/docker_host_dir:` directory into the `/webapp` container directory. NOTE: you cannot use `VOLUME` to do this operation. 
+
+
+To inspect an image's volumes: 
+
+~~~
+docker inspect postgres | jq .[0].ContainerConfig.Volumes
+{
+  "/var/lib/postgresql/data": {}
+}
+~~~
+
+### Data Volume Container
+
+REF: [Docker Doc: data volume containers](https://docs.docker.com/userguide/dockervolumes/#creating-and-mounting-a-data-volume-container)
+
+It’s common practice to use a data-only named container for storing persistent databases, configuration files, data files etc. This container has nothing special but the important thing to note is that it is used only to mount volumes. For example:
+
+~~~
+$ docker run --name dbdata postgres echo "Data-only container for postgres"
+~~~
+
+This command will create a postgres container, including the volume defined in the Dockerfile, run the echo command and exit. 
+
+NOTE: The echo command is useful in so far as it helps us identify the purpose of the image when looking at `docker ps`. 
+
+Using `docker run --volumes-from dbdata` we can mount all volumes of `dbdata` into the new container.
+
+**WHY** is this pattern useful? Because if you use tools like docker-compose you end up doing a lot of `docker-compose run web` command and each time a new container is spawned and new volumes are created (when you use `VOLUME`). Instead if you use the data container pattern, each time you start the `web` container the `dbdata` container previously create and it's volumes are reused.
+
+NOTE: you could use `-v docker_host_dir:docker_container_dir` to solve this issue but has some cons relate to portability:
+
+* it's not portable because `docker_host_dir` depends on the docker_host.
+* you cannot add the configuration into the Dockerfile.
+
+Tips:
+
+* Don’t use a “minimal image” such as busybox or scratch for the data-container.reuses the database or webapp image so that all containers are using layers in common, saving disk space. Using a different image can also causes issues with permission: http://container42.com/2014/11/18/data-only-container-madness/
+
+* Don’t leave the data-container running; it’s a pointless waste of resources
+
+### Volume Permissions and Ownership
+
+REF: 
+
+* http://container-solutions.com/2014/12/understanding-volumes-docker/
+* http://container42.com/2014/11/18/data-only-container-madness/
+
+Often you will need to set the permissions and ownership on a volume or initialise the volume with some default data or configuration files. The key point to be aware of here is that anything after the VOLUME instruction in a Dockerfile will not be able to make changes to that volume e.g:
+
+~~~
+FROM debian:wheezy
+RUN useradd foo
+VOLUME /data
+RUN touch /data/x
+RUN chown -R foo:foo /data
+~~~
+
+Will not work as expected. We want the touch command to run in the image’s filesystem but it is actually running in the volume of a temporary container. The following will work:
+
+~~~
+FROM debian:wheezy
+RUN useradd foo
+RUN mkdir /data && touch /data/x
+RUN chown -R foo:foo /data
+VOLUME /data
+~~~
+
+Docker is clever enough to copy any files that exist in the image under the volume mount into the volume and set the ownership correctly. This won’t happen if you specify a host directory for the volume (so that host files aren’t accidentally overwritten).
+
+If you can’t set permissions and ownership in a RUN command, you will have to do so using a CMD or ENTRYPOINT script that runs after container creation.
 
 ### Use Cases
 
