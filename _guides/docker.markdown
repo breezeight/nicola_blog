@@ -722,12 +722,44 @@ REF: http://blog.stefanxo.com/2014/02/clean-up-after-docker/
 
 refs:
 
-* [Docker neworking](http://docs.docker.io/use/networking/)
+* [Docker neworking Official Doc](https://docs.docker.com/articles/networking/)
+* [Linking Container Together](http://docs.docker.com/userguide/dockerlinks/)
+
+When Docker starts with the default configuration:
+
+* it creates a virtual interface named `docker0` on the host machine, a virtual Ethernet bridge that automatically forwards packets between any other network interfaces that are attached to it.
+* randomly chooses an address and subnet from the private range
+* For each container Docker assign an internal network and an IP address
+* Docker manages the DNS configuration mounting these files:
+
+~~~
+$$ mount
+...
+/dev/disk/by-uuid/1fec...ebdf on /etc/hostname type ext4 ...
+/dev/disk/by-uuid/1fec...ebdf on /etc/hosts type ext4 ...
+/dev/disk/by-uuid/1fec...ebdf on /etc/resolv.conf type ext4 ...
+...
+~~~
+* 
 
 
-### -P flag
 
-When that container was created, the -P flag was used to automatically map any network ports inside it to a random high port from the range 49153 to 65535 on our Docker host. 
+### Communication between containers --link option
+
+TODO: capire se il concetto di link in docker compose è lo stesso di docker run
+
+The `docker run` command has a `--link=CONTAINER_NAME_or_ID:ALIAS` option that allow the comunication between containers.
+The Docker server will insert a pair of iptables `ACCEPT` rules so that the new container can connect to the ports exposed by the other container — the ports that it mentioned in the `EXPOSE` lines of its `Dockerfile`. 
+
+
+
+### Binding container ports to the host -P and -p flags
+
+[Docker DOC](https://docs.docker.com/articles/networking/#binding-container-ports-to-the-host)
+
+`-P` or `--publish-all=true` flag:
+
+* When that container is created with the -P flag it automatically maps any network ports mentioned in the `EXPOSE` line to a random high port from the range 49153 to 65535 on the Docker host. 
 
 `sudo docker run -d -P training/webapp python app.py` :
 
@@ -737,10 +769,11 @@ CONTAINER ID  IMAGE                   COMMAND       CREATED        STATUS       
 bc533791f3f5  training/webapp:latest  python app.py 5 seconds ago  Up 2 seconds  0.0.0.0:49155->5000/tcp  nostalgic_morse
 ~~~
 
-### -p flag
+`-p IP:host_port:container_port` or `-p HOST_PORT:CONTAINER_PORT` flags to :
+
+* When you use the `-p flag` you can specify which interface/port map from the host to a container port
 
 * `sudo docker run -d -p 5000:5000 training/webapp python app.py` :  bind a container's ports to a specific docker host port 
-
 * you can also specify a binding to a specific interface, for example only to the localhost: `sudo docker run -d -p 127.0.0.1:5000:5000 training/webapp python app.py`
 * to bind port 5000 of the container to a dynamic port but only on the localhost: `sudo docker run -d -p 127.0.0.1::5000 training/webapp python app.py`
 * You can also bind UDP ports by adding a trailing /udp : `sudo docker run -d -p 127.0.0.1:5000:5000/udp training/webapp python app.py`
@@ -749,9 +782,13 @@ bc533791f3f5  training/webapp:latest  python app.py 5 seconds ago  Up 2 seconds 
 
 `docker port`: showed us the current port bindings
 
+### PORT FORWARDING on Boot2Docker
+The last update of may 2014 (you must init again the VM) will create an host adpter and this make easy to connect locally to ports exposed by docker.
+To get the VM host adpter address:
+boot2docker ssh ip addr show dev eth1
 
 
-###
+### TODO
 
 capire se pipeworks ha ancora senso o meno
 https://github.com/jpetazzo/pipework
@@ -760,11 +797,33 @@ Docker-user ›
 container needs to know daemon's dynamically selected port from -p, and hosts 'public' ip address
 https://groups.google.com/forum/#!topic/docker-user/KUbcMt1lARE
 
-### PORT FORWARDING on Boot2Docker
-The last update of may 2014 (you must init again the VM) will create an host adpter and this make easy to connect locally to ports exposed by docker.
-To get the VM host adpter address:
-boot2docker ssh ip addr show dev eth1
 
+## Inspect containers or images
+
+Basic command: `docker inspect [OPTIONS] CONTAINER|IMAGE [CONTAINER|IMAGE...]`
+
+To find mounted volumes:
+
+~~~
+docker inspect 0ce31ad91a37 | jq .[0].Volumes
+{
+  "/var/lib/postgresql/data": "/mnt/sda1/var/lib/docker/vfs/dir/be36286d41c305d323dcd1abb450f5c1954fcf88cff0011644018ae5a40f4680"
+}
+~~~
+
+In the above example the docker host directory is mounted into the `/var/lib/postgresql/data` container directory.
+
+
+## Sharing of Resources
+
+* https://goldmann.pl/blog/2014/09/11/resource-management-in-docker/
+
+CPU A few things to remember:
+
+* a CPU share is just a number — it’s not related to the CPU speed
+* By default new containers have 1024 shares
+* On an idle host a container with low shares will still be able to use 100% of the CPU
+* You can pin a container to specific core, if you want
 
 ## Working with images
 
