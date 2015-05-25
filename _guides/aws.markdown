@@ -903,7 +903,262 @@ TIPS: install json-diff if you want to check difference : `npm install -g json-d
 
 see _guides/docker.markdown
 
+# VPC (Virtual Private Cloud)
 
+* [Short video intro](http://aws.amazon.com/training/intro_series/)
+* [AWS VPC DOC](http://aws.amazon.com/vpc/)
+* [VPC limits](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Appendix_Limits.html)
+
+Amazon VPC lets you provision a logically isolated section of the Amazon Web Services (AWS) Cloud where you can launch AWS resources in a virtual network that you define. 
+
+
+Your AWS resources are automatically provisioned in a ready-to-use default VPC that was created for you.
+
+NOTE: the ADDICTIVE AWS account supports only VPC (not EC2 Classic)
+
+## Topology
+
+* a `VPC` has 1 `region`
+* a `subnet` has 1 `route table`
+* a `subnet` has 1 `availablity zone`
+* `route table` has N `subnet`
+
+### Topology best practices
+
+When creating separate subnets for ELB, EC2 and RDS instances, each tier should have at least 2 subnets across availability zones.
+
+For this example, we created subnets using zones us-east1b and us-east-1d. These subnets are called “private subnets” because the instances we launch are not accessible from the Internet. In other words, these instances don’t have a public IP unless you assign an EIP.
+
+* App Tier: 10.0.1.0/24(zone-b), 10.0.2.0/24(zone-d)
+* ELB: 10.0.51.0/24(zone-b), 10.0.52.0/24(zone-d)
+* Database (RDS): 10.0.11.0/24(zone-b), 10.0.12.0/24(zone-d)
+
+best practices:
+
+* create separate route tables for each tier.
+* Always choose the same availability zones for all tiers.
+
+
+ELB: 
+
+* For an Internet-facing load balancer to be connected to the Internet, the load balancer must reside in a subnet that is connected to the Internet using the Internet gateway.
+* The application instances behind the load balancer do not need to be in the same subnet as the load balancer.
+
+## Subnet
+
+
+NOTE: Cidr notation: http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing  ( For example, in IPv4, a prefix size of /29 gives: 2^(32-29) = 2^3 = 8 addresses.)
+
+Public VS private VS VPN-only, depends from the subnet's route table:
+
+* If a subnet's traffic is routed to an Internet gateway, the subnet is known as a public subnet.
+* If a subnet doesn't have a route to the Internet gateway, the subnet is known as a private subnet.
+* If a subnet doesn't have a route to the Internet gateway, but has its traffic routed to a virtual private gateway, the subnet is known as a VPN-only subnet.
+
+
+
+## Gateway
+
+### Internet gateway
+
+An Internet gateway is a horizontally scaled, redundant, and highly available VPC component that allows communication between instances in your VPC and the Internet. 
+
+The iternet gateway is used by:
+
+* the route table
+* NAT instances
+
+### Private Gateway
+
+## Security
+
+* at instance level: `security groups`
+* at subnet level: `ACLs` 
+
+
+## VPN
+
+TODO
+
+# RDS
+
+## RDS and VPC
+
+* Your VPC must have at least 1 subnet in at least 2 of the Availability Zones in the region where you want to deploy your DB instance.
+* Your VPC must have a `DB subnet group` that you create
+
+# ELB - Elastic Load Balancer
+
+Elastic Load Balancing automatically distributes incoming web traffic across multiple EC2 instances.
+
+Common Listener configurations: http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/using-elb-listenerconfig-quickref.html
+
+## ELB in a VPC
+
+## Registering / Deregistering Instances
+
+* you MUST add ALL the subnets of the instances you want to connect to your ELB.
+* Register instances: ELB use the IP address associated with an instance to drive traffic to it.
+
+* restart instances: if you restart an instance in VPN it's private IP doen't change (TODO:and it's public IP??? ), so you don't need to reregister it but reregister reduce the time the ELB took to detect the recovered instance.
+
+
+## Best practiecs for Web server behind an ELB
+
+
+## ELB Cross-Zone load balancing
+
+* http://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/
+
+When `Cross-Zone load balancing` is OFF:
+
+* Incoming traffic is load balanced equally across all Availability Zones enabled for your load balancer, so it is important to have approximately equivalent numbers of instances in each zone.
+* For example, if I have 4 instances (a1, a2, a3, a4) in zone us-east-1a and a single instance d1 in us-east-1d behind an ELB, d1 would get nearly 50% of the traffic.
+
+
+When `Cross-Zone load balancing` is ON:
+
+* incoming traffic is routed evenly across all back-end instances, **regardless of the Availability Zone**.
+* For example, if I have 4 instances (a1, a2, a3, a4) in zone us-east-1a and a single instance d1 in us-east-1d behind an ELB, d1 would get nearly 20% of the traffic.
+* http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/TerminologyandKeyConcepts.html#request-routing
+
+
+http://stackoverflow.com/questions/11424481/aws-elastic-load-balancer-and-multiple-availability-zones
+
+## ELB and Autoscaling groups
+
+If you have associated your Auto Scaling group with a load balancer, you can use the load balancer health check to determine the health state of instances in your Auto Scaling group.
+
+REF: http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/TerminologyandKeyConcepts.html#healthcheck
+
+## Connection Draining
+
+If connection draining is enabled, when an instance is deregisted, existing connection will be kept open for a configurable amount of time.
+
+## Monitoring and Log
+
+REF:
+
+* http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/elb-monitor-logs.html
+
+
+# Autoscaling
+
+[AWS Doc](https://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/WhatIsAutoScaling.html)
+
+Auto Scaling Components:
+
+* Groups
+* Launch configurations
+* Scaling plans
+
+* a group has 1 launch configuration
+
+* Auto Scaling groups can scale across multiple Availability Zones within a region.
+  * Auto Scaling attempts to distribute instances evenly between the Availability Zones
+  * For each instance that Auto Scaling launches in a VPC, it selects a subnet from the Availability Zone at random.
+* Auto Scaling groups cannot span multiple regions.
+* For Auto Scaling groups in a VPC, the EC2 instances are launched in subnets.
+
+## Group
+
+Is a collection of EC2 instances that share similar characteristics and are treated as a logical grouping for the purposes of instance scaling and management.
+
+Params:
+
+* a name
+* launch configuration
+* minimum number of instances
+* and maximum number of instances.
+
+To update the lauch config:
+
+* create a new launch config
+* update the group
+* new instances are launched using the new configuration parameters, but existing instances are not affected (terminate them you want to update also existing one).
+
+## Launch Configurations
+
+Your group uses a launch configuration as a template for its EC2 instances:
+
+* the AMI ID,
+* instance type,
+* key pair,
+* security groups,
+* block device mapping for your instances.
+
+You can't modify a launch configuration after you've created it.
+
+## Health
+
+An Autoscaling Group can check the health of EC2 instances using:
+
+* EC2 instance status checks (default).
+  * If the instance status is any state other than `running` or if the system status is `impaired`, Auto Scaling considers the instance to be unhealthy and launches a replacement.
+* ELB metrics (default if)
+
+Note: also the ELB check the health of EC2 instances registered with the ELB
+
+## Planning Autoscaling Groups
+
+### Scaling Plan
+
+You can have different scaling strategies:
+
+* none: just keep a fixed number of instances
+* manual: manually enter maximum, minimum, or desired capacity. At any time, you can manually change the size of an existing Auto Scaling group
+* scheduled
+* on demand
+
+### Cooldowns
+
+[DOC](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/Cooldown.html)
+
+* Use case: give time to new/old instances to launch or terminate before reevaluate the group status and take new actions.
+* The Auto Scaling `cooldown period` is a configurable setting that determines when Auto Scaling should suspend any scaling activities related to a specific Auto Scaling group.
+* It start when any scaling activity happen
+* default: 300 seconds
+
+
+Lifecycle Hooks:
+
+* The cooldown period for the Auto Scaling group does not begin until after the instance moves out of the wait state.
+
+### Termination Policy
+
+[Doc](http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/AutoScalingBehavior.InstanceTermination.html)
+
+When the group must scale in, the `termination policy` is applied to select which instances should be terminated.
+
+Auto Scaling currently supports the following custom termination policies:
+
+* `Default` Auto Scaling uses its default termination policy (see doc for a full description):
+  * ensure that your network architecture spans Availability Zones evenly
+  * try remove instance oldest launch configuration.
+  * try to remove first instances are closest to the next billing hour
+
+* `OldestInstance` Auto Scaling terminates the oldest instance in the group. This option is useful when you're upgrading the instances in the Auto Scaling group to a new EC2 instance type, and want to eventually replace instances with older instances with newer ones.
+
+* `NewestInstance` Auto Scaling terminates the newest instance in the group. This policy is useful when you're testing a new launch configuration but don't want to keep it in production.
+
+* `OldestLaunchConfiguration` Auto Scaling terminates instances that have the oldest launch configuration. This policy is useful when you're updating a group and phasing out the instances from a previous configuration.
+
+* `ClosestToNextInstanceHour` Auto Scaling terminates instances that are closest to the next billing hour. This policy helps you maximize the use of your instances and manage costs.
+
+
+
+### ELB: Load Balancing a Group
+
+[Doc](https://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/US_SetUpASLBApp.html)
+
+* an Auto Scaling group can register to N ELB.
+* ELB send metrics in real time to CloudWatch
+
+### Autoscaling and VPC
+
+[Doc](https://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/autoscalingsubnets.html)
+
+TODO
 
 # Route 53
 
@@ -924,3 +1179,497 @@ Click “Redirect all requests to another host name”, www.example.com will be 
 
 Save the redirect settings, then open your Route 53 hosted zone for example.com.
 Create a new record set, leave the name blank, select A type. Turn alias to yes and select example.com from the S3 Website Endpoints section of the Alias Target dropdown.
+
+# EC2
+
+TODO: is it possible to use cfn-hup to update users and groups ?
+
+## Metadata
+
+* http://blog.domenech.org/2012/10/aws-ec2-instance-metadata.html
+* http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+
+[cfn-hup doc](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-hup.html)
+
+cfn-hup helper is a daemon that detects changes in resource metadata and runs user-specified actions when a change is detected.
+
+## Cloud-init
+
+
+Add users: http://cloudinit.readthedocs.org/en/latest/topics/examples.html#including-users-and-groups
+
+# Elastic Beanstalk
+
+
+* See `eb config` to manage multimple env easly
+
+
+
+
+## EB CLI 3
+
+Credentials:
+
+* http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html#eb-cli3-credentials
+* The EB CLI uses the same credentials storage as the AWS CLI and AWS SDKs.
+* NOTE: you can use also the `--profile` option
+
+Getting Started:
+
+* http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-getting-started.html
+* `eb init myapp -l pitch-target -p "Multi-container Docker" --profile=pt`: create myapp with platform docker 
+* `eb create my-env`: create a new env
+
+
+### eb init command
+
+When you run `eb init` it will create `.elasticbeanstalk/config.yml` 
+
+~~~
+branch-defaults:
+  default:
+    environment: dev-env
+global:
+  application_name: test_eb
+  default_ec2_keyname: pitch-target
+  default_platform: Docker 1.6.0
+  default_region: null
+  profile: pt
+  sc: null
+~~~
+
+You can choose if you want to configure you local directory to interact with an existing app or create a new one.
+
+### eb config 
+
+To easly recreate a copy of an environment. You can save the configuration from an environment updload them to another:
+
+* `eb config save --cfg my_config`
+* `eb create --cfg my_config new-env`
+
+
+Note: Configurations for a given region are stored into this S3 bucket `elasticbeanstalk-eu-west-1-470031436598/resources/templates`
+
+If you want to copy a configuration from an application to another, you can save it locally and then copy the saved_configs dir:
+
+* `cp -r EXISTING_APP/.elasticbeanstalk/saved_configs NEW_APP/.elasticbeanstalk/`
+* `cd NEW_APP`
+* `eb config put my_config` 
+
+
+### EB Docker multi container (ECS)
+
+`eb init myapp -l pitch-target -p "Multi-container Docker" --profile=pt`: create myapp with platform docker 
+
+Example App: https://github.com/awslabs/eb-docker-nginx-proxy
+
+`Dockerfile and Dockerrun.aws.json are both missing, abort deployment`
+
+* When you create a "Multi-container Docker" EB env, EB will create a cluster
+* When you deploy a new version of the app into an environment a new Task Definition is created into the ECS cluster and task are restarted.
+
+
+`Dockerrun.aws.json` :
+
+* describes the containers to deploy
+* data volumes to create on the host instance for the containers to mount
+* zipped up with additional source code in a single archive
+* Source code that is archived with a Dockerrun.aws.json is deployed to container instances and accessible in the `/var/app/current/` directory
+
+EB role is `aws-elasticbeanstalk-ec2-role`, you need to attach this policy once http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_docker_ecstutorial.html#create_deploy_docker_ecstutorial_role
+
+#### Container Env
+
+To add container env variables, use `.ebextensions/XX_YYYYY.config` :
+
+~~~
+option_settings:  
+  - option_name: MY_VAR
+    value: INCREDIBLEMOLK
+~~~
+
+if you log to the ecs console you will see that the variable is avalilable into the container.
+
+#### Containers Log
+
+Capire come sono organizzati in `/var/log/containers`
+
+#### Container command
+
+http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html#customize-containers-format-container_commands
+
+#### ALL OPTION Settings
+
+http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html
+
+#### Private Docker Registry
+
+* https://www.youtube.com/watch?v=pLw6MLqwmew&feature=youtu.be
+
+* To use a private repository hosted by a third-party registry, you must provide a JSON file called `.dockercfg` with information required to authenticate with the repository.
+
+* Run `docker login` from your workstation for dockerhub or run `docker login server_name` for other registries
+* Upload `~/.dockercfg` to a private S3 bucket
+  * create bucket `pt-eb-docker-private-registry-credentials`
+  * create folder `breezeight`
+  * upload the file with `Use Server Side Encryption`
+* the S3 bucket must be hosted in the same region as the environment that is using it.
+* Allow `s3:GetObject` on  `arn:aws:s3:::pt-eb-docker-private-registry-credentials/breezeight/dockercfg` to the EB instance profile `aws-elasticbeanstalk-ec2-role` (this is the default role, you could use a different one)
+
+~~~
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1432493167000",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::pt-eb-docker-private-registry-credentials/breezeight/dockercfg"
+            ]
+        }
+    ]
+}
+~~~
+
+* Declare the .dockercfg file in the Dockerrun.aws.json file. Make sure that the .dockercfg file contains a valid Amazon S3 bucket and Amazon EC2 key pair. `Dockerrun.aws.json` example snippet:
+
+~~~
+{
+  "AWSEBDockerrunVersion": 2,
+  "authentication": {
+    "bucket": "pt-eb-docker-private-registry-credentials",
+    "key": "breezeight/.dockercfg"
+  },
+  "volumes": [
+    {
+      "name": "php-app",
+      "host": {
+        "sourcePath": "/var/app/current/php-app"
+      }
+    },
+    {
+      "name": "nginx-proxy-conf",
+      "host": {
+        "sourcePath": "/var/app/current/proxy/conf.d"
+      }
+    }  
+  ],
+  "containerDefinitions": [
+    {
+      "name": "addictive-api-production",
+      "image": "breezeight/addictive-api-production:latest",
+      "memory": 128,
+      "essential": true
+    }
+  ]
+}
+~~~
+
+TIP: to test policies: `aws s3 cp s3://pt-eb-docker-private-registry-credentials/breezeight/dockercfg .`
+
+
+### EB ssh
+
+`eb ssh` to quickly ssh into one of the machine
+
+### ebextension
+
+#### 
+
+#### ebextension to define resources like CloudFormation
+
+ELB uses the same configuration management and resource setup as the CloudFormation service. see here : http://www.delarre.net/posts/elasticbeanstalk-vpc-fun/
+
+You can use the ebextension directory to define resources with the same syntax of Cloudformation. Here http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-environment-resources-elasticache.html
+
+
+
+
+# ECS
+
+* [Components of ECS](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html)
+
+ECS is a container management service
+
+## cloud formation and ECS
+
+### ECS default cloudformation template
+
+The ECS getting started created an example cloudformation stack. It is a good starting point to create other stacks
+
+To download this default cluster template:
+
+`aws cloudformation --profile=pt get-template --stack-name EC2ContainerService-default-4e359b92-83d2-4528-943d-f8e458d1428e`
+
+These template can work with an existing VPC o it can create a new one:
+
+* if you don't provide a `VpcId` the `CreateVpcResources` condition is true. A VPC will be created with 2 public subnet `PubSubnetAz1` and `PubSubnetAz2` in zones A and B, associated with the `RouteViaIgw` RouteTable. A new gateway `InternetGateway` is created and use by the `PublibRouteViaIgw` Route of the `RouteViaIgw` RouteTable.
+
+
+CreateElasticLoadBalancer
+
+* the autoscaling lauch configuration use the `EcsClusterName` param, set the `ecs.config` and 
+
+
+EcsInstanceAsg :
+
+* VPCZoneIdentifier (list of subnet identifiers).... what is the best strategy to manage AvailabilityZones ??? Mi sembra che questo template sia vincolato ad usare 2 zone e faccia l'assunzione che le subnet debbano essere nelle zone A e B
+
+
+
+Params:
+
+* KeyName pitch-target
+* SourceCidr 0.0.0.0/0
+* IamRoleInstanceProfile ecsInstanceRole
+
+### ECS pitchtarget cloudformation template
+
+Difference from the default:
+
+* works only with an existing VPC (I want to simplify the template and I refactored out the VPC definition), Elb and EC2 security groups are params
+* The ECS cluster name is required and don't have a default
+
+TODO: require a private docker registry
+
+
+## Private Registry
+
+* [How to store registry credentials on S3](https://aws.amazon.com/blogs/aws/ec2-container-service-ecs-update-access-private-docker-repos-mount-volumes-in-containers/)
+* [ECS doc for private registry](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth.html)
+
+### Create a private registry with s3 backend
+
+http://romain.dorgueil.net/blog/en/docker/2014/12/21/docker-registry-amazon-s3-storage-backend.html
+
+## Agent introspection
+
+ssh -i ~/.ssh/pitch-target.pem ec2-user@<HOST>
+
+
+## IAM Roles and policies for ECS
+
+http://docs.aws.amazon.com/AmazonECS/latest/developerguide/IAM_policies.html
+
+I created:
+
+* `ecsInstanceRole` role with `AmazonEC2ContainerServiceforEC2Role` managed policy that allow the instance's agent to register with the cluster and do basic administration.
+* `ecs-service-role` role with `AmazonEC2ContainerServiceRole` managed policy that allow a service to register and derigister instances from a ELB.
+
+## Task Definition Management
+
+
+Deregister a task: `aws ecs deregister-task-definition --task-definition console-sample-app-static  --profile=pt`
+
+## Describe clusters, tasks, services
+
+
+
+## Scheduling tasks
+
+TODO:
+
+* Algorithm: What is the scheduling algorithm of default Amazon ECS scheduler? 
+ * The ECS " run-task " call uses random placement to schedule your tasks.
+ * [REF: aws ecs forum](https://forums.aws.amazon.com/thread.jspa?messageID=603806&#603806)
+
+
+### Service
+
+~~~
+{
+    "cluster": "", 
+    "serviceName": "", 
+    "taskDefinition": "", 
+    "loadBalancers": [
+        {
+            "loadBalancerName": "", 
+            "containerName": "", 
+            "containerPort": 0
+        }
+    ], 
+    "desiredCount": 0, 
+    "clientToken": "", 
+    "role": ""
+}
+~~~
+
+You can specify the following parameters in a service definition.
+
+cluster
+The short name or full Amazon Resource Name (ARN) of the cluster on which to run your service on. If you do not specify a cluster, the default cluster is assumed.
+
+serviceName
+The name of your service. Up to 255 letters (uppercase and lowercase), numbers, hyphens, and underscores are allowed.
+
+taskDefinition
+The family and revision (family:revision) or full Amazon Resource Name (ARN) of the task definition that you want to run in your service.
+
+loadBalancers
+A list of load balancer objects to use with your service. Currently you are limited to one load balancer per service.
+
+loadBalancerName
+The name of the load balancer.
+
+containerName
+The name of the container (as it appears in a container definition) to associate with the load balancer.
+
+containerPort
+The port on the container to associate with the load balancer.
+
+desiredCount
+The number of instantiations of the specified task definition to place and keep running on your cluster.
+
+clientToken
+Unique, case-sensitive identifier you provide to ensure the idempotency of the request. Up to 32 ASCII characters are allowed.
+
+role
+The name or full Amazon Resource Name (ARN) of the IAM role that allows your Amazon ECS container agent to make calls to your load balancer on your behalf. This parameter is only required if you are using a load balancer with your service.
+
+#### Update a Service
+
+* https://forums.aws.amazon.com/thread.jspa?messageID=613494&#613494
+* http://blogs.aws.amazon.com/application-management/post/Tx32RHFZHXY6ME1/Set-up-a-build-pipeline-with-Jenkins-and-Amazon-ECS
+
+TODO READ THIS DISCUSSION and THE JENKINS BLOG POST: https://forums.aws.amazon.com/thread.jspa?threadID=179271&tstart=0
+
+
+Service Deployment [Doc](http://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html)
+
+The status of the deployment can be:
+
+* `PRIMARY` (for the most recent deployment)
+* `ACTIVE` (for previous deployments that still have tasks running, but are being replaced with the PRIMARY deployment)
+* `INACTIVE` (for deployments that have been completely replaced).
+
+#### Service ELB
+
+* ELB: currently supports a fixed relationship between the load balancer port and the container instance port. (it is not possible to map the load balancer port 80 to port 3030 on one container instance and port 4040 on another container instance.)
+* All of the containers that are launched in a single task definition are always placed on the same container instance. If the container definition exposes multiple ports you can add multiple listener ports to the load balancer.
+* There is a limit of one load balancer per service.
+
+TODO: 
+
+* is the ELB check different from the container check (sse the essential param of the task definition)? 
+* How many task with the same task-definition can run in a single container instance? 
+* VPC and SUbnet: how to use them ?
+  * select at least two subnets in different Availability Zones. Your selected subnets must at least include any subnet that your container instances reside in.
+
+
+
+### Health check of container
+
+* If a task in a service becomes unhealthy or unresponsive, the task is killed and restarted.
+* This process continues until your service reaches the number of desired running tasks.
+
+TODO:
+
+* Which kind of check does it performe?
+*
+
+### Running Task
+
+## Autoscaling ECS containers
+
+TODO: https://forums.aws.amazon.com/thread.jspa?threadID=179401&tstart=0  or read the use of LAMBDA in the ecs blog
+
+## Rails deploy
+
+TODO:
+
+* TEST a rails app with a docker image and an ELB
+* Use AWS ruby sdk and rake to run a deploy
+* How to run migrations? 
+ * run migration from a CI server
+ * detect pending migration from the healtcheck
+* How do we update an image?
+* build image with jenkins: https://blogs.aws.amazon.com/application-management/post/Tx32RHFZHXY6ME1/Set-up-a-build-pipeline-with-Jenkins-and-Amazon-ECS
+
+Registry:
+
+* We could try to use DockerHUB which has 1 private repo for free. The cons is the highest latency when a new machine need to download an image.
+* Next step is to use learn how to setup a private repo.
+
+
+NOTE: a service must have role `ecs-service-role` to interact with the ELB
+
+
+Problemi riscontrati:
+
+
+
+* We cannot update a service with a task that expose a port if we don't have at least 1 free instance to start the rollout:
+
+~~~
+{
+    "services": [
+        {
+            "status": "ACTIVE", 
+            "taskDefinition": "arn:aws:ecs:eu-west-1:470031436598:task-definition/console-sample-app-static:3", 
+            "pendingCount": 0, 
+            "loadBalancers": [], 
+            "desiredCount": 3, 
+            "serviceName": "80", 
+            "clusterArn": "arn:aws:ecs:eu-west-1:470031436598:cluster/default", 
+            "serviceArn": "arn:aws:ecs:eu-west-1:470031436598:service/80", 
+            "deployments": [
+                {
+                    "status": "PRIMARY", 
+                    "pendingCount": 0, 
+                    "createdAt": 1429297790.558, 
+                    "desiredCount": 3, 
+                    "taskDefinition": "arn:aws:ecs:eu-west-1:470031436598:task-definition/console-sample-app-static:3", 
+                    "updatedAt": 1429297790.558, 
+                    "id": "ecs-svc/9223370607556985249", 
+                    "runningCount": 0
+                }, 
+                {
+                    "status": "ACTIVE", 
+                    "pendingCount": 0, 
+                    "createdAt": 1429296258.008, 
+                    "desiredCount": 3, 
+                    "taskDefinition": "arn:aws:ecs:eu-west-1:470031436598:task-definition/console-sample-app-static:1", 
+                    "updatedAt": 1429297790.557, 
+                    "id": "ecs-svc/9223370607558517799", 
+                    "runningCount": 3
+                }
+            ], 
+            "events": [
+                {
+                    "message": "(service 80) was unable to place a task because the resources could not be found.", 
+                    "id": "f13b250b-ed9a-4c9f-a56f-9e4824bb8bf0", 
+                    "createdAt": 1429297822.914
+                }, 
+                {
+                    "message": "(service 80) has reached a steady state.", 
+                    "id": "805efa67-04d0-42c4-a10c-790bfb0a05cc", 
+                    "createdAt": 1429297789.821
+                }, 
+
+~~~
+
+The only way to solve these issue is to add a container-image or reduce by 1 the number of 
+IDEA: detect if a task-definition has a port: this means it can have only a task per container-instace (we could use these info to better schedule)
+
+
+# MISC
+
+ECS + JENKINS : http://blogs.aws.amazon.com/application-management/post/Tx32RHFZHXY6ME1/Set-up-a-build-pipeline-with-Jenkins-and-Amazon-ECS
+
+### Use CoreOS
+
+https://coreos.com/docs/running-coreos/cloud-providers/ecs/
+https://gist.github.com/kgorskowski/3793ea745a1dd370e17e
+
+### Deploy mesos on ECS
+
+* 1 command: http://sebgoa.blogspot.it/2015/03/1-command-to-mesos-with-docker-compose.html
+* 7 commnads: https://medium.com/@gargar454/deploy-a-mesos-cluster-with-7-commands-using-docker-57951e020586
+
+
+### Future IDEAS for ECS
+
+* Nice post with a lot of feature requests
