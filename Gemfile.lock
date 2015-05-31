@@ -1,6 +1,21 @@
+GIT
+  remote: https://github.com/breezeight/jekyll-github-sample
+  revision: e771ed4a1894facf9c83d013a578840a081d7598
+  branch: improve_error_handling
+  specs:
+    jekyll_github_sample (0.1.1)
+      activesupport (~> 4.0)
+      jekyll (~> 2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
+    activesupport (4.1.8)
+      i18n (~> 0.6, >= 0.6.9)
+      json (~> 1.7, >= 1.7.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.1)
+      tzinfo (~> 1.1)
     blankslate (2.1.2.4)
     celluloid (0.16.0)
       timers (~> 4.0.0)
@@ -16,6 +31,7 @@ GEM
     fast-stemmer (1.0.2)
     ffi (1.9.6)
     hitimes (1.2.2)
+    i18n (0.6.11)
     jekyll (2.4.0)
       classifier-reborn (~> 2.0)
       colorator (~> 0.1)
@@ -37,8 +53,10 @@ GEM
     jekyll-paginate (1.1.0)
     jekyll-sass-converter (1.2.1)
       sass (~> 3.2)
+    jekyll-sitemap (0.7.0)
     jekyll-watch (1.1.1)
       listen (~> 2.7)
+    json (1.8.1)
     kramdown (1.4.2)
     liquid (2.6.1)
     listen (2.7.11)
@@ -46,6 +64,7 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     mercenary (0.3.4)
+    minitest (5.5.0)
     parslet (1.5.0)
       blankslate (~> 2.0)
     posix-spawn (0.3.9)
@@ -59,10 +78,13 @@ GEM
     rouge (1.7.2)
     safe_yaml (1.0.4)
     sass (3.4.6)
+    thread_safe (0.3.4)
     timers (4.0.1)
       hitimes
     toml (0.1.2)
       parslet (~> 1.5.0)
+    tzinfo (1.2.2)
+      thread_safe (~> 0.1)
     yajl-ruby (1.1.0)
 
 PLATFORMS
@@ -71,4 +93,6 @@ PLATFORMS
 DEPENDENCIES
   coderay
   jekyll (~> 2.3)
+  jekyll-sitemap
+  jekyll_github_sample!
   rouge
