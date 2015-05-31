@@ -62,17 +62,31 @@ binding.pry
 %> purchase_funnel.jpg)
 ~~~
 
-# Use LESS with custom botstrap theme
+# Use LESS with custom bootstrap theme
 
 **WARNING** : don't use full path `@import "source/stylesheets/custom.less";` but  `@import "custom.less";` otherwise the wather don't work (is it a bug?).
 
-You should EDIT source/stylesheets/all.css:
+REF: https://middlemanapp.com/advanced/asset_pipeline/
+
+SEE this README: https://github.com/middleman/middleman-sprockets
+
+If you want to use middleman-sprockets with bower, you need to import assets first. The path is relative to your bower-directory.
+
+sprockets.import_asset <path>
+Given vendor/assets/components as bower-directory and jquery as component-name, you would import the jquery production version with:
+
+sprockets.append_path 'vendor/assets/components'
+sprockets.import_asset 'jquery/dist/jquery'
+
+
+You should EDIT source/stylesheets/all.css and import all the less file you need:
 
 ~~~
 /*
-*= require site
+*= require _site
 */
-ADD  source/stylesheets/site.less
+
+ADD  source/stylesheets/_site.less
 @import "bootstrap/less/bootstrap.less";
 @import "bootstrap-theme-pitchtarget/less/pitchtarget-theme.less";
 @import "bootstrap-theme-pitchtarget/less/pitchtarget-variables.less";
@@ -85,16 +99,42 @@ You should EDIT Gemfile:
 +#Less
 +gem "sprockets-less"
 +gem "less"
-+gem 'therubyracer'
++gem 'therubyracer' # this is needed because the less compiler uses V8 engine included by this gem
 
-NOTE: the @import directive uses the sprocket PATH
-check that you include bower_components path in config.rb:
-# Add bower's directory to sprockets asset path
+check that you include bower_components path in config.rb, so you can use the @import directive with paths relative to the sprocket PATH :
+
+
++ # Add bower's directory to sprockets asset path
 after_configuration do
   sprockets.append_path File.join root.to_s, "bower_components"
 end
 ~~~
 
+JS: TODO `source/javascripts/all.js`
+
+~~~
+//= require_tree .
+//= require "jquery/dist/jquery"
+//= require "bootstrap/dist/js/bootstrap"
+~~~
+
+FONTS:
+
+~~~
+after_configuration do
+  ....
+  sprockets.append_path File.join root.to_s, "bower_components/bootstrap/fonts"
+  sprockets.import_asset "glyphicons-halflings-regular.eot"
+  sprockets.import_asset "glyphicons-halflings-regular.svg"
+  sprockets.import_asset "glyphicons-halflings-regular.ttf"
+  sprockets.import_asset "glyphicons-halflings-regular.woff"
+  sprockets.import_asset "glyphicons-halflings-regular.woff2" 
+  ....
+end
+~~~
+
+
+I don't understand how middleman choose the fonts directory so I hacked a little the bootstrap font config (See Kenwood landing): `@icon-font-path: "../../../fonts/bootstrap/fonts/";`
 
 # Multi-language
 
