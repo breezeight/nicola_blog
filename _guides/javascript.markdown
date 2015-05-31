@@ -12,9 +12,6 @@ categories: ["javascript"]
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-
-
-
 # References:
 
 Books:
@@ -45,7 +42,6 @@ Always use 3 equals unless you have a good reason to use 2.
 Function, not objects are at the core of JavaScript
 
 JS is Functional language, functions are first-class objects
-
 
 Anonymous functions:
 function(){return "test"}
@@ -580,6 +576,50 @@ See [this post](http://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at
 
 See the ember guide for the Ember.Mixin.
 
+# Browser Events
+
+
+
+
+# Browser Debugger TIPS
+
+* `alert("my message")`
+
+## DOM breakpoint
+
+* `on subtree modification`
+
+## Event listeners
+
+If you use the ispector there is a tab that list all listeners.
+
+## MAPS
+
+TODO: dovrebbe essere possibile fare delle mappe per non avere dei mega file CSS e JS
+
+
+
+# JQuery
+
+REFs: 
+
+* https://jquery.com/
+* [JQuery Learning Center](http://learn.jquery.com/)
+
+## How to select elements
+
+* [Intro](https://learn.jquery.com/using-jquery-core/selecting-elements/)
+* [Selector reference](http://api.jquery.com/category/selectors/)
+
+The most basic concept of jQuery is to "select some elements and do something with them." jQuery supports most CSS3 selectors, as well as some non-standard selectors.
+
+When a selection is made using `$()`, an object is always returned
+
+To check if a selection contains elements:
+
+* https://learn.jquery.com/using-jquery-core/selecting-elements/#does-my-selection-contain-any-elements
+* `if ( $( "div.foo" ).length )`
+
 
 # ES6
 
@@ -588,6 +628,12 @@ See the ember guide for the Ember.Mixin.
 * [Easy Summary](http://www.frontendjournal.com/javascript-es6-learn-important-features-in-a-few-minutes/)
 
 ## ES6 Modules
+
+### Why use ES6 modules?
+
+For one thing, it's the first time we've had modules that are actually part of the language. Now that the standard has been formalised, we can look forward to a future in which browsers (and node.js, eventually) natively support ES6 modules. So code written in ES6 modules is future-proof.
+
+### Syntax
 
 Some reference about ES6 module:
 
@@ -662,6 +708,11 @@ How use it?
 
 * rsvp
 
+#### ES6Modules
+
+* https://github.com/ember-cli/broccoli-es6modules
+
+ES6Modules wraps the esperanto library. All options described for esperanto can be provided here. 
 
 #### Esperanto
 
@@ -669,6 +720,9 @@ Refs:
 
 * [Homepage](http://esperantojs.org/)
 * [Github Homepage](https://github.com/esperantojs/esperanto)
+
+Esperanto is a tool for converting ES6 modules to AMD, CommonJS or UMD. It's built for speed, interoperability and ease of use.
+
 
 How use it?
 
