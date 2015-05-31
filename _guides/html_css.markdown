@@ -384,6 +384,23 @@ Summary:
 
 http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html#viewport
 
+### FAQ
+
+#### What Does “width: 100%” Do in CSS?
+
+http://www.impressivewebs.com/width-100-percent-css/
+
+* First Things First: Blocks Don’t Need 100% Width, block element (such as a <div>, <p>, or <ul>, to name a few) will, by default expand to fit the width of its containing, or parent, element (minus any margins it has or padding its parent has).
+* In 99% of cases, applying width: 100% to a block level element is either unnecessary or will bring undesirable results.
+
+#### What is the difference between width 100% and width inherit
+
+http://stackoverflow.com/questions/9374509/100-vs-inherit
+
+Inherit copies the literal expression rather than the value.
+
+
+
 
 ### Positioning
 
