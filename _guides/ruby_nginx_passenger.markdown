@@ -31,6 +31,7 @@ Misc:
 ## Configuration
 
 Refs: 
+
 * Nginx Intro: http://nginx.org/en/docs/beginners_guide.html
 * Intro by DigitalOcean: https://www.digitalocean.com/community/tutorials/understanding-the-nginx-configuration-file-structure-and-configuration-contexts
 * Reference of Nginx directives: http://nginx.org/en/docs/dirindex.html
