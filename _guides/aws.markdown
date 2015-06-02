@@ -1168,7 +1168,10 @@ In order for Route 53 DNS to become active for your application you need to tell
 
 ## Redirect Naked/root domain to www
 
-ref: https://devcenter.heroku.com/articles/route-53
+ref:
+
+* [AWS Doc](http://docs.aws.amazon.com/AmazonS3/latest/dev/website-hosting-custom-domain-walkthrough.html)
+* https://devcenter.heroku.com/articles/route-53
 
 Route 53 supports Alias records which use Amazon S3 static websites to dynamically resolve naked domains to their www counterparts using a 301 redirect. E.g. example.com to www.example.com.
 
@@ -1179,6 +1182,160 @@ Click “Redirect all requests to another host name”, www.example.com will be 
 
 Save the redirect settings, then open your Route 53 hosted zone for example.com.
 Create a new record set, leave the name blank, select A type. Turn alias to yes and select example.com from the S3 Website Endpoints section of the Alias Target dropdown.
+
+# S3
+
+## Access Control to S3 Buckets 
+
+REF:
+
+* http://docs.aws.amazon.com/AmazonS3/latest/dev/s3-access-control.html
+* [How S3 authorize a request](http://docs.aws.amazon.com/AmazonS3/latest/dev/how-s3-evaluates-access-control.html)
+
+By default, all Amazon S3 resources—buckets, objects, and related subresources are private.
+
+* You can associate an access policy with a resource (bucket and object) or a user.
+
+http://docs.aws.amazon.com/AmazonS3/latest/dev/access-control-overview.html#access-control-resources-manage-permissions-basics
+
+
+### Using User or Bucket Policy
+
+Access policy language:
+
+* [AWS DOC](http://docs.aws.amazon.com/AmazonS3/latest/dev/access-policy-language-overview.html)
+* can specify: 
+  * resources
+  * actions
+  * effect: Allow/Deny
+  * principal: specifies the user, account, service, or other entity that is allowed or denied access to a resource (not required for a policy attached to users, groups, roles)
+  * permissions: s3:GetObject, s3:PutObject, etc ( [AWS Ref](http://docs.aws.amazon.com/AmazonS3/latest/dev/using-with-s3-actions.html) )
+  * conditions [AWS ref](http://docs.aws.amazon.com/AmazonS3/latest/dev/amazon-s3-policy-keys.html)
+
+Policy can be attached to:
+
+* bucket: [Example](http://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html)
+  * Note: You attach S3 bucket policies at the bucket level (i.e. you can’t attach a bucket policy to an S3 object), but the permissions specified in the bucket policy apply to all the objects in the bucket.
+  * Note: includes a “Principal” element, which lists the principals that bucket policy controls access for.
+* users: [Example](http://docs.aws.amazon.com/AmazonS3/latest/dev/example-policies-s3.html)
+
+Sample bucket policy:
+
+~~~
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": ["arn:aws:iam::111122223333:user/Alice",
+                "arn:aws:iam::111122223333:root"]
+      },
+      "Action": "s3:*",
+      "Resource": ["arn:aws:s3:::my_bucket",
+                   "arn:aws:s3:::my_bucket/*"]
+    }
+  ]
+}
+~~~
+
+### Using S3 ACL
+
+REF: [AWS Doc](http://docs.aws.amazon.com/AmazonS3/latest/dev/S3_ACLs_UsingACLs.html)
+
+As a general rule, AWS recommends using S3 bucket policies or IAM policies for access control. S3 ACLs is a legacy access control mechanism that predates IAM. However, if you already use S3 ACLs and you find them sufficient, there is no need to change.
+
+An S3 ACL is a sub-resource that’s attached to every S3 bucket and object. It defines which AWS accounts or groups are granted access and the type of access. When you create a bucket or an object, Amazon S3 creates a default ACL that grants the resource owner full control over the resource.
+
+
+* Canned ACL: http://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
+
+### How does authorization work with multiple access control mechanisms?
+
+Whenever an AWS principal issues a request to S3, the authorization decision depends on the union of all the IAM policies, S3 bucket policies, and S3 ACLs that apply.
+
+In accordance with the principle of least-privilege, decisions default to DENY and an explicit DENY always trumps an ALLOW. For example, if an IAM policy grants access to an object, the S3 bucket policies denies access to that object, and there is no S3 ACL, then access will be denied. Similarly, if no method specifies an ALLOW, then the request will be denied by default. Only if no method specifies a DENY and one or more methods specify an ALLOW will the request will be allowed.
+
+### Guidelines: When to use IAM User policies vs. S3 Bucket policies VS ACL
+
+Use IAM policies if:
+
+* You need to control access to AWS services other than S3. IAM policies will be easier to manage since you can centrally manage all of your permissions in IAM instead of spreading them between IAM and S3.
+* You have numerous S3 buckets each with different permissions requirements. IAM policies will be easier to manage since you don’t have to define a large number of S3 bucket policies and can instead rely on fewer, more detailed IAM policies.
+* You prefer to keep access control policies in the IAM environment.
+
+Use S3 bucket policies if:
+
+* You want a simple way to grant cross-account access to your S3 environment, without using IAM roles.
+* Your IAM policies bump up against the size limit (up to 2 kb for users, 5 kb for groups, and 10 kb for roles). S3 supports bucket policies of up 20 kb.
+* You prefer to keep access control policies in the S3 environment.
+
+If you’re still unsure of which to use, consider which audit question is most important to you:
+
+* If you’re more interested in “What can this user do in AWS?” then IAM policies are probably the way to go. You can easily answer this by looking up an IAM user and then examining their IAM policies to see what rights they have.
+* If you’re more interested in “Who can access this S3 bucket?” then S3 bucket policies will likely suit you better. You can easily answer this by looking up a bucket and examining the bucket policy.
+
+Whichever you method you choose, we recommend staying as consistent as possible. Auditing permissions becomes more challenging as the number of IAM policies and S3 bucket policies grows.
+
+## Hosting a public Static Website
+
+REF: [AWS doc](http://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteHosting.html)
+
+For naked domain redirect see [here]({{ site.url }}/guides/aws.html#redirect-nakedroot-domain-to-www)
+
+The website is then available at the region-specific website endpoint of the bucket:
+
+`<bucket-name>.s3-website-<AWS-region>.amazonaws.com`
+
+* Permission required for a public website using bucket policies [AWS Ref](http://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteAccessPermissionsReqd.html)
+
+~~~
+{
+  "Version":"2012-10-17",
+  "Statement":[{
+	"Sid":"PublicReadGetObject",
+        "Effect":"Allow",
+	  "Principal": "*",
+      "Action":["s3:GetObject"],
+      "Resource":["arn:aws:s3:::example-bucket/*"
+      ]
+    }
+  ]
+}
+~~~
+
+
+
+Cloudfomation tempate example:
+
+* see the `addictive-api-cloudformation` git repo
+* `aws cloudformation create-stack  --profile=pt --capabilities CAPABILITY_IAM --stack-name  PitchTargetAlphaS3Frontend20150531 --template-body file://pitchtarget_template_s3_static_website_only.json --parameters ParameterKey=S3BucketName,ParameterValue=alpha.pitchtarget.com` 
+
+## Hosting a private website with basic auth
+
+* Use `http://www.s3auth.com/`
+
+To create a user:
+
+`htpasswd -nbs my_user my_password > .htpasswd`
+
+To append a user: 
+
+`htpasswd -nbs my_user my_password >> .htpasswd`
+
+
+### Example
+
+For example to deploy the Ember app on  `alpha.pitchtarget.com`:
+ 
+* `aws cloudformation create-stack  --profile=pt --capabilities CAPABILITY_IAM --stack-name  PitchTargetAlphaS3Frontend20150531 --template-body file://pitchtarget_template_s3_static_website_only.json --parameters ParameterKey=S3BucketName,ParameterValue=alpha.pitchtarget.com`
+* Create the `alpha` CNAME on the DNS with value: `alpha.pitchtarget.com.s3-website-eu-west-1.amazonaws.com`. You can read the CNAME value from the stack output.
+
+WARNING: the bucket name must match the virtual host, see [here](http://docs.aws.amazon.com/AmazonS3/latest/dev/VirtualHosting.html#VirtualHostingCustomURLs) for more details.
+
+TODO: capire bene le policy da mettere
+
+
 
 # EC2
 
