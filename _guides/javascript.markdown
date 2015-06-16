@@ -343,7 +343,7 @@ SOJS ch 5.3:
     click: function(){
       this.clicked = true;
       assert(button.clicked,"The button has been clicked");
-      //FAILS: the context of the click function is not refer- ring to the button object as we intended.
+      //FAILS: the context of the click function is not referring to the button object as we intended.
     } 
   };
   var elem = document.getElementById("test");
