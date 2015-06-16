@@ -1318,6 +1318,10 @@ Cloudfomation tempate example:
 * see the `addictive-api-cloudformation` git repo
 * `aws cloudformation create-stack  --profile=pt --capabilities CAPABILITY_IAM --stack-name  PitchTargetAlphaS3Frontend20150531 --template-body file://pitchtarget_template_s3_static_website_only.json --parameters ParameterKey=S3BucketName,ParameterValue=alpha.pitchtarget.com` 
 
+
+### Create a Bucket Policy for a deploy user
+
+
 ## Hosting a private website with basic auth
 
 * Use `http://www.s3auth.com/`
@@ -1368,9 +1372,53 @@ Add users: http://cloudinit.readthedocs.org/en/latest/topics/examples.html#inclu
 * See `eb config` to manage multimple env easly
 
 
+## Docker Multi Container
+
+### Save Container Log in volumes
+
+* In this example 2 volumes are created and then mounted.
+* The mounting points depends on the container, you should map the proper directory
+* `/var/app/current` is always available on docker multicontainer host
+  * `/var/app/current/nginx` and `/var/app/current/webapp` are automatically created if doesn't exists.
 
 
-## EB CLI 3
+~~~
+{
+  "volumes": [
+    {
+      "name": "nginx",
+      "host": {
+        "sourcePath": "/var/app/current/nginx"
+      }
+    },
+    {
+      "name": "webapp",
+      "host": {
+        "sourcePath": "/var/app/current/webapp"
+      }
+    } 
+  ],
+  "containerDefinitions": [
+    {
+      "mountPoints": [
+        {
+          "sourceVolume": "nginx",
+          "containerPath": "/var/log/nginx/"
+        },
+        {
+          "sourceVolume": "webapp",
+          "containerPath": "/home/app/webapp/log"
+        }
+      ]
+    }
+  ]
+}
+~~~
+
+
+
+
+## EB CLI 3 and AWS CLI
 
 Credentials:
 
@@ -1408,11 +1456,30 @@ You can choose if you want to configure you local directory to interact with an 
 
 To easly recreate a copy of an environment. You can save the configuration from an environment updload them to another:
 
-* `eb config save --cfg my_config`
-* `eb create --cfg my_config new-env`
+* `eb config save <OLD_ENV> --cfg old_config`
+* `eb create --cfg old_config <NEW_ENV>`
+
+NOTE: to see a list of all available EB Stacks 
+
+* `aws elasticbeanstalk list-available-solution-stacks --profile=pt`
+
+#### Clone and modify an old_config to create a new env
+
+* get it locally: `eb config get <old_config>` will save it into `.elasticbeanstalk/saved_configs/prova-sc.cfg.yml`
+* rename it (keeping the extension `cfg.yml`): `cp .elasticbeanstalk/saved_configs/old_config.cfg.yml .elasticbeanstalk/saved_configs/prova-sc.cfg.yml `
+* Do your changes
+* put it online: `eb config put prova-sc` 
+
+
+#### List configurations
+
+To List configurations: `eb config list`
+
 
 
 Note: Configurations for a given region are stored into this S3 bucket `elasticbeanstalk-eu-west-1-470031436598/resources/templates`
+
+#### Copy configurations to another APP
 
 If you want to copy a configuration from an application to another, you can save it locally and then copy the saved_configs dir:
 
@@ -1420,6 +1487,9 @@ If you want to copy a configuration from an application to another, you can save
 * `cd NEW_APP`
 * `eb config put my_config` 
 
+### eb create
+
+`eb create --cfg production --version 5914 addictive-api-prod`
 
 ### EB Docker multi container (ECS)
 
@@ -1453,6 +1523,14 @@ option_settings:
 ~~~
 
 if you log to the ecs console you will see that the variable is avalilable into the container.
+
+### Get/set Environment variables
+
+* `eb ` 
+* `eb printenv  aaa-env`
+* `eb setenv PIPPO=a PLUTO=b -e aaa-env`
+
+
 
 #### Containers Log
 
@@ -1539,17 +1617,128 @@ TIP: to test policies: `aws s3 cp s3://pt-eb-docker-private-registry-credentials
 
 `eb ssh` to quickly ssh into one of the machine
 
-### ebextension
+## Ebextension
 
-#### 
+Misc Notes: 
 
-#### ebextension to define resources like CloudFormation
+* When you run a container_command, the application is already inflated into `/var/app/staging/`
+* the current working dir is `/var/app/staging/`
+* the user is `root` 
+* the environment has all the variable defined for the EB environment.
+
+
+### Example: define a script
+
+* create scripts/test.sh
+* `chmod +x script/test.sh`
+* run it .ebextensions/01_migrations.config 
+
+~~~
+container_commands:
+  rails_migration:
+    command: >
+      scripts/test.sh  
+    leader_only: true
+~~~
+
+NOTE: `>` is a yaml trick to merge line with spaces.
+
+### ebextension to define resources like CloudFormation
 
 ELB uses the same configuration management and resource setup as the CloudFormation service. see here : http://www.delarre.net/posts/elasticbeanstalk-vpc-fun/
 
 You can use the ebextension directory to define resources with the same syntax of Cloudformation. Here http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-environment-resources-elasticache.html
 
+In your extension file you can reference resources create by EB, the list is here: http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-resources.html
 
+WARNING: if you set configuration from the web console those values will override those in the ebextension dir
+
+example `.ebextensions/02_load_balancer.config` :
+
+
+~~~
+"Resources" : {
+  "AWSEBLoadBalancerSecurityGroup": {
+    "Type" : "AWS::EC2::SecurityGroup",
+    "Properties" : {
+      "GroupDescription" : "Enable 80 inbound and 8080 outbound",
+      "VpcId": "vpc-un1que1d",
+      "SecurityGroupIngress" : [ {
+        "IpProtocol" : "tcp",
+        "FromPort" : "80",
+        "ToPort" : "80",
+        "CidrIp" : "0.0.0.0/0"
+      }],
+      "SecurityGroupEgress": [ {
+        "IpProtocol" : "tcp",
+        "FromPort" : "8080",
+        "ToPort" : "8080",
+        "CidrIp" : "0.0.0.0/0"
+      } ]
+    }
+  },
+  "AWSEBLoadBalancer" : {
+    "Type" : "AWS::ElasticLoadBalancing::LoadBalancer",
+    "Properties" : {
+      "Subnets": ["subnet-un1que1d2"],
+      "Listeners" : [ {
+        "LoadBalancerPort" : "80",
+        "InstancePort" : "8080",
+        "Protocol" : "HTTP"
+      } ]
+    }
+  }
+}
+~~~
+
+## Hooks
+
+**WARNING** this is an undocumented feature, it's useful more for debug, it could change in the future.
+
+* `/opt/elasticbeanstalk/hooks`: hooks directory
+* https://forums.aws.amazon.com/thread.jspa?threadID=137136
+
+### Undocumented Snipped found reading the hooks source code
+
+* `/opt/elasticbeanstalk/bin/get-config container -k ecs_task_arn_file`: 
+
+## EB Worker Tier
+
+* [AWS DOC](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features-managing-env-tiers.html)
+
+### Periodic Task - Cron
+
+### Rails Migration on Docker Multi Container
+
+**HACK**
+
+I cannot manage to run a command on specific container... I fall back on this hack using `.ebextensions/01_migration.config`:
+
+~~~
+commands:
+  rails_migration:
+    command: docker exec `docker ps|grep addictive-api-prod|awk -F" " '{print $1}'` bundle exec rake db:migrate 
+    leader_only: true
+
+~~~
+
+Basically we grep the name of the containter we want to use to exec the migration rake task.
+
+**WARNING** : this could broke if EB will change the naming convention...
+
+## EB Agent Debug and internals
+
+### Debug ebextensions
+
+When a script in ebextensions fails you can check the `/var/log/eb-activity.log` log.
+
+log lines are tagged, for example the script `/opt/elasticbeanstalk/hooks/appdeploy/pre/01unzip.sh` will be tagged with `CMD-AppDeploy/AppDeployStage0/AppDeployPreHook/01unzip.sh`
+
+
+Execution order:
+
+* CMD-Startup/StartupStage1/AppDeployEnactHook/02update-credentials.sh
+* 
 
 
 # ECS
