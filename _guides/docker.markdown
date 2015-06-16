@@ -1262,6 +1262,9 @@ Docker Machine can also provision Swarm clusters. This can be used with any driv
 
 # Docker Compose (ex Fig tool)
 
+Docker Compose acts as a wrapper around Docker – it links your containers together and provides syntactic sugar around some complex container linking commands.
+It can coordinate and spin up your entire application and dependencies with one command.
+
 Install: If you install from pip you will get an SSL error. Use brew install docker-compose
 
 Compose is great for:
@@ -1276,10 +1279,82 @@ TODO:
 
 * http://docs.docker.com/compose/install/
 * http://blog.docker.com/2015/02/announcing-docker-compose/
+* http://blog.carbonfive.com/2015/03/17/docker-rails-docker-compose-together-in-your-development-workflow/
 
-## For development
+cheatsheet:
 
-* [fig.yml doc](http://www.fig.sh/yml.html)
+* `docker-compose up`
+* `docker-compose stop`
+* `docker-compose logs` : watch the logs of all our containers 
+* `service` : the main stanzas in th docker-compose.yml file (ex: web, db, redis)
+
+Naming convention:
+
+* the directory containing the docker-compose.yml file is used in the give a prefix to services and images
+  * `-`, `_`, spaces, etc are removed (ex: addctive-api becomes addictiveapi)
+  * you can ovverride this default behavior with the `-p` option
+* name of the images that are built is: `<containingDIR>_<service_name>`
+* name of the containers: `<containingDIR>_<service_name>_<incremental_number>`
+
+ex: `addctive-api/docker-compose.yml` produce:
+  
+* web service image name: addictiveapi_web
+
+
+## Commands
+
+* `docker-compose up` is a combination of build, link, and start-services command for each container
+* `docker-compose run [--rm] <service> [COMMAND]`
+  * NOTE: by default it create a TTY session for your app (up don't do it)
+  * By default it start also dependent services (the one connected with `link`) if they are not running.
+  * It always start a new container instance of the service
+
+
+
+
+## docker-compose.yml documentation
+
+https://docs.docker.com/compose/yml/#compose-documentation
+
+### PORTS
+
+* `ports` to expose ports to the host container
+
+### LINKS
+
+`links` 
+
+[Docker compose doc](https://docs.docker.com/compose/yml/#links)
+
+
+
+
+## RAILS and docker-composer
+
+* You will need to re-run the docker-compose build command every time you change the Dockerfile or Gemfile.
+* developing with Docker added very little overhead to the development process. In fact, most commands that you would run for Rails simply needed to be prepended with a docker-compose run web
+
+common commands:
+
+* bundle install:	docker-compose run web bundle install
+* rails s : docker-compose run web rails s
+* rspec spec/path/to/spec.rb :	docker-compose run web rspec spec/path/to/spec.rb
+* RAILS_ENV=test rake db:create : 	docker-compose run -e RAILS_ENV=test web rake db:create
+* tail -f log/development.log :	docker-compose run web tail -f log/development.log
+
+
+Database volume: ????
+Code volume: ????
+
+TODO: documentare il perchè esiste docker/environments/production.conf: comunica ad nginx di propagare le variabili d'ambiente...  come potrei fare a tenerlo aggiornato in modo smart????
+
+To use byebug see here: http://blog.carbonfive.com/2015/03/17/docker-rails-docker-compose-together-in-your-development-workflow/
+
+
+## Gotchas
+
+* every time you do a docker-compose run, Compose is spinning up entirely new containers for your code but only if the containers are not up already, in which case they are linked to that (running) container.This means that it’s possible that you’ve spun up multiple instances of your app without thinking about it – for example, you may have a web and db container already up from a docker-compose up command, and then in a separate terminal window you run a docker-compose run web rails c. That spins up another web container to execute the command, but then links that container with the pre-launched db container.
+
 
 # Deployment solutions
 
