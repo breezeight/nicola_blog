@@ -39,6 +39,14 @@ container in production.
 
 # Getting started for monkeys: create an application cookbook
 
+**DRAFT UPDATE** we could use Docker for faster iteration : 
+
+* see this commit https://bitbucket.org/pitchtarget/addictive-deploy-cookbook/commits/18a901bb460262bd5ae0070ddf1ce7e357927b46
+* see `~/SRC/ADDICTIVE/opsworks_pitchtarget_sidekiq` for an updated example that uses Docker 
+* cp ../opsworks_pitchtarget_sidekiq/DockerfileOpsworks .
+* cp ../opsworks_pitchtarget_sidekiq/.kitchen.yml .
+* SEE THE DOCKER PROVIDER SECTION FOR MORE DETAILS
+
 This guide will introduce you to cookbook development, a basic knowledge
 of chef is required. This first paragraph is a quick getting started
 that makes you ready in 15 minutes. The [Cookbook development](#cookbook-developement) paragraph will discuss each
@@ -159,9 +167,22 @@ http://dracoater.blogspot.it/2013/09/testing-chef-cookbooks-part-1-foodcritic.ht
 
 ## Cheatsheet
 
+* `berks update` to update the Berksfile.lock
 * `kitchen init`
 * `kitchen destroy`
 * `kitchen converge`
+* Local development:
+
+~~~
+REPLACE:
+cookbook "addictive-deploy", git: "git@bitbucket.org:pitchtarget/addictive-deploy-cookbook.git", branch: "master", rel: "addictive-deploy"
+
+WITH:
+cookbook "addictive-deploy", path: '/Users/nicolabrisotto/SRC/ADDICTIVE/addictive-deploy-cookbook/addictive-deploy'
+~~~
+
+
+
 
 ## Into
 
@@ -272,13 +293,16 @@ list will be merged with the suite run_list and can affect you test!
 
 `kitchen test` is a shortcut that  run this actions in sequence: destroy,
   converge, setup, verify, destroy. It is useful for CI server.
-with the `--destroy' flag you can change the behavior of the last destroy step:
+with the `--destroy` flag you can change the behavior of the last destroy step:
 
 * passing: instances passing verify will be destroyed afterwards.
 * always: instances will always be destroyed afterwards.
 * never: instances will never be destroyed afterwards. 
 
 
+A suite can have an environment, see these refs:
+
+* https://docwhat.org/setting-environment-test-kitchen/
 
 
 Parameters:
