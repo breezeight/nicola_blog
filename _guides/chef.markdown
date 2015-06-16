@@ -650,6 +650,9 @@ TODO:
 * [service](http://docs.opscode.com/chef/resources.html#service)
 * [remote_file](http://docs.opscode.com/resource_remote_file.html) used to transfer a file from a remote location using file specificity
 
+## Users, Groups and SSH keys management
+
+https://www.chef.io/blog/2014/07/10/managing-users-and-ssh-keys-in-a-hybrid-world/
 
 ## Monit
 
