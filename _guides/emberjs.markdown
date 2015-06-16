@@ -18,18 +18,92 @@ categories: ["javascript"]
 * [Ember Discourse site](http://discuss.emberjs.com/)
 * [Ember Core Team Minutes](http://emberjs.com/blog/tags/core-team-meeting-minutes.html)
 
-# Ecosystem we use
+books:
 
-* [Broccoli](https://github.com/joliss/broccoli) asset pipeline. It's an
-alternative to (grunt, make, Rails pipeline).
-* [Ember-cli](http://www.ember-cli.com/)
-* [ES6 Module Transpiler](https://github.com/esnext/es6-module-transpiler) see [here](http://eviltrout.com/2014/05/03/getting-started-with-es6.html) to learn how it works
+* http://balinterdi.com/rock-and-roll-with-emberjs/
+* https://leanpub.com/ember-cli-101
+
+# How to develop and build an Ember.js Project with Ember-Cli
+
+Ember.js is a Javascript framework for web application. 
+Ember-cli is command line utility which provides a fast asset pipeline
+for Ember. [Ember-cli Homepage](http://www.ember-cli.com/)
+
+To be productive with Ember it's really important that you understand
+how it works. See here for more notes: [Ember-cli internal
+guide]({{site.url}}/guides/ember_cli.html)
+
+
+# Ember Core Concepts
+
+REF: [Ember doc](http://guides.emberjs.com/v1.11.0/concepts/core-concepts/)
+
+* Router
+* Routes
+* Models
+* Templates
+* Components
+
+## Controller and views in Ember 2.0
+
+See: https://www.youtube.com/watch?v=QgycDZjOnIg
+
+* controller are not a bad concept simply it will be easier to map it on a single portion of the UI as a component
+* MIGRATION HINT: refactor every thing as a component
+
+# config/environment.js
+
+Tutorial: http://blog.yanted.com/2015/04/02/ember-js-quick-tip-4-run-code-in-certain-environments/
+
+
+Example of `config/environment.js` :
+
+~~~
+module.exports = function(environment) {
+  // Default env (development)
+  var ENV = {
+    api: {
+      host: 'http://localhost:3000',
+    },
+  };
+ 
+  if (environment === 'production') {
+    ENV.api.host = 'http://www.example.com';
+  }
+};
+~~~
+
+You could access the config by importing it everywhere in your app, from routes to controllers to functions in your lib  folder: `import config from '../config/environment';`
+
+Bay default the `app.js` import environment:
+
+~~~
+import Ember from 'ember';
+import Resolver from 'ember/resolver';
+import loadInitializers from 'ember/load-initializers';
+import config from './config/environment';
+~~~
+
+environment.js uses the `module.exports` syntax
+
+## HOWTO include code based on the environment
+
+how would you add certain code to your application depending on the environment?
+Using `in-repo-addon`
+
+TODO: see here
+
+~~~
++  "ember-addon": {
++    "paths": [
++      "lib/errortracking"
++    ]
+~~~
 
 # Broccoli
 
 [Intro blog post](http://www.solitr.com/blog/2014/02/broccoli-first-release)
 
-# Ember-Cli
 Is....
 
 It user the Ember-Resolver.
@@ -53,15 +127,12 @@ Almost every object in Ember.js is derived from a common object: **Ember.Object*
 
 This simple architectural decision is responsible for much of the consistency across Ember. Because every object has been derived from the same core object, they all share some core capabilities. Every Ember object can observe the properties of other objects, bind their properties to the properties of other objects, specify and update computed properties, and much more.
 
-
 * `_super()`
 * `Ember.Object.extend()` : define classes
 * `create()`: instantiate classes
 * `init()`: 
 
-
-
-`ember-runtime/lib/system/core_objects.js` define ` extend: function extend()` at line 500
+`packages/ember-runtime/lib/system/core_object.js` define ` extend: function extend()` at line 500
 
 ~~~javascript
   extend: function extend() {
@@ -141,6 +212,27 @@ function makeCtor()
 
 * **ember-metal/lib/core.js** Define the Ember namespace. A lot of init staff are performed here.
 
+## Source Code Overview
+
+Ember.js consists of several packages including the most relevant ones:
+
+* ember-metal
+* ember-runtime
+* ember-views
+* ember-handlebars
+* ember-routing
+
+* Metal package: consists of several foundation technologies: observers, bindings, computed properties, and a run loop.
+
+* Runtime package:  provides the Ember object system along with a handful of useful classes. The object system is built with many of the foundational technologies implemented in metal, but exposes them in a much cleaner way to the application developer.
+
+* Ember-views package: is pretty self-explanatory, it's the Ember view system built on top of the runtime. On top of that, is the ember-handlebars package which depends on ember-views to provide auto-updating templates on top of the Handlebars templating system.
+
+* Ember-routing package: provides the system responsible for maintaining the application structure and state. It allows to connect the views to specific parts of your app as well as transitioning between states. For more details see the Router code source
+
+
+
+
 ### ember-runtime/lib/system/core_objects.js
 
 * function makeCtor() // ritorna Class
@@ -149,4 +241,10 @@ function makeCtor()
 
 ### ember-runtime/lib/system/object.js
 
+#Ember Data
+
+http://emberjs.com/guides/models/
+http://www.toptal.com/emberjs/a-thorough-guide-to-ember-data
+
+Application's controllers and routes have access to this shared store.
 
