@@ -209,7 +209,9 @@ TODO: read the make file of this project and implements it in FIG: https://githu
 # Docker components and Services
 ## Docker Registry
 
-Docker-Registry is a simple Python app that holds docker images: https://github.com/docker/docker-registry
+Docker-Registry is GO app that holds docker images: https://github.com/docker/docker-registry
+
+A registry is, at its heart, a collection of repositories. In turn, a repository is collection of images. Users interact with the registry by pushing images to or pulling images from the registry. 
 
 You can upload or download images to and from it with `push` and `pull` commands.
 
