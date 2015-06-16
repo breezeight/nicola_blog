@@ -228,11 +228,11 @@ A very good idea is to use the environment pattern ( http://blog.vialstudios.com
 
 Actually the guideline is:
 
-* Don't use the **metadata** keyword in you Berksfile and don't add a
-**metadata.rb** file
+* create a structure like this from `addictive-cookbook`: https://bitbucket.org/pitchtarget/addictive-cookbook/src/a68567f2284602ce91e55fa9f0403ca0b8dd705a/README.md?at=master
+* NOTE: you need to force cookbook update after they are added to Berksfile.lock. Ex: `berks update addictive-deploy`
 
 
-
+* Use the `update_custom_cookbooks` command from the deployment section to update custom cookbooks 
 
 ## Override default templates
 [Opsworks Custom Templates](http://docs.aws.amazon.com/opsworks/latest/userguide/workingcookbook-template-override.html)
@@ -397,6 +397,7 @@ free rediscloud
 free mongolab Ireland, missing backup
 
 # Application Deployment on Custom Layers
+
 By default OpsWorks will deploy application based on a match between the
 layer type and the application type
 
@@ -450,6 +451,8 @@ TODO: check the [artifact cookbook](https://github.com/RiotGames/artifact-cookbo
 TODO: check the [application cookbook](http://community.opscode.com/cookbooks/application)
 
 # Fast debug with the opsworks-agent-cli
+
+We can `opsworks-agent-cli` to run commands directly from an EC2 instance managed by OpsWorks:
 
 * `sudo opsworks-agent-cli list_commands`
 * `sudo opsworks-agent-cli run_command update_custom_cookbooks`
