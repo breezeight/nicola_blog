@@ -250,6 +250,16 @@ http://www.activestate.com/blog/2014/01/deploying-your-own-private-docker-regist
 
 See "working with images" to push/pull from a private registry.
 
+#### Deploy a Registry
+
+REF: https://docs.docker.com/registry/deploying/
+
+`registry:2.0` image is for simple tests or debugging. Its configuration is unsuitable for most production instances.
+
+#### Authentication
+
+The registry service supports transport layer security (TLS) natively. You must configure it in your instance to make use of it. You can also use a proxy server such as Nginx and basic authentication to extend the security of a deployment.
+
 ## Docker Hub
 
 * [Docker guide: Working with Docker Hub](https://docs.docker.com/userguide/dockerrepos/)
