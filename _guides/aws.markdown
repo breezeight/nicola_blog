@@ -473,6 +473,13 @@ The ecs docker agent runs as a docker container
 
 # SES
 
+# CloudWatch
+
+## New Relic Plugin for AWS
+
+* [Plugin Home Page](https://rpm.newrelic.com/accounts/1013453/plugins/directory/58)
+* It's available also as chef cookbook, we integrate it into our deploy machine
+
 
 # CloudFormation
 
