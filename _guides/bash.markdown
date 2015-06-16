@@ -38,3 +38,13 @@ EOT
 } 
 ~~~
 
+
+
+# Command line utilities
+
+## JQ to filter JSON
+
+Ref:
+
+* http://stedolan.github.io/jq/manual/#ConditionalsandComparisons
+* https://github.com/stedolan/jq/wiki/Cookbook#filter-objects-based-on-the-contents-of-a-key
