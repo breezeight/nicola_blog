@@ -1026,6 +1026,201 @@ https://docs.docker.com/articles/baseimages/
 
 * [Docker Secure Deployment Guidelines](https://github.com/GDSSecurity/Docker-Secure-Deployment-Guidelines)
 
+
+# RAILS on Docker
+
+VEDERE con calma questo: https://github.com/finnlabs/rails-docker
+Parte da docker-passenger, risolve il problema della chiave ssh per repo privati usando questa soluzione:  http://simonrobson.net/2014/10/14/private-git-repos-on-docker-images.html
+
+dovrei mettere `prepare_docker_build.sh` preso da rails-docker in uno step precedente la build dell'immagine
+
+TODO: docker-compose for development and for production
+TODO production: 
+
+* update to rails 4.2 and active jobs
+* update to active jobs
+* docker-compose:
+  * postgres
+  * come passare le variabili d'ambiente?? Come usare /etc/hosts ? 
+  * 
+
+NOTE: You can now pass the --no-install flag to bundle package in order to update the gem cache, but not actually install gems. bundle package also takes a new --all-platforms, enabling caching of gem files for platforms other than the one bundler is run on. This solves some problems when deploying on a platform that is different from the development platform.
+
+TODO: capire perchè rails-docker usa due child dir, una per le gemme vendored e una per la app
+
+
+~~~
+--no-cache
+Do not update the cache in vendor/cache with the newly bundled gems. This does not remove any gems in the cache but keeps the newly bundled gems from being cached during the install.
+~~~
+
+
+Draft:
+
+~~~
+FROM phusion/passenger-ruby22
+
+RUN rm /etc/nginx/sites-enabled/default  # NGINX
+ADD docker/passenger/addictive-api-nginx.conf /etc/nginx/sites-enabled/addictive-api-nginx.conf
+
+RUN bundle config --global frozen 1 # configure bundler to throw errors if the Gemfile has been modified since Gemfile.lock
+
+RUN mkdir -p /srv/www/addictive-api
+WORKDIR /srv/www/addictive-api
+
+COPY Gemfile /srv/www/addictive-api/
+COPY Gemfile.lock /srv/www/addictive-api/
+RUN bundle install
+
+COPY . /srv/www/addictive-api/
+~~~
+
+
+
+NOTE: bundler will still connect to rubygems.org to check whether a platform-specific gem exists for any of the gems in vendor/cache. So the only problem that could happen is with private native gems.
+
+
+## Passenger Image
+
+* http://phusion.github.io/baseimage-docker
+* https://github.com/phusion/baseimage-docker
+* https://groups.google.com/forum/#!forum/passenger-docker
+
+
+KEY POINT: this images solves the PID 1 zombie reaping problem: https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/
+
+It implements a minimal (6 MB RAM) multiprocess image based on `baseimage-docker` that provide:
+
+* `/sbin/my_init` reaps orphaned child processes correctly, and responds to SIGTERM correctly. This way your container won't become filled with zombie processes, and docker stop will work correctly.
+* `syslog-ng`
+* `cron`
+* `SSH server`
+* `logrotate`
+* `runit` Used for service supervision and management.
+* `setuser` A custom tool for running a command as another user. Easier to use than su, has a smaller attack vector than sudo, and unlike chpst this tool sets $HOME correctly. Available as /sbin/setuser.
+
+### Cheatsheet
+
+
+* docker run --rm -t -i phusion/baseimage:<VERSION> /sbin/my_init -- bash -l
+* docker exec --rm -t -i phusion/baseimage:<VERSION> /sbin/my_init -- bash -l
+* additional daemon: https://github.com/phusion/baseimage-docker#adding-additional-daemons
+
+
+### baseimage-docker how it's build
+
+See below how the image is build
+
+* its `FROM ubuntu:14.04` 
+* `make build`  
+* `image/Dockerfile`
+
+* The Dockerfile will do the setup of the basic services above.
+* the `runit` dir contains all the runit script for basic services, `config` all the configurations.
+
+### passenger-docker how it's build
+
+If you run for example `make build_ruby22` the image is build locally.
+It will copy the whole `image` dir and set the ruby22 variable, then build the `image/Dockerfile`
+
+
+
+~~~
+build_ruby22:
+	rm -rf ruby22_image
+	cp -pR image ruby22_image
+	echo ruby22=1 >> ruby22_image/buildconfig
+	echo final=1 >> ruby22_image/buildconfig
+	docker build -t $(NAME)-ruby22:$(VERSION) --rm ruby22_image
+~~~
+
+Basically the `image/install.sh` script is entry point that make all the work and runs a sequence of scripts. 
+
+`image/enable_repos.sh` : 
+
+* add brightbox ppa for ruby
+* add other ppa for redis, openJDK, etc
+* apt-get update
+
+`image/prepare.sh`:  Create `app` user and group for the web app
+
+`image/utilities.sh`:  install build-essential and git
+
+`image/rubyX.Y.sh` (note: you can enable the installation of other sw redis, memcache, etc): 
+
+* install ruby from brigtbox
+* use ubuntu `update-alternatives` to set the default ruby, rake, gems, etc
+* install rake and bundler
+
+`image/ruby-finalize.sh`:
+
+* install with apt-get dependencies for common gems (psql, etc)
+* use `ruby-switch` to set default system-wide interpreter for your Debian system
+
+`image/nginx-passenger.sh`
+
+* `apt-get install -y nginx-extras passenger` 
+* set `image/config/nginx.conf`
+* ?????? 30_presetup_nginx.sh
+* nginx_main_d_default.conf ???????? do something with the environment
+* `runit/nginx-log-forwarder /etc/service/nginx-log-forwarder/run` enable the nginx log forwarder
+
+
+`image/finalize.sh` : cleanup apt-get cache and remove build scripts
+
+### Running scripts at startup 
+
+https://github.com/phusion/baseimage-docker#running-scripts-during-container-startup
+
+### Adding additional daemons
+
+https://github.com/phusion/baseimage-docker#adding-additional-daemons
+
+#### Sidekiq example
+
+
+
+### Env variables
+
+https://github.com/phusion/baseimage-docker#environment-variables
+
+### Configuring and managing Nginx
+
+Ref: https://github.com/phusion/passenger-docker#configuring-nginx
+
+By default nginx is disabled, to enable it add `RUN rm -f /etc/service/nginx/down` 
+
+The nginx file from `image/config/nginx.conf` will be copied to `/etc/nginx/nginx.conf` and will include with glob three directory:
+
+~~~
+include /etc/nginx/main.d/*.conf;
+
+http {
+  ...
+  include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+  ...
+}
+~~~
+
+* `site-enabled` for application definition (server)
+* `main.d` to override or
+
+From your Dockerfile you can add file to those directories to change the NGINX config
+
+## Finnlabs rails-docker based on passenger-docker
+
+[Home Page](https://github.com/finnlabs/rails-docker)
+
+
+
+The app is installed into `/home/app`
+
+
+
+NOTE: This image solves the problem of using private git repository for gems becouse it package them.
+
+
 # My images
 
 ## Pitchtarget
