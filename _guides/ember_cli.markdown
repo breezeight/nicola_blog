@@ -142,3 +142,79 @@ See [here](http://www.ember-cli.com/#folder-layout) the official doc
 
 package.json is the equivalent of a Bundler Gemfile in ruby https://www.npmjs.org/doc/files/package.json.html
 
+# Broccoli and Ember-Cli
+
+
+
+# Deploy Ember-cli applications
+
+## Ember-cli-deploy
+
+Refs: 
+
+* https://github.com/ember-cli/ember-cli-deploy
+* https://www.npmjs.com/package/ember-cli-deploy
+* [Intro video](https://www.youtube.com/watch?v=Ro2_I5vtTIg)
+
+Install: `npm install ember-deploy --save-dev`
+
+
+Benefit:
+
+* easy rollback
+* preview
+* fast deploy
+
+Why Redis? It make easy to implement
+
+* preview
+* rollback
+
+* `--environment`
+  * default: `development`
+* `--deploy-config-file`
+  * default: `config/deploy.js`
+
+
+TODO:
+
+* Finger printing for CDN: https://github.com/ember-cli/ember-cli-deploy#fingerprinting-options--staging-environments
+
+ISSUE `unable to sync: PermanentRedirect`:
+
+* Pass bucketLocation to node-s3-client : https://github.com/LevelbossMike/ember-deploy-s3/issues/4
+
+* workaround: use `AWS_REGION=eu-west-1 ember deploy`
+
+### S3 assets Adapter
+
+* https://github.com/LevelbossMike/ember-deploy-s3
+
+
+Install: `npm install ember-deploy-s3 --save-dev`
+
+NOTE: you must configure CORS on the assets bucket to accept request from other subdomains
+
+### Index adapters
+
+* [Interface of an index adapter](https://github.com/ember-cli/ember-cli-deploy#index-adapters) 
+
+#### S3 index Adapter
+
+* https://github.com/Kerry350/ember-deploy-s3-index
+* http://kerrygallagher.co.uk/making-ember-deploy-adapters/
+* http://kerrygallagher.co.uk/deploying-an-ember-cli-application-to-amazon-s3/
+
+
+Install: `npm install ember-deploy-s3-index --save-dev` 
+
+
+##### Internals
+
+## Fingerprinting 
+
+* [Ember doc](http://www.ember-cli.com/#fingerprinting-and-cdn-urls)
+
+
+
+
