@@ -130,6 +130,13 @@ When Docker mounts the rootfs, it starts read-only, as in a traditional Linux bo
 On recent linux Docker is really easy to install but on OS like
 windows and OSX it's a little bit harder and you need to use ONE classical virtual machine to run Linux and Docker.
 
+## Ubuntu 15.04
+
+* To install: https://docs.docker.com/installation/ubuntulinux/
+* To run the deamon with SystemD on boot  see: http://docs.docker.com/articles/systemd/ :
+  * `sudo systemctl enable docker`
+
+
 ## Install Fig
 
 * pip uninstall fig
