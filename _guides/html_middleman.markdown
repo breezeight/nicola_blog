@@ -354,7 +354,9 @@ NOTE: non printing lines must start with "-"
 
 
 
-# Deploy with GH-Pages
+# Deploy 
+
+## on GH-Pages
 
 On github you can host the 
 
@@ -372,6 +374,13 @@ activate :deploy do |deploy|
   deploy.build_before = true # default: false
 end
 ~~~
+
+## on S3 (with cloudfront)
+
+
+* This gem for s3 only: https://github.com/fredjean/middleman-s3_sync
+* This gem for cloudfront:  https://github.com/alienfast/middleman-aws 
+
 
 # Bower: install bootstrap
 
