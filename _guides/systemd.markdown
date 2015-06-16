@@ -32,3 +32,7 @@ systemctl
 
 Refs:
 https://wiki.archlinux.org/index.php/systemd
+
+# From Upstart to SystemD
+
+https://wiki.ubuntu.com/SystemdForUpstartUsers
