@@ -1278,6 +1278,8 @@ Docker Machine can also provision Swarm clusters. This can be used with any driv
 
 ## Install
 
+`pip install -U docker-compose`
+
 Install: If you install from pip you will get an SSL error see here: https://github.com/docker/compose/issues/890
 
 You should run this script: https://raw.githubusercontent.com/aanand/fig/25942820820fcd8ed3fbd33dde2dcb24005ef997/script/prepare-osx
