@@ -137,11 +137,6 @@ windows and OSX it's a little bit harder and you need to use ONE classical virtu
   * `sudo systemctl enable docker`
 
 
-## Install Fig
-
-* pip uninstall fig
-* pip install fig
-
 ## boot2docker
 
 ### OSX
@@ -1281,10 +1276,17 @@ Docker Machine can also provision Swarm clusters. This can be used with any driv
 
 # Docker Compose (ex Fig tool)
 
+## Install
+
+Install: If you install from pip you will get an SSL error see here: https://github.com/docker/compose/issues/890
+
+You should run this script: https://raw.githubusercontent.com/aanand/fig/25942820820fcd8ed3fbd33dde2dcb24005ef997/script/prepare-osx
+
+
+## Intro
 Docker Compose acts as a wrapper around Docker – it links your containers together and provides syntactic sugar around some complex container linking commands.
 It can coordinate and spin up your entire application and dependencies with one command.
 
-Install: If you install from pip you will get an SSL error. Use brew install docker-compose
 
 Compose is great for:
 
