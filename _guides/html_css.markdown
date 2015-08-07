@@ -631,6 +631,17 @@ Refs:
 
 * https://developer.mozilla.org/en-US/docs/Web/CSS/::after#Tooltips
 
+## Boostrap vertical space between stacked columns
+
+https://coderwall.com/p/0jezca/vertical-spacing-for-bootstrap-columns
+
+## Columns with the same height
+
+* Use `padding-bottom: %XX`: the padding will force the height of the column's content, for eexample if you need a ratio of 2:1, use 50% bottom-padding
+* Position absolute for elements within the columns
+
+Example: see Kenwood user public profile
+
 # BootStrap
 
 * CSS: http://getbootstrap.com/css/
