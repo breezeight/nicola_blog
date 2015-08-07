@@ -1050,6 +1050,26 @@ https://docs.docker.com/articles/baseimages/
 
 * [Docker Secure Deployment Guidelines](https://github.com/GDSSecurity/Docker-Secure-Deployment-Guidelines)
 
+## Manage secrets
+
+* Secrets: write-up best practices, do's and don'ts, roadmap https://github.com/docker/docker/issues/13490
+
+
+TODO: docker and Vault:
+
+* https://github.com/hashicorp/vault/issues/164
+* https://github.com/hashicorp/vault/issues/165
+
+Idea for deploy keys:
+
+* create and then destroy an ssh key
+* https://confluence.atlassian.com/display/BITBUCKET/deploy-keys+Resource#deploy-keysResource-POSTanewkey
+
+Docket: https://github.com/defunctzombie/docket
+
+Docker ssh forward: https://gist.github.com/d11wtq/8699521
+
+
 
 # RAILS on Docker
 
