@@ -88,15 +88,18 @@ Html example for basic selector types `<p class="key" id="principal">`:
 
 * tag selector `p {}`: select all p elements
 * multi tag selecto `div, p {}` : Selects all div and p elements
-* class selector `.key {}`
 * id selector `#principal {}`
 * pseudo class selector: `selector:pseudo-class`
+* class selector `.key {}`: any element with `key` class
+* `.class1.class2` matches any element with both classes, ex: `<div class="class1 class2">...</div>` 
 * ... 
 
 Attributes selectors:
 
 * `[attribute]` Selects all elements with the specified attribute
 * `[attribute=value]` Selects all elements where the specified attribute is equal to value
+* `[attribute*=value]` matches every element whose attribute value containing a specified value.
+  * ex: Set a background color on all elements that have a class attribute value containing "test": `[class*="test"] { background: #ffff00; }` 
 * ...
 
 Selector based on relationships:
@@ -105,7 +108,7 @@ Selector based on relationships:
 * `A, E` : will apply to any element that matches either of the selectors, each selector is separated by comma `,`
 * `A > E` : Any E element that is a child of an A element
 * `E:first-child` : Any E element that is the first child of its parent
-* `A + E` : Any E element that is the next sibling of a B element (that is: the next child of the same parent)
+* `A + E` : Any E element that is the next sibling of a A element (that is: the next child of the same parent)
 * ....
 
 
@@ -774,7 +777,7 @@ To understand how Bootstrap uses media query remember that :
 
 * `Min-Width` media query: Refers to everything greater than or equal to the amount given.
 * `Max-Width` media query: Refers to everything less than or equal to the amount given.
-* The order in which stylesheet properties can determine which is applied: 
+* The order in which stylesheet properties are declared can determine which is applied: 
   * if two declarations have the same weight, origin and specificity, the latter specified wins.
   * Declarations in imported style sheets are considered to be before any declarations in the style sheet itself.
   * Ref: [W3C: cascading order](http://www.w3.org/TR/2011/REC-CSS2-20110607/cascade.html#cascading-order)
