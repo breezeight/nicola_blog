@@ -20,11 +20,12 @@ A fast, reliable asset pipeline, supporting constant-time rebuilds and compact b
 It's an alternative to (grunt, make, Rails pipeline).
 
 Intro blog post from Jo Liss, the Broccoli creator: http://www.solitr.com/blog/2014/02/broccoli-first-release/:
-Trees: is a directory with files and subdirectories
-Filesystem as api is used to trigger rebuilds
-Plugin are chainable plugins input is a tree, plugin output is a tree
-support for 1:1 compilers like cofeescript and N:1 compilers like Sass
-Behind the scene broccoli create all the temp dirs for you, cleanup them and watch the filesystem.
+
+* `Tree`: is a directory with files and subdirectories
+* Filesystem as api is used to trigger rebuilds
+* Plugin are chainable plugins input is a tree, plugin output is a tree
+* support for 1:1 compilers like cofeescript and N:1 compilers like Sass
+* Behind the scene broccoli create all the temp dirs for you, cleanup them and watch the filesystem.
 
 Intro: http://moduscreate.com/better-builds-begin-with-broccoli/
 
