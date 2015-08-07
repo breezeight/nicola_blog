@@ -874,6 +874,16 @@ Images are just [templates for docker containers](https://docs.docker.com/introd
 
 Docker image ids are [sensitive information](https://medium.com/@quayio/your-docker-image-ids-are-secrets-and-its-time-you-treated-them-that-way-f55e9f14c1a4) and should not be exposed to the outside world.  Treat them like passwords.
 
+### Build
+
+Ref: https://docs.docker.com/reference/builder/
+
+context of the build:
+
+* is the directory you pass as argument to docker build
+* you can exclude files and directories by adding a `.dockerignore` file to the directory.
+
+
 ### Repository
 
 A collection of tags grouped under a common prefix (the name component
