@@ -1708,7 +1708,55 @@ example `.ebextensions/02_load_balancer.config` :
 
 ### Periodic Task - Cron
 
+`cron.yaml`
+
+
 ### Rails Migration on Docker Multi Container
+
+#### Parse the Dockerrun.aws.json and docker run a container from the addictive-api image
+
+**HACK**this is a trick to run migration from the rails image defined in your Dockerrun.aws.json.
+
+
+**NOTE**: actually this is the best solution
+
+.ebextensions/01_migrations.config:
+
+~~~
+container_commands:
+  rails_migration:
+    command: >
+      scripts/migrate_database.sh
+    leader_only: true
+~~~
+
+In `scripts/migrate_database.sh` you must set your task definition name into `CONTAINER_DEFINITION_NAME`:
+
+~~~
+#!/bin/bash
+
+env > scripts/env
+
+#Your rails container definition
+CONTAINER_DEFINITION_NAME=addictive-api-production
+
+S3_BUCKET=`cat Dockerrun.aws.json | jq -r .authentication.bucket`
+S3_KEY=`cat Dockerrun.aws.json | jq -r .authentication.key`
+DOCKER_IMAGE=`cat Dockerrun.aws.json | jq .containerDefinitions | jq ".[] | select(.name | contains(\"$CONTAINER_DEFINITION_NAME\"))" | jq -r .image` 
+
+aws s3 cp s3://$S3_BUCKET/$S3_KEY ~/.dockercfg 
+docker ps > /tmp/docker_ps
+docker run --rm --env-file=scripts/env $DOCKER_IMAGE bundle exec rake db:migrate:status > /tmp/migration_status
+
+~~~
+
+#### Use Docker exec
+
+**ISSUES** DO NOT USE IT:
+
+* "Command" run before the application and web server are set up and the application version file is extracted. So we are running migration from the previous app version
+* it doesn't work on a new instance
+
 
 **HACK**
 
