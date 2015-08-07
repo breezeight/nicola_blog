@@ -12,13 +12,70 @@ categories: ["ruby"]
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-# ActiveRecord
+# Rails Command line
 
+REF: 
+* INTRO http://guides.rubyonrails.org/command_line.html#rails-generate
+* MODELs
+  * http://edgeguides.rubyonrails.org/active_record_migrations.html#model-generators 
+  * http://railsguides.net/advanced-rails-model-generators/
+
+* destroy example:
+  * bin/rails generate model Oops
+  * bin/rails destroy model Oops
+
+# ActiveRecord
 
 Conventions:
 
 * has_any: use plural form of the model, example for model Post: `posts` 
 * belongs_to: use the singlular form of the model, example for model Post: `post`
+
+## Validations
+
+http://edgeguides.rubyonrails.org/active_record_validations.html
+
+## Queries
+
+* NOT NULL: `User.where("address IS NOT NULL")`
+
+## Migrations
+
+REF: 
+
+* http://guides.rubyonrails.org/active_record_migrations.html
+
+
+* `db/migrate`
+* File name: `YYYYMMDDHHMMSS_create_products.rb` : UTC timestamp _  name of the migration class (CamelCased version)
+  * name of the migration class (CamelCased version) should match the latter part of the file name. For example 20080906120000_create_products.rb should define class CreateProducts and 20080906120001_add_details_to_products.rb should define AddDetailsToProducts. 
+
+### Cheatsheet Migration and generator
+
+* To generate an empty migration: `bin/rails generate migration AddPartNumberToProducts`
+
+~~~
+class AddPartNumberToProducts < ActiveRecord::Migration
+  def change
+  end
+end
+~~~
+
+* To add/remove a column use this naming `AddXXXToYYY` or `RemoveXXXFromYYY` followed by a list of column names and types then a migration containing the appropriate add_column and remove_column statements:
+  * `XXX` is the the name of the field  CammelCased
+  * `YYY` is the name of the table
+
+`bin/rails generate migration AddPartNumberToProducts part_number:string` :
+
+~~~
+class AddPartNumberToProducts < ActiveRecord::Migration
+  def change
+    add_column :products, :part_number, :string
+  end
+end
+~~~
+
+To create a new table `CreateXXX`, followed by a list of column names and types.
 
 ## HasMany woth a Legacy Database
 
