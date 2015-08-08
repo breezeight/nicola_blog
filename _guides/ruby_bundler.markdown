@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Ruby: Bundler"
+title: "Ruby: Bundler, gem and Rubygems"
 date: 2014-04-20 09:31:50 +0200
 comments: true
 categories: ["ruby"]
@@ -21,14 +21,13 @@ categories: ["ruby"]
 # Intro
 
 Essentially Bundler is a smart way to puts all the gems need by your project "on the load path".
+
 It also provide a quick way to require all gems in your Gemfile.
-Bundle uses a Gemfile to list all the project dependencies.
-
-
-http://bundler.io/rationale.html :
 
 * `require 'bundler/setup'`
 * `Bundler.require(:default)`
+
+http://bundler.io/rationale.html
 
 # Basic Versioning Rules for Apps
 
@@ -62,7 +61,6 @@ When you install a gem to the system, Rubygems creates wrappers for every execut
 When you run an executable from the command line without bundle exec, this wrapper invokes Rubygems, which then uses the normal Rubygems activation mechanism to invoke the gem's executable.
 
 
-
 # How does Rails use Bundler?
 
 tl;dr : In `config/application.rb` Rails does `Bundler.require(*Rails.groups)`, where by default Rails.groups is:
@@ -79,6 +77,7 @@ REF: http://yehudakatz.com/2011/05/30/gem-versioning-and-bundler-doing-it-right/
 As of Rails 3.0, the executable simply looks for a `script/rails` file, and execs that file. The generated script/rails loads the local boot environment, which invokes bundler immediately
 
 NOTE: not sure for rails 4 
+
 
 # Gemfile and Gemfile.lock documentation
 
@@ -97,7 +96,6 @@ In this example, without the option it would require `rack-cache`, which is not 
 * Is the Gemfile.lock affected by `--with` and `--without` bundle install options? NO:
   * All gems of every group will be added to the Gemfile.lock, regardless the option you specify
   * instead  `--with` and `--without` will affect your local config `.bundle/config` ---->>>> TODO: how does this affect the load path on `budle.setup` ??
-
 
 
 # Bundle configuration
@@ -127,20 +125,25 @@ Ref: http://bundler.io/v1.2/bundle_config.html
 * `BUNDLE_PATH`: The location on disk to install gems. Defaults to $GEM_HOME in development and vendor/bundle when --deployment is used.
 
 
-# Bundle Install and Package
-
-Ref:
+# Bundle Package command
 
 * http://bundler.io/bundle_package.html
-* http://bundler.io/v1.10/bundle_install.html
+* bundle help package
 
 The package command will copy the .gem files for your gems in the bundle into ./vendor/cache. Afterward, when you run bundle install, Bundler will use the gems in the cache in preference to the ones on rubygems.org.
 
-
 * `bundle pack` don't have the option to exclude groups of gems, it always cache and/or install all gems listed in the Gemfile
 
-* `--with` and `--without` will affect your local config `.bundle/config` ---->>>> TODO: how does this affect the load path on `budle.setup` ??
 
+
+# Bundle Install command
+
+Ref:
+
+* http://bundler.io/v1.10/bundle_install.html
+
+
+* `--with` and `--without` will affect your local config `.bundle/config` ---->>>> TODO: how does this affect the load path on `budle.setup` ??
 
 
 The `--deployment` flag activates a number of deployment- and CI-friendly conventions:
@@ -149,6 +152,32 @@ The `--deployment` flag activates a number of deployment- and CI-friendly conven
 * Require an up-to-date Gemfile.lock (equivalent to --frozen)
 * Disable ANSI color output
 * If bundle package was run, do not fetch gems from rubygems.org. Instead, only use gems in the checked in `vendor/cache`
+
+This is the configuration produced in `.bundle`:
+
+~~~
+BUNDLE_FROZEN: '1'
+BUNDLE_PATH: vendor/bundle
+BUNDLE_DISABLE_SHARED_GEMS: '1'
+~~~
+
+`BUNDLE_DISABLE_SHARED_GEMS: 1` will clear `GEM_PATH`: 
+See https://github.com/bundler/bundler/blob/26f13d1bd365d6d3657e21ba99a9d861624649ea/lib/bundler.rb#L444
+GEM_PATH provides the locations (there may be several) where gems can be found.
+GEM_HOME is where gems will be installed (by default) (Therefore GEM_PATH should include GEM_HOME).
+
+This means that 
+
+NOTE: capistrano bundle task for production deployment will run ``
+
+
+NOTE: you cannot `--deployment` without a Gemfile.lock: "The --deployment flag requires a Gemfile.lock. Please make sure you have checked your Gemfile.lock into version control before deploying."
+
+NOTE: `bundle install` without any option don't create local config `.bundle/config`
+
+## Use cases
+
+TODO
 
 ## Examples
 
@@ -236,6 +265,27 @@ The resulting path directory is:
 
 ~~~
 
+# Rubygems
+
+TODO: what does `require rubygems` ?
+
+REF: http://guides.rubygems.org/patterns/
+
+At its core, RubyGems exists to help you manage Ruby’s $LOAD_PATH, which is how the require statement picks up new code. There’s several things you can do to make sure you’re loading code the right way.
+
+
+* Every gem you have installed gets its lib directory appended onto your $LOAD_PATH. This means any file on the top level of the lib directory could get required.
+*
+
+
+## Require rubygems is an antipatter
+
+REF: http://2ndscale.com/rtomayko/2009/require-rubygems-antipattern
+
+## Best Practices
+
+* Gems should not have to use __FILE__ to bring in other Ruby files in your gem
+* Gems should not change the $LOAD_PATH variable.
 
 # FAQ
 
