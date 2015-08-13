@@ -136,10 +136,42 @@ windows and OSX it's a little bit harder and you need to use ONE classical virtu
 * To run the deamon with SystemD on boot  see: http://docs.docker.com/articles/systemd/ :
   * `sudo systemctl enable docker`
 
+## OSX Docker Toolbox
 
-## boot2docker
+Follow this Ref: http://docs.docker.com/installation/mac/
 
-### OSX
+Next do:
+
+* Add `eval "$(docker-machine env default)" ` to you bash profile to get the default machine connetion values available on each bash instance.
+* add to `/etc/host`: 192.168.99.100  dockerhost , where the ip is the one returned by `docker-machine ip default`
+
+Note:
+
+* In an OS X installation, the docker daemon is running inside a Linux VM called `default`
+* When you start the VM with docker-machine it is assigned an IP address.
+* When you start a container, the ports on a container map to ports on the VM.
+* when you start a container it automatically shares your /Users/username directory with the VM
+
+Machine lets you create Docker hosts on your computer, on cloud providers, and inside your own data center. It works also with VirtualBox so it's a perfect replacement for Boot2Docker: it also configure directory sharing.
+
+
+commands:
+
+* `docker-machine start default`
+* `docker-machine ssh default`
+* `docker-machine stop default`
+* `docker-machine inspect default`
+* `docker-machine inspect ip`
+* `docker-machine inspect env` : 
+
+
+
+## OSX boot2docker [DEPRECATED]
+
+
+Now you can use docker machine to run docker on OSX. See http://docs.docker.com/installation/mac/#migrate-from-boot2docker
+
+You must install the Docker Toolbox: https://www.docker.com/toolbox
 
 Read here installation instruction: http://docs.docker.com/installation/mac/
 
@@ -1308,14 +1340,18 @@ Docker Machine can also provision Swarm clusters. This can be used with any driv
 
 ## Install
 
+docker-compose is provided by the Docker Toolbox.
+
+But it has an issue on some machine, it exit with the "Illegal instruction: 4". To solve just install it from pip:
+
 `pip install -U docker-compose`
 
 Install: If you install from pip you will get an SSL error see here: https://github.com/docker/compose/issues/890
-
 You should run this script: https://raw.githubusercontent.com/aanand/fig/25942820820fcd8ed3fbd33dde2dcb24005ef997/script/prepare-osx
 
 
 ## Intro
+
 Docker Compose acts as a wrapper around Docker – it links your containers together and provides syntactic sugar around some complex container linking commands.
 It can coordinate and spin up your entire application and dependencies with one command.
 
