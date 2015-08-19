@@ -56,6 +56,23 @@ EOT
 * http://sookocheff.com/post/bash/parsing-bash-script-arguments-with-shopts/
 * http://dustymabe.com/2013/05/17/easy-getopt-for-a-bash-script/
 
+
+## GETOPTS
+
+* `help getopts`
+* `getopts` tutorial: http://wiki.bash-hackers.org/howto/getopts_tutorial
+
+Getopts is used by shell procedures to parse positional parameters as options.
+
+Syntax: `getopts: getopts optstring name [arg]`
+
+* OPTSTRING contains the option letters to be recognized; if a letter is followed by a colon, the option is expected to have an argument, which should be separated from it by white space.
+* Each time it is invoked, getopts will place the next option in the shell variable $name, initializing name if it does not exist, and the index of the next argument to be processed into the shell variable OPTIND.
+* When an option requires an argument, getopts places that argument into the shell variable OPTARG.
+
+BEST PRACTICE: The common way is that the processing of all arguments precedes the actual job of the program/script. 
+
+
 # Command line utilities
 
 ## JQ to filter JSON
