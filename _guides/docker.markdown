@@ -594,7 +594,7 @@ Cheatsheet:
 
 https://docs.docker.com/articles/basics/#controlling-containers
 
-### RUN a container
+### RUN: run a commando into a container
 
 When an operator executes `docker run`, he starts a process with:
 
@@ -644,6 +644,14 @@ Four of the Dockerfile commands **cannot** be overridden at runtime:
 * `MAINTAINER`
 * `RUN`
 * `ADD`
+
+#### Run multiple commands
+
+To run multiple commands in docker, use `/bin/bash -c` and semicolon ;
+
+Example: `docker run image /bin/bash -c "cd /path/to/somewhere; python a.py"`
+
+
 
 #### Environment variables
 
@@ -755,7 +763,9 @@ There doesn't seem to be a way to use docker directly to import files into a con
 
 To enter a running container, attach a new shell process to a running container called foo, use: `docker exec -it foo /bin/bash`.
 
-### Remove containers 
+To set the user use `docker exec -u user_name`
+
+### Remove stopped containers 
 
 REF: http://blog.stefanxo.com/2014/02/clean-up-after-docker/
 
@@ -763,6 +773,10 @@ REF: http://blog.stefanxo.com/2014/02/clean-up-after-docker/
 * `docker rm $(docker ps -a -q)`  remove all stopped containers
   * `-q, --quiet=false`           Only display numeric IDs
 
+
+### Remove unused images
+
+`docker rmi $(docker images | grep "^<none>" | awk '{print $3}')`
 
 ## Networking
 
@@ -1118,18 +1132,6 @@ TODO production:
 * docker-compose:
   * postgres
   * come passare le variabili d'ambiente?? Come usare /etc/hosts ? 
-  * 
-
-NOTE: You can now pass the --no-install flag to bundle package in order to update the gem cache, but not actually install gems. bundle package also takes a new --all-platforms, enabling caching of gem files for platforms other than the one bundler is run on. This solves some problems when deploying on a platform that is different from the development platform.
-
-TODO: capire perchè rails-docker usa due child dir, una per le gemme vendored e una per la app
-
-
-~~~
---no-cache
-Do not update the cache in vendor/cache with the newly bundled gems. This does not remove any gems in the cache but keeps the newly bundled gems from being cached during the install.
-~~~
-
 
 Draft:
 
@@ -1151,10 +1153,7 @@ RUN bundle install
 COPY . /srv/www/addictive-api/
 ~~~
 
-
-
 NOTE: bundler will still connect to rubygems.org to check whether a platform-specific gem exists for any of the gems in vendor/cache. So the only problem that could happen is with private native gems.
-
 
 ## Passenger Image
 
@@ -1198,8 +1197,6 @@ See below how the image is build
 
 If you run for example `make build_ruby22` the image is build locally.
 It will copy the whole `image` dir and set the ruby22 variable, then build the `image/Dockerfile`
-
-
 
 ~~~
 build_ruby22:
@@ -1284,17 +1281,18 @@ http {
 
 From your Dockerfile you can add file to those directories to change the NGINX config
 
-## Finnlabs rails-docker based on passenger-docker
+### Finnlabs rails-docker based on passenger-docker, Addictive-api example
 
 [Home Page](https://github.com/finnlabs/rails-docker)
 
-
+Finnlabs derived this image from the phusion passenger image, for addictive-api I use a similar approach
 
 The app is installed into `/home/app`
 
-
-
 NOTE: This image solves the problem of using private git repository for gems becouse it package them.
+
+
+
 
 
 # My images
@@ -1305,7 +1303,23 @@ The postgres image will use the default image volume, this means that it will by
 
 ## Postgres
 
+### Official postgres image on dockerhub
+
+It's a quite simple image that install Postgres and run a simple script as entrypoint:
+
+https://github.com/docker-library/postgres/blob/a82c28e1c407ef5ddfc2a6014dac87bcc4955a26/9.4/docker-entrypoint.sh
+
+For local developmnet if you leave the `POSTGRES_PASSWORD` and `POSTGRES_USERNAME` empty the database will accept connection without password and a default ROLE postgres is created :
+
+* add "host all all 0.0.0.0/0 trust" into "$PGDATA/pg_hba.conf"
+* to connect: psql -h db -U postgres
+
+
+### Other Postgres alternative
+
 https://davidamick.wordpress.com/2014/07/19/docker-postgresql-workflow/
+
+
 
 # Docker Swarm
 
