@@ -24,6 +24,10 @@ REF:
   * bin/rails generate model Oops
   * bin/rails destroy model Oops
 
+# Custom 404
+
+https://mattbrictson.com/dynamic-rails-error-pages
+
 # ActiveRecord
 
 Conventions:
@@ -151,3 +155,13 @@ rack-mini-profiler provides an suite of tools for measuring the performance of R
 ## RSpec
 
 * [RubySpec Reborn](http://eregon.github.io/rubyspec/2015/07/29/rubyspec-is-reborn.html?utm_source=rubyweekly&utm_medium=email)
+
+
+
+# SEO
+
+## Fix Trailing slash issue
+
+Use rack rewrite:
+https://eric-schaefer.com/blog/2015/07/24/removing-trailing-slashes-rails-app-heroku/
+
