@@ -1371,6 +1371,9 @@ Add users: http://cloudinit.readthedocs.org/en/latest/topics/examples.html#inclu
 
 * See `eb config` to manage multimple env easly
 
+## Elastic Beanstalk Stack Release notes
+
+https://aws.amazon.com/releasenotes/AWS-Elastic-Beanstalk
 
 ## Docker Multi Container
 
