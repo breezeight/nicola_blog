@@ -14,6 +14,18 @@ categories: ["ruby"]
 
 # References
 
+# Ideas
+
+Facebook SDK AdAccount.php
+
+~~~
+  public function getAdCampaigns(
+    array $fields = array(), array $params = array()) {
+    return $this->getManyByConnection(
+      AdCampaign::className(), $fields, $params);
+  }
+~~~
+
 
 
 # Facebook PHP SDK
