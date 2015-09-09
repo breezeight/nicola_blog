@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Ruby: Testing webservices"
+title: "Ruby: NGINX and Passenger configuration"
 date: 2014-04-20 09:31:50 +0200
 comments: true
 categories: ["ruby", "nginx"]
@@ -14,6 +14,7 @@ categories: ["ruby", "nginx"]
 
 # References
 
+* [Passenger Library](https://www.phusionpassenger.com/library/) : a comprehensive online resource about Ruby, Python and Node.js deployment, administration, scaling, high availability and more 
 
 # Nginx
 
@@ -157,15 +158,45 @@ https://github.com/matsumoto-r/ngx_mruby/wiki/Class-and-Method
 https://github.com/matsumoto-r/ngx_mruby/wiki/Use-Case
 
 
-# Nginx + Ruby 
+# Passenger 
 
-## Passenger + Nginx
+## Integration Mode 
 
-https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html
+* Explanation of passenger integration modes: https://www.phusionpassenger.com/library/indepth/integration_modes.html:
+  * standalone
+  * with nginx
+  * with apache
+  * What is this? · What are the differences? · Which one should I use?
 
 
 
-## Unicorn + Passenger
+### Passenger Standalone
+
+Passenger standalone uses the nginx core. Basically it will start an NGINX server to 
+
+See here for an example: http://code.eklund.io/blog/2015/03/17/managing-rewrites-for-a-rails-app-on-heroku-with-nginx-plus-phusion-passenger/
+
+remember to start the server with the ` --nginx-config-template` option, ex: `bundle exec passenger start -p 3000 --max-pool-size 3 --min-instances 2 --nginx-config-template config/nginx.conf.erb`
+
+TIP: to check the compile nginx config:
+
+~~~
+ps aux|grep nginx
+nginx: master process /Users/nicolabrisotto/.passenger/support-binaries/5.0.15/nginx-1.8.0 -c /var/folders/wm/2yx43zwx1js0404rrzx6pnf40000gn/T/passenger-standalone.e5r602/nginx.conf -p /var/folders/wm/2yx43zwx1js0404rrzx6pnf40000gn/T/passenger-standalone.e5r602
+
+cat  /var/folders/wm/2yx43zwx1js0404rrzx6pnf40000gn/T/passenger-standalone.e5r602/nginx.conf
+~~~
+
+### Passenger + Nginx
+
+Viewing overall server status report: https://www.phusionpassenger.com/library/admin/nginx/overall_status_report.html
+
+## Debug Application Startup Problems
+
+https://github.com/phusion/passenger/wiki/Debugging-application-startup-problems
+
+
+# NGinx + Unicorn 
 
 Hello world tutorial Nginx + Unicorn
 http://velenux.wordpress.com/2012/01/10/running-sinatra-and-other-rack-apps-on-nginx-unicorn/
