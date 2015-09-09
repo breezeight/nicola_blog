@@ -16,6 +16,29 @@ categories:
 
 Bash on Evernote: https://www.evernote.com/shard/s106/nl/11497273/917f4214-9719-438b-b9ea-6a58f43e968f/
 
+# Server side management
+
+## Logs
+
+### Read compressed Logs
+
+http://www.cyberciti.biz/tips/decompress-and-expand-text-files.html
+
+* `zless data.txt.gz`
+* `zmore data.txt.gz`
+* `zcat file.gz`
+* `zegrep -w '^word1|word2' file.gz`
+* `zgrep 'wordToSearch' file.gz`
+
+NOTE: use gzcat on OSX
+
+### Log Rotation
+
+TODO
+
+# Array
+
+http://mywiki.wooledge.org/BashGuide/Arrays
 
 # Conditional: if then else
 
