@@ -746,7 +746,7 @@ NOTE: `current class` != `self`
 
 ### Examples
 
-Define an instance method with `define_method`:
+Define an instance method of class `C` with `define_method`:
 
 class C
   define_method :id do
