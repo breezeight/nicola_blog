@@ -6,6 +6,49 @@ comments: true
 categories: ["CI"]
 ---
 
+# Bamboo
+
+TODO:
+
+* build in automatico per il feature branch -> Paolini sa come fare
+
+## SSH Keys for deploy
+
+https://answers.atlassian.com/questions/279335/access-shared-credentials-from-shell-script-task
+
+We install private keys used for this purpose on our instances via Bamboo instance configuration. In the instance startup script we add a method to dump the key to a file on the instance. This is then used during the build flow. It would be better to have access to the shared credentials in Bamboo ... maybe in the future they'll add this?? :)
+
+## Use Packer to create a T2 micro
+
+* Create AMI with Packer: https://developer.atlassian.com/blog/2015/07/bamboo-packer/
+* ansible intro: https://wiredcraft.com/blog/getting-started-with-ansible-in-5-minutes/
+
+To use the free tier t2.micro we need an AMI that support the virtualization type 'hvm'. To use the easiest AWS packer build 
+
+
+
+
+we start from the ami that bamboo propose from the its console (7 sept 2015 is: ami-02fbae75)
+
+We removed credential 
+`AWS_PROFILE=bamboo packer build bamboo-docker-update.json`
+
+        "ami_virtualization_type": "hvm",
+
+
+Here a link to an HVM image is provided: https://jira.atlassian.com/browse/BAM-12121
+To get early access to the image, you can directly hit the artefact url. You can use later versions (newer than 4.3) of images too, but please remember that some of them may be private if there was no official Cloud release for them):
+https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/bamboo/atlassian-bamboo-elastic-image/4.4/atlassian-bamboo-elastic-image-4.4.ami
+
+us-east-1 is Virginia
+
+Watch this: https://jira.atlassian.com/browse/BAM-16190
+
+
+MY IMAGES:
+eu-west-1: ami-5febca28
+us-east-1: ami-8397fbe6
+
 # Jenkins
 
 # TODO
@@ -18,6 +61,14 @@ categories: ["CI"]
 ## Glossary
 
 * https://wiki.jenkins-ci.org/display/JENKINS/Terminology
+
+
+## INTRO
+
+Safari online guide: https://www.safaribooksonline.com/library/view/jenkins-the-definitive/9781449311155/ch05.html
+
+
+
 
 ## Security
 
@@ -63,13 +114,40 @@ Configuration:
 * Install bitbucket plugin: `java -jar jenkins-cli.jar -s http://localhost:8080 install-plugin bitbucket`
 * Setup bitbucket webhook: `http://1a14c906.ngrok.io/bitbucket-hook/`
 * IMPORTANT: to avoid 500 error add the trailing `/`
+* IMPORTANT: you must setup the trigger on your repo otherwise
+
+If everythig is fine you should see this log:
+
+~~~
+INFO: Processing new Webhooks payload
+INFO: Triggering BitBucket job <YOUR JOB NAME>
+~~~
+
+
 
 TIP: Use ngrok to test locally a webhook
 
 * start jenkins locally
 * Start ngrok tunnel: ngrok http 8080
 * https://dashboard.ngrok.com/
-* Go to http://localhost:4040/   and after you received a wekhook you can replay it from here to easly debug issues.
+* Go to http://localhost:4040/   and after you received a wekhook you can replay it from here to easly debug issues. NOTE you must reply the call which payload starts with:
+
+
+~~~
+{
+    "push": {
+        "changes": [
+            {
+~~~
+
+
+TODO: 
+
+* Is it possible to build all feature branches?
+* Is it possible to access ENV variables?
+
+
+
 
 ### Resolve Troubles
 
