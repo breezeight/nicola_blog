@@ -74,6 +74,22 @@ group :development do
 end
 ~~~
 
+### Getting start RAILS
+
+see http://www.webascender.com/Blog/ID/566/Testing-Rails-4-Apps-With-RSpec-3-Part-I#.VUi_rlOUflA
+
+
+~~~
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0.0'
+end
+
+#RSpec generator to create the initial skeleton
+rails generate rspec:install
+~~~
+
+
+
 ## Run the test suite
 
 * `bundle exec rake spec`
@@ -237,6 +253,7 @@ References:
 
 * http://modocache.svbtle.com/rspec-under-the-covers
 * http://modocache.svbtle.com/code-reading-shared-examples-in-rspec
+* http://blog.endpoint.com/2014/09/some-metaprogramming-examples-from-rspec.html?m=1
 
 RSpec is a DSL for creating executable examples of how code is expected to behave, organized in groups.
 
@@ -287,7 +304,8 @@ end
 
 ### Run
 
-* 
+* Fa qualceh mageggio con gli hook
+* Call the `ExampleGroup#run` on every ExampleGroup registered in `@world.ordered_example_groups`
 * use the `RSpec::Core::Reporter` specified in the configuration (See for details about Reporter and Listeners)
 * more comments is provided inline below
 
@@ -306,6 +324,50 @@ def run_specs(example_groups)
   end
 end
 ~~~
+
+
+`ExampleGroup#run` runs all the examples in this group and in the children groups
+
+~~~ruby
+def self.run(reporter)
+  if RSpec.world.wants_to_quit
+    RSpec.world.clear_remaining_example_groups if top_level?
+    return
+  end
+  reporter.example_group_started(self)
+
+  begin
+    run_before_context_hooks(new)
+    result_for_this_group = run_examples(reporter) # Run example in the group
+    results_for_descendants = ordering_strategy.order(children).map { |child| child.run(reporter) }.all? #Run children
+    result_for_this_group && results_for_descendants
+  rescue Pending::SkipDeclaredInExample => ex
+    for_filtered_examples(reporter) { |example| example.skip_with_exception(reporter, ex) }
+  rescue Exception => ex
+    RSpec.world.wants_to_quit = true if fail_fast?
+    for_filtered_examples(reporter) { |example| example.fail_with_exception(reporter, ex) }
+  ensure
+    run_after_context_hooks(new)
+    before_context_ivars.clear
+    reporter.example_group_finished(self)
+  end
+end
+~~~
+
+
+~~~ruby
+def self.run_examples(reporter)
+  ordering_strategy.order(filtered_examples).map do |example|
+    next if RSpec.world.wants_to_quit
+    instance = new
+    set_ivars(instance, before_context_ivars)
+    succeeded = example.run(instance, reporter)
+    RSpec.world.wants_to_quit = true if fail_fast? && !succeeded
+    succeeded
+  end.all?
+end
+~~~
+
 
 NOTE: Enumerable#All? without a block return true when none of the collection members are
 false or nil.
