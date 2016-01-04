@@ -106,6 +106,26 @@ Pro and Cons:...
 
 ## Reports
 
+## Sub-Task VS Epic VS checklist with markdown
+
+Use Checklist:
+
+* PRO: easy and fast to write
+* PRO: don't clutter the backlog
+* CONS: cannot be assigned to different assegnee
+* CONS: cannot use the time estimate
+
+Use Subtask:
+
+* PRO: don't clutter the backlog
+* CONS: the original time estimate of subtasks don't sum up in their parent issue (instead this happens with stories)
+* ISSUE: https://jira.atlassian.com/browse/GHS-9167
+
+Use Epic and avoid subtasks (basically we exclude on level)
+
+* PRO: issue time estimate will sum up in the epic time estimate and make easier to track how the time is spent.
+* CONS: the backlog will be cluttered by task that could be instead be less visible as sub-tasks. 
+
 ### Sprint report
 
 https://confluence.atlassian.com/agile/jira-agile-user-s-guide/using-a-board/using-reports/viewing-the-sprint-report
@@ -157,3 +177,15 @@ Github:
 ## BitBucket Server
 
 https://jira.atlassian.com/projects/BSERV?selectedItem=com.atlassian.jira.jira-projects-plugin:components-page
+
+
+## Jenkins
+
+How the Jenkins 2.x brainstorming is managed:
+
+* They create a page on confluence: https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+2.0
+* To collect those feedbacks in a manageable way, we have prepared a number of ["2.0 planning tickets"](https://issues.jenkins-ci.org/issues/?jql=labels%3D2.0%20AND%20(%20status%20%3D%20open%20or%20status%20%3D%20%22In%20Progress%22)), divided under several themes called "epic tickets" in JIRA. This page and its children walk you through the main parts of those epics and details, and takes you to the actual tickets.
+* https://issues.jenkins-ci.org/browse/JENKINS-31152?jql=issuetype%20%3D%20Epic%20AND%20status%20%3D%20Open%20AND%20labels%20%3D%202.0
+
+
+
