@@ -16,6 +16,15 @@ categories:
 
 Bash on Evernote: https://www.evernote.com/shard/s106/nl/11497273/917f4214-9719-438b-b9ea-6a58f43e968f/
 
+# Bash History
+
+unset HISTFILE: If HISTFILE is unset, or if the history file is unwritable, the history is not saved.
+
+If you want to toggle it off:
+
+* Turn Off: `set +o history`
+* Turn on: `set -o history`
+
 # Server side management
 
 ## Logs
