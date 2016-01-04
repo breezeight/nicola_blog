@@ -207,6 +207,20 @@ In sostanza un mixin sembra un'oggetto che raccoglie nella property
 
 
 # Ember Internals
+
+
+## Reference
+
+* http://discuss.emberjs.com/t/guide-to-hacking-ember/8565/3
+* [ALapAround] VIDEO Oct 19, 2015: A lap around the Ember source code with Yehuda Katz https://www.youtube.com/watch?v=RN_kVPga9y8
+* How to build, code guidelines, etc: https://github.com/emberjs/ember.js/blob/master/CONTRIBUTING.md
+
+## Run tests
+
+`/tests/index.html?hidepassed&package=ember-metal`
+
+## Intro to ember internal
+
 function makeCtor()
 
 
@@ -222,24 +236,65 @@ Ember.js consists of several packages including the most relevant ones:
 * ember-handlebars
 * ember-routing
 
-* Metal package: consists of several foundation technologies: observers, bindings, computed properties, and a run loop.
+How deprecations are handled: [ALapAround] VIDEO min 17:00:
+  * Deprecation are not bad, removal are bad. That's why Ember want to deprecate as soon as possible to give you time before removal.
 
-* Runtime package:  provides the Ember object system along with a handful of useful classes. The object system is built with many of the foundational technologies implemented in metal, but exposes them in a much cleaner way to the application developer.
-
-* Ember-views package: is pretty self-explanatory, it's the Ember view system built on top of the runtime. On top of that, is the ember-handlebars package which depends on ember-views to provide auto-updating templates on top of the Handlebars templating system.
-
-* Ember-routing package: provides the system responsible for maintaining the application structure and state. It allows to connect the views to specific parts of your app as well as transitioning between states. For more details see the Router code source
+How feature flag are handled: [ALapAround] VIDEO min 13:00
 
 
 
+### Metal Package
 
-### ember-runtime/lib/system/core_objects.js
+* consists of several foundation technologies: observers, bindings, computed properties, and a run loop.
+
+  * Is the module with least dependencies. It's like the Kernel of the Ember project. Optimisation stuff goes here. [Ref: ALapAround] 
+
+### Runtime Package
+
+* provides the Ember object system along with a handful of useful classes. The object system is built with many of the foundational technologies implemented in metal, but exposes them in a much cleaner way to the application developer.
+  * Depends on ember metal 
+
+ember-runtime/lib/system/core_objects.js:
 
 * function makeCtor() // ritorna Class
 * var CoreObject = makeCtor(); //CoreObject è contruito da makeCtor()
 * CoreObject.PrototypeMixin = Mixin.create(...)
 
+[ALapAround] VIDEO min 23:00: A lot of stuff in this module will be removed in the 2.x cycle
+
 ### ember-runtime/lib/system/object.js
+
+### Container package
+
+[ALapAround] VIDEO min 35:00
+
+
+Responsability:
+
+* is responsible for managing instances, give you instances and caching them
+* The container uses the resolver to go grom internal name to location on disk
+
+container.register
+container.lookup
+container.inject
+
+
+registry.container to create multiple instances, use cases:
+* app.reset() for test -> limitation for parallel test
+* registry.container()
+* Usefull for fastboot min 44:00 [ALapAround] how the fast boot visit method works
+
+
+
+### Ember-views package
+
+is pretty self-explanatory, it's the Ember view system built on top of the runtime. On top of that, is the ember-handlebars package which depends on ember-views to provide auto-updating templates on top of the Handlebars templating system.
+
+### Ember-routing package
+
+provides the system responsible for maintaining the application structure and state. It allows to connect the views to specific parts of your app as well as transitioning between states. For more details see the Router code source
+
+
 
 #Ember Data
 
