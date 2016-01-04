@@ -58,7 +58,8 @@ To create a database as root and add user eventum:
 
 ~~~
     create database eventum
-    grant all privileges on eventum.* to eventum@localhost identified by 'password!'      # Permission only to localhost or:  grant all privileges on eventum.* to eventum identified by 'password!'         # ...all host
+    # Permission only to localhost or:  grant all privileges on eventum.* to eventum identified by 'password!'         # ...all host
+    grant all privileges on eventum.* to eventum@localhost identified by 'password!'      
     flush privileges
 ~~~
 
