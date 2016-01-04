@@ -6,11 +6,13 @@ comments: true
 categories: ["marketing"]
 ---
 
-# Facebook tips for targeting
+# Facebook
+
+## Facebook tips for targeting
 
 See the
 
-## By interest
+### By interest
 
 
 You can find interest of people that like a competitor page :
@@ -19,7 +21,7 @@ You can find interest of people that like a competitor page :
 
 see this pdf from AdEspresso: [The-DOs-and-DONTs-of-Facebook-Ads]({{ site.url }}/guides/downloads/The-DOs-and-DONTs-of-Facebook-Ads.pdf)
 
-# Facebook Storytelling
+## Facebook Storytelling
 
 * http://insights.fb.com/2015/08/05/storytelling-sells/
 * https://fbinsights.files.wordpress.com/2015/08/facebookiq_powerofstorytelling_august2015.pdf
@@ -33,6 +35,8 @@ see this pdf from AdEspresso: [The-DOs-and-DONTs-of-Facebook-Ads]({{ site.url }}
 
 
 ## Nielsen and Facebook
+
+Contatto: Novella Scalera https://www.linkedin.com/in/novellascalera
 
 
 ## Nielsen BRAND EFFECT SUITE
