@@ -6,11 +6,88 @@ comments: true
 categories: ["CI"]
 ---
 
+
+# Shippable
+
+## Yml Config File
+
+* validator: http://yaml-online-parser.appspot.com/
+* languages doc: http://docs.shippable.com/languages/
+* samples: https://github.com/shippableSamples
+
+Caching:
+* https://github.com/Shippable/support/issues/533
+* cache: true
+* To reset the cache include a keyword in your commit message - [reset_minion] 
+* example: https://github.com/shippableSamples/sample-ruby-mysql-cache/blob/master/shippable.yml
+* http://blog.shippable.com/faster-builds-with-cached-containers
+* http://blog.shippable.com/container-caching
+
+
+
+
+## Docker
+
+* http://blog.shippable.com/docker-image-creation-tagging-traceability
+* http://docs.shippable.com/docker_registries/#push-images-to-docker-hub
+
+
+## Bitbucket integration
+
+Deployment Key: Shippable will add a deployment key to a connected repository
+
+
+
+
 # Bamboo
+
+Reference:
+
+* [BambooCloud Official Doc](https://confluence.atlassian.com/bamboocloud)
 
 TODO:
 
 * build in automatico per il feature branch -> Paolini sa come fare
+
+## Intro: Project, Plan, Job, Task
+
+https://confluence.atlassian.com/bamboocloud/working-with-bamboo-cloud-737184556.html
+
+* Plan: a sequence of stages (one by default)
+* Stage: a sequence of tasks
+* Job: 
+
+* A plan can have more than a repository
+
+
+### Tasks
+
+#### Script task
+
+* DASH issue: When you run from file Bamboo uses `/bin/sh` which in Ubuntu is `/bin/dash`, this bypass also the `#!/bin/bash` syntax. Instead when you use the "inline" option the behavior is different, the best practice is to use the inline option:
+
+~~~bash
+#!/bin/bash
+docker/build_images.sh -p
+~~~
+
+* NON TTY bash issue: don't use docker `-i -t` becouse the bash runned by bamboo is not in TTY mode, otherwise you will get an error `` 
+  
+
+## Build Directory on the agent
+
+`/home/bamboo/bamboo-agent-home/xml-data/build-dir`
+
+## JIRA integration
+
+* Show build status into a JIRA issue: https://confluence.atlassian.com/bamboocloud/using-plan-branches-737183873.html#Usingplanbranches-IntegratingbrancheswithJIRA
+
+## Bitbucket integration
+
+Build trigger: Add the Bamboo hook to your repository in Bitbucket. No further action is necessary on your local repository. Each push of new commits in to Bitbucket will trigger the build based on your configuration. 
+
+* https://confluence.atlassian.com/bamboocloud/repository-triggers-the-build-when-changes-are-committed-737183942.html
+* https://confluence.atlassian.com/display/BAMKB/Bitbucket+Commits+do+not+Trigger+Builds+in+Bamboo+Cloud
 
 ## SSH Keys for deploy
 
@@ -18,14 +95,52 @@ https://answers.atlassian.com/questions/279335/access-shared-credentials-from-sh
 
 We install private keys used for this purpose on our instances via Bamboo instance configuration. In the instance startup script we add a method to dump the key to a file on the instance. This is then used during the build flow. It would be better to have access to the shared credentials in Bamboo ... maybe in the future they'll add this?? :)
 
-## Use Packer to create a T2 micro
+## Shared Credentials
+
+NOTE:
+
+## Elastic Bamboo: AWS integration
+
+**WARNING** :
+
+* you should use a dedicated AWS account (you can use consolidated billing if you want)
+
+### Access your instance with ssh
+
+Ref:
+
+* https://confluence.atlassian.com/bamboocloud/generating-your-aws-private-key-file-and-certificate-file-737184428.html
+
+Bamboo generate an EC2 keypair, you cab get the private key from: Elastic Instances -> "view" your instance, download `/data/jirastudio/bamboo/home/xml-data/configuration/elasticbamboo.pk`. Then `mv ~/Downloads/elasticbamboo.pk ~/.ssh/` and `chmod 600 ~/.ssh/elasticbamboo.pk`
+
+### Use AWS instances roles
+
+* Create a role from the AWS console, AWS will create also an instance profile with the same name of the role: http://docs.aws.amazon.com/codedeploy/latest/userguide/how-to-create-iam-instance-profile.html#getting-started-create-ec2-role-console.
+* From the Bamboo instance configuration set the instance profile.
+
+
+### LIST of AWS ami
+
+The official list is here: https://confluence.atlassian.com/display/BAMKB/List+of+Atlassian+AMI+IDs
+But as stated in the comments the most updated list can be found browsing this directory: 
+https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/bamboo/atlassian-bamboo-elastic-image/
+
+As september 2015 the most recent list is:
+https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/bamboo/atlassian-bamboo-elastic-image/4.7/atlassian-bamboo-elastic-image-4.7.ami
+
+If you want to run on a T2 machine you need an HVM image, actually it's available only in virginia us-east-1:
+
+~~~
+cat atlassian-bamboo-elastic-image-4.7.ami |grep HVM.Ubuntu
+image.US_EAST_1.EBS.x86_64.linux.HVM.Ubuntu=ami-eb5b8080
+~~~
+
+### Use Packer to create a T2 micro image [NOT WORKING]
 
 * Create AMI with Packer: https://developer.atlassian.com/blog/2015/07/bamboo-packer/
 * ansible intro: https://wiredcraft.com/blog/getting-started-with-ansible-in-5-minutes/
 
 To use the free tier t2.micro we need an AMI that support the virtualization type 'hvm'. To use the easiest AWS packer build 
-
-
 
 
 we start from the ami that bamboo propose from the its console (7 sept 2015 is: ami-02fbae75)
@@ -48,6 +163,10 @@ Watch this: https://jira.atlassian.com/browse/BAM-16190
 MY IMAGES:
 eu-west-1: ami-5febca28
 us-east-1: ami-8397fbe6
+
+
+
+
 
 # Jenkins
 
