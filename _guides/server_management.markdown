@@ -64,3 +64,10 @@ What should an init system do? [Here](https://felipec.wordpress.com/2013/11/04/i
 * http://librelist.com/browser//sidekiq/2012/11/15/redis-sidekiq-can-t-be-used-for-critical-jobs/#92b1d0027749e5ed76de1389095832df
 * http://oldblog.antirez.com/post/redis-persistence-demystified.html
 
+# AWS monitoring with DatadogHQ
+
+
+## Setup
+
+* Create a Iam user (and create the access key)and config as described here: http://docs.datadoghq.com/integrations/aws/
+* Go to integrations and add the access key and secret.

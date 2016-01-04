@@ -46,6 +46,62 @@ New connections initiated from the Internet to the public IP address of the rout
 
 See "[Guide] Networking" on my evernote
 
+## DNSmasq Local DNS for development
+
+Ref:
+
+* http://davebaker.me/articles/setting-up-a-local-dns-server-on-osx
+* https://mallinson.ca/osx-web-development/
+
+$ brew install dnsmasq
+$ echo 'address/.loc/127.0.0.1' > /usr/local/etc/dnsmasq.conf
+
+To configure dnsmasq, copy the example configuration to /usr/local/etc/dnsmasq.conf and edit to taste.
+
+cp /usr/local/opt/dnsmasq/dnsmasq.conf.example `/usr/local/etc/dnsmasq.conf`
+
+To have launchd start dnsmasq at startup:
+
+*  sudo cp -fv /usr/local/opt/dnsmasq/*.plist /Library/LaunchDaemons
+*  sudo chown root /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+
+Then to load dnsmasq now:
+
+*  sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+
+To manually start and debug: `/usr/local/opt/dnsmasq/sbin/dnsmasq --keep-in-foreground -C /usr/local/etc/dnsmasq.conf`
+
+* `System Preferences -> Network -> Advanced -> DNS`
+
+* To print your dns resolver config: `scutil --dns`
+
+* To restart : 
+  * `sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist && sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist`
+
+* To check the status:
+  * `sudo launchctl list | grep dnsmasq`
+  * `homebrew.mxcl.dnsmasq`
+
+### DNSmasq Config
+
+* `domain-needed`:  This tells dnsmasq to never pass short names to the upstream DNS servers. If the name is not in the local /etc/hosts file then "not found" will be returned.
+* `bogus-priv` All reverse IP (192.168.x.x) lookups that are not found in /etc/hosts will be returned as "no such domain" and not forwarded to the upstream servers.
+
+## DNS query tools
+
+Dig:
+
+* use a specific DNS server, ex: 8.8.8.8: `dig @8.8.8.8 +short NS domain.com`
+
+To lookup MX records for a domain:
+
+* host -t mx mydomain.com
+* nslookup -q=mx mydomain.com
+* dig -t mx mydomain.com
+
+
+
+
 # Linux Networking
 
 http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch03_:_Linux_Networking

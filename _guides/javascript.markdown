@@ -27,6 +27,13 @@ Blogs:
 
 * http://perfectionkills.com/
 
+Video Courses:
+
+* Good introduction to NodeJS that go through a lot of JS basic concepts, GOOD for beginners: https://www.youtube.com/playlist?list=PLSn0N7ekG2FjiNp23kxOcjK8Xe0xRRO8a
+
+MISC
+
+* My Evernote about NodeJS: https://www.evernote.com/shard/s106/nl/2147483647/c61f9319-9f5c-4a91-b662-46bb5a8b644e/
 
 # TODO
 typeof -> how does it works?
@@ -621,7 +628,7 @@ To check if a selection contains elements:
 * `if ( $( "div.foo" ).length )`
 
 
-# ES6
+# ES6 - Ecmascript 2015
 
 * [Intro](http://www.wintellect.com/blogs/nstieglitz/5-great-features-in-es6-harmony)
 * [ES6 Draft](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)

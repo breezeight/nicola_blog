@@ -13,5 +13,8 @@ gem 'jekyll-sitemap'
 #gem 'jekyll-toc-generator'
 
 
+gem 'middleman-s3_sync'
+
+
 # https://github.com/robwierzbowski/jekyll-image-tag requirements
 #gem 'mini_magick', '~> 3.6'
