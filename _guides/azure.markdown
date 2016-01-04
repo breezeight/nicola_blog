@@ -73,6 +73,37 @@ An availability set is a group of virtual machines that are deployed across faul
 
 http://azure.microsoft.com/en-us/documentation/articles/virtual-machines-load-balance/
 
+# Azure Resource Manager
+
+* Authoring Azure Resource Manager templates: https://azure.microsoft.com/en-us/documentation/articles/resource-group-authoring-templates/#variables
+* Use the CLI: https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-azure-resource-manager/
+
+* azure config mode arm
+* azure location list
+
+
+**WARNING** : to use from the CLI you cannot use a publishsettings to authenticate see: https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-connect/
+You need only to do `azure login` and follow the instructions.
+
+## Template syntax
+
+https://alexandrebrisebois.wordpress.com/2015/06/03/use-the-azure-resource-manager-copy-operation-to-deploy-duplicates/
+
+Copy: https://azure.microsoft.com/en-us/documentation/articles/resource-group-create-multiple/
+
+## Cli 
+
+* To show output: `azure group deployment show "testRG" "testDeploy"`
+* `azure group create "testSwarm" "North Europe" -f azuredeploy.json -d "testDeploySwarm" -e azuredeploy.parameters.json`
+* `azure resource list "testRG"`
+* `azure resource show "testRG" "MyUbuntuVM" Microsoft.Compute/virtualMachines -o "2015-06-15"`
+* `azure group log show testSwarm --all`
+
+* New deploy `https://azure.microsoft.com/en-us/documentation/articles/resource-group-template-deploy/`
+
+
+https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-azure-resource-manager/
+
 
 # Remote desktop with Windows Server
 
@@ -101,43 +132,46 @@ http://taylorcowanonline.com/?p=260
 http://blogs.msdn.com/b/gongcheng/archive/2013/04/16/jenkins-on-windows-azure-the-missing-manual-master.aspx
 http://blogs.msdn.com/b/gongcheng/archive/2013/04/16/jenkins-on-windows-azure-the-missing-manual-slave.aspx
 
+# Azure Deployment: Classic VS Resource Manager
+
+Azure has two different deployment models for creating and working with resources: Resource Manager and classic. This article covers using both models, but Microsoft recommends that most new deployments use the Resource Manager model.
+
+https://azure.microsoft.com/en-us/documentation/articles/resource-manager-deployment-model/
+
+* To use the Resource Manager model from CLI: `azure config mode arm`
+
+Benefitof Resource Manager: added the concept of the resource group, template, tags, etc.
 
 
-# Commnad line tools: xplat-cli
-
-To install the cli go [here](http://www.windowsazure.com/en-us/documentation/articles/xplat-cli/): npm install azure-cli -g
-To get started, just type `azure` in a new Terminal window.
-
-Command Reference is available on [github readme](https://github.com/WindowsAzure/azure-sdk-tools-xplat) and [azure website](
-http://www.windowsazure.com/en-us/documentation/articles/command-line-tools/=).
-
-To download your credential use from command line (this example is for the user bizspark2):
-
-* I keep all account data here `~/AZURE_ACCOUNTS/ADDICTIVE/bizspark2`
-* login into the account from your default browser
-* azure account download
-* `mv ~/Downloads/sub2-4-15-2015-credentials.publishsettings ~/AZURE_ACCOUNTS/ADDICTIVE/bizspark2`
-* `azure account import ~/AZURE_ACCOUNTS/ADDICTIVE/bizspark2/sub2-4-15-2015-credentials.publishsettings`
-* Now you MUST remove the `~/AZURE_ACCOUNTS/ADDICTIVE/bizspark2/sub2-4-15-2015-credentials.publishsettings`, you don't need it, it's only a security risk.
 
 
-~~~
-azure account list
-info:    Executing command account list
-data:    Name      Id                                    Current
-data:    --------  ------------------------------------  -------
-data:    BizSpark  XXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX      false
-data:    BizSpark  XXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX      true
-~~~
+
+# How Azure subscriptions are associated with Azure Active Directory
+
+https://azure.microsoft.com/en-us/documentation/articles/active-directory-how-subscriptions-associated-directory/
+
+Multiple subscriptions can trust the same directory, but a subscription trusts only one directory. 
+
+From https://manage.windowsazure.com -> "Impostazioni" you can change the active directory and add coadmin
+
+# Azure Extensions
+
+https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-extensions-features/
+
+# Docker
+
+## Azure Docker extension
+
+see here https://github.com/Azure/azure-docker-extension/blob/master/README.md for:
+
+* Using Docker Extension in ARM templates
+
+If you are using CoreOS Docker is already installed: https://github.com/Azure/azure-docker-extension/blob/master/pkg/driver/coreos.go
 
 
-NB: all BizSpark accounts have the same name. To understand the which account you are using by id go to the "portal -> setting" and check the id
+Note about core os extension driver:
+https://github.com/Azure/azure-docker-extension/blob/master/pkg/driver/coreos.go
 
-to switch account:
-
-~~~
-azure account set XXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-~~~
 
 ## Azure and Docker-machine 
 
@@ -170,6 +204,44 @@ To point your Docker client at it, run this in your shell:
 
 ~~~
 $(docker-machine env machine-name2) 
+~~~
+
+
+
+# Commnad line tools: xplat-cli
+
+To install the cli go [here](http://www.windowsazure.com/en-us/documentation/articles/xplat-cli/): npm install azure-cli -g
+To get started, just type `azure` in a new Terminal window.
+
+Command Reference is available on [github readme](https://github.com/WindowsAzure/azure-sdk-tools-xplat) and [azure website](
+http://www.windowsazure.com/en-us/documentation/articles/command-line-tools/=).
+
+To download your credential use from command line (this example is for the user bizspark2):
+
+* I keep all account data here `~/.azure_accounts/addictive/bizspark2`
+* login into the account from your default browser
+* azure account download
+* `mv ~/Downloads/sub2-4-15-2015-credentials.publishsettings ~/AZURE_ACCOUNTS/ADDICTIVE/bizspark2`
+* `azure account import ~/AZURE_ACCOUNTS/ADDICTIVE/bizspark2/sub2-4-15-2015-credentials.publishsettings`
+* Now you MUST remove the `~/AZURE_ACCOUNTS/ADDICTIVE/bizspark2/sub2-4-15-2015-credentials.publishsettings`, you don't need it, it's only a security risk.
+
+
+~~~
+azure account list
+info:    Executing command account list
+data:    Name      Id                                    Current
+data:    --------  ------------------------------------  -------
+data:    BizSpark  XXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX      false
+data:    BizSpark  XXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX      true
+~~~
+
+
+NB: all BizSpark accounts have the same name. To understand the which account you are using by id go to the "portal -> setting" and check the id
+
+to switch account:
+
+~~~
+azure account set XXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 ~~~
 
 ## Affinity Group
