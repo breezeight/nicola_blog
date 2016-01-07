@@ -350,7 +350,6 @@ The [docker-library](https://github.com/docker-library) github organization cont
 
 ### How to find the Dockerfile of an official image
 
-
 Go to the library dir: https://github.com/docker-library/official-images/tree/master/library
 
 Open the manifest, for example the Postgres manifest is https://github.com/docker-library/official-images/blob/master/library/postgres
@@ -376,7 +375,22 @@ The format of each line is `<docker-tag>: <git-url>@<git-tag-or-commit-id> <dock
 
 This mean that to find the postgres:9.4 image Dockerfile you must go here: https://github.com/docker-library/postgres/blob/master/9.4/Dockerfile
 
-### Language Stacks
+### Official images from scratch: Ubuntu
+
+* https://hub.docker.com/_/ubuntu/
+* https://github.com/tianon/docker-brew-ubuntu-core/blob/3c355946fd5164da3f31063a5c5f249c826f7071/precise/Dockerfile
+
+
+A base image starts from a special image:
+https://hub.docker.com/_/scratch/
+
+An explicitly empty image, especially for building images "FROM scratch".
+
+As of Docker 1.5.0 (specifically, docker/docker#8827), FROM scratch is a no-op in the Dockerfile, and will not create an extra layer in your image (so a previously 2-layer image will be a 1-layer image instead).
+
+Article about base image: https://docs.docker.com/engine/articles/baseimages/
+
+### Official images: Language Stacks
 
 Language stacks are a set of official images designed to make easy:
 
@@ -1329,7 +1343,13 @@ TODO:
 
 Docker Swarm is native clustering for Docker. It turns a pool of Docker hosts into a single, virtual host.
 
+## Docker Swarm on Azure
 
+*
+
+* https://ahmetalpbalkan.com/blog/docker-swarm-azure/
+
+* ACS preview: https://azure.microsoft.com/en-us/blog/azure-container-service-preview/
 
 # Docker Machine
 
@@ -1346,11 +1366,22 @@ Machine makes it really easy to create Docker hosts on your cloud providers and 
 
 Docker Machine can also provision Swarm clusters. This can be used with any driver and will be secured with TLS.
 
+
+Cheatsheet:
+
+* docker-machine env default
+
+## Docker Machine import/export machines
+
+This is still an open issue: https://github.com/docker/machine/issues/23
+
+
+
 ## Docker Machine on Azure
 
 [Docker Machine on Azure]({{ site.url }}/guides/azure.html#azure-and-docker-machine)
 
-# Docker Compose (ex Fig tool)
+# Docker Compose 
 
 ## Install
 
