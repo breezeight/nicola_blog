@@ -592,6 +592,40 @@ Docker is clever enough to copy any files that exist in the image under the volu
 
 If you can’t set permissions and ownership in a RUN command, you will have to do so using a CMD or ENTRYPOINT script that runs after container creation.
 
+### How to clean up volumes
+
+* https://github.com/chadoe/docker-cleanup-volumes
+* docker run -v $(which docker):/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -v $(readlink -f /var/lib/docker):/var/lib/docker --rm martin/docker-cleanup-volumes --dry-run
+
+### Inspect Volumes of images and containers
+
+* To list volumes of an image (ex: redis:2.8.20): `docker inspect redis:2.8.20 | jq '.[0].Config.Volumes'`
+
+~~~
+{
+  "/data": {}
+}
+~~~
+
+redis:2.8.20 Dockerfile with `VOLUME /data` command: https://github.com/docker-library/redis/blob/7d9f53256f8e13aa4dff2112145c69c22f8ce394/2.8/Dockerfile
+
+* To list volumes mounted by a container:  `docker inspect addictiveapi_redis_1 | jq '.[0].Mounts'`
+
+~~~
+[
+  {
+    "Source": "/mnt/sda1/var/lib/docker/volumes/515a65e7fc61c330622025a5de1602145164841de31cdc2f705eaf2fdbc76b66/_data",
+    "Destination": "/data",
+    "Mode": "rw",
+    "RW": true
+  }
+]
+~~~
+
+Source is the directory in the host, destination the directory in the container.
+
+
+
 ### Use Cases
 
 * development: we can mount our source code inside the container and see our application at work as we change the source code.
@@ -1131,10 +1165,13 @@ Docker ssh forward: https://gist.github.com/d11wtq/8699521
 
 
 
-# RAILS on Docker
+# RAILS: Docker, docker-compose, docker-swarm
 
 VEDERE con calma questo: https://github.com/finnlabs/rails-docker
 Parte da docker-passenger, risolve il problema della chiave ssh per repo privati usando questa soluzione:  http://simonrobson.net/2014/10/14/private-git-repos-on-docker-images.html
+
+Anche questa è una buona lettura che riassume il workflow con rails e compose: http://blog.carbonfive.com/2015/03/17/docker-rails-docker-compose-together-in-your-development-workflow/
+
 
 dovrei mettere `prepare_docker_build.sh` preso da rails-docker in uno step precedente la build dell'immagine
 
@@ -1168,6 +1205,32 @@ COPY . /srv/www/addictive-api/
 ~~~
 
 NOTE: bundler will still connect to rubygems.org to check whether a platform-specific gem exists for any of the gems in vendor/cache. So the only problem that could happen is with private native gems.
+
+## RAILS and docker-composer
+
+* You will need to re-run the docker-compose build command every time you change the Dockerfile or Gemfile.
+* developing with Docker added very little overhead to the development process. In fact, most commands that you would run for Rails simply needed to be prepended with a docker-compose run web
+
+common commands:
+
+* bundle install:	docker-compose run web bundle install
+* rails s : docker-compose run web rails s
+* rspec spec/path/to/spec.rb :	docker-compose run web rspec spec/path/to/spec.rb
+* RAILS_ENV=test rake db:create : 	docker-compose run -e RAILS_ENV=test web rake db:create
+* tail -f log/development.log :	docker-compose run web tail -f log/development.log
+
+
+Database volume: ????
+Code volume: ????
+
+TODO: documentare il perchè esiste docker/environments/production.conf: comunica ad nginx di propagare le variabili d'ambiente...  come potrei fare a tenerlo aggiornato in modo smart????
+
+To use byebug see here: http://blog.carbonfive.com/2015/03/17/docker-rails-docker-compose-together-in-your-development-workflow/
+
+### FAQ
+
+* When closing a container with a rails app, rails doesn't delete /tmp/pids/server.pid: https://github.com/docker/compose/issues/1393
+     
 
 ## Passenger Image
 
@@ -1435,15 +1498,85 @@ ex: `addctive-api/docker-compose.yml` produce:
 * web service image name: addictiveapi_web
 
 
-## Commands
+## Containers and Images lifecycle with compose
 
-* `docker-compose up` is a combination of build, link, and start-services command for each container
-* `docker-compose run [--rm] <service> [COMMAND]`
-  * NOTE: by default it create a TTY session for your app (up don't do it)
-  * By default it start also dependent services (the one connected with `link`) if they are not running.
-  * It always start a new container instance of the service
+Images: http://stackoverflow.com/questions/32612650/how-to-get-docker-compose-to-always-start-fresh-images
+
+Container lifecycle: when you use `docker-compose stop` and then `up`, docker compose will not recreate container but will use `docker start`. It uses docker labels to find the proper container
+
+Labels in compose 1.5: ref: https://github.com/docker/compose/pull/1356/files
+
+Docker compose adds labels to container 
+
+* LABEL_CONTAINER_NUMBER = 'com.docker.compose.container-number'
+* LABEL_ONE_OFF = 'com.docker.compose.oneoff'
+* LABEL_PROJECT = 'com.docker.compose.project'
+* LABEL_SERVICE = 'com.docker.compose.service'
+* LABEL_VERSION = 'com.docker.compose.version'
+
+## Volumes lifecycle with compose
+
+TODO: fare qualche test con la cancellazione e rigenerazione 
 
 
+https://github.com/docker/compose/issues/2308 :
+https://github.com/docker/compose/issues/1882 :
+
+* using an image that defines a volume
+* in a docker-compose.yml that overrides that volume with a host volume
+* after that project-folder is moved and re-upped
+* the overridden volume's host path will still point to the previous path in the host fs
+* while host-volumes that are only defined in docker-compose.yml are bound to the new project-folder
+
+
+To see this behaviour start from this image that define `VOLUME /data`:
+
+~~~
+redis:
+  image: redis:2.8.20
+~~~
+
+The container will be mounted:
+
+~~~
+    "Mounts": [
+        {
+            "Source": "/mnt/sda1/var/lib/docker/volumes/0b058454c02a4c75bc00e6ed72dedc375ed7be045d580c026d55a19df3007062/_data",
+            "Destination": "/data",
+            "Mode": "rw",
+            "RW": true
+        }
+    ],
+~~~
+
+If you add a volume to the docker-compose file and then `docker-compose stop` and `docker-compose up`
+
+~~~
+redis:
+  image: redis:2.8.20
+  volumes:
+    - .:/data
+~~~
+
+
+Now when you run docker-compose up you will get a warning:
+
+WARNING: Service "redis" is using volume "/data" from the previous container. Host mapping "/private/tmp/prova_compose" has no effect. Remove the existing containers (with `docker-compose rm redis`) to use the host volume mapping.
+
+That's why docker-compose is consevative and don't try to remove an existing volume from an existing container.
+
+If you `docker-compose rm` and `docker-compose up` the existing container is removed and compose will create a new one which respect the configuration:
+
+~~~
+    "Mounts": [
+        {
+            "Source": "/private/tmp/prova_compose",
+            "Destination": "/data",
+            "Mode": "rw",
+            "RW": true
+        }
+    ],
+~~~
 
 
 ## docker-compose.yml documentation
@@ -1463,29 +1596,8 @@ https://docs.docker.com/compose/yml/#compose-documentation
 
 
 
-## RAILS and docker-composer
 
-* You will need to re-run the docker-compose build command every time you change the Dockerfile or Gemfile.
-* developing with Docker added very little overhead to the development process. In fact, most commands that you would run for Rails simply needed to be prepended with a docker-compose run web
-
-common commands:
-
-* bundle install:	docker-compose run web bundle install
-* rails s : docker-compose run web rails s
-* rspec spec/path/to/spec.rb :	docker-compose run web rspec spec/path/to/spec.rb
-* RAILS_ENV=test rake db:create : 	docker-compose run -e RAILS_ENV=test web rake db:create
-* tail -f log/development.log :	docker-compose run web tail -f log/development.log
-
-
-Database volume: ????
-Code volume: ????
-
-TODO: documentare il perchè esiste docker/environments/production.conf: comunica ad nginx di propagare le variabili d'ambiente...  come potrei fare a tenerlo aggiornato in modo smart????
-
-To use byebug see here: http://blog.carbonfive.com/2015/03/17/docker-rails-docker-compose-together-in-your-development-workflow/
-
-
-## Gotchas
+## FAQ
 
 * every time you do a docker-compose run, Compose is spinning up entirely new containers for your code but only if the containers are not up already, in which case they are linked to that (running) container.This means that it’s possible that you’ve spun up multiple instances of your app without thinking about it – for example, you may have a web and db container already up from a docker-compose up command, and then in a separate terminal window you run a docker-compose run web rails c. That spins up another web container to execute the command, but then links that container with the pre-launched db container.
 
