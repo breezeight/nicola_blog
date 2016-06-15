@@ -191,7 +191,7 @@ iex> add.(1, 2)
 
 ```
 iex> add_two = fn a -> add.(a, 2) end
-#Function<6.71889879/1 in :erl_eval.expr/5>
+ #Function<6.71889879/1 in :erl_eval.expr/5>
 iex> add_two.(2)
 4
 ```
@@ -216,6 +216,10 @@ TODO make_ref
 ## Collections
 
 Elixir collections can hold values of any type (including other collections).
+
+### Best Practices
+
+
 
 ### Tuples
 
@@ -278,6 +282,11 @@ iex> "wombat" in [1, 2, 3, 4]
 false        
 ```
 
+#### Keywords List
+
+* Allow more entries for a given key (!= map)
+
+
 SHORTCUT to generate a list of key value tuples (a KEYWORD LIST):
 
 `[ name: "Dave", city: "Dallas", likes: "Programming" ]`
@@ -307,6 +316,12 @@ in pratica una tuple di 2 elementi dentro una lista viene sempre stampata come u
 
 ### Maps
 
+* Allow only one entry for a given key (!= keyword list)
+* Efficient as they grow
+* can be used with pattern matching
+* use it when you need associative arrays
+
+
 ```
 states = %{ "AL" => "Alabama", "WI" => "Wisconsin" }
 
@@ -314,11 +329,15 @@ response_types = %{ { :error, :enoent } => :fatal, { :error, :busy } => :retry }
 
 colors = %{ red: 0xff0000, green: 0x00ff00, blue: 0x0000ff }
 
-response_types[{:error,:busy}]
 
 ```
 
-If the keys are atoms, you can also use a dot notation: `colors.green`
+Accessing:
+
+* If the keys are atoms, you can also use a dot notation: `colors.green`
+* `states["AL"]`
+* `response_types[{:error,:busy}]`
+
 
 
 
