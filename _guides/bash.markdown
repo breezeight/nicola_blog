@@ -29,6 +29,24 @@ If you want to toggle it off:
 * Turn Off: `set +o history`
 * Turn on: `set -o history`
 
+# Bash Libraries
+
+* https://dberkholz.com/2011/04/07/bash-shell-scripting-libraries/
+
+# Bash Testing
+
+* Bats: https://github.com/sstephenson/bats
+
+# Bash complex projects
+
+
+
+## Dokku
+
+https://github.com/dokku/dokku
+
+* use the bats test framework
+
 # The Bash Environment
 
 Ref: http://tldp.org/LDP/Bash-Beginners-Guide/html/chap_03.html
@@ -56,20 +74,22 @@ Ref:
 
 ### local VS global
 
-* `Global variables or environment variables`: are available in all shells.
+* `Global variables or environment variables`: are available in all sub-shells.
 * `Local variables`: are only available in the current shell. 
 
+* By default all variables are global.
 * Variables are case sensitive
 * Convention: local variables are lowercase
+* global variable cannot not be modified in the parent shell from a sub-shell because they are copied, not referenced.
 
 Each and every shell has its own environment.
 
 **There's no Universal environment that will magically appear in all console windows.**
 
-An environment variable created in one shell cannot be accessed in another shell.
-It's even more restrictive. If one shell spawns a subshell, that subshell has access to the parent's environment variables, but if that subshell creates an environment variable, it's not accessible in the parent shell.
+* An environment variable created in one shell cannot be accessed in another shell.
+* If one shell spawns a subshell, that subshell has access to the parent's environment variables, but if that subshell creates an environment variable, it's not accessible in the parent shell.
 
-If all of your shells need access to the same set of variables, you can create a startup file that will set them for you. This is done in BASH via the $HOME/.bash_profile and $HOME/.bashrc files and through $HOME/.profile if $HOME/.bash_profile doesn't exist).
+* TIPS: If all of your shells need access to the same set of variables, you can create a startup file that will set them for you. This is done in BASH via the $HOME/.bash_profile and $HOME/.bashrc files and through $HOME/.profile if $HOME/.bash_profile doesn't exist).
 
 `export` governs which variables will be available to subshells
 
@@ -100,6 +120,97 @@ export name="nicola"
 
 ```
 
+#### Example.1 Simple Bash Variable Assignment Usage
+
+The following script creates a variable called LIST and assigns the value “/var/opt/bin”. To access the variables, just prefix the variable name with $, which will give you the value stored in that variable.
+
+```
+$ cat sample.sh
+#!/bin/bash
+LIST="/var/opt/bin/"
+ls -l $LIST
+```
+
+Execute the above script, which will list the /var/opt/bin in long format as shown below.
+
+```
+$ ./sample.sh
+total 8
+drwxrwsr-x 2 bin  bin 4096 Jan 29 06:43 softwares
+drwxr-sr-x 5 root bin 4096 Sep  2  2009 llist
+```
+
+#### Example 2. Blank values in bash variables
+
+```
+$ cat var1.sh
+#!/bin/sh
+echo "Variable value is: $VAR1"
+VAR1="GEEKSTUFF"
+echo "Variable value is: $VAR1"
+
+$ ./var1.sh
+Variable value is:
+Variable value is: GEEKSTUFF
+```
+
+As shown above, initially the variable will have a blank value, after assigning, you can get your values. export command is used to export a variables from an interactive shell. export shows the effect on the scope of variables.
+
+#### Example 3. Bash Variables without export
+
+Assign a variable with a value in an interactive shell, and try to access the same in your shell script.
+
+```
+$ VAR2=LINUX
+
+$ cat var2.sh
+#!/bin/bash
+echo "VAR2=$VAR2"
+VAR2=UNIX
+echo "VAR2=$VAR2"
+```
+
+Now, execute the above script as shown below.
+
+```
+$ ./var2.sh
+VAR2=
+VAR2=UNIX
+```
+
+Still you will get blank value for variable VAR2. The shell stores variable VAR2 with the LINUX only in the current shell. During the execution of var2.sh, it spawns the shell and it executes the script. So the variable VAR2 will not have the value in the spawned shell. You need to export the variable for it to be inherited by another program – including a shell script, as shown below.
+
+#### Example 4. Exporting a Bash Variable
+
+```
+$ export VAR2=LINUX
+
+$ cat var2.sh
+#!/bin/bash
+echo "VAR2=$VAR2"
+VAR2=UNIX
+echo "VAR2=$VAR2"
+```
+
+Now execute the above script.
+
+```
+$ export VAR2=LINUX
+
+$ ./var2.sh
+VAR2=LINUX
+VAR2=UNIX
+$
+$echo $VAR2 # VAR2 is not modified in the parent shell:
+LINUX
+```
+
+Now, you can notice that after execution of the shell script var2.sh, the value of VAR2 is LINUX. 
+
+NOTE:
+
+* VAR2 is not modified in the parent shell: it's a copy, you can't get that value up to the parent shell 
+* Because the variables will not be passed back to your interactive shell, unless you execute the script in the current shell.
 
 ### Creating variables
 
@@ -194,7 +305,17 @@ Ref: http://tldp.org/LDP/abs/html/declareref.html
 
 The declare or typeset builtins, which are exact synonyms, permit modifying the properties of variables. This is a very weak form of the typing
 
-* readonly variables: `declare -r`
+Syntax: `declare option variablename`
+
+* declare is a keyword
+* option could be:
+  * `-r` read only variable
+  * `-i` integer variable
+  * `-a` array variable
+  * `-f` for funtions
+  * `-x` declares and export to subsequent commands via the environment.
+
+Examples:
 
 ```
 declare -r var1=1
@@ -203,7 +324,6 @@ var1 = 2     # print: bash: declare: var1: readonly variable
 echo $var1   # stil print: 1
 ```
 
-* integer variables: `declare -i`
 
 ```
 declare -i number
@@ -214,7 +334,9 @@ echo "Number = $number"     # Number = 3
 
 number=three
 echo "Number = $number"     # Number = 0
-# Tries to evaluate the string "three" as an integer.
+# WARNING: Tries to evaluate the string "three" as an integer. It evaluate to 0.
+
+number=3.4 # syntax error: invalid arithmetic operator (error token is ".4")
 ```
 
 
@@ -235,6 +357,16 @@ NOTE env VS printenv:
 * printenv can only print variables
 * TIP: use always env
 
+### bashrc VS profile
+
+ISSUE: Suppose I have export MY_VAR=0 in ~/.bashrc: it is overridden in every new shell
+
+
+That's your mistake right there. You should define your environment variables in ~/.profile, which is read when you log in. ~/.bashrc is read each time you start a shell; when you start the inner shell, it overrides MY_VAR. If you hadn't done that, your environment variable would propagate downards.
+
+* http://unix.stackexchange.com/questions/8342/export-an-env-variable-to-be-available-at-all-sub-shells-and-possible-to-be-mod
+* http://superuser.com/questions/183870/difference-between-bashrc-and-bash-profile
+
 ### Reserved Variables and positional params
 
 * `$@`	Expands to the positional parameters, starting from one. When the expansion occurs within double quotes, each parameter expands to a separate word.
@@ -242,8 +374,8 @@ NOTE env VS printenv:
 * `$#`	Expands to the number of positional parameters in decimal.
 * `$?`	Expands to the exit status of the most recently executed foreground pipeline.
 * `$-`	A hyphen expands to the current option flags as specified upon invocation, by the set built-in command, or those set by the shell itself (such as the -i).
-* `$$`	Expands to the process ID of the shell.
-* `$!`	Expands to the process ID of the most recently executed background (asynchronous) command.
+* `$$`	Expands to the PID of the shell.
+* `$!`	Expands to the PID of the most recently executed background (asynchronous) command.
 * `$0`	Expands to the name of the shell or shell script.
 * `$_`	The underscore variable is set at shell startup and contains the absolute file name of the shell or script being executed as passed in the argument list. Subsequently, it expands to the last argument to the previous command, after expansion. It is also set to the full pathname of each command executed and placed in the environment exported to that command. When checking mail, this parameter holds the name of the mail file.
 
@@ -393,6 +525,342 @@ Other variables:
 * `TMOUT`	If set to a value greater than zero, TMOUT is treated as the default timeout for the read built-in. In an interative shell, the value is interpreted as the number of seconds to wait for input after issuing the primary prompt when the shell is interactive. Bash terminates after that number of seconds if input does not arrive.
 * `UID`	The numeric, real user ID of the current user.
 
+# Shell Syntax
+
+## Input parsing
+
+Before fork-exec a shell analyze the it's input:
+
+* The shell reads its input from a file, from a string or from the user's terminal.
+
+* Input is broken up into words and operators, obeying the quoting rules
+
+* Token are separated by metacharacter http://www.angelfire.com/mi/genastorhotz/reality/computers/linux/bashmetachars.html
+
+* Alias expansion is performed.
+
+* The shell parses (analyzes and substitutes) the tokens into simple and compound commands.
+
+* Bash performs various shell expansions, breaking the expanded tokens into lists of filenames and commands and arguments.
+
+* Redirection is performed if necessary, redirection operators and their operands are removed from the argument list.
+
+* Commands are executed.
+
+* Optionally the shell waits for the command to complete and collects its exit status.
+
+## Metacharacter
+
+ http://www.angelfire.com/mi/genastorhotz/reality/computers/linux/bashmetachars.html
+
+* `<`
+* `>`
+* `>>`
+* `|`
+* `?`
+* `*`
+* `[]`
+* `$`
+* ` \ `
+* `( )`
+* ` { } `
+* " "
+* ' '
+* ` ` 
+* ` && `
+* ` || `
+* ` & `
+* ` ; `
+* ` = ` 
+
+
+## Quoting Character
+
+Ref: http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_03_03.html
+
+Quoting is used to remove the special meaning of characters or words: quotes can disable special treatment for special characters
+
+they can disable parameter expansion
+
+### Escape Characters
+
+`\ ` :  is used as an escape character in Bash. It preserves the literal value of the next character that follows, with the exception of newline.
+
+```
+franky ~> date=20021226
+
+franky ~> echo $date
+20021226
+
+franky ~> echo \$date
+$date
+```
+
+### Single quotes
+
+Single quotes ('') are used to preserve the literal value of each character enclosed within the quotes.
+
+Single quotes protect all characters except the backslash (\).
+
+```
+franky ~> echo '$date'
+$date
+```
+
+A single quote may not occur between single quotes:
+
+```
+echo ''$date''
+20021226
+```
+
+even when preceded by a backslash:
+
+### Double quotes
+
+Double quotes protect all characters except the backslash (\), dollar sign ($) and grave accent (` `).
+
+* The dollar sign and the backticks retain their special meaning within the double quotes.
+
+* The backslash retains its meaning only when followed by dollar, backtick, double quote, backslash or newline. Within double quotes, the backslashes are removed from the input stream when followed by one of these characters.
+* Backslashes preceding characters that don't have a special meaning are left unmodified for processing by the shell interpreter.
+* A double quote may be quoted within double quotes by preceding it with a backslash.
+
+```
+franky ~> echo "$date"
+20021226
+
+franky ~> echo "`date`"
+Sun Apr 20 11:22:06 CEST 2003
+
+franky ~> echo "I'd say: \"Go for it!\""
+I'd say: "Go for it!"
+
+franky ~> echo "\"
+More input>"
+
+franky ~> echo "\\"
+\
+```
+
+### Single and double quotes protect each other.
+
+For example:
+
+```
+$ echo 'Hi "Intro to Unix" Class'
+Hi "Intro to Unix" Class
+
+$ echo "Hi 'Intro to Unix' Class"
+Hi 'Intro to Unix' Class
+```
+
+# Shell Expansion
+
+## Brace expansion
+
+Is a mechanism by which arbitrary strings may be generated.
+
+Syntax: `PREAMBLE{ ... , ... }POSTSCRIPT`
+
+* PREAMBLE: prefixed to each string contained within the braces
+* POSTSCRIPT: appended to each resulting string
+
+* The results of each expanded string are not sorted; left to right order is preserved
+* To avoid conflicts with parameter expansion, the string "${" is not considered eligible for brace expansion.
+* must contain unquoted opening and closing braces, and at least one unquoted comma.
+* ORDER: performed before any other expansions
+* characters special to other expansions are preserved in the result
+* strictly textual: not apply any syntactic interpretation to the context of the expansion or the text between the braces
+
+Examples:
+
+```
+
+echo \"{These,words,are,quoted}\"   # " prefix and suffix
+# "These" "words" "are" "quoted"
+
+
+cat {file1,file2,file3} > combined_file
+# Concatenates the files file1, file2, and file3 into combined_file.
+
+cp file22.{txt,backup}
+# Copies "file22.txt" to "file22.backup"
+```
+
+## Extended Brace Expansion
+
+Syntax: `{a..z}`
+
+```
+echo {a..z} # a b c d e f g h i j k l m n o p q r s t u v w x y z
+# Echoes characters between a and z.
+
+echo {0..3} # 0 1 2 3
+# Echoes characters between 0 and 3.
+
+
+base64_charset=( {A..Z} {a..z} {0..9} + / = )
+# Initializing an array, using extended brace expansion.
+# From vladz's "base64.sh" example script.
+
+```
+
+## Tilde expansion
+
+* `~+` the value of PWD replaces the tilde-prefix.
+* `~-` the value of the shell variable OLDPWD, if it is set, is substituted.
+* .... etc see here https://www.gnu.org/software/bash/manual/html_node/Tilde-Expansion.html
+
+
+## Exapansions with $
+
+The `$` character introduces:
+
+* parameter expansion,
+* command substitution,
+* arithmetic expansion.
+
+
+### Shell parameter
+
+### Variable expansion
+
+### Aritmethic expansion
+
+Allows the evaluation of an arithmetic expression and the substitution of the result.
+
+Syntax:
+
+* `$(( EXPRESSION ))`
+* `$[]`
+
+All tokens in the expression undergo parameter expansion, command substitution, and quote removal, Example:
+
+```
+echo $( wc -w package.json| awk '{print $1}' ) # packge.json count 169 words
+echo $(( $( wc -w package.json| awk '{print $1}' ) + 1 )) # print 170 add 1 after cmd substitution
+
+a=3
+b=7
+
+echo $[$a+$b]   # 10
+echo $[$a*$b]   # 21
+```
+
+Arithmetic substitutions may be nested:
+
+
+```
+echo $(( $(( 3 + 2 )) * 3 )) # prints 15
+```
+
+The operators are roughly the same as in the C programming language. In order of decreasing precedence, the list looks like this:
+
+* `VAR++` and `VAR--` :	variable post-increment and post-decrement
+* `++VAR` and `--VAR` :	variable pre-increment and pre-decrement
+* `-`, `+`, `*`, `/` multiplication, division,	addition, subtraction
+* `%` remainder
+* `!` and `~`	logical and bitwise negation
+* `**`	exponentiation
+* `<<` and `>>`	left and right bitwise shifts
+* `<=`, `>=`, `<` and `>`	comparison operators
+* `==` and `!=`	equality and inequality
+* `&`	bitwise AND
+* `^`	bitwise exclusive OR
+* `|`	bitwise OR
+* `&&`	logical AND
+* `||`	logical OR
+* `expr ? expr : expr`	conditional evaluation
+* `=`, `*=`, `/=`, `%=`, `+=`, `-=`, `<<=`, `>>=`, `&=`, `^=` and `|=`	assignments
+* `,`	separator between expressions
+
+Within an expression, shell variables may also be referenced by name without using the parameter expansion syntax:
+
+```
+n=4
+echo  $(( 10%n )) # prints 2
+```
+
+See also `expr` and `let`: http://tldp.org/LDP/abs/html/internal.html#LETREF
+
+
+### Command substitution
+
+Ref: http://tldp.org/LDP/abs/html/commandsub.html  With a lot of examples!
+
+
+Bash performs the expansion by executing COMMAND and replacing the command substitution with the **standard output** of the command ( with any trailing newlines deleted, embedded newlines are not deleted ).
+
+The execution is done in a separate process with fork-exec
+
+Syntax: `$(command)` or `command`
+
+NOTE: The `$(...)` form has superseded backticks for command substitution. It permit nesting:
+
+```
+word_count=$( wc -w $(echo * | awk '{print $8}') )
+```
+
+## Word Splitting
+
+Ref: http://wiki.bash-hackers.org/syntax/expansion/wordsplit
+
+Word splitting occurs once any of the following expansions are done (and only then!):
+
+* Parameter expansion
+* Command substitution
+* Arithmetic expansion
+
+Bash will scan the results of these expansions for special `IFS`(Internal Field Separator) characters that mark word boundaries. This is only done on results that are not double-quoted!
+
+The IFS variable holds the characters that Bash sees as word boundaries in this step. The default contains the characters:
+
+* space
+* tab
+* newline
+
+These characters are also assumed when IFS is unset. When IFS is empty (nullstring), no word splitting is performed at all.
+
+## File name expansion
+
+occurs once any of the following expansions are done (and only then!):
+
+* Parameter expansion
+* Command substitution
+* Arithmetic expansion
+* Word Splitting
+
+unless the -f option has been set (see Section 2.3.2), Bash scans each word for the characters:
+
+* `*`
+* `?`
+* `[`
+
+If one of these characters appears:
+
+* the word is regarded as a PATTERN, and replaced with an alphabetically sorted list of file names matching the pattern.
+* If no matching file names are found, and the shell option nullglob is disabled, the word is left unchanged. 
+* If the `nullglob` option is set, and no matches are found, the word is removed.
+* If the shell option `nocaseglob`<D-`>s is enabled, the match is performed without regard to the case of alphabetic characters.
+
+NOTE; `set -f` or `set -o noglob`	Disable file name generation using metacharacters (globbing).
+
+## Common issue and and examples
+
+### Spaces
+
+http://unix.stackexchange.com/questions/100945/word-splitting-when-parameter-is-used-within-command-substitution
+
+```
+file="/home/1_cr/xy z"
+basename $file # prints: xy
+
+basename "$file" # prints: xy z
+
+```
+
+
 # Array
 
 * http://tldp.org/LDP/abs/html/arrays.html#ARRAYREF
@@ -432,11 +900,148 @@ A function may be "compacted" into a single line :
 
 Functions are called, triggered, simply by invoking their names. A function call is equivalent to a command.
 
-Parameters:
+## Parameters
+
+* positional parameters passed to a function are not the same as the ones passed to a command or script.
+
+When a function is executed:
+
+* the arguments to the function become the positional parameters during its execution.
+* The special parameter `#` that expands to the number of positional parameters is updated to reflect the change.
+* Positional parameter 0 is unchanged. The Bash variable `FUNCNAME` is set to the name of the function, while it is executing.
 
 
+```
+ciao(){ echo $0; echo $FUNCNAME $1; echo $#; true; };
+21:07 ~/SRC/nicola_blog/_guides (master)$ ciao Nicola
+-bash
+ciao Nicola
+1
+```
 
-Functions and variable scope:
+## return values from a function
+
+REF: http://www.linuxjournal.com/content/return-values-bash-functions
+
+
+Bash functions, unlike functions in most programming languages **do not allow you to return a value to the caller**. When a bash function ends its return value is its status: zero for success, non-zero for failure. 
+
+To return values, you can:
+
+* set a global variable with the result,
+* or use command substitution,
+* or you can pass in the name of a variable to use as the result variable. 
+
+### Return an integer
+
+If you only want to return an integer value from a bash function, use `return`:
+
+```
+#!/bin/bash
+
+function return_code_test ()
+{
+return 50
+}
+
+return_code_test
+echo "return_code_test returned $?"
+```
+
+When the `return` built-in is executed in a function:
+
+* the function completes and execution resumes with the next command after the function call.
+* When a function completes, the values of the positional parameters and the special parameter # are restored to the values they had prior to the function's execution.
+* If a numeric argument is given to return, that status is returned. 
+
+### Return: set a global variable with the result
+
+```
+function myfunc()
+{
+    myresult='some value'
+}
+
+myfunc
+echo $myresult 
+```
+
+but as we all know, using global variables, particularly in large programs, can lead to difficult to find bugs.
+
+### Return: use command substitution
+
+A better approach is to use local variables in your functions. The problem then becomes how do you get the result to the caller. One mechanism is to use command substitution:
+
+```
+function myfunc()
+{
+    local  myresult='some value'
+    echo "$myresult"
+}
+
+result=$(myfunc)   # or result=`myfunc`
+echo $result
+```
+
+Here the result is output to the stdout and the caller uses command substitution to capture the value in a variable. The variable can then be used as needed.
+
+### Return: can pass in the name of a variable to use as the result variable
+
+The other way to return a value is to write your function so that it accepts a variable name as part of its command line and then set that variable to the result of the function:
+
+```
+function myfunc()
+{
+    local  __resultvar=$1
+    local  myresult='some value'
+    eval $__resultvar="'$myresult'"
+}
+
+myfunc result
+echo $result
+```
+
+When you store the name of the variable passed on the command line, make sure you store it in a local variable with a name that won't be (unlikely to be) used by the caller (which is why I used `__resultvar` rather than just resultvar). If you don't, and the caller happens to choose the same name for their result variable as you use for storing the name, the result variable will not get set. For example, the following does not work:
+
+```
+function myfunc()
+{
+    local  result=$1
+    local  myresult='some value'
+    eval $result="'$myresult'"
+}
+
+myfunc result
+echo $result
+```
+
+Since we have the name of the variable to set stored in a variable, we can't set the variable directly, we have to use eval to actually do the setting. The eval statement basically tells bash to interpret the line twice, the first interpretation above results in the string result='some value' which is then interpreted once more and ends up setting the caller's variable.
+
+The reason it doesn't work is because when eval does the second interpretation and evaluates result='some value', result is now a local variable in the function, and so it gets set rather than setting the caller's result variable.
+
+For more flexibility, you may want to write your functions so that they combine both result variables and command substitution:
+
+```
+function myfunc()
+{
+    local  __resultvar=$1
+    local  myresult='some value'
+    if [[ "$__resultvar" ]]; then
+        eval $__resultvar="'$myresult'"
+    else
+        echo "$myresult"
+    fi
+}
+
+myfunc result
+echo $result
+result2=$(myfunc)
+echo $result2
+```
+
+Here, if no variable name is passed to the function, the value is output to the standard output.
+
+## Functions and variable scope
 
 ```
 define_local (){
@@ -454,6 +1059,107 @@ define_not_local
 echo "local_variable is empty: $local_variable"
 echo "not_local_variable: $not_local_variable"
 ```
+
+# Regular Expression
+
+Ref: http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_04_01.html
+
+Certain commands and utilities commonly used in scripts interpret and use REs, such as:
+
+* grep
+* expr
+* sed
+* awk
+* As of version 3, Bash has acquired its own RE-match operator: `=~` .
+
+Operators:
+
+* `.`	Matches any single character.
+* `?`	The preceding item is optional and will be matched, at most, once.
+* `*`	The preceding item will be matched zero or more times.
+* `+`	The preceding item will be matched one or more times.
+* `{N}`	The preceding item is matched exactly N times.
+* `{N,}`	The preceding item is matched N or more times.
+* `{N,M}`	The preceding item is matched at least N times, but not more than M times.
+* `-`	represents the range if it's not first or last in a list or the ending point of a range in a list.
+* `^`	Matches the empty string at the beginning of a line; also represents the characters not in the range of a list.
+* `$`	Matches the empty string at the end of a line.
+* `\b`	Matches the empty string at the edge of a word.
+* `\B`	Matches the empty string provided it's not at the edge of a word.
+* `\<`	Match the empty string at the beginning of word.
+* `\>`	Match the empty string at the end of word.
+
+REF: http://www.zytrax.com/tech/web/regex.htm
+
+## Bash =~ Example
+
+In addition to doing simple matching, bash regular expressions support sub-patterns surrounded by parenthesis for capturing parts of the match. The matches are assigned to an array variable `BASH_REMATCH`.
+
+The entire match is assigned to `BASH_REMATCH[0]`, the first sub-pattern is assigned to `BASH_REMATCH[1]`, etc..
+
+TODO: http://www.linuxjournal.com/content/bash-regular-expressions
+
+
+
+
+```
+#!/bin/bash
+
+variable="This is a fine mess."
+
+echo "$variable"
+
+# Regex matching with =~ operator within [[ double brackets ]].
+if [[ "$variable" =~ T.........fin*es* ]]
+# NOTE: As of version 3.2 of Bash, expression to match no longer quoted.
+then
+  echo "match found"
+      # match found
+fi
+```
+
+
+## Grep Examples
+
+```
+grep root /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+operator:x:11:0:operator:/root:/sbin/nologin
+```
+
+we now exclusively want to display lines starting with the string "root":
+
+```
+cathy ~> grep ^root /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+```
+
+If we want to see which accounts have no shell assigned whatsoever, we search for lines ending in ":":
+
+```
+cathy ~> grep :$ /etc/passwd
+news:x:9:13:news:/var/spool/news:
+```
+
+To check that PATH is exported in ~/.bashrc, first select "export" lines and then search for lines starting with the string "PATH", so as not to display MANPATH and other possible paths:
+
+
+```
+cathy ~> grep export ~/.bashrc | grep '\<PATH'
+  export PATH="/bin:/usr/lib/mh:/lib:/usr/bin:/usr/local/bin:/usr/ucb:/usr/dbin:$PATH"
+```
+
+Similarly, \> matches the end of a word.
+
+If you want to find a string that is a separate word (enclosed by spaces), it is better use the -w, as in this example where we are displaying information for the root partition:
+
+```
+cathy ~> grep -w / /etc/fstab
+LABEL=/                 /                       ext3    defaults        1 1
+```
+
+If this option is not used, all the lines from the file system table will be displayed.
+
 
 
 # Server side management
@@ -487,6 +1193,14 @@ Debug with `bash -x`: (or add in your script set -x) The most common is to star
 ## Examples: one line script
 
 while true; echo "AA"; sleep 2; done
+
+# Bash Patterns and best practices
+
+http://stackoverflow.com/questions/78497/design-patterns-or-best-practices-for-shell-scripts
+
+## Bash Package Manager
+
+http://www.bpkg.io/
 
 # Conditional: if then else
 
@@ -543,6 +1257,18 @@ Special built-in commands, When Bash is executing in POSIX mode, the special bui
 
 The POSIX special built-ins are :`, ., break, continue, eval, exec, exit, export, readonly, return, set, shift, trap and unset`.
 
+## eval
+
+Ref: http://wiki.bash-hackers.org/commands/builtin/eval
+
+syntax `eval [arg ...]`
+
+eval takes its arguments, concatenates them separated by spaces, and executes the resulting string as Bash code in the current execution environment.
+
+*it's similar to `-c "bash code…"` from a script,
+* **except** in the case of eval, the given code is executed in the current shell environment rather than a child process.
+
+
 
 ## exec
 
@@ -552,7 +1278,7 @@ REF: http://stackoverflow.com/questions/8888251/understanding-bash-exec-12-comma
 
 Example:
 
-~~~bash
+```
 function example()
 {
     exec 1>&2  # from this point one stdout will be directed to stderr
@@ -561,7 +1287,7 @@ Script requires at least one parameter.
 EOT
     exit 1
 } 
-~~~
+```
 
 ## set
 
@@ -569,12 +1295,27 @@ Ref:
 
 * `man set`  https://www.gnu.org/software/bash/manual/bashref.html#index-set
 * http://unix.stackexchange.com/questions/255581/what-does-set-command-without-arguments-do
+* http://faculty.salina.k-state.edu/tim/unix_sg/bash/set.html
+* Bash options: http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_03_06.html
 
 `set` allows you:
 
 * to change the values of shell options
+  * Use - (dash) for enabling an option, + for disabling
+  * `set -o noclobber`
+  * `set +o noclobber`
 * set the positional parameters
 * to display the names and values of shell variables (Without arguments, set will print all shell variables (both environment variables and variables in current session) sorted in current locale).
+
+
+* Without options, the name and value of each shell variable are displayed in a format that can be reused as input.
+
+* `set -e` : Exit immediately if a pipeline (see Pipelines), which may consist of a single simple command (see Simple Commands), a subshell command enclosed in parentheses (see Command Grouping), or one of the commands executed as part of a command list enclosed by braces (see Command Grouping) returns a non-zero status
+
+* `set -- ` If no arguments follow this option, then the positional parameters are unset
+* `set -- one two three`  set positional params $1 $2 $3 
+
+
 
 
 # Parsing bash script options from command line 
