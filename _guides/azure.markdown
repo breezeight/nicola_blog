@@ -206,6 +206,9 @@ To point your Docker client at it, run this in your shell:
 $(docker-machine env machine-name2) 
 ~~~
 
+## Azure Container Service 
+
+* https://azure.microsoft.com/en-gb/documentation/videos/connect-2015-getting-started-developing-with-docker-and-azure-container-service/ at minutes 6:00
 
 
 # Commnad line tools: xplat-cli
@@ -292,6 +295,51 @@ azure vm endpoint create -multiple exampleVM1 80 80
 Azure and Chef
 
 http://docs.opscode.com/plugin_knife_azure.html
+
+# Azure Container Service
+
+https://azure.microsoft.com/en-us/documentation/articles/container-service-intro/
+
+1) Deploy an Azure Container Service cluster:
+* https://azure.microsoft.com/en-us/documentation/articles/container-service-deployment/
+* NEW from template -> Azure Container
+
+2) Connect to an Azure Container Service cluster:
+* https://azure.microsoft.com/en-us/documentation/articles/container-service-connect/
+
+## Test cluster
+AzureContainerTest  user:pt  sshkey /Users/nicolabrisotto/.ssh/azure_container_test
+DNS: ptdev
+
+Agent: 3
+Master: 3
+
+ENABLE TUNNEL:
+ssh -i ~/.ssh/azure_container_test -L 2375:localhost:2375 -N pt@ptdevmgmt.northeurope.cloudapp.azure.com -p 2200
+export DOCKER_HOST=:2375
+
+
+
+# Azureml - Azure Machine Learnign Studio
+
+**** Andare su subscriptions e selezionare "bizpark1pitchtarget" ****
+
+## Create a workspace
+
+From the azure management portal: https://manage.windowsazure.com
+
+https://azure.microsoft.com/en-us/documentation/articles/machine-learning-create-workspace/
+
+## Users Management
+
+azure management portal -> Enter the workspace -> Settings
+
+NB: to create work user:
+
+* Go to azure manage portal, subscription bizpark1pitchtarget
+* Active Directory
+* users: add user
+
 
 # BizSpark Tips and Tricks
 
