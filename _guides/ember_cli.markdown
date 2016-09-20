@@ -24,9 +24,9 @@ ember-cli is command line utility which provides a fast asset pipeline
 for Ember. It makes really simple and fast to build a project and it's
 dependecies (sass, less, linting, etc).
 
-Ember-cli components:
+Ember-cli Responsability:
 
-* JS modules, based on ES6 Module Transpiler
+* Compile any ES2015/ES6 in our JavaScript files JS modules, based on ES6 Module Transpiler
   * [ES6 Module Transpiler Homepage](https://github.com/esnext/es6-module-transpiler)
   * [Internals](http://eviltrout.com/2014/05/03/getting-started-with-es6.html)
 * Asset compilation: is based on [Broccoli.js]
@@ -35,17 +35,34 @@ Ember-cli components:
   * [QUnit](http://qunitjs.com/)
   * [Ember Testing package](http://emberjs.com/guides/testing/integration/)
   * [Ember QUnit](https://github.com/rpflorence/ember-qunit)
-* Bower.io: for front-end dependencies ( bower.json )
+* Manage front-end dependencies with bower ( bower.json )
   * [Nicola Bower Guide]({{site.url}}/guides/bower.html)
-* NPM for internal dependencies ( package.json )
+* Manage server/workstation side dependencies using NPM and addons ( package.json )
 
-See deeper intro http://www.ember-cli.com 
+See deeper intro http://www.ember-cli.com
+
+# Install / Upgrade
+
+To install read here: https://ember-cli.com/user-guide/#getting-started
+
+To Upgrade see here https://ember-cli.com/user-guide/#upgrading
+
+## Manage multiple ember-cli versions
+
+Most modern version of the ember executable will lock at your local directory and will execute the ember-cli version installed locally (like most modern ruby executable do with Bundler)
+
+* install the latest version of ember-cli as global node package
+* when you run the `ember` executable from your project it will read the `package.json` file and use the local ember-cli version.
+* if there is no `package.json` it will use the global version
+
 
 # Debug Ember-CLI
 
 Because the `ember` executable is smart enough to detect that a local version is installed in `$PROJECT_HOME/node_modules/emebr-cli` we can safely locale ember-cli files and add a `console.log` statements.
 
-# Ember cli internals
+# Internals: how Ember cli works
+
+dependencies: http://npm.anvaka.com/#/view/2d/ember-cli
 
 ## Ember executable
 
@@ -74,7 +91,7 @@ Call it shims if you want to keep the directory generic. A polyfill is a type of
 A polyfill is code that detects if a certain "expected" API is missing and manually implements it. E.g.
 
 if (!Function.prototype.bind) { Function.prototype.bind = ...; }
-A shim is code that intercepts existing API calls and implements different behavior. The idea here is to normalize certain APIs across different environments. 
+A shim is code that intercepts existing API calls and implements different behavior. The idea here is to normalize certain APIs across different environments.
 
 Ember-cli defines its owns shims:
 
@@ -82,7 +99,7 @@ Ember-cli defines its owns shims:
 
 ## ES6 modules
 
-TODO: Understand if embercli is still using `es6-module-transpiler`. It looks that the ember-cli web site is outdate:
+TODO: Understand if ember-cli is still using `es6-module-transpiler`. It looks that the ember-cli web site is outdate:
 
 * https://github.com/ember-cli/ember-cli/commit/c6b65278bea0cbd05a12e9997291808d35418f64
 * http://discuss.emberjs.com/t/working-with-docker-ember-cli-in-development/7658
@@ -100,7 +117,7 @@ The Ember Resolver is the mechanism responsible for looking up code in your appl
 
 * classes
 * functions
-* templates 
+* templates
 
 that Ember needs to resolve its dependencies, for example, what template to render for a given route.
 
@@ -117,24 +134,9 @@ TODO: capire perchè ember usa babel ma poi ne disabilita il support per i  modu
 * SPEED: The few seconds it takes to generate a production build of our
 application are nothing compared to the minutes we are used from a Middleman setup
 * the ES6 module transpiler allows you to use and write the future ES6 module syntax.
-* The ability to proxy API requests to a different webserver is another promising feature of the Ember CLI server. 
+* The ability to proxy API requests to a different webserver is another promising feature of the Ember CLI server.
 * out of the box support for the history location of the Ember.js router.
 * compiling and building your project on the fly when a file change occurs.
-
-
-
-# Install
-
-Install: npm -g install ember-cli
-
-http://edgycircle.com/blog/2014-building-an-emberjs-production-application-with-ember-cli/
-
-
-# Upgrade
-see here http://www.ember-cli.com/
-
-NOTE: most modern version of the ember executable will lock at your local directory and will execute the ember-cli version installed locally (like most modern ruby executable do with Bundler)
-
 
 # Ember-cli Project File Structure
 
@@ -144,13 +146,14 @@ package.json is the equivalent of a Bundler Gemfile in ruby https://www.npmjs.or
 
 # Broccoli and Ember-Cli
 
+[Intro blog post](http://www.solitr.com/blog/2014/02/broccoli-first-release)
 
 
 # Deploy Ember-cli applications
 
 ## Ember-cli-deploy
 
-Refs: 
+Refs:
 
 * https://github.com/ember-cli/ember-cli-deploy
 * https://www.npmjs.com/package/ember-cli-deploy
@@ -197,7 +200,7 @@ NOTE: you must configure CORS on the assets bucket to accept request from other 
 
 ### Index adapters
 
-* [Interface of an index adapter](https://github.com/ember-cli/ember-cli-deploy#index-adapters) 
+* [Interface of an index adapter](https://github.com/ember-cli/ember-cli-deploy#index-adapters)
 
 #### S3 index Adapter
 
@@ -206,15 +209,11 @@ NOTE: you must configure CORS on the assets bucket to accept request from other 
 * http://kerrygallagher.co.uk/deploying-an-ember-cli-application-to-amazon-s3/
 
 
-Install: `npm install ember-deploy-s3-index --save-dev` 
+Install: `npm install ember-deploy-s3-index --save-dev`
 
 
 ##### Internals
 
-## Fingerprinting 
+## Fingerprinting
 
 * [Ember doc](http://www.ember-cli.com/#fingerprinting-and-cdn-urls)
-
-
-
-

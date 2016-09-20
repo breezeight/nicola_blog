@@ -12,26 +12,50 @@ categories: ["javascript"]
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-# Info
+# Community and Team
 
 * IRC #emberjs on freenode.net
 * [Ember Discourse site](http://discuss.emberjs.com/)
 * [Ember Core Team Minutes](http://emberjs.com/blog/tags/core-team-meeting-minutes.html)
+* http://emberjs.com/community/
+* TEAM: http://emberjs.com/team/
 
 books:
 
 * http://balinterdi.com/rock-and-roll-with-emberjs/
 * https://leanpub.com/ember-cli-101
 
+Developer team notes: https://github.com/emberjs/core-notes
+
+RFC (request for comments):
+
+* RFC are used for "substantial" changes (ie: add/remove APIs), and we ask that these be put through a bit of a design process and produce a consensus among the Ember core team.
+* RFC lifecycle is explained here: https://github.com/emberjs/rfcs#the-rfc-life-cycle
+  * Each week a list of new RFC reviewed is reported in the core team notes: https://github.com/emberjs/core-notes/tree/master/ember.js
+    * if OK: "final comment period" label added to github pull request and twitted for 7 days
+  * After the "final comment period" an RFC may be merged and become "active".
+  * Implementation:
+    * The author of an RFC is not obligated to implement it.
+    * If you are interested in working on the implementation for an 'active' RFC, but cannot determine if someone else is already working on it, feel free to ask (e.g. by leaving a comment on the associated issue).
+
+
+* All RFCs proposed: https://github.com/emberjs/rfcs/pulls
+* All RFCs in the final comment period:  https://github.com/emberjs/rfcs/labels/Final%20Comment%20Period
+* All active RFCs: https://github.com/emberjs/rfcs/tree/master/text
+
+You may choose to close a pull request without merging it into the upstream branch. This can be handy if the changes proposed in the branch are no longer needed, or if another solution has been proposed in another branch.
+
+
+https://twitter.com/emberjs
+
 # How to develop and build an Ember.js Project with Ember-Cli
 
-Ember.js is a Javascript framework for web application. 
+Ember.js is a Javascript framework for web application.
 Ember-cli is command line utility which provides a fast asset pipeline
 for Ember. [Ember-cli Homepage](http://www.ember-cli.com/)
 
 To be productive with Ember it's really important that you understand
-how it works. See here for more notes: [Ember-cli internal
-guide]({{site.url}}/guides/ember_cli.html)
+how it works. See here for more notes: [Ember-cli internal guide]({{site.url}}/guides/ember_cli.html)
 
 
 # Ember Core Concepts
@@ -66,7 +90,7 @@ module.exports = function(environment) {
       host: 'http://localhost:3000',
     },
   };
- 
+
   if (environment === 'production') {
     ENV.api.host = 'http://www.example.com';
   }
@@ -100,14 +124,6 @@ TODO: see here
 +    ]
 ~~~
 
-# Broccoli
-
-[Intro blog post](http://www.solitr.com/blog/2014/02/broccoli-first-release)
-
-Is....
-
-It user the Ember-Resolver.
-
 ## Ember-Resolver
 
 [Homepage](https://github.com/stefanpenner/ember-resolver)
@@ -130,7 +146,7 @@ This simple architectural decision is responsible for much of the consistency ac
 * `_super()`
 * `Ember.Object.extend()` : define classes
 * `create()`: instantiate classes
-* `init()`: 
+* `init()`:
 
 `packages/ember-runtime/lib/system/core_object.js` define ` extend: function extend()` at line 500
 
@@ -198,12 +214,50 @@ Mixin.create = function() {
 };
 ~~~
 
-TODO: non capisco che cavolo fa questo pezzo qua sopra... perchè fa quel trick con M() ? 
+TODO: non capisco che cavolo fa questo pezzo qua sopra... perchè fa quel trick con M() ?
 In sostanza un mixin sembra un'oggetto che raccoglie nella property
 `properties` tutte i metodi che dell'oggetto che passi a `create()`
 
 
 
+# Wrapping external code
+
+Wrapping code in Ember
+
+* https://eviltrout.com/2016/02/25/fixing-android-performance.html paragraph ""Wrapping code in Ember"
+* https://www.youtube.com/watch?v=S_l_DL8ysQQ
+
+# Widget in Ember
+
+Ember Engines? cerca mail di matte
+
+# Ember Debug
+
+A Flowchart about howto debug an Ember App: https://www.mutuallyhuman.com/blog/2016/08/12/an-ember-debugging-flowchart
+
+# Ember Test
+
+* Toran Billups @toranb
+* EMBERCONF 2015 - TEST-DRIVEN DEVELOPMENT BY EXAMPLE https://www.youtube.com/watch?v=2b1vcg_XSR8
+  * tutorial inspired by the above talk: http://culttt.com/2015/06/22/writing-your-first-ember-js-acceptance-test/
+  * The idea behind this talk is to get feedback with TDD and in giving this demonstration Billups mentions that whenever he watched live coding sessions it was very often the smaller things that proved helped him learn than the bigger picture itself. Throughout this talk Billups commentates the things that he has learnt about Test Driven Development and how he will fail tests to monitor feedback with what is expected.
+
+* Outside In TDD by Toran Billups - Global Ember Meetup gen 2016 https://vimeo.com/146953048
+* Write Better Ember Tests https://medium.com/@jonpitch/write-better-ember-tests-d2e22fb76bf2#.p3j9lnv62
+
+
+# Ember Best Practicies
+
+## Enforce Code Style Guides
+
+https://github.com/DockYard/ember-suave
+
+## Ember Style
+
+Project style:
+
+* https://github.com/chrislopresto/ember-freestyle
+* https://usecanvas.com/dockyard/emberconf-2016-living-style-guide-driven-development-chris-lopresto/3PFRQprRsMJKccvGbjGTHF
 
 
 # Ember Internals
@@ -215,9 +269,16 @@ In sostanza un mixin sembra un'oggetto che raccoglie nella property
 * [ALapAround] VIDEO Oct 19, 2015: A lap around the Ember source code with Yehuda Katz https://www.youtube.com/watch?v=RN_kVPga9y8
 * How to build, code guidelines, etc: https://github.com/emberjs/ember.js/blob/master/CONTRIBUTING.md
 
+* http://stackoverflow.com/questions/8947156/overview-of-the-ember-js-code
+
+
 ## Run tests
 
+npm install && bower install && npm test
+
 `/tests/index.html?hidepassed&package=ember-metal`
+
+(To see tests in the browser, run npm start and open http://localhost:4200/tests/index.html)
 
 ## Intro to ember internal
 
@@ -247,12 +308,27 @@ How feature flag are handled: [ALapAround] VIDEO min 13:00
 
 * consists of several foundation technologies: observers, bindings, computed properties, and a run loop.
 
-  * Is the module with least dependencies. It's like the Kernel of the Ember project. Optimisation stuff goes here. [Ref: ALapAround] 
+* Is the module with least dependencies. It's like the Kernel of the Ember project. Optimisation stuff goes here. [Ref: ALapAround]
+
+#### Helpers
+
+`is_blank.js`:
+
+* Why is it useful? Because it's not easy with JS to check if an object is Empty
+* Problems arise because the are different scenarios in which we consider the object empity:
+  * an object could be none or undefined (see `isNone` helper)
+  * an object with size or length properties set to 0
+  * if the object is a function it has a length property (the numeber of args)
+
+
+`is_empty.js`
+
+
 
 ### Runtime Package
 
 * provides the Ember object system along with a handful of useful classes. The object system is built with many of the foundational technologies implemented in metal, but exposes them in a much cleaner way to the application developer.
-  * Depends on ember metal 
+  * Depends on ember metal
 
 ember-runtime/lib/system/core_objects.js:
 
@@ -302,4 +378,3 @@ http://emberjs.com/guides/models/
 http://www.toptal.com/emberjs/a-thorough-guide-to-ember-data
 
 Application's controllers and routes have access to this shared store.
-
