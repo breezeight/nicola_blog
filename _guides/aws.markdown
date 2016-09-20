@@ -14,7 +14,6 @@ categories:
 
 This is a short internal guide to the AWS service we use most.
 
-
 # AWS Security
 
 * [FedRamp Compliance](http://d0.awsstatic.com/whitepapers/aws-architecture-and-security-recommendations-for-fedramp-compliance.pdf)
@@ -25,12 +24,9 @@ Ref:
 
 * [Old Post of 2009, but well done](http://shlomoswidler.com/2009/08/how-to-keep-your-aws-credentials-on-ec2.html), I think it's written before instances profiles.
 
-
 Don't use `User-data`:
 
 * Any user account able to open a socket on an EC2 instance can see the user-data by getting the URL http://169.254.169.254/latest/user-data . This is exploitable if a web application running in EC2 does not validate input before visiting a user-supplied URL. Accessing the user-data URL is particularly problematic if you use the user-data to pass in the secret unencrypted into the instance – one quick wget (or curl) command by any user and your secret is compromised. And, there is no way to clear the user-data – once it is set at launch time, it is visible for the entire life of the instance.
-
-
 
 # IAM
 
@@ -488,6 +484,26 @@ The ecs docker agent runs as a docker container
 
 * [Doc: Intro](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/CHAP_Intro.html)
 * [Reinvent 2013: DMG201 - Zero to Sixty: AWS CloudFormation] (https://www.youtube.com/watch?v=-0ELfN-kb7g)
+
+## CloudFormation Designer
+
+* Video Intro: ( 5min, utile): https://www.youtube.com/watch?v=EeduOlNkMyI
+* Doc: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/working-with-templates-cfn-designer.html
+* https://ig.nore.me/2015/11/looking-at-cloudformation-designer/
+
+Tips:
+
+* `ctrl + space` to autocomplete
+* `right click` for documentation, edit, duplicate
+* CTRL+F: Search within currently open editor pane
+* CTRL+\: Format the open pane
+* CTRL+SHIFT+\: Strip all whitespace
+
+
+WARNING: il renaming e i refresh non funzionanano benissimo, per aggiornare il nome di una risorsa:
+  * usare la matitina
+  * andare su template
+  * premere il tasto "Refresh" in alto a DX
 
 ## How to write templates
 
