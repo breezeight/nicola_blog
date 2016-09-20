@@ -14,6 +14,11 @@ categories: ["ruby"]
 
 # References
 
+# Find Memory Leaks
+
+* http://www.be9.io/2015/09/21/memory-leak/?utm_source=rubyweekly&utm_medium=email
+
+
 # Ruby >= 2.0
 
 ## RubyMine
