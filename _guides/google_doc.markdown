@@ -6,6 +6,21 @@ comments: true
 categories: ["google"]
 ---
 
+# App Script
+
+## Git and app script
+
+http://www.postscapes.com/waste-management-sensor-company-enevo-collects-158m-in-funding/
+
+`npm install -g node-google-apps-script`
+
+## Connect with oauth2 services
+
+* https://github.com/googlesamples/apps-script-oauth2
+* samples: https://github.com/googlesamples/apps-script-oauth2/tree/master/samples
+
+
+
 # Spreadsheet
 
 Query Language doc: https://developers.google.com/chart/interactive/docs/querylanguage?hl=en
