@@ -15,10 +15,85 @@ categories: ["Management"]
 
 # References:
 
+
+
 # Project and Board configuration
 
 * https://answers.atlassian.com/questions/259012/best-practices-for-projects-vs-epics
 * 
+
+
+# Permission and Security
+
+JIRA best practices:
+
+* Only Project Roles are assigned to the Permission Scheme. Users and groups are not included in this phase.
+* Assign Project Roles to the users or groups through the project administration page.
+* REF: https://confluence.atlassian.com/display/JIRAKB/JIRA+Permissions+made+Simple
+
+
+Ref:
+
+* Overview: https://confluence.atlassian.com/jirasoftwarecloud/permissions-overview-764478244.html
+* Doc https://confluence.atlassian.com/adminjiracloud/managing-project-permissions-776636362.html#Managingprojectpermissions-permission_schemes
+
+## Permission schema
+
+Permission schema is a config that:
+
+* Grant project permission to users, groups, roles (e.g. who can see the project's issues, create, edit and assign them)
+* Is associated to 1..N Projects
+* From each project you can edit the schema but it will impact all the other project usiging it
+* Project Admin - Permissions
+  * Debug tool: Permission helper: you can check
+
+Permission can be granted to:
+
+
+## Groups VS Roles
+
+tl;dr : use only roles in permission and notification schema
+
+REF: https://www.safaribooksonline.com/library/view/practical-jira-administration/9781449309701/ch01.html
+
+
+Project roles are somewhat similar to groups, the main difference being that group membership is global whereas project role membership is project-specific.
+
+Why?
+
+* you don't need system administration rights to add someone to a project (roles member are a project level setting)
+* when you use groups they are shared between project and could be hard to manage when you need to customize a single project.
+* Unlike groups, which have the same membership throughout your application, project roles have specific members for each project. 
+* Ref: http://stackoverflow.com/questions/3632191/when-and-how-should-one-use-project-roles-instead-of-groups-within-jira
+
+
+## Roles
+
+Roles can be:
+
+* Application Roles: very general, they can distinguish only if you are a logged user in a given JIRA app.
+* Project Roles: more specific, you can add users or groups to a role
+
+To add roles (NB: a role it's a global settings): JIRA Administration - System - Project Roles
+
+To add users to a project role: Enter the project administration - Users and Roles - Add users to a role
+
+NB: Roles could have a default set of users added when you create a project.
+
+
+Doc:
+
+* https://confluence.atlassian.com/adminjiracloud/managing-project-roles-776636382.html
+* https://confluence.atlassian.com/jirasoftwarecloud/managing-project-role-memberships-764478255.html
+
+
+
+
+## Tools
+
+* scheme comparison tools (Administration→Scheme Tools).
+* permission helper
+
 
 # Organize JIRA issues
 
@@ -120,6 +195,7 @@ Use Subtask:
 * PRO: don't clutter the backlog
 * CONS: the original time estimate of subtasks don't sum up in their parent issue (instead this happens with stories)
 * ISSUE: https://jira.atlassian.com/browse/GHS-9167
+* IDEA: we could use estimates only at the issue level and block it at the subtask level (Proj Settings - Issue Type - Subtask - Fields: remove time tracking)
 
 Use Epic and avoid subtasks (basically we exclude on level)
 
@@ -189,3 +265,24 @@ How the Jenkins 2.x brainstorming is managed:
 
 
 
+# MISC Free Plugins
+
+## Recurring Tasks
+
+Free plugin:
+https://marketplace.atlassian.com/plugins/com.gebsun.atlassian.rtasks/cloud/overview
+
+## Gantt
+
+https://marketplace.atlassian.com/plugins/eu.wisoft.gantt-ondemand/cloud/overview
+
+
+## Slack
+
+https://marketplace.atlassian.com/plugins/eu.wisoft.slack.jira/cloud/overview
+
+## Epic Sum Up
+
+https://marketplace.atlassian.com/plugins/aptis.plugins.epicSumUpFree/cloud/overview
+
+https://answers.atlassian.com/questions/32519842/how-do-i-use-epic-sum-up
