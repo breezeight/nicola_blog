@@ -1190,6 +1190,175 @@ Click “Redirect all requests to another host name”, www.example.com will be 
 Save the redirect settings, then open your Route 53 hosted zone for example.com.
 Create a new record set, leave the name blank, select A type. Turn alias to yes and select example.com from the S3 Website Endpoints section of the Alias Target dropdown.
 
+# CloudFront
+
+http://cloudacademy.com/blog/amazon-cloudfront-cdn/
+
+## CDN TODO
+
+* Ha senso pensare di caricare Ember da una CDN pubblic?
+  * Files may be pre-cached: jQuery is ubiquitous on the web. There’s a high probability that someone visiting your pages has already visited a site using the Google CDN. Therefore, the file has already been cached by your browser and won’t need to be downloaded again.
+
+https://www.sitepoint.com/7-reasons-not-to-use-a-cdn/
+https://www.sitepoint.com/7-reasons-to-use-a-cdn/
+
+## CDN Intro
+
+A CDN is a set of servers distributed across the Internet to serve highly available, high performance content to end-users.
+
+Example:
+
+* a request for an image can routed 10 times within the United States before the image was retrieved, which is not an unusually large number of hops.
+* If your user were in Europe, the request would be routed through even more networks to reach your server in Seattle.
+* IMPACT: The number of networks and the distance that the request and the image must travel have a significant impact on the performance, reliability, and availability of the image.
+* you can use `traceroute` to test 
+
+A CDN speeds up the distribution of your content by routing each user request to the edge location that can best serve your content. Typically, this is the CloudFront edge location that provides the lowest latency. This dramatically reduces the number of networks that your users' requests must pass through
+
+Among other advantages, a CDN can:
+
+* Offload traffic served directly from the content provider’s origin infrastructure.
+* Help manage denial-of-service attacks by absorbing some of the traffic.
+* Offer higher availability, lower network latency, and lower packet loss.
+* Sometimes reduce your hosting costs.
+* Handle increased numbers of concurrent users.
+
+If there are advantages, there will be some negatives too:
+
+* Lock-in dependency on a single CDN provider for support availability.
+* Lock-in dependency on a single CDN provider for infrastructure availability.
+* Not all CDN providers will have data centers in exactly the geographic locations you need them for each of your projects.
+
+The CDN market has many active providers, including CloudFare, Akamai Technologies, and Limelight Networks.
+
+## CDN Common Mistakes
+
+http://www.yottaa.com/company/blog/networking-and-security/setting-configuring-content-delivery-network-cdn-architecture-experts-share-common-mistakes/
+
+### Serving of duplicate content
+
+
+Since your website will be serving content from two different domains, it is vital to tell Google that your main URL is the original and the CDN version is a copy. You can do this by adding a rel=“canonical” directive to the http headers of your site. This is an integral step to avoid duplicate content issues with Google and maintaining your rankings.
+
+This issue can raise if both the origin and the CDN are public.
+
+### Don't monitor for low cache hit rates
+
+Not continually checking the logs for low cache hit rates or other types of errors is one of the biggest overlooked mistakes I find sites making. The initial set up is generally based on a few assumptions which, under realistic traffic patterns, do not hold up. Periodically checking those logs will help identify both issues as well as changes in your users’ behavior.
+
+### limit yourself to a single subdomain and domain for your CDN
+
+Don’t limit yourself to a single subdomain and domain for your CDN. Creating multiple aliases for your CDN can be utilized to load assets much faster. Browsers will synchronously load from a single CDN path, but will asynchronously load from multiple CDN paths. In other words, you could have c1.domain.com <http://c1.domain.com/> through c8.domain.com <http://c2.domain.com/> all pointing to the same folder, and then cycle through the subdomains when loading a page.
+
+### Don't autopublish size and resolution modifications upon uploading the asset
+
+Autopublish size and resolution modifications upon uploading the asset, saving yourself from on-the-fly asset production later that delays the user experience. This will ensure retina displays, mobile sizing, and other optimal image sizes are all preloaded so that the first user that visits on a different viewport will experience great performance. Waiting until the file is requested to determine the size and resolution is a huge time-waster.
+
+### Don't use alternative paths
+
+Ensure alternative paths can be loaded in the event that assets cannot be loaded due to an outage. The ability to migrate or enable and disable CDNs can save you some embarrassment in the event of a CDN service outage.
+
+### Don't test the site after swithing
+
+Not thoroughly testing the site after switching on the CDN. I’ve seen several examples of sites which have fallen over when the CDN is switched on, primarily due to the compression of the JS and CSS files, which then causes conflicts. Typically business will switch on a CDN, look at the home page and think that everything is okay; however, subpages such as product, checkout, and blog pages typically tend to be the ones that fall over. The simple solution is to have a blueprint of the website architecture (a sitemap) handy so that you can step through every page and check it thoroughly.
+
+### Not verifying that your caching is caching
+
+Is your CDN really caching? That’s a key question you should be asking, and to find out, you really need to dig into HTTP headers.
+
+* `no-cache HTTP directives`: Many content management systems send no-cache HTTP directives when responding to a request. As a result, you may suddenly find your site is slower with a CDN than without. The reason is that many CDN providers simply honor whatever cache directives your server sends to them. If your server is sending no caching data or a no-cache directive, they may not cache your files.  Your sites will work fine, but you are not getting the benefits of using a CDN.
+
+* recommend checking HTTP headers coming both from your origin servers and the CDN
+* digg into the logs of your origin severs
+
+* `The Vary: User-Agent header` : This directive causes the CDN to store different copies for different User-Agents. Given the large number of User-Agents in use today, this undermines the benefit of the CDN. If at all possible, remove this header or check to ensure that your CDN provider can filter it for you.
+
+### Hurt SEO performances
+
+content delivery network architecture – from an SEO perspective, and it can really hurt a site’s online traffic…”
+
+Naming your URLS. Once your files are on your new CDN servers they will have a new URL, and lots of people miss this or don’t understand this. So let’s say our old CSS file was at yourcoolsite.com/css/main.css. Well now that you are using a CDN, your CSS file is located at a URL that might look like this: gem garbledeegoohey24374566fth/main.css. Obviously, this URL won’t do much for you in the way of SEO, so make sure you take your time during this crucial step and name your new URLs in an SEO-friendly or appropriate manner.
+
+### Not setting up proper invalidation rules
+
+When you are caching static content that will never change, this is a simple task. However, many companies use CDNs to increase the performance of changeable data. Most data these days come in chunks; if not all chunks invalidate at the same time, your users may experience what seems to be schizophrenic content.
+
+### URL Canonicalization
+
+Bandwidth is wasted when files are duplicated in different folders on a CDN. This is further compounded if the CDN is case sensitive, as most LINUX environments are. An additional canonicalization issue is where files are addressed using appended query-strings. All of this makes centrally managing information difficult, and worse, means content isn’t being cached correctly for users, contributing to reduced performance.
+
+### Don't automate content upload
+
+companies make when setting up and configuring their CDN architecture is not building, updating, and flushing the CDN into their automated deploy process. It’s often left as a manual step that is easily forgotten and can result in an application with display issues and inconsistencies.
+
+### Not considering the level of effort and timeline for migrating their existing content onto the network
+
+This can take days or even weeks depending on the volume of content the company has accumulated.
+
+This can be mitigated by CDNs that will automatically pull from an origin server, but there’s a tradeoff there in that the first user to request a piece of content will incur the load time for a failed CDN request and pull from the origin server.
+
+But remember to account time if you need to change URLs in your code (imgs, css, etc).
+
+### SSL certificate Compatibility
+
+CDNs are not always 100% compatible with SSL certificates. When setting up a CDN, developers should make sure that it is compatible with SSL certificates, even if they aren’t going to switch to HTTPS now. Some CDNs allow SSL, but only if the certificate is through them. Even for sites without shopping carts, security is important, and search engines are placing extra emphasis on it – so be prepared for the future.
+
+
+
+## CloudFront Intro
+
+CloudFront is a web service that speeds up distribution of your static and dynamic web content
+
+When a user requests content that you're serving with CloudFront, the user is routed to the edge location that provides the lowest latency (time delay)
+
+CloudFront requires you to define the server hosting the content you want CloudFront to deliver across the distributed network.
+The origin server can be an S3 bucket or an HTTP server (either based in Amazon’s EC2 or locally in your own datacenter).
+
+
+
+Origin:
+
+* 
+
+Custom vs S3 Origin:
+
+* 
+
+HTTPS
+
+Cache Behaviour: 
+
+Attenzione a non fare caching dei Cookies
+
+CNAME vs non CNAME:
+
+Non CNAME:
+
+* Cross origin CORS
+* change URLs in the html code
+
+
+Request and Response Behavior for Custom Origins:
+
+http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/RequestAndResponseBehaviorCustomOrigin.html#ResponseCustomCaching
+
+
+List of values for Origin and for Cache Behavior Settings
+
+
+Params for Web distribution: http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-values-specify.html#DownloadDistValuesErrorCachingMinTTL
+
+## Distributions
+
+## Web Distributions
+
+### CNAME and Alias
+
+In CloudFront, an alternate domain name, also known as a CNAME, lets you use your own domain name (for example, www.example.com) for links to your objects instead of using the domain name that CloudFront assigns to your distribution.
+
+http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/CNAMEs.html
+
+
 # S3
 
 ## Access Control to S3 Buckets 
