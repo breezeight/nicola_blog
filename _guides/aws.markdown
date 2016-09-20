@@ -1183,7 +1183,21 @@ Auto Scaling currently supports the following custom termination policies:
 
 TODO
 
-# Route 53
+# Route53
+
+## Record Set
+
+### Alias Resource Record Set
+
+It can be used only with AWS resources (ELB, CloudFront distribution, etc)
+
+To use an Alias you need to configure the HostedZoneID, the config depends on the type of resource you are using, see below.
+
+
+* Choosing Between Alias and Non-Alias Resource Record Sets http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html
+* CloudFormation ref: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html
+* Hosted Zone ID for the alias doc: http://docs.aws.amazon.com/Route53/latest/APIReference/CreateAliasRRSAPI.html
+
 
 ## Registar
 
