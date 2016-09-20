@@ -28,6 +28,21 @@ categories: ["docker"]
 * make a guide for panamax, see here a
     [draft]({{site.url}}/guides/panamax.html)
 
+# History
+
+# Docker Compose 
+
+## 1.6
+
+https://blog.docker.com/2016/02/compose-1-6/
+https://github.com/docker/compose/releases/tag/1.6.0
+
+* networks and volumes top-level objects in Compose files
+*  Everything that used to be in a Compose file is now under a new services key.
+*  depends_on
+*  build args
+*  config
+    
 # Docker intro
 
 WHY DOCKER IS USEFUL: Really good intro to docker from an usage point of view: http://www.infoq.com/articles/docker-containers/
@@ -624,6 +639,7 @@ redis:2.8.20 Dockerfile with `VOLUME /data` command: https://github.com/docker-l
 
 Source is the directory in the host, destination the directory in the container.
 
+To list volumes from other containers: `docker inspect addictiveapi_redis_1 | jq '.[0].HostConfig.Binds'`
 
 
 ### Use Cases
@@ -1167,11 +1183,12 @@ Docker ssh forward: https://gist.github.com/d11wtq/8699521
 
 # RAILS: Docker, docker-compose, docker-swarm
 
-VEDERE con calma questo: https://github.com/finnlabs/rails-docker
-Parte da docker-passenger, risolve il problema della chiave ssh per repo privati usando questa soluzione:  http://simonrobson.net/2014/10/14/private-git-repos-on-docker-images.html
+VEDERE con calma questi:
+
+* https://github.com/finnlabs/rails-docker Parte da docker-passenger, risolve il problema della chiave ssh per repo privati usando questa soluzione:  http://simonrobson.net/2014/10/14/private-git-repos-on-docker-images.html
+* http://bradgessler.com/articles/docker-bundler/  Make bundler fast again in Docker Compose
 
 Anche questa è una buona lettura che riassume il workflow con rails e compose: http://blog.carbonfive.com/2015/03/17/docker-rails-docker-compose-together-in-your-development-workflow/
-
 
 dovrei mettere `prepare_docker_build.sh` preso da rails-docker in uno step precedente la build dell'immagine
 
@@ -1182,7 +1199,7 @@ TODO production:
 * update to active jobs
 * docker-compose:
   * postgres
-  * come passare le variabili d'ambiente?? Come usare /etc/hosts ? 
+  * come passare le variabili d'ambiente?? Come usare `/etc/hosts` ? 
 
 Draft:
 
@@ -1397,6 +1414,37 @@ For local developmnet if you leave the `POSTGRES_PASSWORD` and `POSTGRES_USERNAM
 https://davidamick.wordpress.com/2014/07/19/docker-postgresql-workflow/
 
 
+# Docker Cloud
+
+Tutum is now Docker Cloud. Docker Cloud is a new service by Docker that implements all features previously offered by Tutum plus integration with Docker Hub Registry service and the common Docker ID credentials.
+
+Ref:
+
+* https://github.com/docker/dockercloud-cli
+* brew install docker-cloud
+* https://cloud.docker.com
+
+
+Scan images for security issues: https://docs.docker.com/docker-cloud/builds/image-scan/
+
+Services are logical groups of containers from the same image.
+
+Stack: https://stackfiles.io
+
+Create a stack: `docker-cloud stack create -f docker-cloud.yml`
+
+[Stack yaml reference](https://docs.docker.com/docker-cloud/feature-reference/stack-yaml-reference/)
+
+NOTE: there is still no multiusers but they are working on it https://forums.docker.com/t/multiple-users-access-to-docker-cloud/11596
+
+## Docker Cloud Azure
+
+Vedi guida su DevOps Pitchtarget:
+
+https://docs.google.com/document/d/10rmKZYHvImmiKDrH9ydQtfqVnlWLdwlgYuXb2YM5194/edit#
+
+## Docker Cloud CLI
+
 
 # Docker Swarm
 
@@ -1595,11 +1643,22 @@ https://docs.docker.com/compose/yml/#compose-documentation
 
 
 
+## Open Issues
+
+### 2 docker-compose.yml, same directory name - causes 'mixing' of services
+
+Ref: 
+
+* GITHUB ISSUE 2 docker-compose.yml, same directory name - causes 'mixing' of services: https://github.com/docker/compose/issues/2120
+* COMPOSE_PROJECT_NAME env variable: https://docs.docker.com/compose/reference/overview/#compose-project-name
+* Proposal: make project-name persistent. https://github.com/docker/compose/issues/745
 
 
 ## FAQ
 
 * every time you do a docker-compose run, Compose is spinning up entirely new containers for your code but only if the containers are not up already, in which case they are linked to that (running) container.This means that it’s possible that you’ve spun up multiple instances of your app without thinking about it – for example, you may have a web and db container already up from a docker-compose up command, and then in a separate terminal window you run a docker-compose run web rails c. That spins up another web container to execute the command, but then links that container with the pre-launched db container.
+
+
 
 
 # Deployment solutions
