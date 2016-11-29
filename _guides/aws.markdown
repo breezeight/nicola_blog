@@ -721,7 +721,12 @@ Example:
 
 To test: `aws cloudformation --profile=pt create-stack --stack-name "test2" --template-body file://prova_conditional.json --parameters ParameterKey=CreateRoleParam,ParameterValue=true --capabilities CAPABILITY_IAM`
 
-### Capabilities
+### IAM Capabilities
+
+Note that you will need to specify the `CAPABILITY_IAM` flag when you create the stack to allow this template to execute.
+
+You can do this through the AWS management console by clicking on the check box acknowledging that you understand this template creates IAM resources or by specifying the CAPABILITY_IAM flag to the cfn-create-stack command line tool or CreateStack API call.
+
 
 ### Nested Stacks
 

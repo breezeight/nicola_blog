@@ -236,6 +236,7 @@ BUNDLE_DISABLE_SHARED_GEMS: '1'
 
 all subsequent commands without a `--path` option will reuse the value used by this command invokation because it's stored in the local config.
 
+Gems 
 
 ~~~
 /tmp/package_only
