@@ -46,6 +46,31 @@ http://learn.shayhowe.com/html-css/building-your-first-web-page/
 * [semantic of html5 tags](http://learn.shayhowe.com/html-css/getting-to-know-html/): header, nav, article, ....
 * Links (href): http://learn.shayhowe.com/html-css/getting-to-know-html/
 
+### Relative VS absolute links
+
+
+Relative
+https://middlemanapp.com/basics/helper_methods/
+
+img src
+have to tell the browser where the file is by providing it with the path to the image file. We have two different methods we can use to accomplish this, we can use a relative path or the absolute path.
+http://www.htmlkit.com/minit/pages/imgtag1.html
+
+"Relative path" means the file path to where the image is located "relative" to the HTML page. In other words you determine the path to the image with the HTML page as the starting point. Using our example folder structure mentioned above we would modify our src attribute so that our <img> tag looked like this:
+
+<img src="../MyImages/flower.jpg" alt="Yellow Flower" width="125" height="125">
+The "../" tells the browser to go up one folder from where the HTML page is located. Then it goes down the folder structure into the "MyImages" folder where our image file is located. If you need to go up two folders then use "../../" and so on.
+
+Let's say you had to go up two folders up from where your web pages are and had to go down several folders deep to get to your image. In this case your relative path would look something like this:
+
+"../../MyImages/Folder/Folder/flower.jpg"
+Pro: Easy to type in the path. It works on your local pc and on your web site (assuming you have the same folder structure in both places).
+
+Con: It won't work if you relocate your image or HTML files into different folders or change your folder structure. The browser won't be able to find the image file. It will no longer be located in the same relative position.
+
+
+
+
 ### By Browser default element property
 
 It's different for each browser, so:

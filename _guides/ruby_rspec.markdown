@@ -247,6 +247,16 @@ describe Motorcycle do
 end
 ~~~
 
+## RSpec-Mock
+
+Ref: https://semaphoreci.com/community/tutorials/mocking-with-rspec-doubles-and-expectations
+
+* `Double`  is a simplified object which takes the place of another object in a test.* `allow()`
+* `receive()` 
+* .... 
+* Full doc: https://relishapp.com/rspec/rspec-mocks/v/3-5/docs/configuring-responses
+
+
 # RSPEC Under the HOOD: Internals and how to extend RSpec
 
 References:

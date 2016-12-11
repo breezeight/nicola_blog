@@ -15,7 +15,14 @@ categories: ["networking"]
 # References
 
 * [Easy intro](http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch02_:_Introduction_to_Networking#.VT0cJ1OUdLM)
+* [professormesser free video course](http://www.professormesser.com/network-plus/n10-005/free-network-plus/)
 
+
+# OSI Model
+
+Ref: http://www.professormesser.com/network-plus/n10-005/the-osi-model-2/
+
+OSI is a reference model, don't waste too much time 
 
 # TCP/IP
 

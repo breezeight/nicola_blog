@@ -53,3 +53,8 @@ https://github.com/deivid-rodriguez/pry-byebug
 # ruby <= 1.9
 
 `gem debugger`
+
+## Pry-Rescue
+
+* https://github.com/conradirwin/pry-rescue
+* `rescue rspec` 

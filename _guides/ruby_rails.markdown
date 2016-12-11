@@ -24,9 +24,192 @@ REF:
   * bin/rails generate model Oops
   * bin/rails destroy model Oops
 
+# Getting started and basic development tools
+
+https://gorails.com/setup/osx/10.10-yosemite
+
+OSX + Postgres:
+
+## railroady
+
+Ruby on Rails 3/4/5 model and controller UML class diagram generator.
+
+https://rubygems.org/gems/railroady
+
+
+# RSpec Rails
+
+## Reset Test DB
+
+```
+bundle exec rake db:drop RAILS_ENV=test
+bundle exec rake db:create RAILS_ENV=test
+bundle exec rake db:schema:load RAILS_ENV=test
+```
+
+
 # Custom 404
 
 https://mattbrictson.com/dynamic-rails-error-pages
+
+# Controllers
+
+## Rails Routing from the Outside In
+
+http://guides.rubyonrails.org/routing.html
+
+### Resource Routing
+
+#### Resources
+
+* `resources :photos`
+
+```
+# PhotosController:
+# index  =>    GET /photos
+# new    =>    GET /photos/new
+# create =>   POST /photos/new
+# show   =>    GET /photos/:id
+# edit   =>    GET /photos/:id/edit
+# update =>    PUT /photos/:id
+# delete => DELETE /photos/:id
+#
+# Helpers:
+# new_book_path
+# book_path(id)
+# edit_book_path(id)
+```
+
+#### Singular Resources
+
+http://guides.rubyonrails.org/routing.html#singular-resources
+
+* `get 'profile', to: 'users#show'` using the `controller#action` format
+* `get 'profile', to: :show, controller: 'users'`
+* `resource :geocoder`
+
+#### Adding More Restful Actions
+
+http://guides.rubyonrails.org/routing.html#adding-more-restful-actions :
+
+* `member`
+* `collection`
+* `on`
+
+A member route will require an ID, because it acts on a member. A collection route doesn't because it acts on a collection of objects.
+
+On members:
+
+```
+resources :photos do
+  member do
+    get 'preview'
+  end
+end
+
+# PhotosController#preview  =>    GET /photos/:id/preview
+# create the preview_photo_url and preview_photo_path helpers
+
+```
+
+If you don't have multiple member routes, you can also pass `:on` to a route, eliminating the block:
+
+```
+resources :photos do
+  get 'preview', on: :member
+end
+```
+
+On collections:
+
+```
+resources :photos do
+  collection do
+    get 'search'
+  end
+end
+
+# PhotosController#search => GET /photos/search
+# create search_photos_url and search_photos_path route helpers.
+```
+
+#### Controller Namespaces and Routing
+
+http://guides.rubyonrails.org/routing.html#controller-namespaces-and-routing
+
+
+Scope gives you great control over each aspect, while namespace takes one argument for everything.
+
+
+
+The `namespace` method is the simple case — it prefixes everything.
+
+```
+namespace :foo do
+  resources :posts
+end
+```
+
+produces:
+
+```
+$ rake routes
+       Prefix Verb   URI Pattern                   Controller#Action
+    foo_posts GET    /foo/posts(.:format)          foo/posts#index
+              POST   /foo/posts(.:format)          foo/posts#create
+ new_foo_post GET    /foo/posts/new(.:format)      foo/posts#new
+edit_foo_post GET    /foo/posts/:id/edit(.:format) foo/posts#edit
+     foo_post GET    /foo/posts/:id(.:format)      foo/posts#show
+              PATCH  /foo/posts/:id(.:format)      foo/posts#update
+              PUT    /foo/posts/:id(.:format)      foo/posts#update
+              DELETE /foo/posts/:id(.:format)      foo/posts#destroy
+```
+
+The `scope` method gives you fine-grained control:
+
+```
+scope 'url_path_prefix', module: 'module_prefix', as: 'named_route_prefix' do
+  resources :posts
+end
+For example:
+
+scope 'foo', module: 'bar', as: 'baz' do
+  resources :posts
+end
+```
+
+produces these routes:
+
+```
+$ rake routes
+       Prefix Verb   URI Pattern                   Controller#Action
+    baz_posts GET    /foo/posts(.:format)          bar/posts#index
+              POST   /foo/posts(.:format)          bar/posts#create
+ new_baz_post GET    /foo/posts/new(.:format)      bar/posts#new
+edit_baz_post GET    /foo/posts/:id/edit(.:format) bar/posts#edit
+     baz_post GET    /foo/posts/:id(.:format)      bar/posts#show
+              PATCH  /foo/posts/:id(.:format)      bar/posts#update
+              PUT    /foo/posts/:id(.:format)      bar/posts#update
+              DELETE /foo/posts/:id(.:format)      bar/posts#destroy
+```
+
+
+### Customizing Resourceful Routes
+
+#### Restricting the Routes Created
+
+http://guides.rubyonrails.org/routing.html#restricting-the-routes-created
+
+`resources :photos, only: [:index, :show]`
+
+### Non-Resourceful Routes
+
+Support for routing arbitrary URLs to actions
+
+#### Naming Routes
+
+http://guides.rubyonrails.org/routing.html#naming-routes
+
 
 # ActiveRecord
 
@@ -81,7 +264,11 @@ end
 
 To create a new table `CreateXXX`, followed by a list of column names and types.
 
-## HasMany woth a Legacy Database
+## Change data in migrations
+
+http://railsguides.net/change-data-in-migrations-like-a-boss/
+
+## HasMany with a Legacy Database
 
 Example: A legacy db that don't respect conventions
 
@@ -139,6 +326,20 @@ Example:
 * ~/SRC/KENWOOD/kenwoodclub/db/migrate/20150728163038_create_home_slides.rb
 * ~/SRC/KENWOOD/kenwoodclub/app/model/home_slide.rb
 
+# Rails API
+
+## Documenting your API
+
+### Generate Documentation through Testing
+
+https://blog.codeship.com/producing-documentation-for-your-rails-api/
+
+It looks similar to the DSL provided by RSpec by default but introduces a few extra methods:
+
+* header
+* parameter
+* explanation
+* among others
 
 # Link about Rails and ruby Collection
 

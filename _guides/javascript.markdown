@@ -38,11 +38,26 @@ MISC
 # TODO
 typeof -> how does it works?
 
-# Equality operator
+# Standard Built-in objects
+
+Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
+
+## Null VS undefined
+
+http://codechutney.in/blog/nodejs/javascript-null-vs-undefined/
+
+# Expression and operators
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
+
+## Equality operator === vs ==
+
+Always use === equals unless you have a good reason to use ==.
 
 http://dorey.github.io/JavaScript-Equality-Table/?utm_content=buffer4f1b9&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
 
-Always use 3 equals unless you have a good reason to use 2.
+
+http://stackoverflow.com/questions/359494/does-it-matter-which-equals-operator-vs-i-use-in-javascript-comparisons
 
 # Functions
 
@@ -252,7 +267,7 @@ function showHelp(help) {
 }
 
 function makeHelpCallback(help) { //This return undefined but executes
-showHelp that change the 
+showHelp that change the
     showHelp(help);
 }
 
@@ -291,7 +306,7 @@ function setupHelp() {
     var item = helpText[i];
     document.getElementById(item.id).onfocus = function() {
       var help = item.help; //mi sa che questa non funziona perchè ho
-      portato item nello scope.... infatti l'unico modo per non portarsi
+      portato item nello scope.... infatti l unico modo per non portarsi
       dietro item è la soluzione proposta...
       showHelp(help);
     }
@@ -351,7 +366,7 @@ SOJS ch 5.3:
       this.clicked = true;
       assert(button.clicked,"The button has been clicked");
       //FAILS: the context of the click function is not referring to the button object as we intended.
-    } 
+    }
   };
   var elem = document.getElementById("test");
   elem.addEventListener("click",button.click,false);
@@ -381,7 +396,7 @@ var elem = document.getElementById("test"); elem.addEventListener("click",bind(b
 
 The secret sauce that we’ve added here is the bind() method. This method is designed to create and return a new anonymous function that calls the original function, using apply(), so that we can force the context to be whatever object we want.
 
-### Prototype
+### Functions Prototype
 
 All functions have a prototype property that initially references an empty object. This property doesn’t serve much purpose until the function is used as a constructor (using the `new` operator).
 
@@ -456,7 +471,7 @@ Functions can be invoked in various ways, and the invocation mechanism determine
 + When invoked as a constructor, the context is a newly allocated object.
 + When invoked via the `apply()` or `call()` methods of the function, the context can be whatever the heck we want.
 
-**arguments** : 
+**arguments** :
 
 * collection of all arguments provided to the function
 * (has a `length` property).
@@ -500,7 +515,7 @@ To invoke a function using its `apply()` method, we pass two parameters to apply
 
 see [SOJS] ch 4
 
-+ Recursion 
++ Recursion
 Recursion in named functions The pilfered reference problem The callee property 70
 + Fun with function as objects
 Recursion with methods 65 Inline named functions 68
@@ -524,6 +539,13 @@ Also note that we specify the context as being the Math object. This isn’t nec
 see [SOJS] ch 4.4.2
 
 ## Variable-length argument lists
+
+
+# Prototypal Inheritance and Function Constructors
+
+Ref: https://youtu.be/CGEa8WmmQwQ?t=1953
+
+
 
 # Event Loop
 
@@ -608,7 +630,7 @@ TODO: dovrebbe essere possibile fare delle mappe per non avere dei mega file CSS
 
 # JQuery
 
-REFs: 
+REFs:
 
 * https://jquery.com/
 * [JQuery Learning Center](http://learn.jquery.com/)
@@ -627,6 +649,12 @@ To check if a selection contains elements:
 * https://learn.jquery.com/using-jquery-core/selecting-elements/#does-my-selection-contain-any-elements
 * `if ( $( "div.foo" ).length )`
 
+# Javascript Modules 
+
+Ref:
+
+* https://nolanlawson.com/2015/10/19/the-struggles-of-publishing-a-javascript-library/
+* june 2016:
 
 # ES6 - Ecmascript 2015
 
@@ -711,7 +739,7 @@ The subset of the ES6 module syntax supported by the transpiler is described [he
 
 Supported syntax : https://github.com/esnext/es6-module-transpiler#supported-es6-module-syntax
 
-How use it? 
+How use it?
 
 * rsvp
 
@@ -719,7 +747,7 @@ How use it?
 
 * https://github.com/ember-cli/broccoli-es6modules
 
-ES6Modules wraps the esperanto library. All options described for esperanto can be provided here. 
+ES6Modules wraps the esperanto library. All options described for esperanto can be provided here.
 
 #### Esperanto
 

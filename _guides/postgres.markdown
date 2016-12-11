@@ -11,10 +11,5 @@ categories:
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-# Dump
-
-This example will backup erp database that belongs to user geekstuff, to the file mydb.sql:
-`pg_dump -U geekstuff erp -f mydb.sql`
-
-## Restore
+SEE here: https://docs.google.com/document/d/1J7ggNpPIdU_frNM8k2qhiHVurCJfwTA0cfCHd7-916g/edit#
 

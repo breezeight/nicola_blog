@@ -15,12 +15,32 @@ categories: ["Management"]
 
 # References:
 
-
+* For any technical issues, please [visit our support center](https://www.atlassian.com/company/contact?_ga=1.188973099.1485114379.1460647216)
+* If you would like to request a new feature, please visit our [public-facing instance of JIRA](https://jira.atlassian.com/secure/Dashboard.jspa?_ga=1.76589205.1485114379.1460647216)
+* To report a bug, head to [atlassian.com/contact](http://www.atlassian.com/contact?_ga=1.73974674.1485114379.1460647216)
+* [Atlassian Answers](https://answers.atlassian.com/questions/topics?_ga=1.182161191.1485114379.1460647216)
+  * Have any open questions about how to use a product, set up a workflow, or integrate with another product or language? Please visit Atlassian Answers where you will find questions submitted and answered by the user community, ecosystem developers, and Atlassian staff.
+* [Twitter](https://twitter.com/Atlassian)
+* [LinkedIn](https://www.linkedin.com/company/atlassian)
+* [Facebook](https://www.facebook.com/AtlassianSoftware/)
 
 # Project and Board configuration
 
 * https://answers.atlassian.com/questions/259012/best-practices-for-projects-vs-epics
 * 
+
+# JIRA Service Desk
+
+* http://blogs.atlassian.com/2016/10/extend-jira-service-desk-customer-support-new-capabilities/
+* http://blogs.atlassian.com/2016/09/5-ways-small-business-use-help-desk/
+* http://blogs.atlassian.com/2016/09/4-ways-boost-customer-service-technology/
+* 
+# Add ON
+
+## JIRA Automation
+
+https://marketplace.atlassian.com/plugins/com.codebarrel.addons.automation/cloud/overview
+
 
 
 # Permission and Security
@@ -114,7 +134,21 @@ EPIC: Can shown:
 
 http://blogs.atlassian.com/2013/02/jql-the-most-flexible-way-to-search-jira-3-of-4/
 
+# Business Board
 
+Refs:
+
+* http://blogs.atlassian.com/2016/09/jira-core-means-business-introducing-boards-and-mobile-apps/
+
+3 quick ways to filter your tasks on the board by:
+
+* Assigned to me (That’s you!)
+* Due this week (Your team needs to work on these now!)
+* Keyword ( Type one in and check out the results)
+
+Use for marketing:
+
+http://blogs.atlassian.com/2016/09/organize-your-marketing-campaign-with-jira-core/
 
 # Scrum board
 

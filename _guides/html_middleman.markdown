@@ -136,6 +136,11 @@ end
 
 I don't understand how middleman choose the fonts directory so I hacked a little the bootstrap font config (See Kenwood landing): `@icon-font-path: "../../../fonts/bootstrap/fonts/";`
 
+# Markdown VS AsciiDoc
+
+http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/
+
+
 # Multi-language
 
 https://middlemanapp.com/advanced/localization/

@@ -311,6 +311,9 @@ REF: https://docs.docker.com/registry/deploying/
 
 The registry service supports transport layer security (TLS) natively. You must configure it in your instance to make use of it. You can also use a proxy server such as Nginx and basic authentication to extend the security of a deployment.
 
+## AWS ECR 
+
+
 ## Docker Hub
 
 * [Docker guide: Working with Docker Hub](https://docs.docker.com/userguide/dockerrepos/)
@@ -1511,6 +1514,13 @@ You should run this script: https://raw.githubusercontent.com/aanand/fig/2594282
 Docker Compose acts as a wrapper around Docker – it links your containers together and provides syntactic sugar around some complex container linking commands.
 It can coordinate and spin up your entire application and dependencies with one command.
 
+With Compose, you use a Compose file to configure your application’s services. Then, using a single command, you create and start all the services from your configuration.
+
+A service definition contains configuration which will be applied to each container started for that service, much like passing command-line parameters to:
+
+* `docker run`.
+* `docker network create`
+* `docker volume create`
 
 Compose is great for:
 
@@ -1547,6 +1557,8 @@ ex: `addctive-api/docker-compose.yml` produce:
 
 
 ## Containers and Images lifecycle with compose
+
+
 
 Images: http://stackoverflow.com/questions/32612650/how-to-get-docker-compose-to-always-start-fresh-images
 
