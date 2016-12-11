@@ -72,6 +72,13 @@ These are ours main groups:
 
 * _managers_ : not be able to perform any EC2 actions except listing the Amazon EC2 resources currently available. Has access to the billing info.
 
+## AWS Services That Work with IAM
+
+* IAM permission types each service supports
+* tips to help you write policies to control service access, and links to related information.
+
+http://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-services-that-work-with-iam.html
+
 ## IAM practical scenarios
 * See [here](http://docs.aws.amazon.com/IAM/latest/UserGuide/Using_WorkingWithGroupsAndUsers.html) "Scenarios for Creating IAM Users"
 
@@ -104,6 +111,57 @@ Pricipal examples:
                 "arn:aws:iam::111122223333:root"]
       },
 ~~~
+
+### IAM policy element reference
+
+http://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html
+
+### IAM policy variables
+
+http://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_variables.html#policy-vars-intro
+
+* For users of a group: `${aws:username}`
+
+### Type of Policies
+
+http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html
+
+You can create different types of policies:
+
+* `Identity-based AWS Managed policies` – Standalone policies that you can attach to multiple users, groups, and roles in your AWS account. Managed policies apply only to identities (users, groups, and roles) - not resources. Are created and managed by AWS.
+* `Identity-based Customer managed policies` – Managed policies that you create and manage in your AWS account. Using customer managed policies, you have more precise control over your policies than when using AWS managed policies.
+* `Identity-based Inline policies` – Policies that you create and manage, and that are embedded directly into a single user, group, or role. Resource-based policies are another form of inline policy. 
+* `Resource-based Inline policies` policies that are embedded directly into a resource
+
+
+* Generally speaking, the content of the policies is the same in all cases—each kind of policy defines a set of permissions using a common structure and a common syntax.
+
+For example, the AWS managed policy called ReadOnlyAccess provides read-only access to all AWS services and resources. When AWS launches a new service, AWS will update the ReadOnlyAccess policy to add read-only permissions for the new service. The updated permissions are applied to all principal entities that the policy is attached to.
+
+#### Policy type BEST practices
+
+* Use Managed AWS policies for what everything that could be updated by AWS (ex: new services API, etc)
+* Use Customer Managed when you need more control
+
+arn:aws:iam::aws:policy/AdministratorAccess
+
+
+#### List and Get policies and who is attached
+
+Get the full statement of policies: Go to IAM Console -> policies , you can filter for AWS managed policies
+
+list:
+
+* `aws --profile=pt iam list-policies`
+* `aws --profile=pt iam list-policies --scope AWS| jq '.Policies[] | {name: .PolicyName, arn: .Arn}'` : 
+* `aws --profile=pt iam list-policies --scope AWS|grep PolicyName|awk '{print $2}'` : list of all AWS managed policies
+* http://docs.aws.amazon.com/cli/latest/reference/iam/list-policies.html
+
+list policy's versions:
+
+* `aws --profile=pt iam list-policy-versions --policy-arn arn:aws:iam::aws:policy/AmazonRoute53FullAccess`
+
+
 
 ### Policy Version
 
@@ -202,6 +260,13 @@ If you’re unsure of which to use, consider which audit question is most import
 * If you’re more interested in “Who can access this S3 bucket?” then S3 bucket policies will likely suit you better. You can easily answer this by looking up a bucket and examining the bucket policy.
 * If you want to manage permissions on individual objects within a bucket, S3 ACLs enable you to apply policies on the objects themselves, whereas bucket policies can only be applied at the bucket level.
 
+### Common Policy examples
+
+Billing:
+
+* https://blogs.aws.amazon.com/security/post/Tx2154FGFDNMQNP/Enhanced-IAM-Capabilities-for-the-AWS-Billing-Console
+
+
 
 ## SLAM Providers
 
@@ -297,6 +362,7 @@ en
 
 TODO: Why should we keep them in a laptop ?
 
+https://blog.stitchdata.com/role-playing-with-aws-c9eaebcc6c98#.dyhio82dk
 
 ## references
 
@@ -305,34 +371,32 @@ TODO: Why should we keep them in a laptop ?
 
 # AWS Cli
 
-
-
 The AWS Command Line Interface is a unified tool to manage your AWS services [reference](http://docs.aws.amazon.com/cli/latest/reference/).
 
 NB: some service endpoint is available only in some region(OpsWorks only us-east-1 as of march 2014).
 
 ## Configuration and credentials for multiple accounts
 
-### NEW DEFINITIVE SOLUTION
+### NEW DEFINITIVE SOLUTION WITH AWS VAULT
 
-Now aws cli support multiple profiles, the doc is [here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-multiple-profiles).
+TODO: Assuming Roles and MFA https://github.com/99designs/aws-vault#assuming-roles
 
-**TODO**: sinceramente non ho ben capito quale file serve... se metto le
-credenziali solo in `~/.aws/credentials` non me le trova da awscli ... le ho messe
-in  `~/.aws/config` e adesso le becca.... boh!! cmq metterle in
-`~/.aws/config` fa funzionare la cli
 
-The following example shows a credentials file with two profiles `~/.aws/credentials`:
+Example:
 
-~~~json
-[default]
-aws_access_key_id=AKIAIOSFODNN7EXAMPLE
-aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+```
+aws-vault exec pt aws ec2 describe-instances
+```
 
-[user2]
-aws_access_key_id=AKIAI44QH8DHBEXAMPLE
-aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
-~~~
+AWS cli support multiple profiles, the doc is [here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-multiple-profiles).
+
+http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-config-files
+
+The CLI stores credentials specified with aws configure in a local file named `credentials` in a folder named .aws in your home directory. We don't use it, instead we use `aws-vault`.
+
+
+
+In order to separate credentials from less sensitive options, region and output format are stored in a separate file named `config` in the same folder.
 
 To set default region and output for each profile `~/.aws/config`:
 
@@ -346,11 +410,14 @@ region=us-east-1
 output=text
 ~~~
 
-example:
+To configure AWS-VAULT: https://github.com/99designs/aws-vault
 
-~~~
-aws ec2 describe-instances --profile user2
-~~~
+```
+aws-vault add <profile>
+```
+
+
+
 
 
 ### Solution A: work by dirs
@@ -484,6 +551,20 @@ The ecs docker agent runs as a docker container
 
 * [Doc: Intro](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/CHAP_Intro.html)
 * [Reinvent 2013: DMG201 - Zero to Sixty: AWS CloudFormation] (https://www.youtube.com/watch?v=-0ELfN-kb7g)
+
+## Addictive Common use cases
+
+### Managed IAM Policies
+
+Yaml policy doc example:
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/quickref-iam.html#scenario-bucket-policy
+
+
+
+### CloudFormation and OpsWorks
+
+[AWS::OpsWorks::Stack Resource Type](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-opsworks-stack.html)
+
 
 ## CloudFormation Designer
 
@@ -672,7 +753,11 @@ Parameters that are predefined by AWS CloudFormation.
 
 ### Conditions
 
-http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/conditions-section-structure.html
+
+
+* Doc: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/conditions-section-structure.html
+
+* Samples: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/conditions-sample-templates.html#d0e150834
 
 Example:
 
@@ -723,9 +808,13 @@ To test: `aws cloudformation --profile=pt create-stack --stack-name "test2" --te
 
 ### IAM Capabilities
 
-Note that you will need to specify the `CAPABILITY_IAM` flag when you create the stack to allow this template to execute.
+You will need to specify special capability when you create a template with IAM resources
+( AWS::IAM::AccessKey, AWS::IAM::Group, AWS::IAM::InstanceProfile, AWS::IAM::Policy, AWS::IAM::Role, AWS::IAM::User, and AWS::IAM::UserToGroupAddition.....)
 
-You can do this through the AWS management console by clicking on the check box acknowledging that you understand this template creates IAM resources or by specifying the CAPABILITY_IAM flag to the cfn-create-stack command line tool or CreateStack API call.
+* the `CAPABILITY_IAM`
+* the `CAPABILITY_NAMED_IAM` flag if resources are named
+
+ref: http://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_CreateStack.html
 
 
 ### Nested Stacks
@@ -829,6 +918,31 @@ Some test:
 
 * change `DBClass` do not destroy the RDS instance, it enter into the "modifying" state. TODO: capire se i dati e gli snapshot vengono toccati.
 
+### Changeset
+
+https://aws.amazon.com/it/blogs/aws/new-change-sets-for-aws-cloudformation/
+
+Used to 
+
+* preview the changes on stack updates,
+* verify that they are in line with their expectations,
+* and proceed with the update.
+* use IAM to control access to specific CloudFormation functions such as UpdateStack, CreateChangeSet, DescribeChangeSet, and ExecuteChangeSet
+
+You could allow a large group developers to create and preview change sets, and restrict execution to a smaller and more experienced group. With some additional automation, you could raise alerts or seek additional approvals for changes to key resources such as database servers or networks.
+
+Example from cli
+
+
+```
+aws cloudformation create-change-set  --profile=pt --capabilities CAPABILITY_NAMED_IAM --stack-name AccountDefaultGroups --change-set-name prova --template-body file://account_default_groups.yml
+
+aws cloudformation describe-change-set  --profile=pt --stack-name AccountDefaultGroups --change-set-name prova
+
+aws cloudformation execute-change-set  --profile=pt --stack-name AccountDefaultGroups --change-set-name prova
+```
+
+
 ## Backup and restore RDS snapshots
 
 * [keep a snapshot when the entire stack is deleted](http://blogs.aws.amazon.com/application-management/post/Tx2W35XGG70IIQI/Delete-Your-Stacks-But-Keep-Your-Data)
@@ -922,10 +1036,6 @@ running stack may have been updated.
 The best practice to avoid unexpected resources updates is use `aws cloudformation get-template` to get the current stack and updated it.
 
 TIPS: install json-diff if you want to check difference : `npm install -g json-diff`
-
-## CloudFormation and OpsWorks
-
-[AWS::OpsWorks::Stack Resource Type](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-opsworks-stack.html)
 
 # AWS support for docker
 
@@ -1201,7 +1311,9 @@ To use an Alias you need to configure the HostedZoneID, the config depends on th
 
 * Choosing Between Alias and Non-Alias Resource Record Sets http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html
 * CloudFormation ref: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html
-* Hosted Zone ID for the alias doc: http://docs.aws.amazon.com/Route53/latest/APIReference/CreateAliasRRSAPI.html
+* Hosted Zone ID for the alias doc:
+  * http://docs.aws.amazon.com/Route53/latest/APIReference/CreateAliasRRSAPI.html
+  * http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html#cfn-route53-aliastarget-hostedzoneid
 
 
 ## Registar
@@ -1393,6 +1505,18 @@ In CloudFront, an alternate domain name, also known as a CNAME, lets you use you
 
 http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/CNAMEs.html
 
+### SSL Certificates
+
+To use your SSL certificate:
+
+* you must specify a path using the `--path` option. The path must begin with /cloudfront and must include a trailing slash (for example, /cloudfront/test/ ).
+* http://stackoverflow.com/questions/36059152/where-can-i-manage-uploaded-iam-user-ssl-certificates-in-aws/36062067
+* http://docs.aws.amazon.com/cli/latest/reference/iam/upload-server-certificate.html
+
+ISSUE: That certificate appears in the Custom SSL Certificate dropdown on new distribution page but it is DISABLED:
+
+* It could take a few minutes for the certificate to propagate
+* http://stackoverflow.com/questions/28609262/unable-to-select-custom-ssl-certificate-stored-in-aws-iam
 
 # S3
 
