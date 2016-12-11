@@ -20,14 +20,14 @@ kramdown:
   entity_output: as_char
   toc_levels: 1..6
   smart_quotes: lsquo,rsquo,ldquo,rdquo
-  use_coderay: true
-  coderay:
-    coderay_wrap:              div
-    coderay_line_numbers:      table
-    coderay_line_number_start: 1
-    coderay_tab_width:         4
-    coderay_bold_every:        10
-    coderay_css:               style
+  syntax_highlighter: coderay
+  syntax_highlighter_opts:
+    line_numbers: table # inline|table
+    css: style # style|class
+    wrap:              div
+    line_number_start: 1
+    tab_width:         4
+    bold_every:        10
 
 # Conversion
 highlighter: rouge

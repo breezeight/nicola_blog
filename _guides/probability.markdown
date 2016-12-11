@@ -97,7 +97,9 @@ $$
 \quad \mbox{if}\ k\in\{0,1,\ldots,n\}, \qquad (1)
 $$
 
+# Standard Deviation
 
+http://www.mathsisfun.com/data/standard-deviation.html
 
 # Test MathJax
 

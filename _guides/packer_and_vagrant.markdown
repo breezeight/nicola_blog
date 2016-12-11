@@ -130,6 +130,7 @@ The [Ariya blog post](http://ariya.ofilabs.com/2013/11/using-packer-to-create-va
 Aryia on CentOS uses kickstart while on Ubuntu uses preseeding to setup the the machine, the VirtualBox builder `http_directory` option is used to publish via http the required configurations. The `boot_command` specifies the keys to type when the virtual machine is first booted in order to start the OS installer. This command is typed after boot_wait, which gives the virtual machine some time to actually load the ISO. As documented above, the boot_command is an array of strings. The strings are all typed in sequence. It is an array only to improve readability within the template. The boot command is "typed" character for character over a VNC connection to the machine, simulating a human actually typing the keyboard.
 
 There are variable that you can use with the syntax `{{ variable_name }}` within the boot command:
+  
 * HTTPIP and HTTPPort
 * Name
 
