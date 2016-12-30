@@ -1039,7 +1039,7 @@ TIPS: install json-diff if you want to check difference : `npm install -g json-d
 
 # AWS support for docker
 
-see _guides/docker.markdown
+see [docker](_guides/docker.markdown)
 
 # VPC (Virtual Private Cloud)
 
@@ -1178,6 +1178,76 @@ If connection draining is enabled, when an instance is deregisted, existing conn
 REF:
 
 * http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/elb-monitor-logs.html
+
+# ALB Application Load Balancer (ELB V2)
+
+Conceptually ALB has a lot in common with ELB. It’s a static endpoint that’s always up and will balance traffic based on it’s knowledge of healthy hosts.But ALB introduces two new key concepts:
+
+* target groups: a group of instances to which ALB forward requests received to a listener port
+* content-based routing: each listener can have multiple ListenerRule, each forward request to a different TargetGroup. 
+
+A single ALB can serve HTTP, HTTP/2 and websockets ( to up to 10 microservice backends ??? forse questa limitazione è stata rimossa).
+
+ALB solves some problems of ELB:
+
+* Using TargetGroups you can forward requests using a different ports for each target registered (useful when you have multiple container on the same machine), ELB can forward only to one port for all the registered instances. You can register the same EC2 Instance multiple time in a target gruop with different ports.
+* no longer need hacks for websockets and HTTP referrers
+* no longer need multiple ELBs or internal service discovery software (ex: nginx, HAProxy, Consul, Kong, Kubernetes and Docker Swarm) in our microservice application stack to get traffic to our containers ( ELBs cost $18/month minimum, so the cost can really add up).
+* EC2 Container Service (ECS) integration for managed container orchestration
+
+
+Below there is a small cheatsheet of the main components, their relationship and main properties
+
+AWS::ElasticLoadBalancingV2::LoadBalancer : 
+ 
+* Scheme: Specifies whether the load balancer is internal (routes requests to targets using private IP addresses) or Internet-facing (routes requests from clients over the Internet to targets in your public subnets).
+* SecurityGroups: security groups to assign to the load balancer
+* Subnets: subnets to associate with the load balancer. The subnets must be in different Availability Zones
+* Connection Idle Timeout: an idle timeout that is triggered when no data is sent over the connection for a specified time period.
+
+
+AWS::ElasticLoadBalancingV2::TargetGroup:
+
+* Targets Health check configuration
+* Targets: list of targets to add to this target group (NOTE:the default PORT can be overidden).
+* Port: default target port to which ALB forwards requests
+* Protocol: The protocol to use for routing traffic to the targets 
+* Stickiness
+* Deregistration Delay for target (from draining to unused)
+* VpcId
+* NOTE: the same instance can belong to different TargetGroups
+
+AWS::ElasticLoadBalancingV2::ListenerRule
+
+* Actions: actually only forward to a TargetGroup
+* Conditions: actually only pattern matching on the request path
+* priority: Elastic Load Balancing evaluates rules in priority order, from the lowest value to the highest value. If a request satisfies a rule, Elastic Load Balancing ignores all subsequent rules.
+* NOTE: it looks like AWS want to extend Actions and Conditions types, but right now they are limited to one value only.
+
+AWS::ElasticLoadBalancingV2::Listener:
+
+* port: the port to open on the balancer
+* protocol: the protocol on the balancer
+* certificate: SSL cert if you use HTTPS
+* DefaultActions: the TargetGroup used by default
+* LoadBalancerArn: the ALB associated with the listener
+* CONSTRAINT: you cannot have more than one listener with the same port
+
+
+Relationships:
+
+* Listerer (0..N) <-> (1) LoadBalancer
+* Listener (0..N) <->  (1) Default TargetGroup
+* ListenerRule (0..N) <-> (1..N) TargetGroup
+* ListenerRule (1) <-> (1) Listener
+
+
+
+https://convox.com/blog/alb/
+
+
+
+
 
 
 # Autoscaling
