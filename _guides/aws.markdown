@@ -1557,6 +1557,94 @@ ISSUE: That certificate appears in the Custom SSL Certificate dropdown on new di
 * It could take a few minutes for the certificate to propagate
 * http://stackoverflow.com/questions/28609262/unable-to-select-custom-ssl-certificate-stored-in-aws-iam
 
+# AWS Developer Tools
+
+## CodeCommit
+
+### Credentials and Permissions
+
+[Managed Policies for AWS CodeCommit](http://docs.aws.amazon.com/codecommit/latest/userguide/access-permissions.html#access-permissions-managed-policies) :
+
+For example, the following specifies the AWS CodeCommit repository named MyDemoRepo registered to the AWS account 111111111111 in the region us-east-2:
+
+* arn:aws:codecommit:us-east-2:111111111111:MyDemoRepo
+* arn:aws:codecommit:region:account:repo
+
+
+
+Credential setup:
+
+* CodeCommit has a dedicated set of SSH keys and https credentials, each user can configure them from the IAM console
+* To create a key and setup you ssh/config follow the instruction [here](http://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-ssh-unixes.html#setting-up-ssh-unixes-keys)
+* Note: AWS CodeCommit requires AWS KMS
+
+
+To access a CodeCommit repo you need 2 set of permissions:
+
+* Permission to access a repo 
+* Permission to autheticate with a repo
+
+ref: http://docs.aws.amazon.com/codecommit/latest/userguide/access-permissions.html
+
+
+Git Client setup:
+
+* ref: http://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-ssh-unixes.html
+* To give permission to a user to upload his ssh key attach to the user IAMUserSSHKeys and IAMReadOnlyAccess managed policies
+* Setup ssh config
+* Test `ssh git-codecommit.us-east-2.amazonaws.com` you should see this message: "You have successfully authenticated over SSH...."
+
+NOTE: the IAMUserSSHKeys managed policy is restricted to a single resource
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:DeleteSSHPublicKey",
+                "iam:GetSSHPublicKey",
+                "iam:ListSSHPublicKeys",
+                "iam:UpdateSSHPublicKey",
+                "iam:UploadSSHPublicKey"
+            ],
+            "Resource": "arn:aws:iam::*:user/${aws:username}"
+        }
+    ]
+}
+```
+
+
+## CodePipeline
+
+CodePipeline is a Continuous Delivery service that enables you to orchestrate every step of your software delivery process in a workflow that consists of a series of stages and actions. These actions perform the steps of your software delivery process.
+
+
+## CodeBuild
+
+Cons:
+
+* No native Bitbucket integration
+* No Caching can slow down a lot your builds
+
+Pros:
+
+* Billed by minute of usage
+* custom integration with SNS and Lambdas
+* Are you still building JARs in your IDE?
+* Are you looking to remove the need to setup a separate Jenkins environment to build artifacts?
+* Do you want to reduce the amount of dedicated build infrastructure you maintain?
+* Are you trying to move to a hosted Continuous Integration (CI) server but it’s difficult to get new services approved within your organization?
+* your organization uncomfortable having a third party run their builds, but comfortable with running those builds in AWS
+
+
+Note: can be used to replace the building component of Jenkins and other tools
+
+## CodeDeploy
+
+
+
 # S3
 
 ## Access Control to S3 Buckets 
