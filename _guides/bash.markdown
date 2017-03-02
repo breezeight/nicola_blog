@@ -33,9 +33,18 @@ If you want to toggle it off:
 
 * https://dberkholz.com/2011/04/07/bash-shell-scripting-libraries/
 
-# Bash Testing
+# Bash Unit Testing
 
 * Bats: https://github.com/sstephenson/bats
+* urchin: https://github.com/tlevine/urchin   NVM uses Urchin to run test 
+
+# Bash linter
+
+
+
+https://github.com/koalaman/shellcheck
+
+brew install shellcheck
 
 # Bash complex projects
 
@@ -656,6 +665,11 @@ Hi 'Intro to Unix' Class
 ```
 
 # Shell Expansion
+
+Ref:
+
+* http://wiki.bash-hackers.org/syntax/pe
+*
 
 ## Brace expansion
 
@@ -1372,3 +1386,53 @@ Ref:
 
 * http://stedolan.github.io/jq/manual/#ConditionalsandComparisons
 * https://github.com/stedolan/jq/wiki/Cookbook#filter-objects-based-on-the-contents-of-a-key
+
+
+# Examples
+
+## asdf
+
+https://github.com/asdf-vm/asdf
+
+Extendable version manager with support for Ruby, Node.js, Elixir, Erlang & more.
+
+Use Bats for bash testing.
+
+## NVM
+
+https://github.com/creationix/nvm
+
+Parameter parsing
+
+```
+      local nobinary
+      nobinary=0
+      local LTS
+      while [ $# -ne 0 ]
+      do
+        case "$1" in
+          -s)
+            shift # consume "-s"
+            nobinary=1
+          ;;
+          -j)
+            shift # consume "-j"
+            nvm_get_make_jobs "$1"
+            shift # consume job count
+          ;;
+          --lts)
+            LTS='*'
+            shift
+          ;;
+          --lts=*)
+            LTS="${1##--lts=}"
+            shift
+          ;;
+          *)
+            break # stop parsing args
+          ;;
+        esac
+      done
+
+```
+
