@@ -30,14 +30,18 @@ Don't use `User-data`:
 
 # IAM
 
+`IAM identities` are created to provide authentication for people and processes in your AWS account:
+
+* _user_ : A IAM user is really just an identity with associated permission (can be people or application). A users is provided with credentials to uniquely identify themselves to AWS.
+* _group_ : is a collection of users, when a user belong to a group has all the group's permission
+* _roles_ : A role lets you define a set of permissions to access the resources that a user or service needs, but the permissions are not attached to an IAM user or group. Instead, at run time, applications or AWS services (like Amazon EC2) can programmatically assume a role. When a role is assumed, AWS returns temporary security credentials that the user or application can use to make programmatic requests to AWS. Consequently, you don't have to share long-term security credentials (for example, by creating an IAM user) for each entity that requires access to a resource.
+* _Temporary credentials_ : are primarily used with IAM roles, but there are also other uses. You can request temporary credentials that have a more restricted set of permissions than your standard IAM user. This prevents you from accidentally performing tasks that are not permitted by the more restricted credentials. A benefit of temporary credentials is that they expire automatically after a set period of time. You have control over the duration that the credentials are valid.
+* _Root Account_ : 
+
 Main concepts:
 
-* _group_ : is a collection of users, when a user belong to a group has
-all the group's permission
-* _user_ : A IAM user is really just an identity with associated permission (can be people or application). A users is provided with credentials to uniquely identify themselves to AWS.
 * _security credential_ : each user can have different credentials (IAM—passwords, access keys, certificates, and MFA...). To create a new credential users need to be authorized.
 * _permission_ : a permission authorizes or denies a user to perform any AWS actions or to access any AWS resources.
-* _roles_ : A role lets you define a set of permissions to access the resources that a user or service needs, but the permissions are not attached to an IAM user or group. Instead, at run time, applications or AWS services (like Amazon EC2) can programmatically assume a role. When a role is assumed, AWS returns temporary security credentials that the user or application can use to make programmatic requests to AWS. Consequently, you don't have to share long-term security credentials (for example, by creating an IAM user) for each entity that requires access to a resource.
 * _instance profiles_ : An instance profile is a container for an IAM role. Instance profiles are used to pass role information to an Amazon EC2 instance when the instance starts.
 
 
@@ -53,16 +57,12 @@ refs:
 Our guidelines are:
 
 * Create one user for each employee
-* Assign policy only to groups (this will make your life easier when we
-need to add the same policy to another user)
-* Do NOT assign policies to a user. Create a new group and assign the
-use to that group
-* Password Policy: 16 chars, users cannot change pwd, require numbers,
-special chars, uppercase char
+* Assign policy only to groups (this will make your life easier when we need to add the same policy to another user)
+* Do NOT assign policies to a user. Create a new group and assign the use to that group
+* Password Policy: 16 chars, users cannot change pwd, require numbers, special chars, uppercase char
 * Do NOT create access key if not needed.
-* Force MFA authentication at least on every production resource [How To](http://stackoverflow.com/questions/21917197/how-to-enforce-iam-users-to-use-multi-factor-authentication-to-use-the-console).
+* Force MFA authentication at least on every production resource [How To](http://stackoverflow.com/questions/21917197/how-to-enforce-iam-users-to-use-multi-factor-authentication-to-use-the-console). [Here](https://blog.stitchdata.com/role-playing-with-aws-c9eaebcc6c98#.xtcbko558). [Principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 * Rotate credentials every 90 days (TODO write how to enforce)
-
 
 These are ours main groups:
 
@@ -72,14 +72,74 @@ These are ours main groups:
 
 * _managers_ : not be able to perform any EC2 actions except listing the Amazon EC2 resources currently available. Has access to the billing info.
 
+## Identities
+
+### Users
+
+* [full doc](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html)
+
+User Management:
+
+* [Permitting IAM Users to Change Their Own Passwords](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_enable-user-change.html)
+* MFA
+  * [MFA Protected API calls](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_configure-api-require.html) additional security of requiring a user to be authenticated with AWS multi-factor authentication (MFA) before the user is allowed to perform particularly sensitive actions. [Principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege)
+
+* [Credentials Report](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html)
+* [CodeCommit credentials](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_ssh-keys.html)
+
+
+To create a user and send him a mail:
+.....
+
+### Roles
+
+* http://docs.aws.amazon.com/IAM/latest/UserGuide/WorkingWithRoles.html
+* [Role terms and concepts](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html)
+
+
+A role is essentially a set of permissions that grant access to actions and resources in AWS
+
+Delegation is granting permission to someone that allows access to resources that you control.
+
+To delegate a role has two policies attached
+
+When you create a role, you create two separate policies for it:
+
+* Trust policy: which specifies who is allowed to assume the role (the trusted entity, or principal; see the next term)
+* Permissions policy: which defines what actions and resources the principal is allowed to use.
+
+[Granting a user permissions to switch role](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_permissions-to-switch.html)
+
+### Users VS Roles
+
+When use users:
+
+- You need to access the AWS console or use the AWS cli from your workstation (NB: protect your keys with aws-vault or similar tools). with aws-cli you can still use the assume role feature to limit your stardard access permissions.
+- You need to integrate with 3rd parties (ex: datadogs)
+
+
+When user role:
+
+- You're creating an application that runs on an Amazon Elastic Compute Cloud (Amazon EC2) instance and that application makes requests to AWS.
+- You're creating an app that runs on a mobile phone and that makes requests to AWS.
+- Users in your company are authenticated in your corporate network and want to be able to use AWS without having to sign in again—that is, you want to allow users to federate into AWS.
+
+
 ## AWS Services That Work with IAM
 
-* IAM permission types each service supports
+List of IAM permission types each service supports:
+
+* Action-level permissions
+* Resource-level permissions
+* Resource-based permissions
+* Tag-based permissions
+* Temporary security credentials
 * tips to help you write policies to control service access, and links to related information.
 
 http://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-services-that-work-with-iam.html
 
 ## IAM practical scenarios
+
 * See [here](http://docs.aws.amazon.com/IAM/latest/UserGuide/Using_WorkingWithGroupsAndUsers.html) "Scenarios for Creating IAM Users"
 
 Note:
@@ -88,6 +148,17 @@ Note:
 * OpsWorks can help with the upload of SSH keys and is connected with
 the IAM system
 * for some use case the temporary token system is better suited than IAM
+
+Billing:
+
+* https://blogs.aws.amazon.com/security/post/Tx2154FGFDNMQNP/Enhanced-IAM-Capabilities-for-the-AWS-Billing-Console
+
+
+
+Delegate Access to demo AWS account:
+
+http://cloudsentry.evident.io/aws-security-best-practice-7-use-iam-roles-with-sts-assumerole/
+
 
 ## IAM Policies
 
@@ -99,7 +170,7 @@ A policy can be attached to:
 * a group, a user
 * a resource
 
-Each policy have a `principal` which is the Identity to which the policy apply. The `Principal` element is unnecessary in an IAM policy attached directly to an Identity, because the principal is by default the entity that the IAM policy is attached to. It can be a IAM user, federated user, or assumed-role user), AWS account, AWS service, or other principal entity.
+A policy can have a `principal` which is the identity to which the policy apply. The `Principal` element is unnecessary with an IAM policy attached directly to an Identity, because the principal is by default the entity that the IAM policy is attached to. It can be a IAM user, federated user, or assumed-role user), AWS account, AWS service, or other principal entity.
 
 [AWS reference; Principal](http://docs.aws.amazon.com/IAM/latest/UserGuide/AccessPolicyLanguage_ElementDescriptions.html#Principal)
 
@@ -134,7 +205,7 @@ You can create different types of policies:
 * `Resource-based Inline policies` policies that are embedded directly into a resource
 
 
-* Generally speaking, the content of the policies is the same in all cases—each kind of policy defines a set of permissions using a common structure and a common syntax.
+* Generally speaking, the content of the policies is the same in all cases, each kind of policy defines a set of permissions using a common structure and a common syntax.
 
 For example, the AWS managed policy called ReadOnlyAccess provides read-only access to all AWS services and resources. When AWS launches a new service, AWS will update the ReadOnlyAccess policy to add read-only permissions for the new service. The updated permissions are applied to all principal entities that the policy is attached to.
 
@@ -259,14 +330,6 @@ If you’re unsure of which to use, consider which audit question is most import
 * If you’re more interested in “What can this user do in AWS?” then IAM policies are probably the way to go. You can easily answer this by looking up an IAM user and then examining their IAM policies to see what rights they have.
 * If you’re more interested in “Who can access this S3 bucket?” then S3 bucket policies will likely suit you better. You can easily answer this by looking up a bucket and examining the bucket policy.
 * If you want to manage permissions on individual objects within a bucket, S3 ACLs enable you to apply policies on the objects themselves, whereas bucket policies can only be applied at the bucket level.
-
-### Common Policy examples
-
-Billing:
-
-* https://blogs.aws.amazon.com/security/post/Tx2154FGFDNMQNP/Enhanced-IAM-Capabilities-for-the-AWS-Billing-Console
-
-
 
 ## SLAM Providers
 
@@ -461,6 +524,18 @@ Refs:
 
 * [debian guide](http://www.debian-administration.org/article/316/An_introduction_to_bash_completion_part_1)
 * [tldb.org](http://www.tldp.org/LDP/abs/html/tabexpansion.html)
+
+# EC2
+
+## Cloud-init cloud init
+
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html
+
+
+### Examples
+
+
+
 
 # OpsWorks
 
@@ -1036,6 +1111,19 @@ running stack may have been updated.
 The best practice to avoid unexpected resources updates is use `aws cloudformation get-template` to get the current stack and updated it.
 
 TIPS: install json-diff if you want to check difference : `npm install -g json-diff`
+
+
+## ARN Resource Format
+
+Amazon Resource Names (ARNs) uniquely identify AWS resources.
+
+The following are the general formats for ARNs; the specific components and values used depend on the AWS service.
+
+* arn:partition:service:region:account-id:resource
+* arn:partition:service:region:account-id:resourcetype/resource
+* arn:partition:service:region:account-id:resourcetype:resource
+
+REF for paths and resources: http://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#genref-aws-service-namespaces
 
 # AWS support for docker
 
