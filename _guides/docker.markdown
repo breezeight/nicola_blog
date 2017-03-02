@@ -311,9 +311,6 @@ REF: https://docs.docker.com/registry/deploying/
 
 The registry service supports transport layer security (TLS) natively. You must configure it in your instance to make use of it. You can also use a proxy server such as Nginx and basic authentication to extend the security of a deployment.
 
-## AWS ECR 
-
-
 ## Docker Hub
 
 * [Docker guide: Working with Docker Hub](https://docs.docker.com/userguide/dockerrepos/)
@@ -849,7 +846,7 @@ REF: http://blog.stefanxo.com/2014/02/clean-up-after-docker/
 
 refs:
 
-* [Docker neworking Official Doc](https://docs.docker.com/articles/networking/)
+* [Docker neworking Official Doc](https://docs.docker.com/engine/userguide/networking/)
 * [Linking Container Together](http://docs.docker.com/userguide/dockerlinks/)
 
 When Docker starts with the default configuration:
@@ -866,19 +863,19 @@ $$ mount
 /dev/disk/by-uuid/1fec...ebdf on /etc/hosts type ext4 ...
 /dev/disk/by-uuid/1fec...ebdf on /etc/resolv.conf type ext4 ...
 ...
-~~~
-* 
+~~~ 
 
 
 
 ### Communication between containers --link option
 
-TODO: capire se il concetto di link in docker compose è lo stesso di docker run
+WARNING: DEPRECATED, use Embedded DNS server in user-defined networks
 
-The `docker run` command has a `--link=CONTAINER_NAME_or_ID:ALIAS` option that allow the comunication between containers.
-The Docker server will insert a pair of iptables `ACCEPT` rules so that the new container can connect to the ports exposed by the other container — the ports that it mentioned in the `EXPOSE` lines of its `Dockerfile`. 
+### Embedded DNS server in user-defined networks
 
+https://docs.docker.com/engine/userguide/networking/configure-dns/
 
+As of Docker 1.10, the docker daemon implements an embedded DNS server which provides built-in service discovery for any container created with a valid name or net-alias
 
 ### Binding container ports to the host -P and -p flags
 
@@ -908,12 +905,6 @@ bc533791f3f5  training/webapp:latest  python app.py 5 seconds ago  Up 2 seconds 
 ### docker port
 
 `docker port`: showed us the current port bindings
-
-### PORT FORWARDING on Boot2Docker
-The last update of may 2014 (you must init again the VM) will create an host adpter and this make easy to connect locally to ports exposed by docker.
-To get the VM host adpter address:
-boot2docker ssh ip addr show dev eth1
-
 
 ### TODO
 
@@ -1143,11 +1134,17 @@ TODO
 
 * `docker rmi <image_name>` 
 
+### Tagging strategies for images
+
+* The problem is well descibed here: https://github.com/docker/docker/issues/13928
+
+
 ## Monitoring and Stats TODO
 
 * `docker info` 
 * `docker version`
 * https://docs.docker.com/articles/runmetrics/ 
+
 
 # Advanced Guides
 
@@ -1181,6 +1178,13 @@ Idea for deploy keys:
 Docket: https://github.com/defunctzombie/docket
 
 Docker ssh forward: https://gist.github.com/d11wtq/8699521
+
+
+# ELIXIR PHOENIX
+
+
+# EMBER
+
 
 
 
@@ -1227,6 +1231,10 @@ COPY . /srv/www/addictive-api/
 NOTE: bundler will still connect to rubygems.org to check whether a platform-specific gem exists for any of the gems in vendor/cache. So the only problem that could happen is with private native gems.
 
 ## RAILS and docker-composer
+
+TODO: https://blog.metova.com/containerize-your-development-environment-using-docker
+
+
 
 * You will need to re-run the docker-compose build command every time you change the Dockerfile or Gemfile.
 * developing with Docker added very little overhead to the development process. In fact, most commands that you would run for Rails simply needed to be prepended with a docker-compose run web
@@ -1398,7 +1406,40 @@ NOTE: This image solves the problem of using private git repository for gems bec
 
 The postgres image will use the default image volume, this means that it will bypass the COW filesystem and will store it in the 
 
+## Mongodb
+
+https://hub.docker.com/r/library/mongo/
+
+mkdir -p deployment/seed
+
+Compose snippet `docker-compose.dev.yml`:
+
+```
+version: '2'
+
+services:
+  mongo:
+    image: mongo:2.4.11
+    volumes:
+    - mongo-data:/data/db
+    - ./deployment/seed:/data/seed
+
+volumes:
+  mongo-data:
+```
+
+We create a named volume "mongo-data" to persist 
+
+
+`docker-compose -f docker-compose.dev.yml run --rm mongo  mongorestore -h mongo -d storage_padova_push /data/seed/storage_padova_push`
+
+
+
+## Rabbitmq
+
+
 ## Postgres
+
 
 ### Official postgres image on dockerhub
 
@@ -1497,17 +1538,20 @@ This is still an open issue: https://github.com/docker/machine/issues/23
 
 # Docker Compose 
 
+## Changelog
+
+[1.9.0](https://github.com/docker/compose/releases/tag/1.9.0) : 
+
+* setting volume labels and network labels in docker-compose.yml
+* `isolation` parameter in service definitions.
+* link-local IPs in the service networks definitions
+* shell-style inline defaults in variable interpolation. The supported forms are ${FOO-default} (fall back if FOO is unset) and ${FOO:-default} (fall back if FOO is unset or empty).
+*  support for the group_add and oom_score_adj parameters in service definitions.
+* support for the internal and enable_ipv6 parameters in network definitions
+
 ## Install
 
-docker-compose is provided by the Docker Toolbox.
-
-But it has an issue on some machine, it exit with the "Illegal instruction: 4". To solve just install it from pip:
-
-`pip install -U docker-compose`
-
-Install: If you install from pip you will get an SSL error see here: https://github.com/docker/compose/issues/890
-You should run this script: https://raw.githubusercontent.com/aanand/fig/25942820820fcd8ed3fbd33dde2dcb24005ef997/script/prepare-osx
-
+OSX: use the Docker App
 
 ## Intro
 
@@ -1528,7 +1572,7 @@ Compose is great for:
 * staging servers
 * CI server. 
 
-We don't recommend that you use it in production yet (april the 18th).
+We don't recommend that you use it in production yet (april the 18th 2015).
 
 TODO: 
 
@@ -1542,6 +1586,7 @@ cheatsheet:
 * `docker-compose stop`
 * `docker-compose logs` : watch the logs of all our containers 
 * `service` : the main stanzas in th docker-compose.yml file (ex: web, db, redis)
+* `docker-compose down` 
 
 Naming convention:
 
@@ -1557,8 +1602,6 @@ ex: `addctive-api/docker-compose.yml` produce:
 
 
 ## Containers and Images lifecycle with compose
-
-
 
 Images: http://stackoverflow.com/questions/32612650/how-to-get-docker-compose-to-always-start-fresh-images
 
@@ -1577,7 +1620,6 @@ Docker compose adds labels to container
 ## Volumes lifecycle with compose
 
 TODO: fare qualche test con la cancellazione e rigenerazione 
-
 
 https://github.com/docker/compose/issues/2308 :
 https://github.com/docker/compose/issues/1882 :
@@ -1639,15 +1681,34 @@ If you `docker-compose rm` and `docker-compose up` the existing container is rem
 ~~~
 
 
-## docker-compose.yml documentation
+## docker-compose file reference
 
-https://docs.docker.com/compose/yml/#compose-documentation
+V2: https://docs.docker.com/compose/compose-file/compose-file-v2/
+
+Volumes:
+
+* For version 2 files, named volumes need to be specified with the top-level volumes key. When using version 1, the Docker Engine will create the named volume automatically if it doesn’t exist.
+* 
+
+### Volumes
+
+https://docs.docker.com/compose/compose-file/compose-file-v2/#/volume-configuration-reference
+
+While it is possible to declare volumes on the fly as part of the service declaration, this section allows you to create named volumes that can be reused across multiple services (without relying on volumes_from), and are easily retrieved and inspected using the docker command line or API. See the [docker volume](https://docs.docker.com/engine/reference/commandline/volume_create/) subcommand documentation for more information.
+
 
 ### PORTS
 
 * `ports` to expose ports to the host container
 
+It's very similar to the docker commandline option `-p`
+
 ### LINKS
+
+WARNING: 
+
+* The --link flag is a deprecated legacy feature of Docker. We recommend that you use user-defined networks and the embedded DNS server [ref](https://docs.docker.com/engine/userguide/networking/default_network/dockerlinks/)
+
 
 `links` 
 
@@ -1670,7 +1731,39 @@ Ref:
 
 * every time you do a docker-compose run, Compose is spinning up entirely new containers for your code but only if the containers are not up already, in which case they are linked to that (running) container.This means that it’s possible that you’ve spun up multiple instances of your app without thinking about it – for example, you may have a web and db container already up from a docker-compose up command, and then in a separate terminal window you run a docker-compose run web rails c. That spins up another web container to execute the command, but then links that container with the pre-launched db container.
 
+## Example
 
+Ref V2 file, docker 1.12: https://www.linux.com/learn/introduction-docker-compose-tool-multi-container-applications
+
+```
+version: '2'
+services:
+ mysql:  
+  image: mysql
+  container_name: mysql
+  ports:
+   - "3306"
+  environment:
+   - MYSQL_ROOT_PASSWORD=root
+   - MYSQL_DATABASE=ghost
+   - MYSQL_USER=ghost
+   - MYSQL_PASSWORD=password
+ ghost:  
+  build: ./ghost
+  container_name: ghost
+  depends_on:
+    - mysql
+  ports:
+    - "80:2368"
+```
+
+This would be the equivalent of running the following `docker run` commands: 
+
+```
+$ docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ghost -e MYSQL_PASSWORD=password -e MYSQL_USER=ghost -p 3306 mysql
+$ docker build -t myghost .
+$ docker run -d --name ghost -p 80:2368 myghost
+```
 
 
 # Deployment solutions
