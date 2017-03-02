@@ -49,6 +49,23 @@ Books:
 
 * 2016 THE LITTLE ELIXIR & OTP GUIDEBOOK: http://benjamintan.io/
 
+Elixir release notes:
+
+* All: http://elixir-lang.org/blog/categories.html#Releases
+* http://elixir-lang.org/blog/2014/04/21/elixir-v0-13-0-released/
+* http://elixir-lang.org/blog/2014/06/17/elixir-v0-14-0-released/
+  * derive
+  * Protocol consolidation
+  * Nested access
+  * Mix and OTP
+*
+  * Full release: https://github.com/elixir-lang/elixir/releases/tag/v1.4.0
+  * Registry
+  * Syntax coloring
+  * Task.async_stream
+  * Application inference
+  * Mix install from SCM
+
 # People and companies
 
 * José Valim, Founder and Director of Research and Development at Plataformatec
@@ -73,22 +90,45 @@ Docker Example:
 * Erlang image: https://github.com/c0b/docker-erlang-otp/blob/ea32d5f6f1735f9f55bee04b112166da96eb9c73/19/Dockerfile
 * Elixir image: https://github.com/c0b/docker-elixir/blob/22ee98417200ef8d9a049b2b4504e7cf279e911f/1.2/Dockerfile
 
+## Install Multiple versions
+
 EVM Switching between multiple Erlang versions:
 
-* https://medium.com/@ivorpaul/switching-between-multiple-erlang-versions-5559923ea7cd#.24kbmsk9x
+* evm https://medium.com/@ivorpaul/switching-between-multiple-erlang-versions-5559923ea7cd#.24kbmsk9x
+* kerl: `brew install kerl`
 
-## HEX
 
-https://hex.pm/docs/usage
+Manage multiple Elixir version with Kiex:
+
+* `brew install kiex`
+* To install https://github.com/taylor/kiex
+* http://learningelixir.joekain.com/installing-multiple-elixir-version-with-kiex/
+* `kiex use 1.3.4`
+
+
+Another alternative is [ASDF](https://github.com/asdf-vm/asdf)
+
+## Erlang-Elixir Code Portability
+
+http://stackoverflow.com/questions/2255658/how-portable-are-erlang-beam-files
+
+
+## Editor - IDE
+
+### Intellij
+
+* `brew cask install intellij-idea-ce` ce = comunity edition
 
 ## Mix
+
+A build tool that ships with Elixir.
 
 Ref:
 
 * into: http://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
 * [Mix doc](https://hexdocs.pm/mix/Mix.html)
 
-A build tool that ships with Elixir that provides tasks for
+Mix that provides tasks for:
 
 * creating,
 * compiling,
@@ -109,7 +149,7 @@ Are you sure you want to replace it with "https://github.com/phoenixframework/ar
 * deps.get
 * compile
 * firmware
-
+* OTP application: come va gestita la voce "application" in un progetto gestito con Mix ?
 
 
 ### Project Structure
@@ -125,7 +165,18 @@ http://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html#our-firs
 
 `-S option` to run scripts: `iex -S mix`
 
+### Custom Mix Tasks
 
+http://elixir-recipes.github.io/mix/custom-mix-task/
+
+## HEX
+
+* [Hex Homepage](https://github.com/hexpm/hex)
+* https://hex.pm/docs/usage
+
+Hex is a package manager for the Erlang ecosystem.
+
+This project currently provides tasks that integrate with Mix, Elixir's build tool.
 
 
 # Testing and code quality
@@ -189,6 +240,10 @@ Binaries
 In Elixir, functions are a type too.
 
 String and structures are built using the types above
+
+## Type Safety: type checking
+
+http://learningelixir.joekain.com/elixir-type-safety/
 
 
 ## Integer
@@ -579,6 +634,37 @@ iex> %Car{}
     expanding struct: Car.__struct__/1
 ```
 
+#### Derive
+
+Ref: http://elixir-lang.org/blog/2014/06/17/elixir-v0-14-0-released/
+
+In many situation we want to implement some protocol like `Enumerable` for a struct.
+
+`@derive` allows us to dynamically derive implementations for structs based on the implementation for maps.
+
+```
+defmodule User do
+  @derive [Enumerable]
+  defstruct name: "", age: 0
+end
+
+Enum.each %User{name: "jose"}, fn {k, v} ->
+  IO.puts "Got #{k}: #{v}"
+end
+#=> Got __struct__: Elixir.User
+#=> Got name: jose
+#=> Got age: 0
+```
+
+The deriving functionality can be customized by implementing `PROTOCOL.Map.__deriving__/3`. For example, a JSON protocol could define a `JSON.Map.__deriving__/3` function that derives specific implementations for every struct. Such implementations could access the struct fields and generate a JSON template at compilation time, avoiding work at runtime.
+
+### Records
+
+WARNING: Are Records will be DEPRECATED http://elixir-lang.org/blog/2014/04/21/elixir-v0-13-0-released/  "Structs are meant to replace Elixir records. "
+
+Records in Elixir are simply tuples supported by modules which store record metadata
+
+
 # Protocols
 
 Refs:
@@ -611,8 +697,33 @@ to_string(99.9)
 
 Structs alongside protocols provide one of the most important features for Elixir developers: data polymorphism.
 
+Example:
+
+```
+defprotocol Size do
+  @doc "Calculates the size (and not the length!) of a data structure"
+  def size(data)
+end
+```
 
 
+The Size protocol expects a function called size that receives one argument (the data structure we want to know the size of) to be implemented. We can now implement this protocol for the data structures that would have a compliant implementation:
+
+```
+defimpl Size, for: BitString do
+  def size(string), do: byte_size(string)
+end
+
+defimpl Size, for: Map do
+  def size(map), do: map_size(map)
+end
+
+defimpl Size, for: Tuple do
+  def size(tuple), do: tuple_size(tuple)
+end
+```
+
+We didn’t implement the Size protocol for lists as there is no “size” information precomputed for lists, and the length of a list has to be computed (with length/1).
 
 ## Elixir Standard Protocols
 
@@ -677,6 +788,31 @@ Integer division yields a floating-point result. Use `div(a,b)` to get an intege
 
 `a in enum` tests if a is included in enum (for example, a list or a range)
 
+## The pipe operator
+
+Refs:
+
+* http://culttt.com/2016/04/25/using-pipe-operator-elixir/
+* https://elixirschool.com/lessons/basics/pipe-operator/
+
+The Pipe operator makes easy to combine functions.
+
+In functional languages, you will often want to combine functions by passing the result of one function as the argument to the next.
+
+The pipe operator `|>` passes the result of an expression as the first parameter of another expression.
+
+Example:
+
+* `foo(bar(baz(new_function(other_function()))))` is quite messy
+* `other_function() |> new_function() |> baz() |> bar() |> foo()` has the same meaning but much more readable
+
+If you have more than one parameters, for example the `String.ends_with?(string, suffixes)` function, this syntax are equivalent:
+
+```
+"elixir" |> String.ends_with?("ixir")
+
+String.ends_with?("Elixir","ixir")
+```
 
 
 # Function, Modules and Pattern matching
@@ -1412,6 +1548,11 @@ ASSERT MACRO
 * Domain Specific Languages (DSLs)
 
 
+# Deployment production Monitoring
+
+
+
+
 # OTP
 
 ## Supervisor
@@ -1423,4 +1564,23 @@ TODO: https://jbodah.github.io/blog/2016/11/18/supervisors-work/
 Elixir and big data: https://elixirforum.com/t/big-data-with-elixir/154/2
 
 Leveraging Elixir to access HDFS-like and inter-operate to Python for the map-reduce or machine-learning, and back again to Elixir for the database and Web inter-operability. This can be done by using protobuffer or a common swap space. 
-Again, one of the weakness of the software you mentioned is of being monolithic and to enforce the use of certain tools (above all Java). 
+Again, one of the weakness of the software you mentioned is of being monolithic and to enforce the use of certain tools (above all Java).
+
+
+# Code Snippet
+
+## Iterate over an Enumerable ()
+
+```
+Enum.each %{foo: :bar}, fn {k, v} ->
+  IO.puts "Got #{k}: #{v}"
+end
+```
+
+
+
+# Common Liraries
+
+# Recipes
+
+https://elixir-examples.github.io/
