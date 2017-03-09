@@ -28,6 +28,21 @@ categories: ["docker"]
 * make a guide for panamax, see here a
     [draft]({{site.url}}/guides/panamax.html)
 
+# Management
+
+## OSX Docker for MAC
+
+ISSUE reduce qcow2 image (march 2017), Docker.qcow2 grows constantly:
+
+* Ref: https://github.com/docker/for-mac/issues/371#issuecomment-265525709
+
+```
+docker rm -f $(docker ps -qa)
+docker rmi -f $(docker images -q)
+```
+* restart docker
+
+
 # History
 
 # Docker Compose 
