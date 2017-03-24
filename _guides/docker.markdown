@@ -1273,7 +1273,52 @@ To use byebug see here: http://blog.carbonfive.com/2015/03/17/docker-rails-docke
 ### FAQ
 
 * When closing a container with a rails app, rails doesn't delete /tmp/pids/server.pid: https://github.com/docker/compose/issues/1393
-     
+
+## Orats: dockerized app generator
+
+It's a really simple project that generate an opinionated Rails app customize for Docker.
+
+TODO: capire perchè non si poteva usare semplicemente un template di Rails
+
+* https://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose
+* https://github.com/nickjj/orats
+
+## Create Images with BuildRoot
+
+TODO 
+
+* http://slides.com/aukewillem/minimal-docker#/
+
+Cons
+
+* Makefile are not so easy to manage and debug
+* not so mainstream
+
+Pro
+
+* Very simple workflow
+* You can recycle the buildroot expertice in the embedded world
+
+## Links
+
+* github.com/OrangeTux/minimal-docker-python-setup
+* github.com/AdvancedClimateSystems/docker-buildroot
+* blog.docker.com/2013/06/create-light-weight-docker-containers-buildroot/
+* hub.docker.com/r/advancedclimatesystems/python/
+* buildroot.uclibc.org/downloads/manual/manual.html
+
+## 
+
+* Example: http://michaelcoyote.github.io/2015/08/02/lean-container-tricks/
+
+## User BUILDROOT from a DOCKER IMAGE
+
+SEE "_guide/embedded_distro.markdown"
+
+## Example: minimal Nginx-uWSGI-Flask-Redis stack
+
+https://github.com/OrangeTux/minimal-docker-python-setup
+
 
 ## Passenger Image
 
