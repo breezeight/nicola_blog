@@ -48,6 +48,7 @@ http://softwareengineeringdaily.com/2016/04/18/elixir-erlang-jose-valim/
 Books:
 
 * 2016 THE LITTLE ELIXIR & OTP GUIDEBOOK: http://benjamintan.io/
+* "Metaprogramming Elixir" by Chris McCord the author of Phoenix https://pragprog.com/book/cmelixir/metaprogramming-elixir
 
 Elixir release notes:
 
@@ -72,6 +73,13 @@ Elixir release notes:
   * https://www.linkedin.com/in/jovalim
 * 
 
+# IEx
+
+Doc: https://hexdocs.pm/iex/IEx.html#summary
+
+* Print the current config `IEx.configuration()`
+* History: https://github.com/ferd/erlang-history
+
 # Atom Elixir
 
 https://brainlid.org/elixir/2015/11/12/atom-editor-and-elixir.html
@@ -79,7 +87,13 @@ https://brainlid.org/elixir/2015/11/12/atom-editor-and-elixir.html
 
 # CHEATSHEET
 
+IEx:
+
 * Help from iex: `h String`
+* `~/.iex.exs` and local `.iex.exs`
+* inspect (implement proto, etc):  `i "hello"`
+* `#iex:break` Cancel a multiline command
+
 * Cheatsheet: https://media.pragprog.com/titles/elixir/ElixirCheat.pdf
 * Start a script: `iex math.exs`
 
