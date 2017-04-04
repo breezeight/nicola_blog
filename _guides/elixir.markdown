@@ -1035,7 +1035,24 @@ With `use` developers can inject code into your module. When calling:
 use MyModule, some: :options
 ```
 
-the `__using__/1` macro from the MyModule module is invoked with the second argument passed to use as its argument. Since __using__/1 is a macro, all the usual macro rules apply, and its return value should be quoted code that is then inserted where use/2 is called.
+the `__using__/1` macro from the MyModule module is invoked with the second argument passed to use as its argument and the module is required. Since __using__/1 is a macro, all the usual macro rules apply, and its return value should be quoted code that is then inserted where use/2 is called.
+
+Behind the scenes, `use` allow the module to inject some code into the current context. Generally speaking, the following module:
+
+```
+defmodule Example do
+  use Feature, option: :value
+end
+```
+
+is compiled into
+
+```
+defmodule Example do
+  require Feature
+  Feature.__using__(option: :value)
+end
+```
 
 Here’s an example:
 
@@ -1090,6 +1107,22 @@ The `Ecto.Migration.__using__/1` macro includes an import call so that if use `E
 
 To recap: the use macro just invokes the `__using__/1` macro of the specified module. To really understand what that does you need to read the `__using__/1` macro.
 
+
+### use VS import VS require
+
+Ref: http://stackoverflow.com/questions/28491306/elixir-use-vs-import
+
+* `import Module` brings all the Functions and Macros of Module un-namespaced into your module.
+
+* `require Module` allows you to use macros of Module but does not import them. (Functions of Module are always available namespaced.)
+
+* `use Module` first requires module and then calls the __using__ macro on Module.
+
+
+Examples:
+
+* Phoenix framework make heavy use of `use`, Crish also wrote a book about it https://pragprog.com/book/cmelixir/metaprogramming-elixir
+* Exprotobuf make heavy use of `use` https://github.com/bitwalker/exprotobuf
 
 #### Ecto Example
 
