@@ -1540,6 +1540,123 @@ iex> f.(10)
 
 * http://stackoverflow.com/questions/18011784/why-are-there-two-kinds-of-functions-in-elixir
 
+## With
+
+* Elxir DOC: https://hexdocs.pm/elixir/Kernel.SpecialForms.html#with/1
+* http://learningelixir.joekain.com/learning-elixir-with/
+* http://elixir-lang.org/getting-started/mix-otp/docs-tests-and-with.html#with
+
+The pipe operator is great when all functions are acting on a consistent piece of data. It falls apart when we introduce variability.
+
+That's where `with` comes in. with is a lot like a |> except that it allows you to match each intermediary result. It allows developers to match on multiple expressions concisely
+
+Previously, one would write
+
+```
+case File.read("my_file.ex") do
+  {:ok, contents} ->
+    case Code.eval_string(contents) do
+      {res, _binding} ->
+        {:ok, res}
+      error ->
+        error
+  error -> error
+    error
+end
+```
+
+such can now be rewritten as
+
+```
+with {:ok, contents} <- File.read("my_file.ex"),
+     {res, binding} <- Code.eval_string(contents),
+     do: {:ok, res}
+```
+
+with will match each left side of `<-` against the right side, executing expressions until one of those match fails or until the do: expression is performed.
+
+In case a match fails, the non-matching result is returned. An `else` option can be given to modify what is being returned from with in the case of a failed match:
+
+* use left arrow
+* can have multiple pattern matching clauses
+* use-case: you want to return an uniform return value for all the errors that can happen in your chain
+
+If there is no matching else condition, then a `WithClauseError` exception is raised.
+
+```
+with ... <- ... ,
+    ... <- ... ,
+    ... <- ... ,
+    ... <- ... do 
+  {:ok, double_width * height}
+else
+  :error -> {:error, :wrong_data}
+  :error2 -> {:error, :nil_data}
+end
+```
+
+
+NOTE that:
+
+* non andare a capo con il `do` quando si usa `else`
+* “bare expressions” may also be inserted between the clauses
+* Guards can be used in patterns
+* variables bound inside with/1 won’t leak;
+
+Example:
+
+```
+width = nil
+opts = %{width: 10, height: 15}
+with {:ok, width} <- Map.fetch(opts, :width),
+    double_width = width * 2,
+    {:ok, height} <- Map.fetch(opts, :height),
+    do: {:ok, double_width * height}
+
+{:ok, 300}
+
+
+
+
+width = nil
+opts = %{width: 10}
+with {:ok, width} <- Map.fetch(opts, :width),
+    double_width = width * 2,
+    {:ok, height} <- Map.fetch(opts, :height),
+    do: {:ok, double_width * height}
+
+:error
+
+
+
+
+
+width = nil
+opts = %{width: 10}
+a = with {:ok, width} <- Map.fetch(opts, :width),
+    double_width = width * 2,
+    {:ok, height} <- Map.fetch(opts, :height) do
+  {:ok, double_width * height}
+else
+  :error -> {:error, :wrong_data}
+end
+
+{:error, :wrong_data}
+```
+
+
+
+Refactor example: http://openmymind.net/Elixirs-With-Statement/
+
+### Happy With
+
+
+If you want to be more specific in the way you handle errors and you cannot obtain it with patter matching use `happy_with` and `tags`:
+
+* https://github.com/vic/happy_with
+* https://github.com/vic/happy/blob/master/README.md#tags
+
+
 # Elixir Macros
 
 * TODO http://elixir-lang.org/getting-started/meta/macros.html
