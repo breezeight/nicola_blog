@@ -409,6 +409,13 @@ Two atoms with the same name will always compare as being equal, even if they we
 
 We’ll be using atoms a lot to tag values.
 
+## Calendar and sigils
+
+Calendar and Date, Time, NaiveDateTime and DateTime types was added in 1.3, see here:
+
+* https://github.com/elixir-lang/elixir/releases/tag/v1.3.0
+* http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/
+
 ## Ranges
 
 start..end
@@ -780,6 +787,16 @@ TODO: look for examples
 
 Example: https://hexdocs.pm/elixir/Collectable.html#content
 
+# Sigils
+
+http://elixir-lang.org/getting-started/sigils.html
+
+Sigils are one of the mechanisms provided by the language for working with textual representations:
+
+* start with the tilde `~` character which is
+* followed by a letter (which identifies the sigil)
+* and then a delimiter
+* optionally, modifiers can be added after the final delimiter
 
 # Operators
 
