@@ -1766,7 +1766,107 @@ ASSERT MACRO
 
 # Deployment production Monitoring
 
+# ExUnit
 
+## Test Types
+
+ExUnit v1.3 includes the ability to register different test types. This means libraries like QuickCheck can now provide functionality such as:
+
+```
+defmodule StringTest do
+  use ExUnit.Case, async: true
+  use PropertyTestingLibrary
+
+  property "starts_with?" do
+    forall({s1, s2} <- {utf8, utf8}) do
+      String.starts_with?(s1 <> s2, s1)
+    end
+  end
+end
+```
+
+At the end of the run, ExUnit will also report it as a property, including both the amount of tests and properties:
+
+```
+1 property, 10 tests, 0 failures
+```
+
+
+### Quick check style test
+
+REF:
+
+* Ref: https://github.com/parroty/excheck
+* QuickCheck http://www.cse.chalmers.se/~rjmh/QuickCheck/
+
+## Describe Blocks
+
+Organize tests together in describe blocks:
+
+```
+defmodule StringTest do
+  use ExUnit.Case, async: true
+
+  describe "String.capitalize/2" do
+    test "uppercases the first grapheme" do
+      assert "T" <> _ = String.capitalize("test")
+    end
+
+    test "lowercases the remaining graphemes" do
+      assert "Test" = String.capitalize("TEST")
+    end
+  end
+end
+```
+
+Every test inside a describe block will be tagged with the describe block name. This allows developers to run tests that belong to particular blocks, be them in the same file or across many files:
+
+```
+$ mix test --only describe:"String.capitalize/2"
+```
+
+Note describe blocks cannot be nested. Instead of relying on hierarchy for composition, we want developers to build on top of named setups. For example:
+
+```
+defmodule UserManagementTest do
+  use ExUnit.Case, async: true
+
+  describe "when user is logged in and is an admin" do
+    setup [:log_user_in, :set_type_to_admin]
+
+    test ...
+  end
+
+  describe "when user is logged in and is a manager" do
+    setup [:log_user_in, :set_type_to_manager]
+
+    test ...
+  end
+
+  defp log_user_in(context) do
+    # ...
+  end
+end
+```
+
+By restricting hierarchies in favor of named setups, it is straight-forward for the developer to glance at each describe block and know exactly the setup steps involved.
+
+
+
+## Execute only stale tests
+
+Ref: http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/
+
+`mix test --stale`  builds on top of `mix xref`: will only run the tests that may have changed since the last time you ran mix test --stale.
+
+For example:
+
+* If you saved a test file on disk, Mix will run that file and ignore the ones that have not changed
+* If you changed a library file, for example, lib/foo.ex that defines Foo, any test that invokes a function in Foo directly or indirectly will also run
+* If you modify your mix.exs or your test/test_helper.exs, Mix will run the whole test suite
+
+
+This feature provides a great workflow for developers, allowing them to effortlessly focus on parts of the codebase when developing new features.
 
 
 # OTP
