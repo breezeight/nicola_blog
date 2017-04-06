@@ -133,7 +133,7 @@ http://stackoverflow.com/questions/2255658/how-portable-are-erlang-beam-files
 
 * `brew cask install intellij-idea-ce` ce = comunity edition
 
-## Mix
+# Mix
 
 A build tool that ships with Elixir.
 
@@ -166,24 +166,61 @@ Are you sure you want to replace it with "https://github.com/phoenixframework/ar
 * OTP application: come va gestita la voce "application" in un progetto gestito con Mix ?
 
 
-### Project Structure
-
+## Project Structure
 
 * ebin - contains the compiled bytecode
 * lib - contains elixir code (usually .ex files)
 * test - contains tests (usually .exs files)
 
-### Create a simple Mix Project
+## Create a simple Mix Project
 
 http://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html#our-first-project
 
 `-S option` to run scripts: `iex -S mix`
 
-### Custom Mix Tasks
+## Custom Mix Tasks
 
-http://elixir-recipes.github.io/mix/custom-mix-task/
+* [Tutorial](https://medium.com/blackode/mix-task-creation-in-elixir-project-d89e49267fe3#.crf3y6ic3)
+* [Doc](http://elixir-recipes.github.io/mix/custom-mix-task/)
 
-## HEX
+## Mix Alias 
+
+https://sergiotapia.me/alias-your-phoenix-mix-commands-for-some-nice-developer-ux-4a02b2bf3474#.i9ag1tbd1
+
+## Mix Xref
+
+Ref: http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/
+
+`mix xref unreachable`:
+
+* performs cross reference checks in your code and find calls to modules and functions that do not exist.
+* Since such checks can discover possible bugs in your codebase, a new compiler called xref has been added to Mix.compilers/0, so it runs by default every time you compile your code.
+
+ `mix xref callers Foo` or `mix xref callers Ecto.Queryable.to_query/1`
+*  used to find all places in your code that calls a function from the module Foo
+
+* `mix xref graph` - generates a graph with dependencies between source files
+
+## Mix app.tree and deps.tree
+
+list all applications your current project needs to start in order to boot (i.e. the ones listed in application/0 in your mix.exs) while the second will lists all of your dependencies and so on recursively
+
+* mix deps.tree --format dot --only prod
+* `--format dot` option can also be given to generate graph files to be opened by GraphViz.
+
+## Mix task commandline options
+
+Elixir v1.3 includes improvements to the option parser, including OptionParser.parse!/2 and OptionParser.parse_head!/2 functions that will raise in case of invalid or unknown switches. Mix builds on top of this functionality to provide automatic error reporting solving a common complaint where invalid options were not reported by Mix tasks.
+
+For example, invoking mix test --unknown in earlier Elixir versions would silently discard the --unknown option. Now mix test correctly reports such errors:
+
+```
+$ mix test --unknown
+** (Mix) Could not invoke task "test": 1 error found!
+--unknown : Unknown option
+```
+
+# HEX
 
 * [Hex Homepage](https://github.com/hexpm/hex)
 * https://hex.pm/docs/usage
@@ -358,8 +395,6 @@ String.length("hello")
 5
 
 ```
-
-
 
 
 ## Atoms
