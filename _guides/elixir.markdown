@@ -1869,6 +1869,196 @@ For example:
 This feature provides a great workflow for developers, allowing them to effortlessly focus on parts of the codebase when developing new features.
 
 
+# Specifications and types
+
+Ref:
+
+* [Elixir School](http://elixirschool.com/lessons/advanced/typespec/)
+* [Elixir Doc: Typespec](https://hexdocs.pm/elixir/typespecs.html)
+* [List of Elixir types](https://hexdocs.pm/elixir/typespecs.html#types-and-their-syntax)
+* The_Little_Elixir_&_OTP_Guidebook.pdf CH 10.5
+
+
+Elixir comes with a notation for declaring types and specifications.
+
+
+Use case:
+
+* Defines callback for Behaviours
+* Hint for static analyzer tools like Dialyzer
+* Documentation: with dynamic languages, valid inputs and the type of the return value are sometimes not obvious.
+
+Type specifications (sometimes referred to as typespecs) are defined in different contexts using the following attributes:
+
+* `@spec function_name(type1, type2) :: return_type` : specification of function that will be checked by compiler.
+* `@type type_name :: type` :
+* `@typep type_name :: type`
+* `@opaque type_name :: type`
+* `@callback function_name(type1, type2) :: return_type`
+* `@macrocallback macro_name(type1, type2) :: Macro.t`
+
+
+NOTE: Elixir is still dynamic language, that means all information about type will be ignored by compiler, but could be used by other tools.
+
+
+types can be:
+
+* Built-in types https://hexdocs.pm/elixir/typespecs.html)
+* Parametrized types: `list(integer)`
+* Union types: a type made of one or more types, ex: `integer | float`
+* Remote types
+
+
+To match a Struct inside a typespec, use the normal %StructName{} syntax.
+
+
+
+## Example
+
+### Keyword List type check
+
+https://elixirforum.com/t/typespecs-best-way-to-spec-keyword-lists/2991/2
+
+`[key1: type1, key2: type2]` actually means the same as `[{:key1, type1} | {:key2, type2}]`:
+
+* Order does not matter
+* an empty list is OK
+* unknown keys are rejected.
+
+
+```
+defmodule TypeSpecDemo do
+  
+  @spec hello([bar: String.t, baaz: String.t]) :: {:world, list}
+  def hello(opts \\ []) do
+    {:world, opts}
+  end
+
+  # correct usage
+  def default_to_empty_list, do: hello()
+  def call_with_empty_list, do: hello([])
+  def first_key_only, do: hello(bar: "bar")
+  def second_key_only, do: hello([baaz: "baaz"])
+  def both_keys_in_order, do: hello([bar: "bar", baaz: "baaz"])
+  def both_keys_reversed, do: hello([baaz: "baaz", bar: "bar"])
+
+  # incorrect usage
+  def bad_arg, do: hello("world")
+  def unknown_key, do: hello(foo: "foo")
+  def wrong_value, do: hello(baaz: 15)
+end
+```
+
+To test it:
+
+* `_guides/elixir_examples/dialyzer_playground/lib/keyword_list_example.ex`
+* `mix dialyzer|grep keyword_list_example`
+
+
+
+### Example 1
+
+The `Range` module defines a Range struct and a type `t`
+
+```
+https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/range.ex#L42
+
+defmodule Range do
+  defstruct first: nil, last: nil
+
+  @type t :: %Range{first: integer, last: integer}
+  @type t(first, last) :: %Range{first: first, last: last}
+```
+
+that can be referred as `Range.t`
+
+```
+defmodule Cashy.Prova do
+
+  @spec test_remote_type(Range.t) :: Range.t
+  def test_remote_type(a) do
+    a
+  end
+
+  def run do
+    test_remote_type(1..2)
+  end
+end
+```
+
+
+### Example 2
+
+A `Library.Book` struct that has a single property of `:title`. I’ve then defined a custom type using this struct. I’ve also declared that the :title property should be a string.
+
+```
+defmodule Library.Book do
+  defstruct [:title]
+ 
+  @typedoc """
+  A custom type that holds the properties of a book
+  """
+  @type t :: %Library.Book{title: String.t}
+end
+```
+
+We can now update the specs from earlier to use this new custom book type:
+
+```
+@spec add(Library.Book.t) :: :ok
+@spec all :: list(Library.Book.t)
+```
+
+
+# Dialyzer and Dialyxir
+
+https://github.com/jeremyjh/dialyxir
+
+http://erlang.org/doc/apps/dialyzer/dialyzer_chapter.html
+
+Dialyzer uses a typing-inference algorithm called `success typings`. Success typings are optimistic:
+
+* Assume that all your functions are used correctly. In other words, your code is innocent until proven guilty.
+* Starts by over-approximating the valid inputs to and outputs from your functions.
+* As the algorithm develops a better understanding of your code, it generates constraints. Example:
+  * it sees x + y, then x and y must be numbers.
+  * Guards such as is_atom(z) provide additional constraints.
+
+NOTE: Dialyzer doesn’t guarantee that your code is type-safe. If it finds something wrong, Dialyzer is guaranteed to be correct.
+
+Revealing types with iex helpers:
+
+* `t/1` prints the types for the given module or for the given function/arity pair (ex: t Enum)
+* `i/1` prints information about the given data type (ex: `i("ohai")`, `i('ohai')`)
+
+
+Dialyzer messages:
+
+`no local return` means the function will definitely fail, Dialyzer has found a type error, the function can never return.
+
+## Examples
+
+see `~/SRC/ELIXIR/testbed/dialyzer_playground` and The_Little_Elixir_&_OTP_Guidebook.pdf CH 10.4.
+
+## Persistent Lookup Table (PLT)
+
+* Dialyzer stores the result of an analysis in a Persistent Lookup Table (PLT).
+* You can also use a previously constructed PLT that serves as a starting point for Dialyzer.
+* any nontrivial Elixir application will probably involve OTP; if you run Dialyzer on such an application, the analysis will undoubtedly take a long time, you can always build a base PLT and only run Dialyzer on your application, which by comparison will take much less time. But when you upgrade Erlang and/or Elixir, you must remember to rebuild the PLT.
+
+## Dialyxir
+
+Mix tasks to simplify use of Dialyzer in Elixir projects.
+
+# Behaviour
+
+Ref:
+
+* [Elixir Doc: Behaviours](https://hexdocs.pm/elixir/behaviours.html#content)
+* http://elixirschool.com/lessons/advanced/behaviours/
+
+
+
 # OTP
 
 ## Supervisor
