@@ -20,6 +20,10 @@ categories:
   * PDF : ~/Dropbox/Books/Bash-Beginners-Guide.pdf
 * Advanced Bash-Scripting Guide http://tldp.org/LDP/abs/html/
 
+* Short intro e-book for developer with some bash internal, written by a bash author: http://aosabook.org/en/bash.html
+
+
+
 # Bash History
 
 unset HISTFILE: If HISTFILE is unset, or if the history file is unwritable, the history is not saved.
@@ -534,29 +538,100 @@ Other variables:
 * `TMOUT`	If set to a value greater than zero, TMOUT is treated as the default timeout for the read built-in. In an interative shell, the value is interpreted as the number of seconds to wait for input after issuing the primary prompt when the shell is interactive. Bash terminates after that number of seconds if input does not arrive.
 * `UID`	The numeric, real user ID of the current user.
 
-# Shell Syntax
 
-## Input parsing
+# Simple commands
 
-Before fork-exec a shell analyze the it's input:
+REF: http://wiki.bash-hackers.org/syntax/basicgrammar#simple_commands
 
-* The shell reads its input from a file, from a string or from the user's terminal.
+# Pipelines
+
+REF: http://wiki.bash-hackers.org/syntax/basicgrammar#pipelines
+
+# Command List
+
+REF: http://wiki.bash-hackers.org/syntax/basicgrammar#lists
+
+A list is a sequence of one or more pipelines separated by one of the operators:
+
+``` 
+
+;
+&
+&&
+││
+
+```
+
+and optionally terminated by one of
+
+```
+;
+&
+<newline>
+```
+
+# Compound Commands
+
+Compound commands have the following characteristics:
+
+* they begin and end with a specific keyword or operator (e.g. `for … done` )
+* they can be redirected as a whole
+
+For a list See REF: http://wiki.bash-hackers.org/syntax/basicgrammar#compound_commands
+
+
+
+
+# Input parsing and execution flow
+
+Advanced Ref, with some internals: http://aosabook.org/en/bash.html
+Nice Graphical example: http://stuff.lhunath.com/parser.png
+Really nice intro: http://mywiki.wooledge.org/BashParser
+
+Before fork-exec, a shell analyze the it's input:
+
+1) The shell reads its input from a file, from a string or from the user's terminal.
+
+2) Perform lexical analysis and parsing:
 
 * Input is broken up into words and operators, obeying the quoting rules
 
 * Token are separated by metacharacter http://www.angelfire.com/mi/genastorhotz/reality/computers/linux/bashmetachars.html
 
-* Alias expansion is performed.
+3) Perform expansions and substitutions:
 
-* The shell parses (analyzes and substitutes) the tokens into simple and compound commands.
+* Brace expansion
+* Tilde expansion
+* Variable and parameter expansion
+* Command substitution
+* Process substitution
+* Arithmetic substitution
+* Word splitting
+* Filename generation
 
-* Bash performs various shell expansions, breaking the expanded tokens into lists of filenames and commands and arguments.
+
+4) The shell parses (analyzes and substitutes) the tokens into simple and compound commands, breaking the expanded tokens into lists of filenames and commands and arguments.
 
 * Redirection is performed if necessary, redirection operators and their operands are removed from the argument list.
 
 * Commands are executed.
 
 * Optionally the shell waits for the command to complete and collects its exit status.
+
+### Examples
+
+https://stackoverflow.com/questions/31252710/how-does-bash-tokenize-scripts
+
+Why isn't there a space necessary between ] and ;?
+
+```
+if [$x = $y];
+if [ $x = $y ];
+```
+
+`if` checks the status code of the command to the right `[` is a command; thus, `[foo` tries to find a command (named, say, `/usr/bin/[foo`), requiring whitespace.
+
+
 
 ## Metacharacter
 
@@ -585,11 +660,38 @@ Before fork-exec a shell analyze the it's input:
 
 ## Quoting Character
 
-Ref: http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_03_03.html
+Ref:
+
+* http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_03_03.html
+* Posix standard: http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_02
 
 Quoting is used to remove the special meaning of characters or words: quotes can disable special treatment for special characters
 
-they can disable parameter expansion
+Quoting can be used to:
+
+* preserve the literal meaning of the special characters in the next paragraph,
+* prevent reserved words from being recognized as such,
+* prevent parameter expansion and command substitution within here-document processing (see [Here-Document](http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_07_04)).
+
+The application shall quote the following characters if they are to represent themselves:
+
+```
+|  &  ;  <  >  (  )  $  `  \  "  '  <space>  <tab>  <newline>
+```
+
+and the following may need to be quoted under certain circumstances. That is, these characters may be special depending on conditions described elsewhere in this volume of IEEE Std 1003.1-2001:
+
+```
+*   ?   [   #   ˜   =   %
+```
+
+The various quoting mechanisms are
+
+* the escape character,
+* single-quotes,
+* double-quotes.
+* The here-document represents another form of quoting; 
+
 
 ### Escape Characters
 
@@ -664,12 +766,12 @@ $ echo "Hi 'Intro to Unix' Class"
 Hi 'Intro to Unix' Class
 ```
 
-# Shell Expansion
+# Shell Expansion and Substitutions
 
 Ref:
 
 * http://wiki.bash-hackers.org/syntax/pe
-*
+* CHEATSHEET: http://www.tldp.org/LDP/abs/html/refcards.html#AEN22728
 
 ## Brace expansion
 
@@ -816,7 +918,113 @@ NOTE: The `$(...)` form has superseded backticks for command substitution. It pe
 word_count=$( wc -w $(echo * | awk '{print $8}') )
 ```
 
-## Word Splitting
+### Substring Manipulations
+
+Keep in mind that the substitutions etc are expanded, not literals, so you can use wildcards and other pattern syntaxes in them (for example, the “he*l” below used to strip “hell” from the value).
+
+```
+$ echo ${param1:2} llo substring from 2
+$ echo ${param1:2:2} ll substring from 2, len 2
+$ echo ${param1#he} llo strip shortest match from start
+$ echo ${param1#hel*} lo strip shortest match from start
+$ echo ${param1#he*l} lo strip shortest match from start
+$ echo ${param1##he*l} o strip longest match from start
+$ echo ${param1%l*o} hel strip shortest match from end
+$ echo ${param1%%l*o} he strip longest match from end
+$ echo ${param1/l/p} heplo replace as few as possible
+$ echo ${param1//l/p} heppo replace as many as possible
+```
+
+Miscellaneous:
+
+```
+$ echo ${!param*} param1 param2 param3 parameter names starting with...
+$ echo ${#param1} 5 length of parameter value
+```
+
+Example Uses:
+
+```
+# Rename all .GIF files to .gif
+for file in *.GIF; do mv $file ${file%GIF}gif; done
+# Now number the files sequentially
+cnt=0;
+for file in *.gif; do mv $file $cnt$file; let cnt=cnt++; done
+# Oops, I didn't mean that... get rid of the numbers.
+for file in *.gif; do mv $file ${file##[0-9]}; done
+```
+
+
+### Default Values
+
+$ echo ${param2:-file*} file1 file2 file3 all files in the directory
+$ echo ${param2:-$param1} hello uses $param1's value...
+$ echo $param2 (nothing) ... but didn't change $param2
+$ echo ${param3:=$param1} hello uses $param1's value...
+$ echo $param3 hello ... and assigns it to $param3
+
+## Process Substitution
+
+REF:
+ 
+* http://aosabook.org/en/bash.html
+* http://wiki.bash-hackers.org/syntax/expansion/proc_subst
+
+One of the problems with command substitution is that it runs the enclosed command immediately and waits for it to complete: there's no easy way for the shell to send input to it.
+
+Bash uses a feature named process substitution, a sort of combination of command substitution and shell pipelines, to compensate for these shortcomings. Like command substitution, bash runs a command, but lets it run in the background and doesn't wait for it to complete. The key is that bash opens a pipe to the command for reading or writing and exposes it as a filename, which becomes the result of the expansion.
+
+
+
+
+Process substitution is a form of redirection where the input or output of a process (some sequence of commands) appear as a temporary file.
+
+Syntax:
+
+```
+<( <LIST> )
+
+>( <LIST> )
+```
+
+LIST is a command list (ex: `command || command` )
+
+The command list <LIST> is executed and its
+
+* standard output filedescriptor in the `<( … )` form or
+* standard input filedescriptor in the `>( … )`  form
+
+is connected to a FIFO or a file in /dev/fd/. The filename (where the filedescriptor is connected) is then used as a substitution for the `<(…)-construct`.
+
+Basically you will end up with a tmp file you can use to read or write.
+
+SCOPE:
+
+* If a process substitution is expanded as an argument to a function, expanded to an environment variable during calling of a function, or expanded to any assignment within a function, the process substitution will be "held open" for use by any command within the function or its callees, until the function in which it was set returns.
+
+* If the same variable is set again within a callee, unless the new variable is local, the previous process substitution is closed and will be unavailable to the caller when the callee returns.
+
+In essence, process substitutions expanded to variables within functions remain open until the function in which the process substitution occured returns - even when assigned to locals that were set by a function's caller. Dynamic scope doesn't protect them from closing.
+
+
+PRO:
+
+* You can use to avoid to spawn new subshell with pipe (see here http://wiki.bash-hackers.org/syntax/expansion/proc_subst#avoiding_subshells)
+
+
+Example: use redirection and process substitution
+
+```
+counter=0
+ 
+while IFS= read -rN1 _; do
+    ((counter++))
+done < <(find /etc -printf ' ')
+ 
+echo "$counter files"
+```
+
+## Word Splitting (or field splitting)
 
 Ref: http://wiki.bash-hackers.org/syntax/expansion/wordsplit
 
@@ -835,6 +1043,46 @@ The IFS variable holds the characters that Bash sees as word boundaries in this 
 * newline
 
 These characters are also assumed when IFS is unset. When IFS is empty (nullstring), no word splitting is performed at all.
+
+Q: IFS is typically discussed in the context of "field splitting". Is field splitting the same as word splitting ?
+A: yes
+
+Q: The POSIX specification says: "If the value of IFS is null, no field splitting shall be performed."
+Is setting IFS= the same as setting IFS to null? Is this what is meant by setting it to an empty string too?
+A: yes
+
+Q: Say I want to restore the default value of IFS. How do I do that? (more specifically, how do I refer to <tab> and <newline>?)
+A: you could do something like `IFS=$' \t\n'` . However, it's better to use another variable to temporarily store the old IFS value, and then restore it afterwards (or temporarily override it for one command by using the var=foo command syntax).
+
+Ref: https://unix.stackexchange.com/questions/26784/understanding-ifs
+
+### IFS examples
+
+```
+while IFS= read -r line
+do    
+    echo $line
+done < /path_to_text_file
+```
+
+The first code snippet will put the entire line read, verbatim, into $line, as there are no field separators to perform word splitting for. Bear in mind however that since many shells use cstrings to store strings, the first instance of a NUL may still cause the appearance of it being prematurely terminated.
+
+
+The behaviour if we we change the first line to
+
+```
+while read -r line # Use the default IFS value
+```
+
+is: put an exact copy of the input into $line. For example, if there are multiple consecutive field separators, they will be made into a single instance of the first element. This is often recognised as loss of surrounding whitespace
+
+The behaviour if we we change the first line to:
+
+```
+while IFS=' ' read -r line
+```
+
+will do the same as the second, except it will only split on a space (not the usual space, tab, or newline).
 
 ## File name expansion
 
@@ -1218,8 +1466,15 @@ http://www.bpkg.io/
 
 # Conditional: if then else
 
-* Basic intro: http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-6.html
+* Basic intro:
+  * http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-6.html
+  * http://tldp.org/LDP/abs/html/testconstructs.html#EX11 
 * string and file operators `help test`
+
+An if/then construct tests whether the exit status of a list of commands is 0 (since 0 means "success" by UNIX convention), and if so, executes one or more commands.
+
+
+
 
 ~~~bash
 if [ "foo" = "foo" ]; then
@@ -1324,12 +1579,16 @@ Ref:
 
 * Without options, the name and value of each shell variable are displayed in a format that can be reused as input.
 
-* `set -e` : Exit immediately if a pipeline (see Pipelines), which may consist of a single simple command (see Simple Commands), a subshell command enclosed in parentheses (see Command Grouping), or one of the commands executed as part of a command list enclosed by braces (see Command Grouping) returns a non-zero status
+* `set -e` : Exit immediately if a command exits with a non-zero status.
+* `set -o pipefail` : the return value of a pipeline is the status of the last command to exit with a non-zero status, or zero if no command exited with a non-zero status
 
 * `set -- ` If no arguments follow this option, then the positional parameters are unset
 * `set -- one two three`  set positional params $1 $2 $3 
 
+## read
 
+http://wiki.bash-hackers.org/commands/builtin/read
+http://tldp.org/LDP/abs/html/x17837.html
 
 
 # Parsing bash script options from command line 
@@ -1353,7 +1612,18 @@ Syntax: `getopts: getopts optstring name [arg]`
 * Each time it is invoked, getopts will place the next option in the shell variable $name, initializing name if it does not exist, and the index of the next argument to be processed into the shell variable OPTIND.
 * When an option requires an argument, getopts places that argument into the shell variable OPTARG.
 
-BEST PRACTICE: The common way is that the processing of all arguments precedes the actual job of the program/script. 
+BEST PRACTICE: The common way is that the processing of all arguments precedes the actual job of the program/script.
+
+## How to handle paramenter when you write command wrapper 
+
+If you want to 
+
+Ref:
+
+* https://stackoverflow.com/questions/29378566/i-just-assigned-a-variable-but-echo-variable-shows-something-else
+* https://stackoverflow.com/questions/29378566/i-just-assigned-a-variable-but-echo-variable-shows-something-else
+* 
+
 
 # Config File: read a config file in bash without using source
 
@@ -1436,3 +1706,8 @@ Parameter parsing
 
 ```
 
+## Common mistakes
+
+http://wiki.bash-hackers.org/scripting/newbie_traps
+
+Quoting errors: http://wiki.bash-hackers.org/scripting/newbie_traps#expanding_using_variables
