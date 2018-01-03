@@ -257,6 +257,46 @@ Using kcachegrind: http://blog.equanimity.nl/blog/2013/04/24/fprof-kcachegrind/[
 
 https://engineering.appcues.com/2016/02/02/too-many-dicts.html[https://engineering.appcues.com/2016/02/02/too-many-dicts.html]
 
+== Dialyzer and Dialyxir
+
+https://github.com/jeremyjh/dialyxir[https://github.com/jeremyjh/dialyxir]
+
+http://erlang.org/doc/apps/dialyzer/dialyzer_chapter.html[http://erlang.org/doc/apps/dialyzer/dialyzer_chapter.html]
+
+Dialyzer uses a typing-inference algorithm called `success typings`. Success typings are optimistic:
+
+* Assume that all your functions are used correctly. In other words, your code is innocent until proven guilty.
+* Starts by over-approximating the valid inputs to and outputs from your functions.
+* As the algorithm develops a better understanding of your code, it generates constraints. Example:
+* it sees x + y, then x and y must be numbers.
+* Guards such as is_atom(z) provide additional constraints.
+
+NOTE: Dialyzer doesn’t guarantee that your code is type-safe. If it finds something wrong, Dialyzer is guaranteed to be correct.
+
+Revealing types with iex helpers:
+
+* `t/1` prints the types for the given module or for the given function/arity pair (ex: t Enum)
+* `i/1` prints information about the given data type (ex: `i(&quot;ohai&quot;)`, `i(&#39;ohai&#39;)`)
+
+Dialyzer messages:
+
+`no local return` means the function will definitely fail, Dialyzer has found a type error, the function can never return.
+
+=== Examples
+
+see `~/SRC/ELIXIR/testbed/dialyzer_playground` and The_Little_Elixir_&amp;_OTP_Guidebook.pdf CH 10.4.
+
+=== Persistent Lookup Table (PLT)
+
+* Dialyzer stores the result of an analysis in a Persistent Lookup Table (PLT).
+* You can also use a previously constructed PLT that serves as a starting point for Dialyzer.
+* any nontrivial Elixir application will probably involve OTP; if you run Dialyzer on such an application, the analysis will undoubtedly take a long time, you can always build a base PLT and only run Dialyzer on your application, which by comparison will take much less time. But when you upgrade Erlang and/or Elixir, you must remember to rebuild the PLT.
+
+=== Dialyxir
+
+Mix tasks to simplify use of Dialyzer in Elixir projects.
+
+
 = Debug and Monitoring
 
 == Erlang Observer
