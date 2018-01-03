@@ -36,6 +36,8 @@ http://softwareengineeringdaily.com/2016/04/18/elixir-erlang-jose-valim/[http://
 
 == Resources
 
+* https://drive.mindmup.com/map/0By_bGJI79BIpa1hOUW1rcjJNeEE[My Elixir Mind Map ]
+
 * Awesome Elixir: https://github.com/h4cc/awesome-elixir[https://github.com/h4cc/awesome-elixir]
 * Trending on Github: https://github.com/trending/elixir[https://github.com/trending/elixir]
 * Static code analyzer: https://github.com/rrrene/credo[https://github.com/rrrene/credo]
@@ -49,6 +51,7 @@ Books:
 
 * 2016 THE LITTLE ELIXIR &amp; OTP GUIDEBOOK: http://benjamintan.io/[http://benjamintan.io/]
 * "Metaprogramming Elixir" by Chris McCord the author of Phoenix https://pragprog.com/book/cmelixir/metaprogramming-elixir[https://pragprog.com/book/cmelixir/metaprogramming-elixir]
+* https://happi.github.io/theBeamBook[The BEAM Book] 
 
 Elixir release notes:
 
@@ -78,7 +81,7 @@ Elixir release notes:
 Doc: https://hexdocs.pm/iex/IEx.html#summary[https://hexdocs.pm/iex/IEx.html#summary]
 
 * Print the current config `IEx.configuration()`
-* https://hexdocs.pm/iex/IEx.html#module-shell-history[Enable History in erlang 20]: `export ERL_AFLAGS="-kernel shell_history enabled"`
+* https://hexdocs.pm/iex/IEx.html#module-shell-history[Enable History in erlang 20]:`export ERL_AFLAGS="-kernel shell_history enabled"`
 
 
 = Atom Elixir
