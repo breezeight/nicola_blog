@@ -225,6 +225,30 @@ NOTE:
 * VAR2 is not modified in the parent shell: it's a copy, you can't get that value up to the parent shell 
 * Because the variables will not be passed back to your interactive shell, unless you execute the script in the current shell.
 
+#### Example 5: 
+
+https://unix.stackexchange.com/questions/79064/how-to-export-variables-from-a-file
+
+set -a causes variables defined from now on to be automatically exported. It's available in any Bourne-like shell. . is the standard and Bourne name for the source command so I prefer it for portability (source comes from csh and is now available in most modern Bourne-like shells including bash though (sometimes with a slightly different behaviour)).
+
+In POSIX shells, you can also use set -o allexport as a more descriptive alternative way to write it (set +o allexport to unset).
+
+```
+set -a
+. ./tmp.txt
+set +a
+```
+
+
+tmp.txt file contains the variables to be exported, for e.g.
+
+```
+a=123
+b="hello world"
+c="one more variable"
+```
+
+
 ### Creating variables
 
 `VARNAME="value"`
@@ -1472,8 +1496,6 @@ http://www.bpkg.io/
 * string and file operators `help test`
 
 An if/then construct tests whether the exit status of a list of commands is 0 (since 0 means "success" by UNIX convention), and if so, executes one or more commands.
-
-
 
 
 ~~~bash
