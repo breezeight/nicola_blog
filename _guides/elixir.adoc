@@ -1519,6 +1519,38 @@ The require macro instructs the compiler to load the specified module before com
 
 This is only necessary if you want to reference macros from the specified module
 
+=== Module attributes
+
+http://elixir-lang.github.io/getting-started/module-attributes.html
+https://www.erlang-solutions.com/blog/elixir-module-attributes-alchemy-101-part-1.html
+
+
+Module attributes in Elixir serve three purposes:
+
+* They serve to annotate the module, often with information to be used by the user or the VM.
+* They work as constants.
+* They work as a temporary module storage to be used during compilation.
+
+http://elixir-lang.github.io/getting-started/module-attributes.html#as-annotations
+
+NOTE: Module attributes are evaluated at compile time; All occurrences of the module attribute are replaced with whatever it evaluates to at compile time. https://www.erlang-solutions.com/blog/elixir-module-attributes-alchemy-101-part-1.html [Example]
+
+==== As Annotations
+
+http://elixir-lang.github.io/getting-started/module-attributes.html#as-annotations
+
+Elixir has a handful of reserved attributes. Here are a few of them, the most commonly used ones:
+
+* `@moduledoc` - provides documentation for the current module.
+* `@doc` - provides documentation for the function or macro that follows the attribute.
+* `@behaviour` - (notice the British spelling) used for specifying an OTP or user-defined behaviour.
+* `@before_compile` - provides a hook that will be invoked before the module is compiled. This makes it possible to inject functions inside the module exactly before compilation.
+
+==== As Temporary Storage
+
+http://elixir-lang.github.io/getting-started/module-attributes.html#as-temporary-storage
+
+
 == Pattern Matching
 
 * http://elixir-lang.org/getting-started/pattern-matching.html[http://elixir-lang.org/getting-started/pattern-matching.html]
