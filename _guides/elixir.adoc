@@ -2134,6 +2134,17 @@ types can be:
 
 To match a Struct inside a typespec, use the normal %StructName{} syntax.
 
+== Types
+
+
+* https://hexdocs.pm/elixir/typespecs.html#basic-types[Basic types]
+* https://hexdocs.pm/elixir/typespecs.html#literals[Literals]
+* https://hexdocs.pm/elixir/typespecs.html#built-in-types[Built in types]
+* https://hexdocs.pm/elixir/typespecs.html#remote-types[Remote Types] : Types defined in a Module
+* https://hexdocs.pm/elixir/typespecs.html#user-defined-types[User Defined Types]: `@type`, `@typep`, `@opaque`
+
+NOTE: Types can be parameterized by defining variables as parameters https://elixirschool.com/en/lessons/advanced/typespec/
+
 == Example
 
 === Keyword List type check
