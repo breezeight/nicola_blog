@@ -2325,6 +2325,57 @@ Overall, using @impl has the following advantages:
 
 * If you use @impl in one implementation, Elixir will force you to declare @impl for all other implementations in the same module, keeping your modules consistent
 
+== Crete default implementations: defoverridable and use
+
+Ref:
+
+* https://elixirforum.com/t/behaviours-defoverridable-and-implementations/3338
+
+To create a default implementation of behaviour's function you can combine:
+
+* `use` 
+* `defoverridable` https://hexdocs.pm/elixir/Kernel.html#defoverridable/1[doc]
+
+A good example is the GenServer behaviour https://github.com/elixir-lang/elixir/blob/v1.5.3/lib/elixir/lib/gen_server.ex#L1 
+
+[source, elixir]
+----
+defmodule GenServer do
+  @callback init(args :: term) ::
+    {:ok, state} |
+    {:ok, state, timeout | :hibernate} |
+    :ignore |
+    {:stop, reason :: any} when state: any
+  
+  @callback terminate(reason, state :: term) ::
+    term when reason: :normal | :shutdown | {:shutdown, term} | term
+    
+    ....
+    
+  defmacro __using__(_) do
+    quote do
+      @behaviour GenServer      # 1
+      def init(...) do ... end  # 2
+      def terminate(..., ...) do ... end
+      .....
+      defoverridable GenServer  # 3
+    end
+  end
+end
+
+defmodule MyServer do
+  use GenServer
+end
+----
+
+In this example the MyServer callback module implements the GenServer behaviour and all it's callback in one line because through the `__using__` macro:
+
+* 1 invoke `@behaviour GenServer`
+* 2 defines a default implementation for all the GenServer callback
+* 3 make all GenServer callback overridable with `defoverridable GenServer`
+
+NOTE: `super` can be used to call the default implementation when you reimplement a overridable function.
+
 == Use @spec with Behaviour
 
 Sadly it's not possible to check if we are using a module that implements a given behaviour:
