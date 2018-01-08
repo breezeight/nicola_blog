@@ -898,75 +898,6 @@ WARNING: Are Records will be DEPRECATED http://elixir-lang.org/blog/2014/04/21/e
 
 Records in Elixir are simply tuples supported by modules which store record metadata
 
-= Protocols
-
-Refs:
-
-* http://culttt.com/2016/06/27/what-are-elixir-protocols/[http://culttt.com/2016/06/27/what-are-elixir-protocols/]
-* http://elixir-lang.org/getting-started/protocols.html[http://elixir-lang.org/getting-started/protocols.html]
-
-TODO:
-
-* How can we use protocols with our functions?
-
-Polymorphism:
-
-* is “the condition of occurring in several different forms”.
-* In programming this means you can usually act on something in a generic way, without knowing specifically what the thing is.
-* As long as the thing you are acting on knows how to handle the action, you’re good to go. This is polymorphism because it doesn’t matter what the thing is, as long as it responds correctly.
-* EX: you can print something as a string, without knowing what the thing is.
-[source, elixir]
-----
-to_string("Hello World")
-"Hello World"
-
-to_string(123)
-"123"
-
-to_string(99.9)
-"99.9"
-----
-
-Structs alongside protocols provide one of the most important features for Elixir developers: data polymorphism.
-
-Example:
-
-[source, elixir]
-----
-defprotocol Size do
-  @doc "Calculates the size (and not the length!) of a data structure"
-  def size(data)
-end
-----
-
-The Size protocol expects a function called size that receives one argument (the data structure we want to know the size of) to be implemented. We can now implement this protocol for the data structures that would have a compliant implementation:
-
-[source, elixir]
-----
-defimpl Size, for: BitString do
-  def size(string), do: byte_size(string)
-end
-
-defimpl Size, for: Map do
-  def size(map), do: map_size(map)
-end
-
-defimpl Size, for: Tuple do
-  def size(tuple), do: tuple_size(tuple)
-end
-----
-
-We didn’t implement the Size protocol for lists as there is no “size” information precomputed for lists, and the length of a list has to be computed (with length/1).
-
-== Elixir Standard Protocols
-
-TODO: look for examples
-
-Example: https://hexdocs.pm/elixir/Collectable.html#content[https://hexdocs.pm/elixir/Collectable.html#content]
-
-== Example: Temperature Protocol
-
-https://medium.com/@mustafaturan/polymorphism-in-elixir-cd0c765b6929[https://medium.com/@mustafaturan/polymorphism-in-elixir-cd0c765b6929]
 
 = Sigils
 
@@ -1641,10 +1572,6 @@ iex> MyCase.do_something({:wat, true})
 
 === The pin operator ^
 
-[source, elixir]
-----
-
-```
 
 ## Guards and multiple clauses
 
@@ -1652,8 +1579,9 @@ iex> MyCase.do_something({:wat, true})
 * Use pattern matching
 * support both do: and do/end block syntax
 
-----
 
+[source, elixir]
+----
 defmodule Math do
  def zero?(0) do
  true
@@ -1668,7 +1596,7 @@ IO.puts Math.zero?(0) #=&gt; true
 IO.puts Math.zero?(1) #=&gt; false
 IO.puts Math.zero?([1, 2, 3]) #=&gt; ** (FunctionClauseError)
 IO.puts Math.zero?(0.0) #=&gt; ** (FunctionClauseError) 
-```
+----
 
 [source, elixir]
 ----
@@ -2099,6 +2027,7 @@ https://elixirforum.com/t/typespecs-best-way-to-spec-keyword-lists/2991/2[https:
 * Order does not matter
 * an empty list is OK
 * unknown keys are rejected.
+
 [source, elixir]
 ----
 defmodule TypeSpecDemo do
@@ -2184,46 +2113,103 @@ We can now update the specs from earlier to use this new custom book type:
 @spec all :: list(Library.Book.t)
 ----
 
-= Dialyzer and Dialyxir
+= Protocols
 
-https://github.com/jeremyjh/dialyxir[https://github.com/jeremyjh/dialyxir]
+Refs:
 
-http://erlang.org/doc/apps/dialyzer/dialyzer_chapter.html[http://erlang.org/doc/apps/dialyzer/dialyzer_chapter.html]
+* http://culttt.com/2016/06/27/what-are-elixir-protocols/[http://culttt.com/2016/06/27/what-are-elixir-protocols/]
+* http://elixir-lang.org/getting-started/protocols.html[http://elixir-lang.org/getting-started/protocols.html]
+* https://blog.usejournal.com/beyond-functions-in-elixir-refactoring-for-maintainability-5c73daba77f3[Blog Engine example]
 
-Dialyzer uses a typing-inference algorithm called `success typings`. Success typings are optimistic:
 
-* Assume that all your functions are used correctly. In other words, your code is innocent until proven guilty.
-* Starts by over-approximating the valid inputs to and outputs from your functions.
-* As the algorithm develops a better understanding of your code, it generates constraints. Example:
-* it sees x + y, then x and y must be numbers.
-* Guards such as is_atom(z) provide additional constraints.
+Protocols are a mechanism to achieve polymorphism in Elixir. Dispatching on a protocol is available to any data type as long as it implements the protocol.
 
-NOTE: Dialyzer doesn’t guarantee that your code is type-safe. If it finds something wrong, Dialyzer is guaranteed to be correct.
+Polymorphism:
 
-Revealing types with iex helpers:
+* Describes functions that can have different implementations for different types.
+* In programming this means you can usually act on something in a generic way, without knowing specifically what the thing is.
+* As long as the thing you are acting on knows how to handle the action, you’re good to go. This is polymorphism because it doesn’t matter what the thing is, as long as it responds correctly.
 
-* `t/1` prints the types for the given module or for the given function/arity pair (ex: t Enum)
-* `i/1` prints information about the given data type (ex: `i(&quot;ohai&quot;)`, `i(&#39;ohai&#39;)`)
+TIP: You use protocol to print something as a string, without knowing what the thing is.
 
-Dialyzer messages:
+[source, elixir]
+----
+to_string("Hello World")
+"Hello World"
 
-`no local return` means the function will definitely fail, Dialyzer has found a type error, the function can never return.
+to_string(123)
+"123"
 
-== Examples
+to_string(99.9)
+"99.9"
+----
 
-see `~/SRC/ELIXIR/testbed/dialyzer_playground` and The_Little_Elixir_&amp;_OTP_Guidebook.pdf CH 10.4.
+Structs alongside protocols provide data polymorphism in Elixir.
 
-== Persistent Lookup Table (PLT)
+The real power of Protocols comes when you combine its polymorphism with structs. When you pass a struct to a protocol function, it will dispatch to that structs implementation.
 
-* Dialyzer stores the result of an analysis in a Persistent Lookup Table (PLT).
-* You can also use a previously constructed PLT that serves as a starting point for Dialyzer.
-* any nontrivial Elixir application will probably involve OTP; if you run Dialyzer on such an application, the analysis will undoubtedly take a long time, you can always build a base PLT and only run Dialyzer on your application, which by comparison will take much less time. But when you upgrade Erlang and/or Elixir, you must remember to rebuild the PLT.
+TODO: link alla definizione di function head
 
-== Dialyxir
+You can think of Protocols just like you think of pattern matching with multiple function heads. In fact, when you compile your Elixir code in production mode, they get compiled down to exactly that.
 
-Mix tasks to simplify use of Dialyzer in Elixir projects.
+The main difference between Protocols and pattern matching on different values is the *inversion of control*.
 
-= Behaviour and Comparison to Protocols
+Protocols let you add more “function heads” after the fact, so that app and library developers can match on their type separate from the definition of the Protocol itself, they are not required to implement every possible function heads. 
+
+Is impossible for a library developer to know every type the app developer will needs, in this case protocols come to the rescue.
+
+Example:
+
+[source, elixir]
+----
+defprotocol Size do
+  @doc "Calculates the size (and not the length!) of a data structure"
+  def size(data)
+end
+----
+
+The Size protocol expects a function called size that receives one argument (the data structure we want to know the size of) to be implemented. We can now implement this protocol for the data structures that would have a compliant implementation:
+
+[source, elixir]
+----
+defimpl Size, for: BitString do
+  def size(string), do: byte_size(string)
+end
+
+defimpl Size, for: Map do
+  def size(map), do: map_size(map)
+end
+
+defimpl Size, for: Tuple do
+  def size(tuple), do: tuple_size(tuple)
+end
+----
+
+We didn’t implement the Size protocol for lists as there is no “size” information precomputed for lists, and the length of a list has to be computed (with length/1).
+
+== Elixir Standard Protocols
+
+Elixir comes with several protocols out of the box; Collectable, Enumerable, Inspect, List.Chars, and String.Chars.
+
+Example: https://hexdocs.pm/elixir/Collectable.html#content[https://hexdocs.pm/elixir/Collectable.html#content]
+
+== Example: Temperature Protocol
+
+https://medium.com/@mustafaturan/polymorphism-in-elixir-cd0c765b6929[https://medium.com/@mustafaturan/polymorphism-in-elixir-cd0c765b6929]
+
+= Behaviours
+
+Behaviours in Elixir (and Erlang) are a way to separate and abstract an API interface:
+
+* `the behaviour module` : which is the generic part that define the interface
+* `the callback module` the specific part that implement the behaviour
+
+Behaviours perform two primary roles:
+
+* Defining a set of function that must be implemented.
+* Checking whether that set was actually implemented (you will get compiler warning).
+
+For example, the `GenServer` behaviour and functions abstract away all the message-passing (sending and receiving) and error reporting that a “server” process will likely want to implement from the specific parts such as the actions that this server process has to perform.
 
 Ref:
 
@@ -2232,11 +2218,83 @@ Ref:
 * https://www.djm.org.uk/posts/writing-extensible-elixir-with-behaviours-adapters-pluggable-backends/[https://www.djm.org.uk/posts/writing-extensible-elixir-with-behaviours-adapters-pluggable-backends/]
 *
 
-https://www.djm.org.uk/posts/writing-extensible-elixir-with-behaviours-adapters-pluggable-backends/[https://www.djm.org.uk/posts/writing-extensible-elixir-with-behaviours-adapters-pluggable-backends/]
+* https://www.djm.org.uk/posts/writing-extensible-elixir-with-behaviours-adapters-pluggable-backends/[https://www.djm.org.uk/posts/writing-extensible-elixir-with-behaviours-adapters-pluggable-backends/]
 
-*
+== Defining the behaviour module
+
+To better understand behaviours let’s implement one for a worker module. These workers will be expected to implement two functions: `init/1` and `perform/2`.
+
+In order to accomplish this, we’ll use:
+
+* the `@callback` directive with syntax similar to `@spec`, this defines a required function;
+* for macros we can use `@macrocallback`.
+
+Let’s specify the `init/1` and `perform/2` functions for our workers:
+
+[source, elixir]
+----
+defmodule Example.Worker do
+  @callback init(state :: term) :: {:ok, new_state :: term} | {:error, reason :: term}
+  @callback perform(args :: term, state :: term) ::
+              {:ok, result :: term, new_state :: term}
+              | {:error, reason :: term, new_state :: term}
+end
+----
+
+Here we’ve defined init/1 as accepting any value and returning a tuple of either `{:ok, state}` or `{:error, reason}`, this is a pretty standard initialization. Our `perform/2` function will receive some arguments for the worker along with the state we initialized, we’ll expect `perform/2` to return `{:ok, result, state}` or `{:error, reason, state}` much like `GenServers`.
+
+== Implementing the callback module
+
+Adding a behaviour to our module is easy with the `@behaviour` attribute.
+
+[source, exixir]
+----
+defmodule Example.Compressor do
+  @behaviour Example.Worker
+
+  def init(opts), do: {:ok, opts}
+
+  def perform(payload, opts) do
+    payload
+    |> compress
+    |> respond(opts)
+  end
+
+  defp compress({name, files}), do: :zip.create(name, files)
+
+  defp respond({:ok, path}, opts), do: {:ok, path, opts}
+  defp respond({:error, reason}, opts), do: {:error, reason, opts}
+end
+----
+
+If we happen to add a behaviour but fail to implement all of the required functions, a compile time warning will be raised `warning: undefined behaviour function`;
+
+== Optional Callback
+
+https://hexdocs.pm/elixir/behaviours.html#optional-callbacks
+
+Optional callbacks are callbacks that callback modules may implement if they want to, but are not required to. 
+
+To check if the callbacks are defined you can use `function_exported?/3` or `macro_exported?/3`.
+
+== Use @spec with Behaviour
+
+Sadly it's not possible to check if we are using a module that implements a given behaviour:
+
+* https://stackoverflow.com/questions/44731975/how-to-use-typespecs-and-dialyzer-with-behaviours
+* https://elixirforum.com/t/behaviour-and-typespec/3408/2
+
+= Behaviour VS Protocols
 
 Protocols VS Behaviors: https://www.djm.org.uk/posts/elixir-behaviours-vs-protocols-what-is-the-difference/[https://www.djm.org.uk/posts/elixir-behaviours-vs-protocols-what-is-the-difference/]
+
+Poly = many. Morph = change or form. Polymorphism is the ability in programming to present the same interface for differing underlying forms. What does that mean for us? Protocols allow the defining of interfaces (a series of functions) which can go on to be implemented by any data type and then used generically; and Behaviours define a common interface to a module, so that modules can be used interchangeably. Don't worry if you're lost, we'll delve deeper later.
+
+If you're ever added a float to an integer in a dynamic language, this is under-the-hood polymorphism at work. Both of them are numbers to us but they are stored differently in memory and are therefore different from the perspective of a computer. Polymorphism allows us to do calculations between the two data types without worrying about their underlying differences. In most languages, this happens behind the scenes by defining a common contract.
+
+Elixir can mostly be thought of in terms of 3 core things: processes, modules & data. In José's words: "they are all interconnected: processes run the code defined in modules that manipulate the data types" ¹.
+
+All 3 have their own way of "doing" polymorphism in Elixir:
 
 = Processes and the actor model
 
@@ -2244,7 +2302,7 @@ Ref:
 
 * The_Little_Elixir_&amp;_OTP_Guidebook.pdf CH3 is a good intro
 
-==  Processes
+== Processes
 
 * are the fundamental units of concurrency in Elixir (supports up to 134 million processes)
 * processes created by the Erlang VM are independent of the operating system
@@ -2374,7 +2432,7 @@ Page 47 The_Little_Elixir_&amp;_OTP_Guidebook.pdf
 
 https://hexdocs.pm/elixir/OptionParser.html[https://hexdocs.pm/elixir/OptionParser.html]
 
-= Common Liraries
+= Common Libraries
 
 == Authentication
 
