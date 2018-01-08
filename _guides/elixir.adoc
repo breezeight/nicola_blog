@@ -6,9 +6,6 @@
 
 = Elixir
 
-
-
-
 == categories: ["elixir"]
 
 
@@ -644,16 +641,16 @@ Elixir converts it into a list of two-value tuples:
 
 `DB.save record, [ {:use_transaction, true}, {:logging, &quot;HIGH&quot;} ]` is equivalent to `DB.save record, use_transaction: true, logging: &quot;HIGH&quot;`
 
-{1, fred: 1, dave: 2}
 
-TODO: questo è un po' cervellotico secondo me ….
+Elixir allow also a more implicit conversion:
 
-“We can also leave off the brackets if a keyword list appears as the last item in any context where a list of values is expected.
+“We can leave off the brackets if a keyword list appears as the last item in any context where a list of values is expected.
 
-iex&gt; [1, fred: 1, dave: 2]
-[1, {:fred, 1}, {:dave, 2}]
-iex&gt; {1, fred: 1, dave: 2}
-{1, [fred: 1, dave: 2]}”
+`iex&gt; [1, fred: 1, dave: 2]`
+
+Will be converted into `[1, {:fred, 1}, {:dave, 2}]`
+
+and printed as `{1, [fred: 1, dave: 2]}`
 
 in pratica una tuple di 2 elementi dentro una lista viene sempre stampata come una keyword list
 
@@ -678,6 +675,82 @@ Accessing:
 * If the keys are atoms, you can also use a dot notation: `colors.green`
 * `states[&quot;AL&quot;]`
 * `response_types[{:error,:busy}]`
+
+==== Map keys: Symbol VS String
+
+Ref: http://learningwithjb.com/posts/the-many-different-ways-to-key-elixir-maps[The many different ways to key Elixir Maps]
+
+
+There are three different syntax to define a similar maps that can be misleading.
+
+WARNING: You must look carefully if `:` or `=>` are used
+
+[source, elixir]
+----
+map1 = %{ key: "value" }
+map2 = %{ "key": "value" }
+map3 = %{ "key" => "value" }
+
+iex(9)> map1
+%{key: "value"}
+
+iex(10)> map2
+%{key: "value"}
+
+iex(11)> map3
+%{"key" => "value"}
+----
+
+both `"key":` and `key:` use an atom as the key, instead in the 3rd case the key is a string
+
+This means that map1 and map2 are equivalent and can be matched agaist the same map but the match with map3 will fail because it uses a string as key:
+
+[source, elixir]
+----
+iex(15)> %{key: value} = map1
+%{key: "value"}
+iex(16)> %{key: value} = map2
+%{key: "value"}
+iex(17)> %{key: value} = map3
+** (MatchError) no match of right hand side value: %{"key" => "value"}
+----
+
+And obtain a similar result with this:
+
+[source, elixir]
+----
+iex(17)> %{"key": value} = map1
+%{key: "value"}
+iex(18)> %{"key": value} = map2
+%{key: "value"}
+iex(19)> %{"key": value} = map3
+** (MatchError) no match of right hand side value: %{"key" => "value"}
+----
+
+The reverse is true, a String key does't match a symbol key:
+
+[source, elixir]
+----
+iex(19)> %{"key" => value} = map1
+** (MatchError) no match of right hand side value: %{key: "value"}
+
+iex(19)> %{"key" => value} = map2
+** (MatchError) no match of right hand side value: %{key: "value"}
+
+iex(19)> %{"key" => value} = map3
+%{"key" => "value"}
+----
+
+==== Map keys: Anything Else
+
+As keys you can use: Integers, Tuples, Lists, even maps!
+
+[source, elixir]
+----
+map = %{ 3 => "JB" }
+map = %{ {"hi"} => "foo" }
+map = %{ [1,"hi"] => "JB" }
+----
 
 === Structs
 
