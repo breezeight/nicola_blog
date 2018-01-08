@@ -342,6 +342,30 @@ https://www.youtube.com/watch?v=LE2y4kh56pQ[Elixir 1.5 addition and tips] :
 
 
 
+= Deployment production Monitoring
+
+== Distillery
+
+Distillery is A pure Elixir implementation of release packaging functionality for the Erlang VM.
+
+https://github.com/bitwalker/distillery
+
+takes your Mix project and produces an Erlang/OTP release, a distilled form of your raw application's components; a single package which can be deployed anywhere, independently of an Erlang/Elixir installation. No dependencies, no hassle.
+
+https://blog.dockbit.com/deploying-elixir-applications-with-docker-1e1dd5b39ab9 :
+
+* Snippet to sync Phoenix version with image name https://github.com/DockbitExamples/phoenix/commit/4f54c9c6cf10034370b68586cdf5ae5de34a7848
+
+* https://zorbash.com/post/docker-multi-stage-elixir-distillery-releases/
+
+NOTE: Exrm has been replaced by Distillery
+
+== How to create a standalone executable
+
+https://www.reddit.com/r/elixir/comments/5e4ti2/building_a_standalone_cli_executable/
+
+
+
 = Are Elixir variables really immutable?
 
 * http://stackoverflow.com/questions/29967086/are-elixir-variables-really-immutable[http://stackoverflow.com/questions/29967086/are-elixir-variables-really-immutable]
@@ -1211,7 +1235,7 @@ With `use` developers can inject code into your module. When calling:
 use MyModule, some: :options
 ----
 
-the `__using__/1` macro from the MyModule module is invoked with the second argument passed to use as its argument and the module is required. Since *using*/1 is a macro, all the usual macro rules apply, and its return value should be quoted code that is then inserted where use/2 is called.
+the `\__using__/1` macro from the MyModule module is invoked with the second argument passed to use as its argument and the module is required. Since *using*/1 is a macro, all the usual macro rules apply, and its return value should be quoted code that is then inserted where use/2 is called.
 
 Behind the scenes, `use` allow the module to inject some code into the current context. Generally speaking, the following module:
 
@@ -1887,110 +1911,6 @@ ASSERT MACRO
 * Advanced compile time code generation
 * Domain Specific Languages (DSLs)
 
-= Deployment production Monitoring
-
-= ExUnit
-
-== Test Types
-
-ExUnit v1.3 includes the ability to register different test types. This means libraries like QuickCheck can now provide functionality such as:
-
-[source, elixir]
-----
-defmodule StringTest do
-  use ExUnit.Case, async: true
-  use PropertyTestingLibrary
-
-  property "starts_with?" do
-    forall({s1, s2} <- {utf8, utf8}) do
-      String.starts_with?(s1 <> s2, s1)
-    end
-  end
-end
-----
-
-At the end of the run, ExUnit will also report it as a property, including both the amount of tests and properties:
-
-[source, elixir]
-----
-1 property, 10 tests, 0 failures
-----
-
-=== Quick check style test
-
-REF:
-
-* Ref: https://github.com/parroty/excheck[https://github.com/parroty/excheck]
-* QuickCheck http://www.cse.chalmers.se/~rjmh/QuickCheck/[http://www.cse.chalmers.se/~rjmh/QuickCheck/]
-
-== Describe Blocks
-
-Organize tests together in describe blocks:
-
-[source, elixir]
-----
-defmodule StringTest do
-  use ExUnit.Case, async: true
-
-  describe "String.capitalize/2" do
-    test "uppercases the first grapheme" do
-      assert "T" <> _ = String.capitalize("test")
-    end
-
-    test "lowercases the remaining graphemes" do
-      assert "Test" = String.capitalize("TEST")
-    end
-  end
-end
-----
-
-Every test inside a describe block will be tagged with the describe block name. This allows developers to run tests that belong to particular blocks, be them in the same file or across many files:
-
-[source, elixir]
-----
-$ mix test --only describe:"String.capitalize/2"
-----
-
-Note describe blocks cannot be nested. Instead of relying on hierarchy for composition, we want developers to build on top of named setups. For example:
-
-[source, elixir]
-----
-defmodule UserManagementTest do
-  use ExUnit.Case, async: true
-
-  describe "when user is logged in and is an admin" do
-    setup [:log_user_in, :set_type_to_admin]
-
-    test ...
-  end
-
-  describe "when user is logged in and is a manager" do
-    setup [:log_user_in, :set_type_to_manager]
-
-    test ...
-  end
-
-  defp log_user_in(context) do
-    # ...
-  end
-end
-----
-
-By restricting hierarchies in favor of named setups, it is straight-forward for the developer to glance at each describe block and know exactly the setup steps involved.
-
-== Execute only stale tests
-
-Ref: http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/[http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/]
-
-`mix test --stale` builds on top of `mix xref`: will only run the tests that may have changed since the last time you ran mix test –stale.
-
-For example:
-
-* If you saved a test file on disk, Mix will run that file and ignore the ones that have not changed
-* If you changed a library file, for example, lib/foo.ex that defines Foo, any test that invokes a function in Foo directly or indirectly will also run
-* If you modify your mix.exs or your test/test_helper.exs, Mix will run the whole test suite
-
-This feature provides a great workflow for developers, allowing them to effortlessly focus on parts of the codebase when developing new features.
 
 = Specifications and types
 
@@ -2167,6 +2087,8 @@ You can think of Protocols just like you think of pattern matching with multiple
 
 The main difference between Protocols and pattern matching on different values is the *inversion of control*.
 
+Elixir provides both *closed ad-hoc polymorphism* via pattern matching on function clauses and *open ad-hoc polymorphism* via protocols (which are close to interfaces). ref: https://elixirforum.com/t/behaviours-defoverridable-and-implementations/3338/9 
+
 Protocols let you add more “function heads” after the fact, so that app and library developers can match on their type separate from the definition of the Protocol itself, they are not required to implement every possible function heads. 
 
 Is impossible for a library developer to know every type the app developer will needs, in this case protocols come to the rescue.
@@ -2290,9 +2212,11 @@ Optional callbacks are callbacks that callback modules may implement if they wan
 
 To check if the callbacks are defined you can use `function_exported?/3` or `macro_exported?/3`.
 
+NOTE: https://elixirforum.com/t/behaviours-defoverridable-and-implementations/3338[here] is documented an antipattern that Optional callbacks resolves: before it exists developers create an overridable version of the optional function which throws an exception if invoked.
+
 == @impl: mark which functions are an implementation of a callback
 
-Elixir v1.5 introduces the `@impl <MYBEAHVIOUR>` attribute, which allows us to mark that certain functions are implementation of callbacks.
+Elixir v1.5 introduces the `@impl <MYBEAHVIOUR>` or `@impl true` attribute, which allows us to mark that certain functions are implementation of callbacks.
 
 Why is it useful? Once more and more behaviour and functions are added to the module, it becomes increasingly harder to know the purposes of each of them. 
 
