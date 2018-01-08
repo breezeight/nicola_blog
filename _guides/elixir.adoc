@@ -31,7 +31,38 @@ http://softwareengineeringdaily.com/2016/04/18/elixir-erlang-jose-valim/[http://
 * `@behaviour  @callback   @macrocallback @optional_callbacks`
 * https://hexdocs.pm/elixir/naming-conventions.html#content[Naming Convention]
 
-review Elixir 1.5 release http://elixir-lang.github.io/blog/2017/07/25/elixir-v1-5-0-released/ :
+Review Elixir 0.14 release http://elixir-lang.github.io/blog/2014/06/17/elixir-v0-14-0-released/ :
+
+* @derive
+* Protocol consolidation
+* Nested Structure access
+
+Review Elixir 0.15 release http://elixir-lang.github.io/blog/2014/08/07/elixir-v0-15-0-released/
+
+Review Elixir 1.3 release http://elixir-lang.github.io/blog/2016/06/21/elixir-v1-3-0-released/ and https://tuvistavie.com/2016/elixir-1-3/#exunit-new-features : 
+ 
+* Deprecation of imperative assignment  *IMPORTANT!!!*
+* Calendar types and sigils
+* Access selectors
+* mix xref
+* mix app.tree and deps.tree
+* mix escript.install                   *IMPORTANT!!!*
+* Option parser integration
+* ExUnit: 
+** mix test --stale, DONE <<Execute only stale tests, Execute only stale tests>> ,
+** Diffing, DONE <<Diffing,Diffing>> ,
+** Test types,
+** Named setups and describes
+
+Review Elixir 1.4 release http://elixir-lang.github.io/blog/2017/01/05/elixir-v1-4-0-released/ :
+
+* Registry
+* Iex Syntax coloring
+* Task.async_stream
+* Application inference
+* Mix install escript from SCM
+
+Review Elixir 1.5 release http://elixir-lang.github.io/blog/2017/07/25/elixir-v1-5-0-released/ :
 
 * UTF-8 atoms, function names and variables DONE
 * IEx helpers and breakpoints
@@ -39,6 +70,8 @@ review Elixir 1.5 release http://elixir-lang.github.io/blog/2017/07/25/elixir-v1
 * Streamlined child specs
 * @impl DONE
 * Calendar improvements
+
+
 
 review Elixir 1.6 release https://github.com/elixir-lang/elixir/releases/tag/v1.6.0-rc.0 :
 
@@ -309,6 +342,126 @@ see `~/SRC/ELIXIR/testbed/dialyzer_playground` and The_Little_Elixir_&amp;_OTP_G
 
 Mix tasks to simplify use of Dialyzer in Elixir projects.
 
+= ExUnit
+
+https://elixirschool.com/en/lessons/basics/testing/[Getting Started]
+
+TODO: 
+
+* https://medium.com/onfido-tech/the-not-so-magic-tricks-of-testing-in-elixir-1-2-89bfcf252321
+
+== Test Types
+
+ExUnit v1.3 includes the ability to register different test types. This means libraries like QuickCheck can now provide functionality such as:
+
+[source, elixir]
+----
+defmodule StringTest do
+  use ExUnit.Case, async: true
+  use PropertyTestingLibrary
+
+  property "starts_with?" do
+    forall({s1, s2} <- {utf8, utf8}) do
+      String.starts_with?(s1 <> s2, s1)
+    end
+  end
+end
+----
+
+At the end of the run, ExUnit will also report it as a property, including both the amount of tests and properties:
+
+[source, elixir]
+----
+1 property, 10 tests, 0 failures
+----
+
+=== Quick check style test
+
+REF:
+
+* Ref: https://github.com/parroty/excheck[https://github.com/parroty/excheck]
+* QuickCheck http://www.cse.chalmers.se/~rjmh/QuickCheck/[http://www.cse.chalmers.se/~rjmh/QuickCheck/]
+
+== Describe Blocks
+
+Organize tests together in describe blocks:
+
+[source, elixir]
+----
+defmodule StringTest do
+  use ExUnit.Case, async: true
+
+  describe "String.capitalize/2" do
+    test "uppercases the first grapheme" do
+      assert "T" <> _ = String.capitalize("test")
+    end
+
+    test "lowercases the remaining graphemes" do
+      assert "Test" = String.capitalize("TEST")
+    end
+  end
+end
+----
+
+Every test inside a describe block will be tagged with the describe block name. This allows developers to run tests that belong to particular blocks, be them in the same file or across many files:
+
+[source, elixir]
+----
+$ mix test --only describe:"String.capitalize/2"
+----
+
+Note describe blocks cannot be nested. Instead of relying on hierarchy for composition, we want developers to build on top of named setups. For example:
+
+[source, elixir]
+----
+defmodule UserManagementTest do
+  use ExUnit.Case, async: true
+
+  describe "when user is logged in and is an admin" do
+    setup [:log_user_in, :set_type_to_admin]
+
+    test ...
+  end
+
+  describe "when user is logged in and is a manager" do
+    setup [:log_user_in, :set_type_to_manager]
+
+    test ...
+  end
+
+  defp log_user_in(context) do
+    # ...
+  end
+end
+----
+
+By restricting hierarchies in favor of named setups, it is straight-forward for the developer to glance at each describe block and know exactly the setup steps involved.
+
+== Execute only stale tests
+
+Ref: http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/[http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/]
+
+`mix test --stale` builds on top of `mix xref`: will only run the tests that may have changed since the last time you ran mix test –stale.
+
+For example:
+
+* If you saved a test file on disk, Mix will run that file and ignore the ones that have not changed
+* If you changed a library file, for example, lib/foo.ex that defines Foo, any test that invokes a function in Foo directly or indirectly will also run
+* If you modify your mix.exs or your test/test_helper.exs, Mix will run the whole test suite
+
+This feature provides a great workflow for developers, allowing them to effortlessly focus on parts of the codebase when developing new features.
+
+== Diffing
+
+From Elixir 1.3 
+
+For this addition, `String.myers_difference/2` has been added to the String module.
+
+[source, elixir]
+----
+iex(1)> String.myers_difference("foobar", "fopbar")
+[eq: "fo", del: "o", ins: "p", eq: "bar"]
+----
 
 = Debug and Monitoring
 
