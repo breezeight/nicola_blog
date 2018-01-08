@@ -1484,6 +1484,35 @@ else
 fi
 ~~~
 
+
+To represent multiple conditions: https://stackoverflow.com/questions/3826425/how-to-represent-multiple-conditions-in-a-shell-if-statement
+
+The 'portable shell' guidelines for the autoconf tool or related packages, this notation — using '||' and '&&' — is what they recommend.
+
+```
+if [ "$g" -eq 1 ] && [ "$c" = "123" ]
+then echo abc
+elif [ "$g" -eq 2 ] && [ "$c" = "456" ]
+then echo abc
+else echo efg
+fi
+```
+
+NOTE: enclosed the references to $g in double quotes; that's good practice, in general.
+
+## Is test or [ or [[ more portable both between bash shells and between other shells?
+
+Ref: http://mywiki.wooledge.org/BashFAQ/031
+
+https://unix.stackexchange.com/questions/168255/is-test-or-or-more-portable-both-between-bash-shells-and-between-other-shel
+
+For portability between [ and [[ use [ only.
+
+## Command exit code conventions
+
+Ususally when a command finish the execution without errors the exit code is 0, otherwise it is an error code.
+
+
 # Alias
 
 * Aliases allow a string to be substituted for a word when it is used as the first word of a simple command.
