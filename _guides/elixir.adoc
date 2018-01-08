@@ -31,6 +31,19 @@ http://softwareengineeringdaily.com/2016/04/18/elixir-erlang-jose-valim/[http://
 * `@behaviour  @callback   @macrocallback @optional_callbacks`
 * https://hexdocs.pm/elixir/naming-conventions.html#content[Naming Convention]
 
+review Elixir 1.5 release http://elixir-lang.github.io/blog/2017/07/25/elixir-v1-5-0-released/ :
+
+* UTF-8 atoms, function names and variables DONE
+* IEx helpers and breakpoints
+* Exception.blame
+* Streamlined child specs
+* @impl DONE
+* Calendar improvements
+
+review Elixir 1.6 release https://github.com/elixir-lang/elixir/releases/tag/v1.6.0-rc.0 :
+
+* https://soundcloud.com/elixirtalk/episode-106-chat-with-jose-valim?utm_campaign=elixir_radar_124&utm_medium=email&utm_source=RD+Station
+
 == Resources
 
 * https://drive.mindmup.com/map/0By_bGJI79BIpa1hOUW1rcjJNeEE[My Elixir Mind Map ]
@@ -2276,6 +2289,41 @@ https://hexdocs.pm/elixir/behaviours.html#optional-callbacks
 Optional callbacks are callbacks that callback modules may implement if they want to, but are not required to. 
 
 To check if the callbacks are defined you can use `function_exported?/3` or `macro_exported?/3`.
+
+== @impl: mark which functions are an implementation of a callback
+
+Elixir v1.5 introduces the `@impl <MYBEAHVIOUR>` attribute, which allows us to mark that certain functions are implementation of callbacks.
+
+Why is it useful? Once more and more behaviour and functions are added to the module, it becomes increasingly harder to know the purposes of each of them. 
+
+For example, when using the Plug project, one needs to implement both `init/1` and `call/2` when writing a Plug:
+
+[source, elixir]
+----
+defmodule MyApp do
+  @behaviour Plug
+
+  @impl Plug
+  def init(_opts) do
+    opts
+  end
+
+  @impl Plug
+  def call(conn, _opts) do
+    Plug.Conn.send_resp(conn, 200, "hello world")
+  end
+end
+----
+
+NOTE: you can ues `@impl true` without specifing the behaviour but it's much less readable
+
+Overall, using @impl has the following advantages:
+
+* Readability of the code is increased, as it is now clear which functions are part of your API and which ones are callback implementations. To reinforce this idea, @impl true automatically marks the function as @doc false, disabling documentation unless @doc is explicitly set
+
+* If you define @impl before a function that is not a callback, Elixir will error. This is useful in case of typos or in case the behaviour definition changes (such as a new major version of a library you depend on is released)
+
+* If you use @impl in one implementation, Elixir will force you to declare @impl for all other implementations in the same module, keeping your modules consistent
 
 == Use @spec with Behaviour
 
