@@ -2659,6 +2659,12 @@ https://hexdocs.pm/elixir/OptionParser.html[https://hexdocs.pm/elixir/OptionPars
 
 https://github.com/ueberauth/guardian?utm_source=elixirdigest&utm_medium=web&utm_campaign=featured[https://github.com/ueberauth/guardian?utm_source=elixirdigest&utm_medium=web&utm_campaign=featured]
 
+= Erlang
+
+== Erlang RunTime System ERTS
+
+https://github.com/happi/theBeamBook
+
 = Recipes
 
 https://elixir-examples.github.io/[https://elixir-examples.github.io/]
