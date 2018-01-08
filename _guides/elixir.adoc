@@ -2668,3 +2668,28 @@ https://github.com/happi/theBeamBook
 = Recipes
 
 https://elixir-examples.github.io/[https://elixir-examples.github.io/]
+
+== Migrate from Rails PaperClip
+
+https://medium.com/onfido-tech/from-zero-to-production-elixir-in-1-month-1-2-a9d051191ad7
+
+Ruby PaperClip cons:
+
+* upload provided by Paperclip was synchronous
+* it didn’t have a caching mechanism
+* didn’t offer a direct way of getting the document from S3 without interacting with the Rails application
+
+== Create DSL
+
+Attributes can be used to store data at compile time:
+http://elixir-lang.github.io/getting-started/module-attributes.html#as-temporary-storage
+
+== Read Env Variable
+
+`System.get_env("ENV_VAR_NAME_HERE")`
+
+NOTE: When you use in an app config it will executed at compile time
+
+=== IEX: Cancel a multiline command
+
+http://elixir-recipes.github.io/iex/cancel-multiline-command/
