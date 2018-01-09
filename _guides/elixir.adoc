@@ -2445,7 +2445,15 @@ Overall, using @impl has the following advantages:
 
 * If you use @impl in one implementation, Elixir will force you to declare @impl for all other implementations in the same module, keeping your modules consistent
 
-== Crete default implementations: defoverridable and use
+=== Enforce @impl with Credo Static Analyzer
+
+https://github.com/rrrene/credo/issues/427
+
+=== Examples
+
+SEE: _guides/elixir_examples/behaviours_defoverridable_example
+
+== Create default implementations: defoverridable and use
 
 Ref:
 
