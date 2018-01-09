@@ -2710,7 +2710,7 @@ https://github.com/urbint/cortex#-1[Cortex home page]
 * Add Cortex to your mix file
 * Run `iex -S mix`
 * your code will be live recompiled and reloaded (?!?! what does it means exactly !?!? )
-* TODO: it should helps also with test running
+* TODO: it should helps also with test running `MIX_ENV=test iex -S mix`
 
 
 
