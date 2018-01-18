@@ -1844,6 +1844,10 @@ end
 
 == Function Capturing - &amp; operator
 
+http://elixir-lang.github.io/getting-started/modules-and-functions.html#function-capturing
+
+You can retrieve a named function as a function type
+
 [source, elixir]
 ----
 iex> Math.zero?(0)
@@ -1866,6 +1870,10 @@ iex> fun.([1, [[2], 3]], [4, 5])
 [1, 2, 3, 4, 5]
 ----
 
+Remember Elixir makes a distinction between anonymous functions and named functions, where the former must be invoked with a dot (.) between the variable name and parentheses.
+
+The capture operator bridges this gap by allowing named functions to be assigned to variables and passed as arguments in the same way we assign, invoke and pass anonymous functions.
+
 == &amp; shortcut for creating functions
 
 Shorthand to create anonymous functions
@@ -1879,6 +1887,80 @@ iex> sum.(2, 3)
 
 Parameters are available to us as &amp;1, &amp;2, &amp;3, and so on
 
+== Default Values
+
+Ref:
+
+* http://elixir-lang.github.io/getting-started/modules-and-functions.html#default-arguments
+* https://hexdocs.pm/elixir/Kernel.html#def/2-default-arguments[Elixir Documentation]
+
+Named functions in Elixir also support default arguments:
+
+[source, elixir]
+----
+defmodule Concat do
+  def join(a, b, sep \\ " ") do
+    a <> sep <> b
+  end
+end
+
+IO.puts Concat.join("Hello", "world")      #=> Hello world
+IO.puts Concat.join("Hello", "world", "_") #=> Hello_world
+----
+
+NOTE: If a function with default values has multiple clauses, it is required to create a function head (without an actual body) for declaring defaults:
+
+[source, elixir]
+----
+defmodule Concat do
+  def join(a, b \\ nil, sep \\ " ")
+
+  def join(a, b, _sep) when is_nil(b) do
+    a
+  end
+
+  def join(a, b, sep) do
+    a <> sep <> b
+  end
+end
+
+IO.puts Concat.join("Hello", "world")      #=> Hello world
+IO.puts Concat.join("Hello", "world", "_") #=> Hello_world
+IO.puts Concat.join("Hello")               #=> Hello
+----
+
+WARNING: When using default values, one must be careful to avoid overlapping function definitions. Consider the following example:
+
+[source, elixir]
+----
+defmodule Concat do
+  def join(a, b) do
+    IO.puts "***First join"
+    a <> b
+  end
+
+  def join(a, b, sep \\ " ") do
+    IO.puts "***Second join"
+    a <> sep <> b
+  end
+end
+----
+
+If we save the code above in a file named “concat.ex” and compile it, Elixir will emit the following warning:
+
+  this clause cannot match because a previous clause at line 2 always matches
+  The compiler is telling us that invoking the join function with two arguments will always choose the first definition of join whereas the second one will only be invoked when three arguments are passed:
+
+[source, elixir]
+----
+$ iex concat.exs
+iex> Concat.join "Hello", "world"
+***First join
+"Helloworld"
+iex> Concat.join "Hello", "world", "_"
+***Second join
+"Hello_world"
+----
 == Closures
 
 ref: http://joearms.github.io/2013/05/31/a-week-with-elixir.html[http://joearms.github.io/2013/05/31/a-week-with-elixir.html]
