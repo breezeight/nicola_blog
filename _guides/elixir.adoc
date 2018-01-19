@@ -1961,6 +1961,100 @@ iex> Concat.join "Hello", "world", "_"
 ***Second join
 "Hello_world"
 ----
+
+== Blocks parameter 
+
+* https://thepugautomatic.com/2015/12/elixir-block-keywords/
+* https://groups.google.com/forum/#!topic/elixir-lang-talk/jVqCeLcaUV0/discussion
+
+`do ... else ... end` blocks are syntactic sugar for passing a keyword list.
+
+`do ... block ... end` emits the same AST as `do: (... block ...)`. That's why you can use if with both syntax, you don't have to do anything.
+
+To create blocks the following `block keywords` are supported:
+
+* `do`
+* `catch`
+* `rescue`
+* `after`
+* `else`
+
+The parser internal code can be found here:
+
+* https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/src/elixir_tokenizer.erl#L1050-L1053
+* https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/src/elixir_exp_clauses.erl
+* https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/lib/macro.ex#L652
+
+
+Example: Given this `foobar` named function:
+
+[source, elixir]
+----
+defmodule Example do
+  def foobar(do: _, else: _, catch: _, after: _, rescue: _) do
+  end
+end
+----
+
+This call:
+
+[source, elixir]
+----
+
+Example.foobar do
+ IO.puts "first block"
+else
+ IO.puts "else block"
+catch
+ IO.puts "catch block"
+after
+ IO.puts "after block"
+rescue
+ IO.puts "rescue block"
+end
+
+first block
+else block
+catch block
+after block
+rescue block
+----
+
+Is equivalent to:
+
+[source, elixir]
+----
+Example.foobar([do: IO.puts("true"), else: IO.puts("false"), catch: IO.puts "catch block", after: IO.puts "after block", rescue: IO.puts "rescue block"])
+
+first block
+else block
+catch block
+after block
+rescue block
+----
+
+If you are curious, you can inspect a block:
+
+[source, elixir]
+----
+IO.inspect do
+ IO.puts "first block"
+else
+ IO.puts "else block"
+catch
+ IO.puts "catch block"
+after
+ IO.puts "after block"
+rescue
+ IO.puts "rescue block"
+end
+
+[do: :ok, else: :ok, catch: :ok, after: :ok, rescue: :ok]
+----
+
+NOTE: The keyword list is evaluated before it’s even passed to the function, like any keyword list would be. That includes evaluating the IO.puts function calls.
+
+
 == Closures
 
 ref: http://joearms.github.io/2013/05/31/a-week-with-elixir.html[http://joearms.github.io/2013/05/31/a-week-with-elixir.html]
