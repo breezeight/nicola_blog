@@ -39,8 +39,8 @@ Review Elixir 0.14 release http://elixir-lang.github.io/blog/2014/06/17/elixir-v
 
 Review Elixir 0.15 release http://elixir-lang.github.io/blog/2014/08/07/elixir-v0-15-0-released/
 
-Review Elixir 1.3 release http://elixir-lang.github.io/blog/2016/06/21/elixir-v1-3-0-released/ and https://tuvistavie.com/2016/elixir-1-3/#exunit-new-features : 
- 
+Review Elixir 1.3 release http://elixir-lang.github.io/blog/2016/06/21/elixir-v1-3-0-released/ and https://tuvistavie.com/2016/elixir-1-3/#exunit-new-features :
+
 * Deprecation of imperative assignment  *IMPORTANT!!!*
 * Calendar types and sigils
 * Access selectors
@@ -48,7 +48,7 @@ Review Elixir 1.3 release http://elixir-lang.github.io/blog/2016/06/21/elixir-v1
 * mix app.tree and deps.tree
 * mix escript.install                   *IMPORTANT!!!*
 * Option parser integration
-* ExUnit: 
+* ExUnit:
 ** mix test --stale, DONE <<Execute only stale tests, Execute only stale tests>> ,
 ** Diffing, DONE <<Diffing,Diffing>> ,
 ** Test types,
@@ -84,6 +84,7 @@ Stream: http://culttt.com/2016/06/13/working-enumerables-streams-elixir
 
 * https://drive.mindmup.com/map/0By_bGJI79BIpa1hOUW1rcjJNeEE[My Elixir Mind Map ]
 
+* https://github.com/elixir-lang/elixir/blob/master/lib/elixir/pages/Naming%20Conventions.md[Elixir Naming Convention]
 * Awesome Elixir: https://github.com/h4cc/awesome-elixir[https://github.com/h4cc/awesome-elixir]
 * Trending on Github: https://github.com/trending/elixir[https://github.com/trending/elixir]
 * Static code analyzer: https://github.com/rrrene/credo[https://github.com/rrrene/credo]
@@ -97,7 +98,7 @@ Books:
 
 * 2016 THE LITTLE ELIXIR &amp; OTP GUIDEBOOK: http://benjamintan.io/[http://benjamintan.io/]
 * "Metaprogramming Elixir" by Chris McCord the author of Phoenix https://pragprog.com/book/cmelixir/metaprogramming-elixir[https://pragprog.com/book/cmelixir/metaprogramming-elixir]
-* https://happi.github.io/theBeamBook[The BEAM Book] 
+* https://happi.github.io/theBeamBook[The BEAM Book]
 
 Elixir release notes:
 
@@ -349,7 +350,7 @@ Mix tasks to simplify use of Dialyzer in Elixir projects.
 
 https://elixirschool.com/en/lessons/basics/testing/[Getting Started]
 
-TODO: 
+TODO:
 
 * https://medium.com/onfido-tech/the-not-so-magic-tricks-of-testing-in-elixir-1-2-89bfcf252321
 
@@ -456,7 +457,7 @@ This feature provides a great workflow for developers, allowing them to effortle
 
 === Diffing
 
-From Elixir 1.3 
+From Elixir 1.3
 
 For this addition, `String.myers_difference/2` has been added to the String module.
 
@@ -1416,7 +1417,7 @@ Here’s an example:
 
 [source, elixir]
 ----
-# lib/use_import_require/use_me.ex
+#=> lib/use_import_require/use_me.ex
 defmodule UseImportRequire.UseMe do
   defmacro __using__(_) do
     quote do
@@ -1718,13 +1719,13 @@ I can call the converse/1 function thus, the tuple will be passed to the convers
 [source, elixir]
 ----
 > Chatter.converse({:hello, “Stephanie”, “World Bank”})
-# Hi Stephanie. Nice to meet you. I hear you work for World Bank.
+#=> Hi Stephanie. Nice to meet you. I hear you work for World Bank.
 > Chatter.converse({:hello, “Trevor”, “Local Bank”})
-# Hi Trevor. Nice to meet you. I hear you work for Local Bank.
+#=> Hi Trevor. Nice to meet you. I hear you work for Local Bank.
 > Chatter.converse({:small_talk, “Stephanie”, “fishing”})
-# Hey Stephanie, have you been doing much fishing lately?
+#=> Hey Stephanie, have you been doing much fishing lately?
 > Chatter.converse({:goodbye, “Trevor”})
-# Trevor, it was great to talk to you today, goodbye.
+#=> Trevor, it was great to talk to you today, goodbye.
 ----
 
 you can see we have allowed for three different types of conversation without any conditionals in our code. Each of the method signatures clearly show their intent through the first element of the tuple. Our code is simplified.
@@ -1749,9 +1750,9 @@ The explanation is quite simple. Elixir is pattern matching params first (the pa
 [source, elixir]
 ----
 %{“user_id” => user_id} = params = <map passed in>
-# breaks down to
+ # breaks down to
 params = <map passed in>
-# then to
+ # then to
 %{“user_id” => user_id} = params
 ----
 
@@ -1769,7 +1770,7 @@ http://stackoverflow.com/questions/38820327/pattern-matching-and-default-paramet
 
 [source, elixir]
 ----
-# my_case.exs
+#=> my_case.exs
 defmodule MyCase do
 
   def do_something(tuple) do
@@ -1798,12 +1799,14 @@ iex> MyCase.do_something({:wat, true})
 === The pin operator ^
 
 
-## Guards and multiple clauses
+== Guards and multiple clauses
 
 * [Elixir Guard Doc on HEX](https://hexdocs.pm/elixir/guards.html#content)
+* https://github.com/elixir-lang/elixir/blob/master/lib/elixir/pages/Guards.md[Elixir guard syntax reference]
 * Use pattern matching
 * support both do: and do/end block syntax
 
+Guards are a way to augment pattern matching with more complex checks. They are allowed in a predefined set of constructs where pattern matching is allowed.
 
 [source, elixir]
 ----
@@ -1962,7 +1965,7 @@ iex> Concat.join "Hello", "world", "_"
 "Hello_world"
 ----
 
-== Blocks parameter 
+== BlocksParameter
 
 * https://thepugautomatic.com/2015/12/elixir-block-keywords/
 * https://groups.google.com/forum/#!topic/elixir-lang-talk/jVqCeLcaUV0/discussion
@@ -2304,7 +2307,7 @@ You can also use multiple filters:
 [source,elxir]
 ----
 import Integer
- 
+
 for n <- 1..100, divisible_by_5?.(n), is_even(n), do: n
 
 [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
@@ -2422,7 +2425,6 @@ types can be:
 To match a Struct inside a typespec, use the normal %StructName{} syntax.
 
 == Types
-
 
 * https://hexdocs.pm/elixir/typespecs.html#basic-types[Basic types]
 * https://hexdocs.pm/elixir/typespecs.html#literals[Literals]
@@ -2570,9 +2572,9 @@ You can think of Protocols just like you think of pattern matching with multiple
 
 The main difference between Protocols and pattern matching on different values is the *inversion of control*.
 
-Elixir provides both *closed ad-hoc polymorphism* via pattern matching on function clauses and *open ad-hoc polymorphism* via protocols (which are close to interfaces). ref: https://elixirforum.com/t/behaviours-defoverridable-and-implementations/3338/9 
+Elixir provides both *closed ad-hoc polymorphism* via pattern matching on function clauses and *open ad-hoc polymorphism* via protocols (which are close to interfaces). ref: https://elixirforum.com/t/behaviours-defoverridable-and-implementations/3338/9
 
-Protocols let you add more “function heads” after the fact, so that app and library developers can match on their type separate from the definition of the Protocol itself, they are not required to implement every possible function heads. 
+Protocols let you add more “function heads” after the fact, so that app and library developers can match on their type separate from the definition of the Protocol itself, they are not required to implement every possible function heads.
 
 Is impossible for a library developer to know every type the app developer will needs, in this case protocols come to the rescue.
 
@@ -2691,7 +2693,7 @@ If we happen to add a behaviour but fail to implement all of the required functi
 
 https://hexdocs.pm/elixir/behaviours.html#optional-callbacks
 
-Optional callbacks are callbacks that callback modules may implement if they want to, but are not required to. 
+Optional callbacks are callbacks that callback modules may implement if they want to, but are not required to.
 
 To check if the callbacks are defined you can use `function_exported?/3` or `macro_exported?/3`.
 
@@ -2701,7 +2703,7 @@ NOTE: https://elixirforum.com/t/behaviours-defoverridable-and-implementations/33
 
 Elixir v1.5 introduces the `@impl <MYBEAHVIOUR>` or `@impl true` attribute, which allows us to mark that certain functions are implementation of callbacks.
 
-Why is it useful? Once more and more behaviour and functions are added to the module, it becomes increasingly harder to know the purposes of each of them. 
+Why is it useful? Once more and more behaviour and functions are added to the module, it becomes increasingly harder to know the purposes of each of them.
 
 For example, when using the Plug project, one needs to implement both `init/1` and `call/2` when writing a Plug:
 
@@ -2748,10 +2750,10 @@ Ref:
 
 To create a default implementation of behaviour's function you can combine:
 
-* `use` 
+* `use`
 * `defoverridable` https://hexdocs.pm/elixir/Kernel.html#defoverridable/1[doc]
 
-A good example is the GenServer behaviour https://github.com/elixir-lang/elixir/blob/v1.5.3/lib/elixir/lib/gen_server.ex#L1 
+A good example is the GenServer behaviour https://github.com/elixir-lang/elixir/blob/v1.5.3/lib/elixir/lib/gen_server.ex#L1
 
 [source, elixir]
 ----
@@ -2761,12 +2763,12 @@ defmodule GenServer do
     {:ok, state, timeout | :hibernate} |
     :ignore |
     {:stop, reason :: any} when state: any
-  
+
   @callback terminate(reason, state :: term) ::
     term when reason: :normal | :shutdown | {:shutdown, term} | term
-    
+
     ....
-    
+
   defmacro __using__(_) do
     quote do
       @behaviour GenServer      # 1
@@ -2842,7 +2844,7 @@ mailbox.
 To create a process use `spawn(fun)`:
 
 * Spawns the given function and returns its PID.
-* `child   = spawn(fn -&gt; send current, {self(), 1 + 2} end)`
+* `child  = spawn(fn -&gt; send current, {self(), 1 + 2} end)`
 
 OR `spawn(module, fun, args)`:
 
@@ -2988,9 +2990,9 @@ NOTE: When you use in an app config it will executed at compile time
 == IEX
 === IEX: How do I recompile an Elixir project and reload it from within iex?
 
-NOTE: Dig into both alternative, at the moment the first seems the best 
+NOTE: Dig into both alternative, at the moment the first seems the best
 
-==== ALTERNATIVE 1: 
+==== ALTERNATIVE 1:
 
 https://github.com/urbint/cortex#-1[Cortex home page]
 
@@ -3001,9 +3003,9 @@ https://github.com/urbint/cortex#-1[Cortex home page]
 
 
 
-==== ALTERNATIVE 2: 
+==== ALTERNATIVE 2:
 
-Ref: 
+Ref:
 * https://stackoverflow.com/questions/36490089/how-do-i-recompile-an-elixir-project-and-reload-it-from-within-iex
 
 
@@ -3021,3 +3023,5 @@ This function is meant to be used for development and debugging purposes. Do not
 === IEX: Cancel a multiline command
 
 http://elixir-recipes.github.io/iex/cancel-multiline-command/
+
+`#iex:break`
