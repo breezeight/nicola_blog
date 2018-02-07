@@ -521,6 +521,312 @@ NOTE: Exrm has been replaced by Distillery
 
 https://www.reddit.com/r/elixir/comments/5e4ti2/building_a_standalone_cli_executable/
 
+= Elixir Scopes
+
+Reference: http://elixir-lang.readthedocs.io/en/latest/technical/scoping.html[Scoping Rules in Elixir (and Erlang)]
+
+For everyday use it is sufficient to understand the basics of scoping rules in Elixir:
+
+* *top level scope* every variable and identifier defined outside of any other scope
+* *function clause scope*
+
+But there are, in fact, quite a few rules you need to know to get a complete picture of the way scopes work in Elixir.
+
+There are a number of constructs that create new scope:
+
+* modules and module-like structures: `defmodule`, `defprotocol`, `defimpl`
+* functions: `fn`, `def`, `defp`
+* comprehensions: `for`
+* `try` block bodies
+
+WARNING: `if`, `case` and friends don't define a scope but you should think that they do define a scope, let's see why. Elixir compiler will warn if you assign to a variable that is accessed in an outer scope. This warning, intruduced in 1.3, will gives the opportunity to unify the language scoping rules in future releases.
+
+More details here: https://stackoverflow.com/questions/39550644/elixir-set-variable-in-if-statement and here:  https://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/
+
+*TODO: capire meglio la relazione che c'è tra come si comporta `if`, o meglio come si comporta `case` e la relazione con unquote la macro hygeine.*
+
+Elixir Scopes Are Lexical:
+
+* is based on where variables and blocks of scope have been authored in the source code.
+* *Nesting* : any variables defined in the surrounding scope are accessible in all other scopes it contains. There is an exception to this rule which applies only to named functions: any variable coming from the surrounding scope has to be unquoted inside a function clause body.
+* *Shadowing* : Any variable in a nested scope whose name coincides with a variable from the surrounding scope will shadow that outer variable,but does not affect it in any way
+* All variable bindings introduced in a scope are available until the end of that scope.
+* Elixir has a few special forms that treat scopes a little differently (namely require, import, and alias).
+
+NOTE: also Javascript use lexical scope https://medium.com/@nickbalestra/javascripts-lexical-scope-hoisting-and-closures-without-mystery-c2324681d4be
+
+Most of the time user code in Elixir is structured in the following way. At the top level we define modules. Each module contains a number of attributes and function clauses. Inside a function clause there can be arbitrary number of expressions including control flow constructs like case, if, or try:
+
+[source, elixr]
+----
+abc = "abc"            T ---------------------+
+                                              |
+defmodule M do             M ---------------+ |
+  @doc "factorial"                          | |
+  @limit 13                                 | |
+                                            | |
+  def foo(n) do                F ---------+ | |
+    x = case n do                         | | |  # T: top level scope
+      0 -> 1                              | | |
+      i when i > 0 -> n * foo(n - 1)      | | |  # M: module's scope
+      _ -> :undef                         | | |
+    end                                   | | |  # F: function clause scope
+                                          | | |
+    for x <- [1,2,3] do            C ---+ | | |  # C: comprehension's scope
+      -x                                | | | |
+    end                            -----+ | | |
+                                          | | |
+  end                          -----------+ | |
+                                            | |
+end                        -----------------+ |
+                        ----------------------+
+----
+
+.ditaa Figure 1
+[ditaa,file="images/ditaa-example.png"]
+--
+
++------------------------------------------------------------+
+| Top level                                                  |
+|                                                            |
+|  +------------------------+     +------------------------+ |
+|  | Module                 |     | Module                 | |
+|  |                        |     |                        | |
+|  | +--------------------+ |     | +--------------------+ | |
+|  | | Function clause    | |     | | Function clause    | | |
+|  | |                    | |     | |                    | | |
+|  | | +----------------+ | |     | | +----------------+ | | |
+|  | | | Comprehension  | | |     | | | Comprehension  | | | |
+|  | | +----------------+ | |     | | +----------------+ | | |
+|  | | +----------------+ | | ... | | +----------------+ | | |
+|  | | | Anon. function | | |     | | | Anon. function | | | |
+|  | | +----------------+ | |     | | +----------------+ | | |
+|  | | +----------------+ | |     | | +----------------+ | | |
+|  | | | Try block      | | |     | | | Try block      | | | |
+|  | | +----------------+ | |     | | +----------------+ | | |
+|  | +--------------------+ |     | +--------------------+ | |
+|  +------------------------+     +------------------------+ |
+|                                                            |
++------------------------------------------------------------+
+--
+
+In the general case, however, all scopes are arbitrarily nestable: we could imagine a case expression inside a comprehension or a top-level if expression defining different modules depending on some condition. For example:
+
+[source, elixir]
+----
+f = fn x ->
+  case x do
+    1 ->
+      defmodule M do
+        def say do
+          "one"
+        end
+      end
+    2 ->
+     defmodule N do
+        def say do
+          "two"
+        end
+      end
+  end
+end
+
+#=> no module has been defined yet
+M.say       #=> undefined function: M.say/0
+N.say       #=> undefined function: N.say/0
+
+#=> define M
+f.(1)
+M.say       #=> "one"
+N.say       #=> undefined function: N.say/0
+
+#=> define N
+f.(2)
+M.say       #=> "one"
+N.say       #=> "two"
+----
+
+== Top level scope
+Named functions cannot be defined at the top level because a named function always belongs within a module. However, named functions
+can be imported into any lexical scope (including the top level scope) like this:
+
+[source, elixir]
+----
+import String, only: [reverse: 1]
+reverse "Hello"  #=> "olleH"
+----
+
+In fact, all functions and macros from the Kernel module are autoimported in the top level scope by the compiler.
+
+== Function scope
+
+Each function clause defines a new lexical scope: any new variable bound inside it will not be available outside of that clause:
+
+[source, elixir]
+----
+f = fn() ->
+  a = 1
+end
+
+f.()
+IO.puts a
+#=> ** (CompileError) iex:30: undefined function a/0  <1>
+----
+<1> a is bound within the function but doesn't leak outside of the function scope
+
+Hiding example: the `multiplier` parameter will hide the `multiplier` variable:
+
+[source, elixir]
+----
+multiplier = 6
+f = fn(x, multiplier) ->
+  x*multiplier
+end
+f.(2, 20)
+#=> 40
+----
+
+
+Hinding example: parameter that hide a function
+
+[source, elixir]
+----
+defmodule M do
+  #=> in this case the argument 'y' shadows the named function 'y/0'
+  def y(y), do: y*2
+
+  #=> here the reference to 'y' inside the function body is actually a recursive call to 'y/0'
+  def y, do: y*2
+end
+----
+
+== Named functions and modules
+
+As mentioned before, named function have a couple of peculiarities.
+
+1) defining a named function does not introduce a new binding into the current module scope:
+
+[source, elixir]
+----
+defmodule M do
+  def foo, do: "hi"
+
+  foo()  # will cause CompileError: undefined function foo/0
+end
+----
+
+But you can reference foo/0 from bar/0
+
+[source, elixir]
+----
+defmodule M do
+  def foo, do: "hi Foo"
+
+  def bar, do: IO.puts "Bar function calls foo and get: #{foo()}"
+end
+
+M.foo
+#> "hi Foo"
+
+M.bar
+#> Bar function calls foo and get: hi Foo
+----
+
+WARNING: TODO capire bene perchè con le struct nelle firme dei metodi devo usare il nome esteso del modulo come nell'esempio qua sotto
+
+2) Struct Naming has rules:
+
+[source, elixir]
+----
+defmodule API.User do
+  defstruct name: nil, age: 0
+  def old?(%User{name: name, age: age} = user) do  end  # <1>
+end
+#=> ** (CompileError) iex:22: User.__struct__/0 is undefined, cannot expand struct User
+----
+<1> User must be reference with it's full scope
+
+[source, elixir]
+----
+defmodule API.User do
+  defstruct name: nil, age: 0
+  def old?(%API.User{name: name, age: age} = user) do  # <1>
+  end
+end
+----
+<1> Use the full scope
+
+A trick is to define an alias
+ref: https://dockyard.com/blog/2017/08/15/elixir-tips
+
+[source, elixir]
+----
+defmodule API.User do
+  alias __MODULE__
+
+  defstruct name: nil, age: 0
+
+  def old?(%API.User{name: name, age: age} = user) do
+
+  end
+end
+----
+
+3) named functions cannot directly access surrounding scope with unquoting:
+
+[source, elixir]
+----
+defmodule M do
+  y = 1 # <1>
+  def foo(a), do: a * y  # <2>
+end
+#=> ** (CompileError) iex:3: undefined function y/0
+----
+<1> We define a variable outside in the body of the module
+<2> But the variable is not accessible within the body of the function
+
+NOTE: def and defmodule are implemented with `defmacro` and return a quoted expression. The code within the defmodule body, as any other macro, is evaluated at compile time
+
+https://stackoverflow.com/questions/35515196/why-can-unquote-be-called-outside-a-macro
+
+Elixir source code that implements `def` :
+
+* https://github.com/elixir-lang/elixir/blob/928302a912e397917be957142a9837ae58610207/lib/elixir/lib/kernel.ex#L3146L3148
+* https://github.com/elixir-lang/elixir/blob/928302a912e397917be957142a9837ae58610207/lib/elixir/lib/kernel.ex#L3225L3227
+
+NOTE: `def/2` is a macro https://hexdocs.pm/elixir/Kernel.html#def/2  questa issue creata da Josè è interessante e parla di bind quoted e  https://github.com/elixir-lang/elixir/issues/880
+
+Instead for anonymous function the nesting rule is valid:
+
+[source, elixir]
+----
+multiplier = 6
+f = &(&1*multiplier)
+f.(2)
+#=> 12
+----
+
+NOTE: in Elixir, you don’t have to define the Foo module before being able to define the Foo.Bar module, as the language translates all module names to atoms. You can define arbitrarily-nested modules without defining any module in the chain (e.g., Foo.Bar.Baz without defining Foo or Foo.Bar first).
+
+You can use `unquote` to "restore" the nesting rule:
+
+[source, elixir]
+----
+defmodule M do
+  y = 2
+  def foo(a), do: a * unquote(y)  # <1>
+end
+
+M.foo 3
+#=> 6
+----
+<1> unquoting `a`
+
+TODO:
+* https://medium.com/elixirlabs/define-dynamic-functions-with-dynamic-arguments-arity-using-elixir-macros-a28241d4f119
+* https://groups.google.com/forum/#!topic/elixir-lang-core/wKp7vxcaCQk
+* https://github.com/elixir-lang/elixir/issues/880
+
 
 
 = Are Elixir variables really immutable?
