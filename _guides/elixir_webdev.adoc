@@ -1,0 +1,16 @@
+:encoding: UTF-8
+:lang: en
+:doctype: book
+:toc: left
+:source-highlighter: rouge
+
+= Plug
+
+https://hexdocs.pm/plug/readme.html#content
+
+Plug is:
+
+1. A specification for composable modules between web applications
+2. Connection adapters for different web servers in the Erlang VM
+
+NOTE: Plug macros internals are described here in elixir.adoc: "macro use-cases"
