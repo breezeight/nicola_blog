@@ -2686,6 +2686,81 @@ iex> quote do: add.(1, 2)
 ----
 
 ASSERT MACRO
+=== bind_quoted
+
+ref: pag 29 Metaprogramming Elixir Chris McCord.
+
+`bind_quoted` is an option of the `quote`, it passes a binding to the block, ensuring that the outside bound variables are unquoted only a single time. We could have written our quote block without bind_quoted, but it’s good practice to use it whenever possible to prevent accidental reevaluation of bindings.
+
+For example, the following blocks of code are equivalent:
+
+[source, elixir]
+----
+quote bind_quoted: [operator: operator, lhs: lhs, rhs: rhs] do
+  Assertion.Test.assert(operator, lhs, rhs)
+end
+
+quote do
+ Assertion.Test.assert(unquote(operator), unquote(lhs), unquote(rhs))
+end
+----
+
+To see why using it is good practice, have a look at the folling example:
+
+[source, elixir]
+----
+defmodule Debugger do
+  defmacro log(expression) do
+    if Application.get_env(:debugger, :log_level) == :debug do
+      quote do
+        IO.puts "================="
+        IO.inspect unquote(expression)
+        IO.puts "================="
+        unquote(expression)
+      end
+    else
+      expression
+    end
+  end
+end
+
+iex> c "debugger.exs" [Debugger]
+iex> require Debugger nil
+iex> Application.put_env(:debugger, :log_level, :debug) :ok
+iex> remote_api_call = fn -> IO.puts("calling remote API...") end
+
+iex> Debugger.log(remote_api_call.())  #<1>
+=================
+calling remote API...
+:ok
+=================
+calling remote API... :ok              #<2>
+iex>
+----
+<1> We log once
+<2> But the remote_api_call is invoked twice! because we acciden- tally unquoted the expression twice in our log macro.
+
+Let’s fix this by using bind_quoted.
+
+[source, elixir]
+----
+defmodule Debugger do
+  defmacro log(expression) do
+    if Application.get_env(:debugger, :log_level) == :debug do
+      quote bind_quoted: [expression: expression] do            #<1>
+        IO.puts "================="
+        IO.inspect expression
+        IO.puts "================="
+        expression
+      end
+    else
+      expression
+    end
+  end
+end
+----
+<1> Use bind_quoted
+
 
 == Macro use-cases
 
