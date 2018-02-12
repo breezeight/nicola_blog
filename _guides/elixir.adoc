@@ -1834,12 +1834,13 @@ This is only necessary if you want to reference macros from the specified module
 http://elixir-lang.github.io/getting-started/module-attributes.html
 https://www.erlang-solutions.com/blog/elixir-module-attributes-alchemy-101-part-1.html
 
-
 Module attributes in Elixir serve three purposes:
 
 * They serve to annotate the module, often with information to be used by the user or the VM.
 * They work as constants.
 * They work as a temporary module storage to be used during compilation.
+
+On pag 35 Of Elixir Metaprogramming Chris explains how to use  `Module attributes`, `accumulate: true` and `@before_compile` to create at compile time a list of tests to be executed.
 
 http://elixir-lang.github.io/getting-started/module-attributes.html#as-annotations
 
@@ -2691,7 +2692,225 @@ ASSERT MACRO
 * Eliminating boilerplate
 * Advanced compile time code generation
 * Domain Specific Languages (DSLs)
+* Optimization: they run during compilation, macros make it possible to optimize some code by moving calculations to compile-time.
 
+=== Misc links
+
+Chris McCord - Metaprogramming:
+
+* pag 22: create `while` in Elixir
+
+=== Example: A useless expression-counting macro
+To stay true to the ancient tradition of making useless example with absolutely no connection to the real world, let’s build a macro that logs the number of Elixir expressions (and sub-expressions) in some given code:
+
+[source,elixir]
+----
+defmodule UselessExamplesAreFun do
+  defmacro log_number_of_expressions(code) do
+    {_, counter} = Macro.prewalk code, 0, fn(expr, counter) ->
+      {expr, counter + 1}
+    end
+
+    IO.puts "You passed me #{counter} expressions/sub-expressions"
+
+    code
+  end
+end
+----
+
+Let’s walk through the macro. First, we count the expressions and sub-expressions by using Macro.prewalk/3. Then, we print this number: this is our compile time work. Finally, we just return the argument code (which is already an AST). This macro effectively does nothing at runtime: in fact, it won’t leave a trace in the compiled code. This is great for performance because, well, the compile-time logging code just disappears.
+
+[source,elixir]
+----
+#>in lib/greetings.ex
+import MyApp.Gettext
+gettext "Hello people of Gotham!", "fr"
+----
+
+Running mix gettext.extract results in a .po file with this content:
+
+[source,elixir]
+----
+#> lib/greetings.ex:2
+msgid "Hello people of Gotham!"
+msgstr ""
+----
+
+What most gettext bindings for other languages (such as Python) do to extract translations is parsing the code and looking for calls to gettext() functions. In Elixir, instead, we just have to register the string to extract inside the macro, at compile-time, and then force-recompile the project to expand the macros and extract the translations. Awesome!
+
+This is what the definition of gettext roughly looks like (and the https://github.com/elixir-lang/gettext/blob/v0.6.1/lib/gettext/compiler.ex#L40-L60[actual implementation]):
+
+[source,elixir]
+----
+defmacro gettext(msgid, locale) do
+  extract(msgid)
+
+  quote do
+    translate(unquote(msgid), unquote(locale))
+  end
+end
+----
+
+When we call extract/2, we register the msgid by pushing it to an agent that we started before recompiling. When the compilation is done, we just dump the state of this agent. This has no impact whatsoever on the expanded code that is executed at runtime: calls to gettext/2 are just calls to translate/2 at runtime.
+
+=== Example: gettext implementation
+
+José Valim proposed to use this technique while we were building https://github.com/elixir-lang/gettext[gettext for Elixir]. Gettext provides a mix gettext.extract task which is used to extract translations from source files and write them to .po files. Translations are just calls to gettext macros with strings as arguments:
+
+[source,elixir]
+----
+#> in lib/greetings.ex
+import MyApp.Gettext
+gettext "Hello people of Gotham!", "fr"
+----
+
+=== Remove Logger statements
+
+`Logger.debug "Writing contents to file #{path}"` is a macro that can return an empty expression according with the debug level
+
+Elixir can conditionally remove log statements of the form Logger.debug/2 to Logger.error/2 at compile time: `config :logger, compile_time_purge_level: :info`
+
+ref: https://til.hashrocket.com/posts/2c8e7b4b39-compile-time-purge-level
+
+=== Example: Tracing expressions
+
+ref: http://theerlangelist.com/article/macros_1
+
+We’ll write a macro that can help us in debugging the code. Here’s how this macro can be used:
+
+[source,elixir]
+----
+iex(1)> Tracer.trace(1 + 2)
+Result of 1 + 2: 3
+3
+----
+
+The `Tracer.trace` takes a given expression and:
+
+* prints the expression
+* prints it’s result to the screen.
+* return the result of the expression.
+
+Initially I thought to implement it like this:
+
+[source,elixir]
+----
+defmodule Tracer do
+  defmacro trace(expression_ast) do
+    quote do
+      result = unquote(expression_ast)
+      Tracer.print(Macro.to_string(result), result) # <1>
+      result
+    end
+  end
+
+  def print(string_representation, result) do
+    IO.puts "Result of #{string_representation}: #{inspect result}"
+  end
+end
+
+Tracer.trace(1 + 2)
+#> Result of 3: 3
+#> 3
+----
+<1> Error: Macro.to_string will be executed at runtime and it's parameter will be the evaulated AST.
+
+Instead we want to read the AST at compile time and get the string representation:
+
+[source,elixir]
+----
+defmodule Tracer do
+  defmacro trace(expression_ast) do
+    string_representation = Macro.to_string(expression_ast)
+
+    quote do
+      result = unquote(expression_ast)
+      Tracer.print(unquote(string_representation), result)
+      result
+    end
+  end
+
+  def print(string_representation, result) do
+    IO.puts "Result of #{string_representation}: #{inspect result}"
+  end
+end
+----
+
+=== Implement Plug.Router
+
+In this example a simplified version of `Plug.Router` is implemented http://theerlangelist.com/article/macros_2
+
+The original is linked here https://github.com/elixir-plug/plug/blob/v1.4/lib/plug/router.ex[Plug.Router v1.4]
+
+
+
+=== Write Test Libraries with Macros
+
+Refs:
+
+* http://theerlangelist.com/article/macros_3
+* ExUnit: https://github.com/elixir-lang/elixir/blob/v1.6.1/lib/ex_unit/lib/ex_unit/assertions.ex#L163
+
+==== Chris McCord - Metaprogramming: Assertion Module at pag 27
+
+Macro gives you the power of accessing information that is not available at run-time, like the source code of your application.
+This allows a single assert macro to peer into the code representation to provide contextual failure messages realy easly.
+With this example elixir lib you will write the code you are going to test exactly in the same way you will write production code:
+
+* Elixir production code: `value == 12`
+* Elixir testing lib: `assert value == 12`
+* Ruby production code: `value == 12`
+* Ruby testing lib: `assert_equal value, 12`
+
+The reason these languages require methods and functions like this is to ensure relevant failure messages. If an assertion like assert value <= 100 failed in Ruby, you would only receive a less than helpful “expected true, got false” test output. By providing unique functions per assertion, the correct failure messages can be generated, but it comes at a cost of a larger testing API. You also take on the mental overhead of which function is required each time you need to write an assertion.
+
+On pag 31: Chris show how to proxy out the internal logic to a function on an internal module to avoid pollution of the namespace when the Assertion module is imported:
+
+[source,elixir]
+----
+defmodule Assertion do
+
+  defmacro assert({operator, _, [lhs, rhs]}) do
+    quote bind_quoted: [operator: operator, lhs: lhs, rhs: rhs] do
+      Assertion.Test.assert(operator, lhs, rhs)  # <1>
+    end
+  end
+end
+
+defmodule Assertion.Test do # <2>
+  def assert(:==, lhs, rhs) when lhs == rhs do
+    IO.write "."
+  end
+  def assert(:==, lhs, rhs) do
+    IO.puts """
+    FAILURE:
+      Expected:       #{lhs}
+      to be equal to: #{rhs}
+    """
+  end
+
+  def assert(:>, lhs, rhs) when lhs > rhs do
+    IO.write "."
+  end
+  def assert(:>, lhs, rhs) do
+    IO.puts """
+    FAILURE:
+      Expected:           #{lhs}
+      to be greater than: #{rhs}
+    """
+  end
+end
+----
+<1> Proxy out to the `Assertion.Test` module <2>
+
+NOTE: using pattern matching with function you can easly manage different cases
+
+On pag 35 Chris explain `use` as Common API for Module Extension
+
+On pag 35 Chris explains how to use  `Module attributes`, `accumulate: true` and `@before_compile` to create at compile time a list of tests to be executed.
+
+
+== When are macros required?
 
 = Specifications and types
 
