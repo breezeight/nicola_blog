@@ -1861,6 +1861,10 @@ Elixir has a handful of reserved attributes. Here are a few of them, the most co
 
 http://elixir-lang.github.io/getting-started/module-attributes.html#as-temporary-storage
 
+==== External resources: @external_resource
+
+Elixir provides the `@external_resource` module attribute to handle cases where we want to specify compile-time resources that our module depends on—when the resources change, mix will recompile our module. See example: <<Compile time code generation: Mime Type Library,Compile time code generation: Mime Type Library>>
+
 
 == Pattern Matching
 
@@ -2761,6 +2765,51 @@ end
 ----
 <1> Use bind_quoted
 
+===  Unquote Fragments
+
+pag 47 Chris McCord Metaprogramming Elixir
+
+https://elixirforum.com/t/using-unquote-outside-of-quote-block/6179
+
+Unquote fragments allow you to create functions dynamically, like we do in the example: <<Compile time code generation: Mime Type Library,Compile time code generation: Mime Type Library>>.
+
+Unquote fragments was implemented as an answer to these issues:
+
+* https://github.com/elixir-lang/elixir/issues/880
+* https://github.com/elixir-lang/elixir/issues/846
+
+Implementation details are discussed here by Josè Valim: https://groups.google.com/forum/#!topic/elixir-lang-core/wKp7vxcaCQk
+
+Macro fragments allow:
+
+1. Macros to define macros
+2. Easy dynamic generation of functions
+3. With unquote fragments, we can pass any valid atom to def and dynamically define a function with that name.
+
+Before macro fragments were implemeted, Elixir always escaped unquoted contents, so if you had a macro that had to define another macro, like this:
+
+[source, elixir]
+----
+defmacro new_macro do
+   quote do
+     defmacro sample(a) do
+       quote do
+         unquote(a) + 1
+       end
+     end
+   end
+ end
+----
+
+The example above would fail because "unquote(a)" would be expanded when evaluating `new_macro/0` and since `a` is not available in there, it would generate an exception. The code above now works because `unquote(a)` is just expanded when `sample/1` is called. In other words, the unquote now always binds to the direct parent quote. In this example this concept is discussed in deep <<Compile time code generation: Mime Type Library,Compile time code generation: Mime Type Library>>.
+
+https://groups.google.com/forum/m/#!topic/elixir-lang-core/wKp7vxcaCQk
+
+https://hexdocs.pm/elixir/1.2.6/Kernel.SpecialForms.html#quote/2-binding-and-unquote-fragments
+
+For others who (like me) stumble on this and want more context, this feature is called "unquote fragments". It's discussed in the docs and was also discussed on the mailing list at the time of this issue.
+ https://github.com/elixir-lang/elixir/commit/2817b2ee903ede4413f5bc222ff0ddd87552ff98[Here's the actual commit].
+
 
 == Macro use-cases
 
@@ -2983,7 +3032,153 @@ NOTE: using pattern matching with function you can easly manage different cases
 On pag 35 Chris explain `use` as Common API for Module Extension
 
 On pag 35 Chris explains how to use  `Module attributes`, `accumulate: true` and `@before_compile` to create at compile time a list of tests to be executed.
+=== Compile time code generation: Mime Type Library
 
+ref:
+
+* pag 46 - Metaprogramming Chris McCord
+* https://blog.m346e.info/articles/think_about_quote_and_unquote_from_viewpoint_of_context/
+
+In this example we use <<Unquote Fragments,Unquote Fragments>> to dynamically generate code at compile time.
+
+We will see how unquote binds variables to different contexts (and is not always the direct parent quote block context).
+
+The `Mime` module defines several functions based on type and extension in mimes.txt:
+
+[source,elixir]
+----
+defmodule Mime do
+  for line <- File.stream!(Path.join([__DIR__, "mimes.txt"]), [], :line) do
+    [type, rest] = line |> String.split("\t") |> Enum.map(&String.strip(&1))
+    extensions = String.split(rest, ~r/,\s?/)
+
+    def exts_from_type(unquote(type)), do: unquote(extensions)                  #<1>
+    def type_from_ext(ext) when ext in unquote(extensions), do: unquote(type)
+  end
+
+  def exts_from_type(_type), do: []
+  def type_from_ext(_ext), do: nil
+  def valid_type?(type), do: exts_from_type(type) |> Enum.any?
+end
+
+
+#> this code works like this.
+iex(13)> c "mime.exs"
+warning: String.strip/1 is deprecated, use String.trim/1
+  mime.exs:6
+
+[Mime]
+iex(14)> Mime.exts_from_type("text/html")
+[".html"]
+iex(15)> Mime.exts_from_type("video/jpeg")
+[".jpgv"]
+iex(16)> Mime.type_from_ext(".json")
+"apoplication/json"
+----
+<1> Unquote fragment used outside of a quote. Here this unquote is called “unquote fragments”.
+
+In the `Mime` module when we set a type, a function returns extensions. On the other hand a function returns type when we set a extension.
+
+IMPORTANT: Role of unquote is resolving whether a name of variable binds a value or not by referring to variables in a high context.
+
+In this case there isn't a quote context, to which context are the unquoted variables binded?
+`def NAME, do: BODY` define a context, the higher context is `defmodule Mime do ... end`, by using `unquote` we access this second scope and the variable are binded here.
+
+Let's look at a simple example that explain better this example.
+
+[source,elixir]
+----
+defmodule MyContext do
+  a = "mishiro"
+  def c1(a) do
+    IO.puts a           #<1>
+    IO.puts unquote(a)  #<2>
+  end
+end
+
+MyContext.c1 "Foo"
+#> "Foo"
+#> "mishiro"
+----
+<1> By default variables never refer to outside variables in the body of `def` or `defmacro`
+<2> If you use unquote you can access the higher scope
+
+==== MIME module and use
+
+Let’s think how we could allow an arbitrary module to have the functions defined by the the `Mime` module. `use` is the perfect fit, the resulting code will be super easy to use:
+
+[source,elixir]
+----
+defmodule MimeMapper do
+  use Mime
+end
+----
+
+
+We need to add the `__using__` macro:
+
+[source,elixir]
+----
+defmodule Mime do
+  @external_resource @mimes_path Path.join([__DIR__, "mimes.txt"])
+  defmacro __using__(_opt) do                                                   #<1>
+    for line <- File.stream!(@mimes_path, [], :line) do
+      [type, rest] = line |> String.split(";") |> Enum.map(&String.strip(&1))
+      extensions = String.split(rest, ~r/, \s?/)
+
+      def exts_from_type(unquote(type)), do: unquote(extensions)                #<2>
+      def type_from_ext(ext) when ext in unquote(extensions), do: unquote(type)
+    end
+  end
+end
+
+** (CompileError) iex:15: undefined function type/0
+    (stdlib) lists.erl:1354: :lists.mapfoldl/3
+    (stdlib) lists.erl:1355: :lists.mapfoldl/3
+    (elixir) expanding macro: Kernel.defmacro/2
+----
+<1> `defmacro` defines a new context and the `do` block
+<2> `type` is not defined, why? In the `def` and `defmacro` do block, a key word `def` is not evaluated so if we use unquote here, unquote refer to the outside of defmacro __using__. So we have two problem to fix: "we need to evaulate `def` to define a function" and we need to access `type` in the right context.
+
+We can use `quote` to solve both problems:
+
+[source,elixir]
+----
+defmodule Mime do
+  @external_resource @mimes_path Path.join([__DIR__, "mimes.txt"])
+  defmacro __using__(_opt) do
+    for line <- File.stream!(@mimes_path, [], :line) do
+      [type, rest] = line |> String.split(";") |> Enum.map(&String.strip(&1))
+      extensions = String.split(rest, ~r/, \s?/)
+      quote do  #<1>
+        def exts_from_type(unquote(type)), do: unquote(extensions)  #<2>
+        def type_from_ext(ext) when ext in unquote(extensions), do: unquote(type) #<2>
+       end
+    end
+  end
+end
+
+iex(29)> c "mimes.exs"
+[Mime]
+iex(30)> c "mime_mapper.exs"
+[MimeMapper]
+
+iex(31)> MimeMapper.exts_from_type("text/html")
+[".html"]
+----
+<1> We don't have to evaluate `def` into the `using` macro because we are still in the `Mime` module context. Using quote we get an AST that will be evaluated after macro expansion in the context of `MimeMapper` module.
+<2> `unquote` now binds outside of the quote block
+
+NOTE: Elixir provides the `@external_resource` module attribute to handle cases where we want to specify compile-time resources that our module depends on—when the resources change, mix will recompile our module.
+
+==== Recap
+
+How was that? Considering context of unquote and quote together, it can be easy to read what is going on metaprogramming code
+
+* unquote is resolving whether a name of variable binds a value or not by referring to variables in a high context.
+* quote mark off context as well as treating expressions as an AST
+
+Actually quote have some extra informations about context, but I recommend that you read Metaprogramming Elixir book for it.
 
 == When are macros required?
 
