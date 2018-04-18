@@ -14,6 +14,33 @@ categories:
 
 This is a short internal guide to the AWS service we use most.
 
+# References
+
+* [YouTube recordings of AWS re:Invent 2017 sessions](https://gist.github.com/stevenringo/108922d042c4647f2e195a98e668108a)
+
+    
+# AWS Account Management
+
+## Consolidated Billing
+
+* http://docs.aws.amazon.com/organizations/latest/userguide/orgs_getting-started_from-consolidatedbilling.html
+* http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html
+
+With AWS Organization the master account pay the consolidated bill.
+
+## AWS Organizations
+
+* HOME: https://console.aws.amazon.com/organizations
+* [DOC](http://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html)
+* Announcement: https://aws.amazon.com/it/about-aws/whats-new/2017/02/aws-organizations-now-generally-available/
+
+* Organizations helps simplify the billing for multiple accounts by enabling you to setup a single payment method for all the accounts in your organization through consolidated billing.
+* You can create Service Control Policies (SCPs) that centrally control AWS service use across multiple AWS accounts.
+
+
+To create an account: http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html
+
+
 # AWS Security
 
 * [FedRamp Compliance](http://d0.awsstatic.com/whitepapers/aws-architecture-and-security-recommendations-for-fedramp-compliance.pdf)
