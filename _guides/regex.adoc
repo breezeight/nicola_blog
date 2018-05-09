@@ -1,0 +1,52 @@
+:encoding: UTF-8
+:lang: en
+:doctype: book
+:toc: left
+:source-highlighter: rouge
+
+= Regex
+
+* https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-basics.php[Nice basic tutorial with examples]
+* http://users.cs.cf.ac.uk/Dave.Marshall/Internet/NEWS/regexp.html[Regex refresher] — if you need a reminder of the basics, this is it.
+* Regexp reference and definitions: http://www.regular-expressions.info/
+* http://www.rexegg.com/[Regexp examples]
+
+* https://regexr.com/[Online editor] Support PCRE
+
+
+Regular expressions, while they can be utterly cryptic, entirely illegible beasts, they are also the most direct language available to programmers for writing instructions on how to process text.
+
+
+Character Classes
+Anchors
+Escaped Characters
+Groups and References
+Lookaround
+Quantifiers and Alternation
+Substitution
+Flags
+
+
+== Cheatsheet
+
+* https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-cheat-sheet.php
+* https://regexr.com/
+
+
+
+== Regexp basic concepts intro
+
+ref: http://users.cs.cf.ac.uk/Dave.Marshall/Internet/NEWS/regexp.html
+
+NOTE: One point to note is that regular expressions are not wildcards. The regular expression 'c*t' does not mean 'match "cat", "cot"' etc. In this case, it means 'match zero or more 'c' characters followed by a t', so it would match 't', 'ct', 'cccct' etc.
+
+== The mechanism: how Regex are processed
+
+The way regex works is that we have a pointer which is moved progressively through the search string. Once it comes across a character which matches the beginning of the regular expression it stops. Now a second pointer is started which moves forward from the first pointer, character by character, checking with each step if the pattern still holds or if it fails. If we get to the end of the pattern and it still holds then we have found a match. If it fails at any point then the second pointer is discarded and the main pointer continues through the string.
+
+See here for an animated example: 
+https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-basics.php#mechanism
+
+= Examples
+
+http://www.rexegg.com/regex-cookbook.html
