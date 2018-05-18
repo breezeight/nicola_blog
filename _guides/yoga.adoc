@@ -1,0 +1,125 @@
+:encoding: UTF-8
+:lang: en
+:doctype: book
+:toc: left
+//:imagesdir: images_yoga
+
+= Poses
+
+include::yoga_poses/ardha_matsyendrasana.adoc[]
+
+include::yoga_poses/adho_mukha_svanasana.adoc[]
+
+include::yoga_poses/muktasana.adoc[]
+
+== Sukhasana - Easy pose
+https://yoga.com/pose/easy-pose
+
+
+== Pavanamuktasana
+
+https://yoga.com/pose/knee-press-both-legs
+Note: usare i polsi per tenere unite le ginocchia
+Pavanamuktasana left/right  https://yoga.com/pose/left-leg-wind-freeing-pose
+Note: tenere allineato il ginocchio a centro (si tende ad andare a dx o sx)
+In tutte le versioni quando si afferra il ginocchio inspirare e toccare la gamba con la pancia gonfia, quando si espira portare al petto le gambe
+
+== Salamba Prasarita Padasana
+ https://yoga.com/pose/upward-extended-feet-pose-with-support
+Upward extended feet pose with support
+
+== Purvottanasana - Upward plank pose
+
+https://yoga.com/pose/upward-plank-pose
+
+== Dhanurasana - Bow pose
+https://yoga.com/pose/bow-pose
+
+== Purvottanasana
+ https://yoga.com/pose/upward-plank-pose
+
+== Gomukhasana
+ https://yoga.com/pose/cow-face-pose-left-leg-and-right-arm-up
+Cow face pose, left leg and right arm up
+
+== Shashankasana
+
+https://yoga.com/pose/hare-pose
+
+== Hare pose
+Ardha Matsyendrasana right
+Sitting right twist
+https://yoga.com/pose/sitting-right-twist
+
+== Mayurasana
+https://www.youtube.com/watch?v=qZszBHRSaKo
+https://www.youtube.com/watch?v=8Gfjj8FMORo
+
+== Paschimottanasana
+Seated forward bend
+https://yoga.com/pose/seated-forward-bend
+
+== Janu Sirsasana left - Bend to left leg
+https://yoga.com/pose/bend-to-left-leg
+
+
+== Posizione Distesa su un fianco (Parsva Uttanasana)
+http://www.yogajournal.it/posizione-distesa-su-un-fianco-parsva-uttanasana/
+
+== Supta virasana
+Eroe coricato http://www.yogajournal.it/leroe-silente/
+
+
+== Anantasana
+http://www.yogaweb.it/asana/anantasana/
+
+
+== Salambhasana - Locust pose
+https://yoga.com/pose/locust-pose
+
+
+= Sequences
+
+== Sequenza iniziale Lorena
+
+Si può fare in due varianti, da seduti o da in piedi
+
+. Rotazione delle spalle in avanti
+. Rotazione delle spalle indietro
+. Braccia distese lungo i fianchi, sollevarle facendo un semicerchio laterale e inspirando, allungare verso l’alto e con uno scatto espirare e incrociarle al petto.
+https://photos.google.com/photo/AF1QipOF2SaBRCt7a8eNBi6NtqnT8ooFU974B4oEpMcf   minuto 1:00
+. Braccia distese lungo i fianchi, sollevare solo la DX facendo un semicerchio laterale inspirando, prendere la guancia SX, tirare leggermente a lato espirando.
+https://photos.google.com/photo/AF1QipOF2SaBRCt7a8eNBi6NtqnT8ooFU974B4oEpMcf    minuto 3:00
+. Braccia distese e sollevate all’altezza delle spalle; rotazioni con 2 espiri e 2 inspiri veloci
+https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e minuto 5:00
+Se a terra mi allungo in avanti con le braccia
+. Braccia distese e sollevate 30 gradi più su delle spalle; rotazioni con 2 espiri e 2 inspiri veloci
+Se a terra mi allungo in avanti con le braccia
+. Clap clap con le mani continuo.  Mentre lo faccio le braccia sono distese lungo i fianchi, le sollevo fino all’altezza delle spalle, le porto in avanti, le porto in alto sopra le spalle.Rilasso le mani.
+https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e  minuto 7:40
+. Pugnetti sulle spalle e sulle braccia
+https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e  minuto 8:43
+. Massaggio testa, fossette dietro la nuca
+https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e  minuto 10:00
+. Gambe incrociate, mano DX sul ginocchio SX, mano SX dientro il gluteo SX; inspiro allungo la schiena e ruoto il dorso a SX; espiro e rilasso la testa in avanti. Dall’altra parte.
+https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e minuto 11:44
+TODO
+NOTA: Respiro solo dal naso.
+https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e  minuto 14:00
+
+== Sequenza 2 Farm
+
+. <<Janu Sirsasana left - Bend to left leg, Janu Sirsasana left - Bend to left leg>>
+. <<Janu Sirsasana left - Bend to right leg>>
+. <<Paschimottanasana - Seated forward bend>>
+. <<Purvottanasana - Upward plank pose>>
+
+
+Ardha Matsyendrasana right - Sitting right twist
+
+
+
+
+Salambhasana - Locust pose Right
+Salambhasana - Locust pose Left
+Salambhasana - Locust pose
