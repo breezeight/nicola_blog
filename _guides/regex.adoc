@@ -192,6 +192,19 @@ Earlier, we saw one way to match either 'Nick' or 'nick'. Another is with altern
 
 For another example, you could equivalently write [a-c] as a|b|c, but this is likely to be suboptimal because many implementations assume alternatives will have lengths greater than 1.
 
+WARNING: The regex engine is eager but Text-Directed Engine returns the Longest Match.
+
+It stops searching as soon as it finds a valid match. The consequence is that in certain situations, the order of the alternatives matters. Suppose you want to use a regex to match a list of function names in a programming language: Get, GetValue, Set or SetValue. The obvious solution is Get|GetValue|Set|SetValue. Let's see how this works out when the string is SetValue.
+
+Contrary to what we intended, the regex did not match the entire string. There are several solutions. One option is to take into account that the regex engine is eager, and change the order of the options. If we use GetValue|Get|SetValue|Set, SetValue is attempted before Set, and the engine matches the entire string.
+
+The best option is probably to express the fact that we only want to match complete words. We do not want to match Set or SetValue if the string is SetValueFunction. So the solution is \b(Get|GetValue|Set|SetValue)\b or \b(Get(Value)?|Set(Value)?)\b. Since all options have the same end, we can optimize this further to \b(Get|Set)(Value)?\b.
+
+Alternation is where regex-directed and text-directed engines differ. When a text-directed engine attempts Get|GetValue|Set|SetValue on SetValue. It always returns the longest match, in this case SetValue.
+
+
+NOTE: The POSIX standard leaves it up to the implementation to choose a text-directed or regex-directed engine. A BRE that includes backreferences needs to be evaluated using a regex-directed engine.
+
 == Escaping
 
 Although some characters match themselves, others have special meanings. The pattern \d+ doesn't match backslash followed by lowercase D followed by a plus sign: to get that, we'd use \\d\+. A backslash removes the special meaning from the following character.
@@ -250,6 +263,17 @@ There are three different positions that qualify as word boundaries:
 Simply put: \b allows you to perform a "whole words only" search using a regular expression in the form of \bword\b.
 
 Example:  \b4\b can be used to match a 4 that is not part of a larger number. This regex does not match 44 sheets of a4.
+
+== Alternation
+
+https://www.regular-expressions.info/alternation.html
+
+You can use alternation to match a single regular expression out of several possible regular expressions.
+
+If you want to search for the literal text cat or dog, separate both options with a vertical bar or pipe symbol: cat|dog. If you want more options, simply expand the list: cat|dog|mouse|fish.
+
+The alternation operator has the lowest precedence of all regex operators. That is, it tells the regex engine to match either everything to the left of the vertical bar, or everything to the right of the vertical bar. If you want to limit the reach of the alternation, you need to use parentheses for grouping. If we want to improve the first example to match whole words only, we would need to use \b(cat|dog)\b.
+
 
 == The mechanism: how Regex are processed
 
