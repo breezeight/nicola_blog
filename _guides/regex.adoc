@@ -36,17 +36,232 @@ Flags
 
 == Regexp basic concepts intro
 
-ref: http://users.cs.cf.ac.uk/Dave.Marshall/Internet/NEWS/regexp.html
+https://stackoverflow.com/questions/4736/learning-regular-expressions
+
+When you learn Regex, the most important part is the concepts. Once you understand how the building blocks work, differences in syntax amount to little more than mild dialects. A layer on top of your regular expression engine's syntax is the syntax of the programming language you're using.
+
+A regular expression is a description of a pattern of characters.
+
+Conceptually, the simplest regular expressions are literal characters. The pattern N matches the character 'N'.
+
+Regular expressions next to each other match sequences. For example, the pattern Nick matches the sequence 'N' followed by 'i' followed by 'c' followed by 'k'.
+
+A very basic expression like this is really no different to a search you may do in a search engine or in your favourite word processor or such.
+
+If you've ever used grep on Unix—even if only to search for ordinary looking strings—you've already been using regular expressions! (The re in grep refers to regular expressions.)
+
+https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-basics.php#basic
+
+== Metacharacter and character class
+
+=== Intro
+
+Adding just a little complexity, you can match either `Nick` or `nick` with the pattern `[Nn]ick`. The part in square brackets is a `character class`, which means it matches exactly one of the enclosed characters. You can also use ranges in character classes, so `[a-c]` matches either 'a' or 'b' or 'c'.
+
+The pattern `.` is special: rather than matching a literal dot only, it matches any character. It's the same conceptually as the really big character class `[-.?+%$A-Za-z0-9...]`.
+
+Think of character classes as menus: pick just one character from the menu; using quantifier we will see how to peek more than one.
+
+=== Character Classes
+
+https://www.regular-expressions.info/charclass.html
+
+With a "character class", also called "character set", you can tell the regex engine to match only one out of several characters. Simply place the characters you want to match between square brackets.
+
+A character class matches only a single character. gr[ae]y does not match graay, graey or any such thing.
+
+You can use a hyphen inside a character class to specify a range of characters. [0-9] matches a single digit between 0 and 9.
+
+=== Negated Character Classes
+
+Typing a caret after the opening square bracket negates the character class. The result is that the character class matches any character that is not in the character class. Unlike the dot, negated character classes also match (invisible) line break characters. If you don't want a negated character class to match line breaks, you need to include the line break characters in the class. [^0-9\r\n] matches any character that is not a digit or a line break.
+
+It is important to remember that a negated character class still must match a character. q[^u] does not mean: "a q not followed by a u". It means: "a q followed by a character that is not a u". It does not match the q in the string Iraq. It does match the q and the space after the q in Iraq is a country. Indeed: the space becomes part of the overall match, because it is the "character that is not a u" that is matched by the negated character class in the above regexp. If you want the regex to match the q, and only the q, in both strings, you need to use negative lookahead: q(?!u). But we will get to that later.
+
+=== Metacharacters inside a character class
+
+https://www.regular-expressions.info/charclass.html
+
+The closing bracket ], the caret ^ and the hyphen - can be included by escaping them with a backslash. To include an unescaped caret as a literal, place it anywhere except right after the opening bracket. [x^] matches an x or a caret.
+
+=== Repeating Character Classes
+
+If you repeat a character class by using the ?, * or + operators, you're repeating the entire character class. You're not repeating just the character that it matched. The regex [0-9]+ can match 837 as well as 222.
+
+If you want to repeat the matched character, rather than the class, you need to use backreferences. ([0-9])\1+ matches 222 but not 837. When applied to the string 833337, it matches 3333 in the middle of this string. If you do not want that, you need to use lookaround.
+
+=== Character Class Subtraction
+
+https://www.regular-expressions.info/charclasssubtract.html
+
+It makes it easy to match any single character present in one list (the character class), but not present in another list (the subtracted class). The syntax for this is `[class-[subtract]]`.
+
+Example: The character class [a-z-[aeiuo]] matches a single letter that is not a vowel. In other words: it matches a single consonant. Without character class subtraction or intersection, the only way to do this would be to list all consonants: [b-df-hj-np-tv-z].
+
+Negation Takes Precedence over Subtraction: The character class [^1234-[3456]] is both negated and subtracted from. In all flavors that support character class subtraction, the base class is negated before it is subtracted from. This class should be read as "(not 1234) minus 3456". Thus this character class matches any character other than the digits 1, 2, 3, 4, 5, and 6
+
+=== Character Class Intersection
+
+https://www.regular-expressions.info/charclassintersect.html
+
+The syntax for this is `The syntax for this is [class&&[intersect]]`
+
+The character class [a-z&&[^aeiuo]] matches a single letter that is not a vowel. In other words: it matches a single consonant. Without character class subtraction or intersection, the only way to do this would be to list all consonants: [b-df-hj-np-tv-z].
+
+The character class [\p{Nd}&&[\p{IsThai}]] matches any single Thai digit. [\p{IsThai}&&[\p{Nd}]] does exactly the same.
+
+See https://www.regular-expressions.info/charclassintersect.html for :
+
+* Intersection of Multiple Classes
+* Intersection in Negated Classes
+
+=== Shorthand Character Classes
+
+https://www.regular-expressions.info/shorthand.html
+
+Since certain character classes are used often, a series of shorthand character classes are available:
+
+* \d is short for [0-9]
+* \w stands for "word character", matches the ASCII characters [A-Za-z0-9_]
+* \s stands for "whitespace character", matches [ \t\r\n\f]. That is: \s matches a space, a tab, a line break, or a form feed.
+* ..... TODO: add more shorthand
+
+Shorthand character classes can be used both inside and outside the square brackets. \s\d matches a whitespace character followed by a digit. [\s\d] matches a single character that is either whitespace or a digit.
+
+
+== The Dot Matches (Almost) Any Character
+
+In regular expressions, the dot or period is one of the most commonly used metacharacters. Unfortunately, it is also the most commonly misused metacharacter.
+
+The dot matches a single character, without caring what that character is. The only exception are line break characters.
+
+This exception exists mostly because of historic reasons. The first tools that used regular expressions were line-based. They would read a file line by line, and apply the regular expression separately to each line. The effect is that with these tools, the string could never contain line breaks, so the dot could never match them.
+
+Modern tools and languages can apply regular expressions to very large strings or even entire files, check their documentation.
+
+== Escaping Metacharacters
+
+https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-basics.php#escaping
+
+== Quantifiers
+
+You can repeat parts of your pattern with quantifiers (called also quantifiers).
+
+Examples: https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-basics.php#multipliers
+
+Quantifiers allow us to increase the number of times an item may occur in our regular expression.
+
+For example, the pattern ab?c matches 'abc' or 'ac' because the ? quantifier makes the subpattern it modifies optional.
+
+Here is the basic set of multipliers:
+
+* * - item occurs zero or more times.
+* + - item occurs one or more times.
+* ? - item occurs zero or one times.
+* {5} - item occurs five times.
+* {3,7} - item occurs between 3 and 7 times.
+* {2,} - item occurs at least 2 times (two or more time).
+
+Putting some of these blocks together, the pattern `[Nn]*ick` matches all of:
+
+* ick
+* Nick
+* nick
+* Nnick
+* nNick
+* nnick
+* (and so on)
+
+The first match demonstrates an important lesson: * always succeeds! Any pattern can match zero times.
 
 NOTE: One point to note is that regular expressions are not wildcards. The regular expression 'c*t' does not mean 'match "cat", "cot"' etc. In this case, it means 'match zero or more 'c' characters followed by a t', so it would match 't', 'ct', 'cccct' etc.
+
+== Grouping
+
+A quantifier modifies the pattern to its immediate left. You might expect `0abc+0` to match `0abc0`, `0abcabc0`, and so forth, but the pattern immediately to the left of the plus quantifier is `c`. This means `0abc+0` matches `0abc0`, `0abcc0`, `0abccc0`, and so on.
+
+To match one or more sequences of `abc` with zeros on the ends, use `0(abc)+0`.
+
+The parentheses `()` denote a subpattern that can be quantified as a unit.
+
+It's also common for regular expression engines to save or "capture" the portion of the input text that matches a parenthesized group. Extracting bits this way is much more flexible and less error-prone than counting indices and substr.
+
+== Alternation
+
+Earlier, we saw one way to match either 'Nick' or 'nick'. Another is with alternation as in Nick|nick. Remember that alternation includes everything to its left and everything to its right. Use grouping parentheses to limit the scope of |, e.g., (Nick|nick).
+
+For another example, you could equivalently write [a-c] as a|b|c, but this is likely to be suboptimal because many implementations assume alternatives will have lengths greater than 1.
+
+== Escaping
+
+Although some characters match themselves, others have special meanings. The pattern \d+ doesn't match backslash followed by lowercase D followed by a plus sign: to get that, we'd use \\d\+. A backslash removes the special meaning from the following character.
+
+== Greediness
+
+WARNING: ho fatto solo un copia incolla, andrebbe approfondito
+
+Regular expression quantifiers are greedy. This means they match as much text as they possibly can while allowing the entire pattern to match successfully.
+
+For example, say the input is
+
+"Hello," she said, "How are you?"
+
+You might expect ".+" to match only 'Hello,' and will then be surprised when you see that it matched from 'Hello' all the way through 'you?'.
+
+To switch from greedy to what you might think of as cautious, add an extra ? to the quantifier. Now you understand how \((.+?)\), the example from your question works. It matches the sequence of a literal left-parenthesis, followed by one or more characters, and terminated by a right-parenthesis.
+
+If your input is '(123) (456)', then the first capture will be '123'. Non-greedy quantifiers want to allow the rest of the pattern to start matching as soon as possible.
+
+== Anchors
+
+https://regexr.com/3p6ki
+
+https://www.regular-expressions.info/anchors.html
+
+Anchors can be used to "anchor" the regex match at a certain position.
+
+The caret ^ matches the position before the first character in the string.
+
+Example:
+
+* Applying ^a to abc matches a.
+* ^b does not match abc at all, because the b cannot be matched right after the start of the string
+
+
+Similarly, $ matches right after the last character in the string.
+
+Example:
+
+* c$ matches c in abc
+* while a$ does not match at all.
+
+== Word boundaries
+
+https://www.regular-expressions.info/wordboundaries.html
+
+The metacharacter \b is an anchor like the caret and the dollar sign. It matches at a position that is called a "word boundary". This match is zero-length.
+
+There are three different positions that qualify as word boundaries:
+
+* Before the first character in the string, if the first character is a word character.
+* After the last character in the string, if the last character is a word character.
+* Between two characters in the string, where one is a word character and the other is not a word character.
+
+Simply put: \b allows you to perform a "whole words only" search using a regular expression in the form of \bword\b.
+
+Example:  \b4\b can be used to match a 4 that is not part of a larger number. This regex does not match 44 sheets of a4.
 
 == The mechanism: how Regex are processed
 
 The way regex works is that we have a pointer which is moved progressively through the search string. Once it comes across a character which matches the beginning of the regular expression it stops. Now a second pointer is started which moves forward from the first pointer, character by character, checking with each step if the pattern still holds or if it fails. If we get to the end of the pattern and it still holds then we have found a match. If it fails at any point then the second pointer is discarded and the main pointer continues through the string.
 
-See here for an animated example: 
+See here for an animated example:
 https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-basics.php#mechanism
 
 = Examples
 
 http://www.rexegg.com/regex-cookbook.html
+
+== Extract HTML comments
+
+https://regexr.com/3p6ki
