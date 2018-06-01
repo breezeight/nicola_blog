@@ -638,6 +638,18 @@ The ecs docker agent runs as a docker container
 
 # SES
 
+PRODUTION NOTES:
+
+* all new accounts in the Amazon SES sandbox, the followin restriction applies
+* To GO INTO PRODUCTION you need to open a support case and it can take SAME DAY. If the limit is 200 mail per day it's faster to obtain.
+
+* You can only send mail to verified email addresses and domains
+* and more... see here https://docs.aws.amazon.com/ses/latest/DeveloperGuide/request-production-access.html
+
+To get out the sandbox follow the instruction above
+
+SES can be used with a SMTP interface, it's easy to make it compatible with most libraries.
+
 # CloudWatch
 
 ## New Relic Plugin for AWS
