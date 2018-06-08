@@ -554,12 +554,253 @@ Refs:
 
 # EC2
 
-## Cloud-init cloud init
+## Metadata and User Data
 
-http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html
+* [EC2 AWS DOC](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
+* https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html
+* http://blog.domenech.org/2012/10/aws-ec2-instance-metadata.html
+* http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+
+User Data:
+
+* User data can be in the form of parameters or user defined script executed when the instance is launched
+* User data can be used for bootstrapping EC2 instance and helps answer: "the What should I do?"
+* User data is executed only at the launch of the instance. https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html
+
+You can pass two types of user data to Amazon EC2:
+
+* shell scripts. User data shell scripts must start with the `#!` characters and the path to the interpreter you want to read the script (commonly /bin/bash)
+* cloud-init directives.  The `#cloud-config` line at the top is required in order to identify the commands as cloud-init directives.
 
 
-### Examples
+
+Instance metadata and user data can be used for Self Configuration allowing EC2 instance answer the question Who am I ? What should I do ?
+
+Instance metadata and user data can be accessed from within the instance itself
+
+Data is not protected by cryptographic methods. Anyone who can access the instance can view its metadata and should not be used to any store sensitive data, such as passwords, as user data.
+
+Both the metadata and user data is available from the IP address 169.254.169.254 and has the latest as well as previous versions available
+
+Metadata and User data can be retrieved using simple curl or GET command and these requests are not billed
+
+
+Instance metadata is divided into two categories
+
+* Instance metadata: includes metadata about the instance such as instance id, ami id, hostname, ip address, role etc. Can be accessed from http://169.254.169.254/latest/meta-data/
+
+* Dynamic data: is generated when the instances are launched such as instance identity documents, instance monitoring etc. Can be accessed from http://169.254.169.254/latest/dynamic/
+
+Instance metadata can be used for managing and configuring instances
+
+## CloudFormation Helper Scripts Reference: cfn-init, cfn-signal, cfn-hup
+
+Ref:
+
+* [AWS Doc](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-helper-scripts-reference.html)
+* [cfn-hup doc](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-hup.html)
+* https://acloud.guru/forums/aws-certified-devops-engineer-professional/discussion/-KGKD6rei-kp6QOv5ne-/whats-the-key-difference-between-cloud-init-and-cfn-init
+
+AWS CloudFormation provides the following Python helper scripts that you can use to install software and start services on an Amazon EC2 instance that you create as part of your stack:
+
+* `cfn-init`: Use to retrieve and interpret resource metadata, install packages, create files, and start services.
+* `cfn-signal`: Use to signal with a CreationPolicy or WaitCondition, so you can synchronize other resources in the stack when the prerequisite resource or application is ready.
+* `cfn-get-metadata`: Use to retrieve metadata for a resource or path to a specific key.
+* `cfn-hup`: Use to check for updates to metadata and execute custom hooks when changes are detected.
+
+To configure cfn-{init,hup} you need to create a configset into your Cloudformation AWS::CloudFormation::Init resource, see below. 
+
+Cloud-init VS cfn-init: `cfn-init` is customized version of `cloud-init` for AWS product.
+
+AWS CloudFormation includes a set of helper scripts (cfn-init, cfn-signal, cfn-get-metadata, and cfn-hup) that are based on cloud-init. This is the information I can find from the cfn user guide.
+
+
+Add users: http://cloudinit.readthedocs.org/en/latest/topics/examples.html#including-users-and-groups
+
+
+`cfn-hup` helper is a daemon that detects changes in resource metadata and runs user-specified actions when a change is detected.
+
+TODO: is it possible to use cfn-hup to update users and groups ?
+
+### AWS::CloudFormation::Init and Config Sets 
+
+[AWS DOC](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-init.html#aws-resource-cloudformation-init-syntax)
+
+The metadata is organized into config keys, which you can group into configsets.
+
+You can specify a configset when you call cfn-init in your template. 
+
+If you don't specify a configset, cfn-init looks for a single config key named config.
+
+OREDER NOTE: The cfn-init helper script processes these configuration sections in the following order: packages, groups, users, sources, files, commands, and then services. If you require a different order, separate your sections into different config keys, and then use a configset that specifies the order in which the config keys should be processed.
+
+### Example: User-Data Script 
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html#user-data-shell-scripts
+
+This example shows a quite typical combination:
+
+* cfn-init it called on the first boot from the userdata script
+* Metadata are used to configure cfn-init using AWS::CloudFormation::Init
+* cfn-hup is configured to allow future update when you update AWS::CloudFormation::Init
+
+CloudFormation snippet, it the AWS::CloudFormation::Init type to include metadata on an Amazon EC2 instance for the cfn-init helper script.
+
+```
+    ECSLaunchConfiguration:
+        Type: AWS::AutoScaling::LaunchConfiguration
+        Properties:
+            ImageId:  !Ref AmiId
+            InstanceType: !Ref InstanceType
+            SecurityGroups:
+                - !Ref SecurityGroup
+            IamInstanceProfile: !Ref ECSInstanceProfile
+            UserData:
+                "Fn::Base64": !Sub |
+                    #!/bin/bash
+                    yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+                    yum install -y aws-cfn-bootstrap hibagent
+                    /opt/aws/bin/cfn-init -v --region ${AWS::Region} --stack ${AWS::StackName} --resource ECSLaunchConfiguration
+                    /opt/aws/bin/cfn-signal -e $? --region ${AWS::Region} --stack ${AWS::StackName} --resource ECSAutoScalingGroup
+                    /usr/bin/enable-ec2-spot-hibernation
+
+        Metadata:
+            AWS::CloudFormation::Init:
+                config:
+                    packages:
+                        yum:
+                            awslogs: []
+
+                    commands:
+                        01_add_instance_to_cluster:
+                            command: !Sub echo ECS_CLUSTER=${ECSCluster} >> /etc/ecs/ecs.config
+                    files:
+                        "/etc/cfn/cfn-hup.conf":
+                            mode: 000400
+                            owner: root
+                            group: root
+                            content: !Sub |
+                                [main]
+                                stack=${AWS::StackId}
+                                region=${AWS::Region}
+
+                        "/etc/cfn/hooks.d/cfn-auto-reloader.conf":
+                            content: !Sub |
+                                [cfn-auto-reloader-hook]
+                                triggers=post.update
+                                path=Resources.ECSLaunchConfiguration.Metadata.AWS::CloudFormation::Init
+                                action=/opt/aws/bin/cfn-init -v --region ${AWS::Region} --stack ${AWS::StackName} --resource ECSLaunchConfiguration
+
+                        "/etc/awslogs/awscli.conf":
+                            content: !Sub |
+                                [plugins]
+                                cwlogs = cwlogs
+                                [default]
+                                region = ${AWS::Region}
+
+                        "/etc/awslogs/awslogs.conf":
+                            content: !Sub |
+                                [general]
+                                state_file = /var/lib/awslogs/agent-state
+
+                                [/var/log/dmesg]
+                                file = /var/log/dmesg
+                                log_group_name = ${ECSCluster}-/var/log/dmesg
+                                log_stream_name = ${ECSCluster}
+
+                                [/var/log/messages]
+                                file = /var/log/messages
+                                log_group_name = ${ECSCluster}-/var/log/messages
+                                log_stream_name = ${ECSCluster}
+                                datetime_format = %b %d %H:%M:%S
+
+                                [/var/log/docker]
+                                file = /var/log/docker
+                                log_group_name = ${ECSCluster}-/var/log/docker
+                                log_stream_name = ${ECSCluster}
+                                datetime_format = %Y-%m-%dT%H:%M:%S.%f
+
+                                [/var/log/ecs/ecs-init.log]
+                                file = /var/log/ecs/ecs-init.log.*
+                                log_group_name = ${ECSCluster}-/var/log/ecs/ecs-init.log
+                                log_stream_name = ${ECSCluster}
+                                datetime_format = %Y-%m-%dT%H:%M:%SZ
+
+                                [/var/log/ecs/ecs-agent.log]
+                                file = /var/log/ecs/ecs-agent.log.*
+                                log_group_name = ${ECSCluster}-/var/log/ecs/ecs-agent.log
+                                log_stream_name = ${ECSCluster}
+                                datetime_format = %Y-%m-%dT%H:%M:%SZ
+
+                                [/var/log/ecs/audit.log]
+                                file = /var/log/ecs/audit.log.*
+                                log_group_name = ${ECSCluster}-/var/log/ecs/audit.log
+                                log_stream_name = ${ECSCluster}
+                                datetime_format = %Y-%m-%dT%H:%M:%SZ
+
+                    services:
+                        sysvinit:
+                            cfn-hup:
+                                enabled: true
+                                ensureRunning: true
+                                files:
+                                    - /etc/cfn/cfn-hup.conf
+                                    - /etc/cfn/hooks.d/cfn-auto-reloader.conf
+                            awslogs:
+                                enabled: true
+                                ensureRunning: true
+                                files:
+                                    - /etc/awslogs/awslogs.conf
+                                    - /etc/awslogs/awscli.conf
+```
+
+The value of UserData is a script that will be executed only the first time that the Instance is started, it:
+
+* Install aws-cfn-bootstrap
+* execute `cfn-init` which will act accordingly to AWS::CloudFormation::Init 
+
+In the
+
+### Debug issues with UserData
+
+If you UserData script has some issue It could exit without sending signals.
+When using CloudFormation you could get this error on AutoscalingGroup creation: `Received 1 FAILURE signal(s) out of 1. Unable to satisfy 100% MinSuccessfulInstancesPercent requirement`
+
+See: https://stackoverflow.com/questions/42604753/aws-cloudformation-stack-fails-with-error-received-0-success-signals-out-of-1
+
+cfn-init logs: `tail -f  /var/log/cfn-init.log`
+
+## Amazon Linux Distribution
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-linux-ami-basics.html
+
+[Amazon Linux FAQ](https://aws.amazon.com/amazon-linux-ami/faqs/)
+
+To identify on which version you are running: 
+
+* `/etc/image-id` 
+* `/etc/system-release`
+
+yum is the package manager
+
+For service management:
+
+* chkconfig: 
+https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/s2-services-chkconfig
+
+# AWS Systems Manager
+
+## Parameter Store
+
+https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html
+
+AWS Systems Manager Parameter Store provides secure, hierarchical storage for configuration data management and secrets management
+
+### Cloudformation with Parameter Store
+
+AWS::SSM::Parameter::Value
+
+https://aws.amazon.com/it/blogs/mt/integrating-aws-cloudformation-with-aws-systems-manager-parameter-store/
 
 
 
@@ -943,6 +1184,18 @@ ref: http://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Create
 
 * [AWS CloudFormation and Cloud-Init](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-waitcondition-article.html)
 * [CloudFormation Helper Scripts Reference](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-helper-scripts-reference.html)
+
+## Metadata
+
+Metadata can be used for a number of things. The example commonly explained is the use of the AWS::CloudFormation::Init metadata type to provide data to cfn-init, which is a simple configuration management tool. This is not covered in the example, as the work that is being done is simple enough to be done through UserData.
+
+See on the the EC2 chapter.
+
+## Dependencies
+
+A CreationPolicy can be used as a constraint to determine when a resource is counted as created. For example, this can be used with cfn-signal on an EC2 instance to ensure that the resource is not marked as CREATE_COMPLETE until all reasonable post-installation work has been done on an instance (for example, after all updates have been applied or certain software has been installed).
+
+A dependency (defined with DependsOn) is a simple association to another resource that ties its creation with said parent. For example, the web server instances in the example do not start creation until the NAT instance is complete, as they are created in a private network and will not install properly unless they have internet access available to them.
 
 ## Stack Policy
 
