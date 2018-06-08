@@ -1367,14 +1367,11 @@ AWS::ElasticLoadBalancingV2::TargetGroup:
 * Define the HealthChecks to perform on targets
 * Define default protocol and port for connection to the targets. Each target can ovverride the port to which it is listening; it's very usefull for ECS instances that could run multiple container on the same host, if the port would be fix it could cause conflicts between containers.
 
-
-
-
-
-
-
 https://convox.com/blog/alb/
 
+## Redirect HTTP to HTTPS
+
+See "Redirect ALL HTTP traffic to HTTPS" here https://docs.google.com/document/d/1pPaupcCyc8Lg75Ok5SyxF-JuAtjKAOg56B86XnYnbwI/edit#heading=h.k3a3aksi4tu8
 
 
 # Autoscaling
