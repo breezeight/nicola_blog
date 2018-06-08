@@ -1308,6 +1308,10 @@ REF:
 
 # ALB Application Load Balancer (ELB V2)
 
+## ALB vs ELB
+
+DOC: http://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html
+
 Conceptually ALB has a lot in common with ELB. It’s a static endpoint that’s always up and will balance traffic based on it’s knowledge of healthy hosts.But ALB introduces two new key concepts:
 
 * content-based routing: 
@@ -1321,28 +1325,55 @@ ALB solves some problems of ELB:
 * no longer need multiple ELBs or internal service discovery software (ex: nginx, HAProxy, Consul, Kong, Kubernetes and Docker Swarm) in our microservice application stack to get traffic to our containers ( ELBs cost $18/month minimum, so the cost can really add up).
 * EC2 Container Service (ECS) integration for managed container orchestration
 
+## Intro 
 
-Below there is a small cheatsheet of the main components, their relationship and main properties
+A load balancer:
 
-AWS::ElasticLoadBalancingV2::LoadBalancer : 
+* serves as the single point of contact for clients.
+* distributes incoming application traffic across multiple targets, such as EC2 instances, in multiple Availability Zones.
 
-* 
+For the most common use cases you need to know:
+
+* When you create an ALB you get the DNS address to connect to the target behind the ALB
+* You can associate an SSL certificate to an ALB to terminate HTTPS traffic. You cannot pass through the HTTPS traffic but you can still connect to in HTTPS to the targets. see https://stackoverflow.com/questions/42027582/application-load-balancer-elbv2-ssl-pass-through
+* To open a port you need to define a listener
+
+
+AWS::ElasticLoadBalancingV2::LoadBalancer main properties: 
+
 * Scheme: Specifies whether the load balancer is internal (routes requests to targets using private IP addresses) or Internet-facing (routes requests from clients over the Internet to targets in your public subnets).
 * SecurityGroups: security groups to assign to the load balancer
 * Subnets: subnets to associate with the load balancer. The subnets must be in different Availability Zones
 * Connection Idle Timeout: an idle timeout that is triggered when no data is sent over the connection for a specified time period.
+* https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-loadbalancer.html#w2ab2c21c10d643c12
 
 
 
-AWS::ElasticLoadBalancingV2::TargetGroup
-AWS::ElasticLoadBalancingV2::ListenerRule
-AWS::ElasticLoadBalancingV2::Listener
+AWS::ElasticLoadBalancingV2::Listener: 
+
+* is associated to ONE ALB
+* Has one or more rule
+* Rules determine which requests are routed to a given target groups. Target Groups or the target registration step configure the port used for routing traffic to a target when you register it with the target group.
+* For each lister a process in the ALB is create and it checks for connection requests, using the protocol and port that you configure. The rules that you define for a listener determine how the load balancer routes requests to the targets in one or more target groups.
+* Support Protocols: HTTP, HTTPS and Ports: 1-65535
+
+AWS::ElasticLoadBalancingV2::ListenerRule:
+
+* Has ONE Listener
+* When a listeren get a request, it process rule to define which requests an Elastic Load Balancing listener takes action on and the action that it takes.
+
+AWS::ElasticLoadBalancingV2::TargetGroup:
+
+* Define the HealthChecks to perform on targets
+* Define default protocol and port for connection to the targets. Each target can ovverride the port to which it is listening; it's very usefull for ECS instances that could run multiple container on the same host, if the port would be fix it could cause conflicts between containers.
+
+
+
+
+
+
 
 https://convox.com/blog/alb/
-
-a single ALB can serve HTTP, HTTP/2 and websockets
-
-
 
 
 
