@@ -4,6 +4,25 @@
 :toc: left
 //:imagesdir: images_yoga
 
+= Vocabulary
+
+* groin = inguine
+* waist = girovita
+* diaphragm = diaframma
+* Move the flesh of each buttock = carne di ciascun gluteo
+
+* sag = cedere
+
+= Resources
+
+Books:
+
+* Yoga mat companion series by Ray Long of BandhaYoga:
+** https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Dstripbooks&field-keywords=%22Yoga+Mat+Companion%22
+** http://www.bandhayoga.com/MC3_inside.html?page=12
+
+
+
 = Poses
 
 include::yoga_poses/ardha_matsyendrasana.adoc[]
@@ -11,6 +30,23 @@ include::yoga_poses/ardha_matsyendrasana.adoc[]
 include::yoga_poses/adho_mukha_svanasana.adoc[]
 
 include::yoga_poses/muktasana.adoc[]
+
+include::yoga_poses/swastikasana.adoc[]
+
+include::yoga_poses/dandasana.adoc[]
+
+include::yoga_poses/shirshasana.adoc[]
+
+include::yoga_poses/dhanurasana.adoc[]
+
+include::yoga_poses/urdhva_dhanurasana.adoc[]
+
+
+== Trikonasana
+
+Trikon means triangolo
+
+
 
 == Sukhasana - Easy pose
 https://yoga.com/pose/easy-pose
@@ -123,3 +159,12 @@ Ardha Matsyendrasana right - Sitting right twist
 Salambhasana - Locust pose Right
 Salambhasana - Locust pose Left
 Salambhasana - Locust pose
+
+
+
+
+== Sequenza 25 giugno con Sara
+
+Posizioni in piedi:
+
+* Swastikasana seduti sul blocco con le tibie (shin bones) incrociate

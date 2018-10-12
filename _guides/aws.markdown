@@ -2209,26 +2209,6 @@ WARNING: the bucket name must match the virtual host, see [here](http://docs.aws
 
 TODO: capire bene le policy da mettere
 
-
-
-# EC2
-
-TODO: is it possible to use cfn-hup to update users and groups ?
-
-## Metadata
-
-* http://blog.domenech.org/2012/10/aws-ec2-instance-metadata.html
-* http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
-
-[cfn-hup doc](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-hup.html)
-
-cfn-hup helper is a daemon that detects changes in resource metadata and runs user-specified actions when a change is detected.
-
-## Cloud-init
-
-
-Add users: http://cloudinit.readthedocs.org/en/latest/topics/examples.html#including-users-and-groups
-
 # Elastic Beanstalk
 
 
