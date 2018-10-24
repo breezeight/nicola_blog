@@ -7,10 +7,10 @@
 = Vocabulary
 
 * groin = inguine
+* tailbone = coccige
 * waist = girovita
 * diaphragm = diaframma
 * Move the flesh of each buttock = carne di ciascun gluteo
-
 * sag = cedere
 
 = Resources
@@ -21,8 +21,6 @@ Books:
 ** https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Dstripbooks&field-keywords=%22Yoga+Mat+Companion%22
 ** http://www.bandhayoga.com/MC3_inside.html?page=12
 
-
-
 = Poses
 
 include::yoga_poses/ardha_matsyendrasana.adoc[]
@@ -32,6 +30,8 @@ include::yoga_poses/adho_mukha_svanasana.adoc[]
 include::yoga_poses/muktasana.adoc[]
 
 include::yoga_poses/swastikasana.adoc[]
+
+include::yoga_poses/savasana_or_mrtasana.adoc[]
 
 include::yoga_poses/dandasana.adoc[]
 
