@@ -505,7 +505,29 @@ docker inspect ruby:2.2.2-onbuild|jq .[0].Config.OnBuild
 
 http://docs.docker.com/docker-hub/builds/
 
+# Dockerfile TIPS and BEST Practices
 
+## Multistage
+
+https://medium.com/@tonistiigi/advanced-multi-stage-build-patterns-6f741b852fae
+
+## CHOWN optimization
+
+It’s a common practice to set the owner of some files/folders via chown after copying the files. But with Docker this can unintentionally increase image size. See this fragment of a Dockerfile:
+
+```
+COPY . /dest-folder
+RUN chown -R someuser:somegroup /dest-folder
+```
+
+This works, but the result are two layers with the same size (use docker history to see the size added by each layer).
+Since Docker 17.09 there is a way to do the same things without wasting space:
+
+```
+COPY --chown=someuser:somegroup . /dest-folder
+```
+
+Just one layer, no size duplication. Read more about this here: https://blog.mornati.net/docker-images-and-chown/
 
 # Basic Docker Guides and Articles
 
