@@ -1033,6 +1033,21 @@ context of the build:
 * is the directory you pass as argument to docker build
 * you can exclude files and directories by adding a `.dockerignore` file to the directory.
 
+#### [JOB] Debug a failed build step
+
+Every single build step of the docker build process is done in a container that is still accessible after a build step failure.
+
+Usecase: a build could that takes several hours, so rewinding prior to the failed command and running it again takes a long time and is not very helpful.
+
+The solution is:
+
+* find the id of last container that failed: `docker ps -l -q`, return `3aac236d8281`
+* commit the image: `docker commit 3aac236d8281`, return `sha256:c4dfce3f18eea752e16e19b1f638faf8c666d3fa900bf0b567ee03433dc049b4`
+* to run a bash `docker run -it c4dfce3f18eea752e16e19b1f638faf8c666d3fa900bf0b567ee03433dc049b4 bash`
+* to rerun the build step command: `docker run -it c4dfce3f18eea752e16e19b1f638faf8c666d3fa900bf0b567ee03433dc049b4`
+* To cleanup `docker rmi c4dfce3f18eea752e16e19b1f638faf8c666d3fa900bf0b567ee03433dc049b4`, and before delete all the containers
+
+NOTE: If you tried to start the failed container again it would run the command that failed again, and you'd be back where you started. By creating an image you can start a container with a different start command.
 
 ### Repository
 
