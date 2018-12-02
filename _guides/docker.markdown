@@ -30,6 +30,15 @@ categories: ["docker"]
 
 # Management
 
+## Garbage collection
+
+https://github.com/zzrotdesign/docker-clean
+
+
+https://github.com/rancher/sherdock
+
+`docker run -d -v /var/lib/docker:/var/lib/docker -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 rancher/sherdock`
+
 ## OSX Docker for MAC
 
 ISSUE reduce qcow2 image (march 2017), Docker.qcow2 grows constantly:
