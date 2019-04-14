@@ -108,11 +108,17 @@ Upcoming
 * http://elixirstream.com/[http://elixirstream.com/]
 * http://joearms.github.io/2013/05/31/a-week-with-elixir.html[http://joearms.github.io/2013/05/31/a-week-with-elixir.html]
 
+Online Exercise:
+
+* https://github.com/elixirkoans/elixir-koans
+
+
 Books:
 
 * 2016 THE LITTLE ELIXIR &amp; OTP GUIDEBOOK: http://benjamintan.io/[http://benjamintan.io/]
 * "Metaprogramming Elixir" by Chris McCord the author of Phoenix https://pragprog.com/book/cmelixir/metaprogramming-elixir[https://pragprog.com/book/cmelixir/metaprogramming-elixir]
 * https://happi.github.io/theBeamBook[The BEAM Book]
+* Elixir_in_Action_Second_Edition.pdf [EIA_2nd]
 
 Elixir release notes:
 
@@ -141,13 +147,156 @@ Elixir release notes:
 
 Doc: https://hexdocs.pm/iex/IEx.html#summary[https://hexdocs.pm/iex/IEx.html#summary]
 
+NOTE: See "Starting the runtime: iex, mix, script" to understand how IEx load your modules and compile code
+
+NOTE: many of the iex options were borrowed from the Erlang shell, therefore erl(1) can be used as an additional source of information on the options.
+
+
 * Print the current config `IEx.configuration()`
 * https://hexdocs.pm/iex/IEx.html#module-shell-history[Enable History in erlang 20]:`export ERL_AFLAGS="-kernel shell_history enabled"`
 
+== View documentation in IEx
 
-= Atom Elixir
+* `h/1` to print the documentation for the given module or for the given function/arity pair, ex: `h Enum.into/2`
+, or the Module documentation `h Enum ``
+* `b/1` to print the documentation for the given callback function. Ex `b GenServer.handle_call` or `b GenServer` to print the documentation of all callbacks.
+
+
+== Load dependencies modules into iex: iex -S mix
+
+Q: How do I load an Elixir library into iex?
+A: Do `iex -S mix` within a mix project, you'll get all its dependencies.
+
+ref: https://stackoverflow.com/a/37979493
+
+TODO: I still don't understand what the `-S` does exactly.... but it works...
+
+For example when you `mix compile` a project `my_project` with poison as dependencies, mix will put your compiled beam file into `_build` dir and will add this directory to the code path:
+
+* '_build/dev/lib/my_project/consolidated',
+* '_build/dev/lib/my_project/ebin',
+* '_build/dev/lib/poison/ebin',
+
+you can check by yourself running `:code.get_path`
+
+== IEx Intenals
+
+The `iex` command is a shell script that use the `elixir` command to load the `IEx.Cli` module:
+https://github.com/elixir-lang/elixir/blob/a304aac97b222d91d1762cf2d6bec26f08a0a720/lib/iex/lib/iex/cli.ex
+
+```
+# The iex script
+exec "$SCRIPT_PATH"/elixir --no-halt --erl "-noshell -user Elixir.IEx.CLI" +iex "$@"
+```
+== IEx Introspection
+
+When multiple external modules are included by calling use on some intermediate module, is there an easy way to determine in which module given method is actually defined?
+Yes, you can capture the function using `&` and then inspecting it, see below:
+
+[source, elixir]
+----
+defmodule ModuleB do
+  def method_b do
+  end
+
+  def method_b(param1, param2) do
+  end
+end
+
+defmodule ModuleA do
+  # imports ModuleB implicitly
+  use SomeModuleImportingModuleB
+
+  def method_a
+    # how to determine this is ModuleB.method_b?
+    IO.inspect &method_b/0  # outputs &ModuleB.method_b
+    method_b
+  end
+end
+----
+
+NOTE: when using use the module in question might be injecting code directly (using macro) into the module being defined and creating functions dynamically - this might cause functions to become available that have not been defined in the used module.
+
+
+To instrospect an Elixir Module you can use the module function `__info__/1`, the argument can be:
+
+* `:functions` - keyword list of public functions along with their arities
+* `:macros` - keyword list of public macros along with their arities
+* `:module` - the module atom name
+* `:md5` - the MD5 of the module
+* `:compile` - a list with compiler metadata
+* `:attributes` - a list with all persisted attributes
+
+Ref: https://hexdocs.pm/elixir/1.8.0/Module.html#c:__info__/1
+
+[source, elixir]
+----
+iex(16)> ModuleB.module_info
+[
+  module: ModuleB,
+  exports: [
+    __info__: 1,
+    method_b: 0,
+    method_b: 2,
+    module_info: 0,
+    module_info: 1
+  ],
+  attributes: [vsn: [237599415356665481387925884711299501358]],
+  compile: [
+    version: '7.2.6',
+    options: [],
+    source: '/Users/nicolabrisotto/SRC/ADDICTIVE/addictive-dev-website/iex'
+  ],
+  native: false,
+  md5: <<178, 191, 251, 158, 13, 71, 205, 171, 146, 157, 184, 136, 55, 196, 205,
+    46>>
+]
+
+iex(17)> ModuleB.module_info :functions
+[__info__: 1, method_b: 0, method_b: 2, module_info: 0, module_info: 1]
+
+----
+
+WARNING: module_info/0 and module_info/1 are similar function but are not documented
+
+== Code path
+
+
+NOTE: See "Starting the runtime: iex, mix, script" to understand how IEx load your modules and compile code
+
+
+
+`-pa directory`
+
+== Load a module or script into the IEx session
+
+If you have an elixir file; a script or a module and want to load it into the current IEx session, you can use the c/1 method:
+
+```
+iex(1)> c "lib/utils.ex"
+iex(2)> Utils.some_method
+```
+
+This will compile and load the module in IEx, and you'll be able to call all of it's public methods.
+
+For scripts, it will immediately execute the contents of the script:
+
+```
+iex(3)> c "/path/to/my/script.exs"
+Called from within the script!
+```
+
+
+= IDE and Editor
+
+== Visual Studio Code
+
+https://docs.google.com/document/d/1X4HrockI5tyBTgq20ITz_ZGXExy9EZry3CRfmD2g8vw/edit#
+
+== Atom Elixir
 
 https://brainlid.org/elixir/2015/11/12/atom-editor-and-elixir.html[https://brainlid.org/elixir/2015/11/12/atom-editor-and-elixir.html]
+
 
 = CHEATSHEET
 
