@@ -341,9 +341,24 @@ http://stackoverflow.com/questions/2255658/how-portable-are-erlang-beam-files[ht
 
 == Editor - IDE
 
+
+=== Atom
+
+https://atom.io/packages/ide-elixir
+
+=== VSCode
+
+SEE: https://docs.google.com/document/d/1X4HrockI5tyBTgq20ITz_ZGXExy9EZry3CRfmD2g8vw/edit#heading=h.ldma62q0hzhi
+
 === Intellij
 
 * `brew cask install intellij-idea-ce` ce = comunity edition
+
+= Rebar
+
+Erlang build tool that makes it easy to compile and test Erlang applications and releases.
+
+https://github.com/erlang/rebar3
 
 = Mix
 
