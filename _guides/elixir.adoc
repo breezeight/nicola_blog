@@ -80,6 +80,20 @@ review Elixir 1.6 release https://github.com/elixir-lang/elixir/releases/tag/v1.
 
 Stream: http://culttt.com/2016/06/13/working-enumerables-streams-elixir
 
+Review Elixir 1.8 release https://elixir-lang.org/blog/2019/01/14/elixir-v1-8-0-released/
+
+* Custom struct inspections TODO
+* Time zone database support OK
+* Improved instrumentation and ownership with $callers TODO
+*
+
+Upcoming
+
+* There is only one last major feature planned for upcoming Elixir versions, which is the addition of mix release to Elixir itself, streamlining the experience provided by packages like distillery. With mix release, a developer can bundle the VM and all compiled code in a single directory, which can then be packaged and sent to production. We are glad to say the work on this feature has already started.
+* https://github.com/elixir-lang/elixir/issues/8612
+
+
+
 == Resources
 
 * https://drive.mindmup.com/map/0By_bGJI79BIpa1hOUW1rcjJNeEE[My Elixir Mind Map ]
