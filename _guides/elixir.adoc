@@ -1028,30 +1028,40 @@ name    
 * The data structure referenced by name is never changed
 * In functional we never tranform data
 
-= Types
+= Type System
 
-Elixir’s built-in types are
+== Term (Elixir or Erlang)
+
+ref: https://en.wikibooks.org/wiki/Erlang_Programming/Terms
+
+The basic unit of expressing a value in Erlang/Elixir is the term. We say `term` when we refer generically to one of the basic Erlang/Elixir type listed below.
+There are more simple terms like Atoms, integer, etc and more complex term that are collections of other term, like list, tuple, etc ...
+
+For example a tuple containing a string and a list is a term: `{"hello", [1, 2, 3]}`
 
 Value types:
-Arbitrary-sized integers
-Floating-point numbers
-Atoms
-Ranges
-Regular expressions
+
+* Arbitrary-sized integers
+* Floating-point numbers
+* Atoms
+* Ranges
+* Regular expressions
 
 System types:
-PIDs and ports
-References
+
+* PIDs and ports
+* References
 
 Collection types:
-Tuples
-Lists
-Maps
-Binaries
+
+* Tuples
+* Lists
+* Maps
+* Binaries
 
 In Elixir, functions are a type too.
 
-String and structures are built using the types above
+String and structures are built using the types above.
 
 == Type Safety: type checking
 
@@ -1083,32 +1093,66 @@ Sugar, use underscore to improve readability : `1_000_000`
 * `false`, `nil`
 * In most context any value other than `nil` or `false` is treated as `true` 
 
-== Binaries
+== Binaries and bitstrings
 
-* Data binary type: to access data as a sequence of bits or bytes
-* Litterals are enclosed between `&lt;&lt; &gt;&gt;`
+Ref:
+
+* EIA_2nd pag 67
 * http://elixir-lang.org/getting-started/binaries-strings-and-char-lists.html[http://elixir-lang.org/getting-started/binaries-strings-and-char-lists.html]
+* https://elixir-lang.org/getting-started/binaries-strings-and-char-lists.html
+
+A binary is a chunk of bytes. Is one of the basic term of the Elixir language.
+
+Syntax to create a Binary:
+
+* enclose the byte sequence between `<<` and `>>` operators.
+* Each number represents the value of the corresponding byte.
+* If you provide a byte value bigger than 255, it’s truncated to the byte size
+
+The following snippet creates a 2-byte binary:
+
 [source, elixir]
 ----
 iex(8)> bin = << 1, 2 >>
 <<1, 2>>
 iex(9)> byte_size bin
 2
+
+iex(2)> <<256>>   # Truncated bytes examples
+  <<0>>
+iex(3)> <<257>>
+  <<1>>
+iex(4)> <<512>>
+  <<0>>
 ----
 
+Usecases:
+
+* Data binary type: to access data as a sequence of bits or bytes
+* Represent string
+
+
 You can add modifiers to control the type and size of each individual field:
+You can add modifiers `::size(<size_in_bit>)` or `::<size_in_bit>` to specify the size of each value and thus tell the compiler how many bits to use for that particular value:
 
 [source, elixir]
 ----
-iex> bin = << 1::size(1), 0::size(7) >>
-<<128>>
-iex(25)> :io.format("~8.2b~n", :binary.bin_to_list(bin))
-10000000
+iex(5)> <<257::16>>
+<<1, 1>>
+----
 
-iex> bin = << 1::size(1), 1::size(7) >>
-<<129>>
-iex(23)> :io.format("~8.2b~n", :binary.bin_to_list(bin))
-10000001
+This expression places the number 257 into 16 bits of consecutive memory space. The output indicates that you use 2 bytes, both having a value of 1. This is due to the binary representation of 257, which in 16-bit form is written 00000001 00000001.
+
+NOTE: The size specifier is in bits and need not be a multiplier of 8.
+
+The following snippet creates a binary by combining two 4-bit values, he resulting value has 1 byte and is represented in the output using the normalized form 31 (0001 1111):
+
+[source, elixir]
+----
+iex> bin = <<1::4, 15::4>>
+<<31>>
+iex(25)> :io.format("~8.2b~n", :binary.bin_to_list(bin))
+00011111
 ----
 
 TODO: come funziona la stampa con :io.format ??? è Erlang…
@@ -1120,13 +1164,103 @@ bin = << 1::size(1), 0::size(8) >>
  <<128, 0::size(1)>>
 ----
 
-== Strings
 
-* By default are encoded in UTF-8
-* represented internally by binaries which are sequences of bytes
-* http://elixir-lang.org/docs/stable/elixir/String.html#content[String module doc]
+If the total size of all the values isn’t a multiple of 8, the binary is called a `bitstring` — a sequence of bits:
 
-String interpolation:
+[source, elixir]
+----
+iex(7)> <<1::1, 0::1, 1::1>>
+<<5::size(3)>>
+
+iex(14)> <<1::1, 0::1, 1::1, 2::12>>
+<<160, 2::size(7)>>
+----
+
+== Concatenate Binaries and Bitstrings
+
+You can also concatenate two binaries or bitstrings with the operator `<>`:
+
+[source, elixir]
+----
+ iex(8)> <<1, 2>> <> <<3, 4>>
+<<1, 2, 3, 4>>
+----
+
+
+== Strings: UTF8 and bitnaries
+
+WARNING: Elixir doesn’t have a dedicated string type. Strings are represented by using either a binary or a list type.
+
+A string in Elixir is a binary that contains byte sequence of the encoded in UTF-8.
+
+REF: http://elixir-lang.org/docs/stable/elixir/String.html#content[String module doc]
+
+
+In order to understand exactly what we mean by that, we need to understand the difference between bytes and code points.
+
+The Unicode standard assigns code points to many of the characters we know. For example, the letter a has code point 97 while the letter ł has code point 322. When writing the string "hełło" to disk, we need to convert this sequence of characters to bytes. If we adopted a rule that said one byte represents one code point, we wouldn’t be able to write "hełło", because it uses the code point 322 for ł, and one byte can only represent a number from 0 to 255. But of course, given you can actually read "hełło" on your screen, it must be represented somehow. That’s where encodings come in.
+
+When representing code points in bytes, we need to encode them somehow. Elixir chose the UTF-8 encoding as its main and default encoding. When we say a string is a UTF-8 encoded binary, we mean a string is a bunch of bytes organized in a way to represent certain code points, as specified by the UTF-8 encoding.
+
+Since we have characters like ł assigned to the code point 322, we actually need more than one byte to represent them. That’s why we see a difference when we calculate the byte_size/1 of a string compared to its String.length/1:
+
+[source, elixir]
+----
+iex> string = "hełło"
+"hełło"
+iex> byte_size(string)
+7
+iex> String.length(string)
+5
+There, byte_size/1 counts the underlying raw bytes, and String.length/1 counts characters.
+----
+
+UTF-8 requires one byte to represent the characters h, e, and o, but two bytes to represent ł. In Elixir, you can get a character’s code point by using `?`:
+
+[source, elixir]
+----
+iex> ?a
+97
+iex> ?ł
+322
+----
+
+These can be used anywhere you want to refer to a characters codepoint.
+
+You can also use the functions in the String module to split a string in its individual characters, each one as a string of length 1:
+
+[source, elixir]
+----
+iex> String.codepoints("hełło")
+["h", "e", "ł", "ł", "o"]
+----
+
+=== Strings: Character lists
+
+The alternative way of representing strings is to use single-quote syntax:
+
+[source, elixir]
+----
+iex(1)> 'ABC'
+'ABC'
+
+#The previous result is exactly the same as if you manually construct the list of integers
+iex(2)> [65, 66, 67]
+'ABC'
+----
+
+This creates a character list, which is essentially a list of integers in which each element represents a single character.
+
+WARNING: In general, you should prefer binary strings as much as possible, using character lists only when some third-party library (most often written in pure Erlang) requires it.
+
+As you can see, even the runtime doesn’t distinguish between a list of integers and a character list.
+
+NOTE: Character lists aren’t compatible with binary strings.
+
+=== Working with strings
+
+
+String interpolation: use `#{}` to place an Elixir expression in a string constant:
 
 [source, elixir]
 ----
@@ -1135,7 +1269,91 @@ name="nicola"
 -> "ciao nicola"
 ----
 
-Print string: `IO.puts &quot;hello\nworld&quot;`
+Classical `\` escaping works as you’re used to: "\r \n \" \\"
+
+
+Strings don’t have to finish on the same line:
+
+[source, elixir]
+----
+iex(4)> "
+        This is
+        a multiline string
+        "
+----
+
+You can enclose the string inside `~s()` sigil:
+
+[source, elixir]
+----
+iex(5)> ~s(This is also a string)
+"This is also a string"
+----
+
+Sigils can be useful if you want to include quotes in a string:
+
+[source, elixir]
+----
+iex(6)> ~s("Do... or do not. There is no try." -Master Yoda)
+"\"Do... or do not. There is no try.\" -Master Yoda"
+----
+
+There’s also an uppercase version `~S` that doesn’t handle interpolation or escape characters (\):
+
+[source, elixir]
+----
+iex(7)> ~S(Not interpolated #{3 + 0.14})
+"Not interpolated \#{3 + 0.14}"
+iex(8)> ~S(Not escaped \n)
+"Not escaped \\n"
+----
+
+Finally, there’s a special heredocs syntax, which supports better formatting for multiline strings. Heredocs strings start with a `triple double-quote`. The ending triple double-quote must be on its own line:
+
+[source, elixir]
+----
+iex(9)> """
+        Heredoc must end on its own line """
+        """
+"Heredoc must end on its own line \"\"\"\n"
+----
+
+Because strings are binaries, you can concatenate them with the `<>` operator:
+
+[source, elixir]
+----
+iex(10)> "String" <> " " <> "concatenation"
+"String concatenation"
+----
+
+Many helper functions are available for working with binary strings. Most of them reside in the String module (https://hexdocs.pm/elixir/String.html).
+
+Just like with binary strings, there are syntax counterparts for various definitions of character lists:
+
+[source, elixir]
+----
+iex(3)> 'Interpolation: #{3 + 0.14}'
+'Interpolation: 3.14'
+iex(4)> ~c(Character list sigil)
+'Character list sigil'
+iex(5)> ~C(Unescaped sigil #{3 + 0.14})
+'Unescaped sigil \#{3 + 0.14}'
+iex(6)> '''
+        Heredoc
+        '''
+'Heredoc\n'
+----
+
+
+To convert:
+
+* a binary string to a character use `String.to_charlist/1`
+* a character list to a binary string use `List.to_string/1`
+
+
+
+
+
 
 === Binaries, strings and char lists
 
@@ -1160,13 +1378,51 @@ String.length("hello")
 
 == Atoms
 
-Atoms are constants that represent something’s name. We write them using a leading colon (:)
+Atoms are literal named constants. We write them using a leading colon (:). An atom consists of two parts: the text and the value. The atom text is whatever you put after the colon character.
 
-`:fred  :is_binary?  :var@2  :&lt;&gt;  :===  :&quot;func/3&quot;  :&quot;long john silver&quot;`
+At runtime, this text is kept in the atom table: The value is the data that goes into the variable, and it’s merely a reference to the atom table.
+
+This is exactly why atoms are best used for named constants. They’re efficient both
+memory- and performance-wise. When you say
+variable = :some_atom
+the variable doesn’t contain the entire text, but only a reference to the atom table. Therefore, memory consumption is low, the comparisons are fast, and the code is still readable.
+
+
+Atom constants start with a colon character, followed by a combination of alphanumerics and/or underscore characters: `:an_atom`, `:another_atom`
+
+It’s possible to use spaces in the atom name with the following syntax: `:"an atom with spaces"`
 
 Two atoms with the same name will always compare as being equal, even if they were created by different applications on two computers separated by an ocean.
 
 We’ll be using atoms a lot to tag values.
+
+== Alias (sintax sugar to create atoms)
+
+There’s another syntax for atom constants. You can omit the beginning colon and start with an uppercase character: `AnAtom`
+
+This is called an alias, and at compile time it’s transformed into this:
+
+```
+:"Elixir.AnAtom":
+iex(1)> AnAtom == :"Elixir.AnAtom"
+true
+```
+
+
+When you use an alias, the compiler implicitly adds the Elixir. prefix to its text and inserts an atom there. But if an alias already contains that prefix, it’s not added. Consequently, the following also works:
+`iex(2)> AnAtom == Elixir.AnAtom`
+
+
+It’s no accident that the term alias is used for both things. When you write alias IO, as: MyIO, you instruct the compiler to transform MyIO into IO. Resolving this further, the final result emitted in the generated binary is :Elixir.IO. Therefore, with an alias set up, the following also holds:
+
+```
+iex(5)> MyIO == Elixir.IO
+true
+```
+
+All of this may seem strange, but it has an important underlying purpose. Aliases sup- port the proper resolution of modules.
+
+This will be discussed at "Modules and functions in the runtime" ( see also EIA_2nd ch 2.7.1 )
 
 == Calendar and sigils
 
@@ -1175,27 +1431,35 @@ Calendar and Date, Time, NaiveDateTime and DateTime types was added in 1.3, see 
 * https://github.com/elixir-lang/elixir/releases/tag/v1.3.0[https://github.com/elixir-lang/elixir/releases/tag/v1.3.0]
 * http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/[http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/]
 
-== Ranges
-
-start..end
-
-== RegExp
-
-~r{regexp} or ~r{regexp}opts or ~r/…/
-
-Based on PCRE that provides a Perl-5
-
-http://elixir-lang.org/docs/stable/elixir/Regex.html[http://elixir-lang.org/docs/stable/elixir/Regex.html]
-
-== PIDs and Ports
+== PIDs
 
 PID is a reference to a local or remote process
 
 `self` is the PID
 
+Pids are important when cooperating between concurrent tasks
+
+TODO EIA ch 5
+
+== Port Identifiers
+
+The port identifier is important when using ports. It’s a mechanism used in Erlang to talk to the outside world. File I/O and communication with external programs are done through ports.
+
+TODO: https://hexdocs.pm/elixir/Port.html
+
+
 == Anonymous functions
 
-Functions are delimited by the keywords `fn` and `end`:
+In Elixir, a function is a first-class citizen, which means it can be assigned to a variable:
+
+* doesn’t mean calling the function and storing its result to a variable.
+* the function definition itself is assigned, and you can use the variable to call the function.
+
+You can also pass a function as the argument to another function. This is often referred to as anonymous functions or lambdas in other programming languages.
+
+Here we will talk about anonymous functions, in the Module's chapter we will see other way to define functions.
+
+Anonymous Functions are delimited by the keywords `fn` and `end`:
 
 [source, elixir]
 ----
@@ -1209,9 +1473,12 @@ iex> add.(1, 2)
 3
 ----
 
-* Functions are “first class citizens” in Elixir meaning they can be passed as arguments
+* Functions are “first class citizens” in Elixir meaning they can be passed as arguments.
 * dot (.) between the variable and parenthesis is required to invoke an anonymous function.
 * CLOSURE: anonymous functions are closures
+
+NOTE: When you encounter a `add.(1,2)` expression in the source code, you know the function invoked is anonyous instead of defined in a module. Without the dot operator, you’d have to parse the surrounding code to understand whether you’re calling a named or an anonymous function.
+
 [source, elixir]
 ----
 iex> add_two = fn a -> add.(a, 2) end
@@ -1221,6 +1488,7 @@ iex> add_two.(2)
 ----
 
 * A variable assigned inside a function does not affect its surrounding environment:
+
 [source, elixir]
 ----
 iex> x = 42
@@ -1231,19 +1499,333 @@ iex> x
 42
 ----
 
+Syntax convention is:
+
+* list of arguments is enclosed in parentheses
+* single argument isn’t enclosed in parentheses
+
+Because functions can be stored in a variable, they can be passed as arguments to other functions. This is often used to allow clients to parameterize generic logic.
+
+For example, the function `Enum.each/2` implements the generic iteration, it takes two arguments:
+
+* an enumerable (Lists, Maps, etc)
+* a one-arity lambda (an anonymous function that accepts one argument).
+
+
+[source, elixir]
+----
+print_element = fn x -> IO.puts(x) endi # Defines the lambda
+Enum.each(
+  [1, 2, 3],
+  print_element
+)
+
+Enum.each(
+  [1, 2, 3],
+  fn x -> IO.puts(x) end # Or with inline anonymous function definition
+)
+----
+
+
+You can use the `&`, the capture operator, to define anonymous functions in a compact way:
+It takes the full function qualifier — a module name, a function name, and an arity — and turns that function into a lambda that can be assigned to a variable.
+
+Elixir makes it possible to directly reference the function and have a more compact lambda definition. Instead of writing `fn x → IO.puts(x) end`, you can write `&IO.puts/1`.
+
+[source, elixir]
+----
+Enum.each(
+          [1, 2, 3],
+          &IO.puts/1
+)
+----
+
+
+The capture operator can also be used to shorten the lambda definition, making it possible to omit explicit argument naming:
+
+* you can turn this definition: `lambda = fn x, y, z -> x * y + z end`
+* into a more compact form: `lambda = &(&1 * &2 + &3)`
+* This snippet creates a three-arity lambda. Each argument is referred to via the &n place- holder, which identifies the nth argument of the function. You can call this lambda like any other: `lambda.(2, 3, 4)``
+
 == References
 
-TODO make_ref
+A reference is an almost unique piece of information in a BEAM instance.
+It’s generated by calling `Kernel.make_ref/0` (or `make_ref`).
+
+According to the Elixir documentation, a reference will reoccur after approximately 2^82 calls. But if you restart a BEAM instance, reference generation starts from the beginning, so its uniqueness (among connected nodes) is guaranteed only during the lifetime of the BEAM instance.
+
+Use cases:
+
+* https://stackoverflow.com/questions/50799883/what-are-some-usages-for-make-ref-function-in-elixir
+*
+
+NOTE: UUID could be a good alternative for references unless you are concerned about the memory load: references are way more efficient. http://erlang.org/doc/efficiency_guide/advanced.html#unique_references
+
+== Ranges
+
+A range is an abstraction that allows you to represent a range of numbers. Elixir even provides a special syntax for defining ranges: `range = 1..2`
+
+* Syntax: start..end
+* Ranges are enumerable
+* range isn’t a special type. Internally, it’s represented as a map that contains range boundaries, footprint of a range is very small, regardless of the size. A million-number range is still just a small map.
+
+[source, elixir]
+----
+Enum.each(
+          1..3,
+          &IO.puts/1
+)
+1
+2
+3
+----
+
+== MapSet
+
+A MapSet is the implementation of a set — a store of unique values, where a value can be of any type. It's a kind of list with the added property of uniqueness of values.
+
+If we did:
+
+[source, elixir]
+----
+iex(4)> set = MapSet.new([1, 1, 1, 2])
+#MapSet<[1, 2]>
+iex(5)> MapSet.size(set)
+2
+----
+
+The element 1 will only appear in there once and no more, the size is 2.
+
+NOTE:  MapSets are actually Hash array mapped trie. https://en.wikipedia.org/wiki/Hash_array_mapped_trie
+
+* MapSet are Enumerable. `Enum.each(days, &IO.puts/1)`
+* MapSet doesn’t preserve the ordering of the items.
+* Check for membership:
+
+[source, elixir]
+----
+iex(2)> days = MapSet.new([:monday, :tuesday, :wednesday]) #MapSet<[:monday, :tuesday, :wednesday]>
+iex(3)> MapSet.member?(days, :monday)
+true
+iex(4)> MapSet.member?(days, :not_in)
+false
+----
+
+MapSet module doc: https://hexdocs.pm/ elixir/MapSet.html
+
+=== MapSet Performance
+
+MapSet are really fast and is really useful when searching for something:
+
+* check existence of an element in **O(log(n))** time
+* You may want to consider using a MapSet rather than a List when searching through a collection depending on your use case.
+
+NOTE: that HashSet is deprecated in the later versions of Elixir
+
+== HashSet
+
+HashSet is deprecated in the later versions of Elixir, use MapSet instead.
+
+== Times and dates
+
+Ref: https://elixirschool.com/en/lessons/basics/date-time/
+TODO: capire meglio come funzionano le timezone
+
+
+In Elixir v1.3, Elixir added four types, known as Calendar types, working with dates and times types:
+
+* `Date` struct. It contains the fields year, month, day ...
+* `Time` struct. It contains the fields hour, minute, second and microseconds.
+* `DateTime` module (with time zone)
+* `NaiveDateTime` module (without time zone)
+
+Elixir v1.8 now defines a `Calendar.TimeZoneDatabase behaviour`, allowing developers to bring in their own time zone databases. By defining an explicit contract for time zone behaviours, Elixir can now extend the DateTime API, adding functions such as DateTime.shift_zone/3. By default, Elixir ships with a time zone database called `Calendar.UTCOnlyTimeZoneDatabase` that only handles UTC.
+
+A date can be created with the `~D` sigil:
+
+[source, elixir]
+----
+iex(1)> date = ~D[2018-01-31]
+~D[2018-01-31]
+
+iex(2)> date.year
+2018
+
+iex(3)> date.month
+1
+----
+
+Useful functions are:
+
+* `Date.day_of_year/1`
+* `Date.quarter_of_year/1`
+* `Date.year_of_era/1`
+* `Date.day_of_era/1`
+* ....
+
+Time can be created with the `~T` sigil:
+
+[source, elixir]
+----
+iex(5)> time = ~T[11:59:12.00007]
+~T[11:59:12.00007]
+
+iex(2)> time.hour
+11
+
+iex(3)> time.minute
+59
+----
+
+There are also some useful functions available in the modules Date (https://hexdocs.pm/ elixir/Date.html) and Time (https://hexdocs.pm/elixir/Time.html):
+
+* `Time.utc_now` get the current time
+* `Date.utc_today` get the current date
+
+The naive version can be created with the `~N` sigil.
+The DateTime module can be used to work with datetimes in some timezone. Unlike with other types, no sigil is available. Instead, you can create a datetime by using Date- Time functions
+
+
+[source, elixir]
+----
+iex(1)> naive_datetime = ~N[2018-01-31 11:59:12.000007]
+iex(2)> naive_datetime.year
+2018
+iex(3)> naive_datetime.hour
+11
+
+iex(4)> datetime = DateTime.from_naive!(naive_datetime, "Etc/UTC")
+iex(5)> datetime.year
+2018
+iex(6)> datetime.hour
+11
+iex(7)> datetime.time_zone
+"Etc/UTC"
+
+
+iex(4)> datetime = DateTime.from_naive!(naive_datetime, "Europe/Rome")
+iex(5)> datetime.year
+2018
+iex(6)> datetime.hour
+11
+iex(7)> datetime.time_zone
+"Etc/UTC"
+----
+
+
+== RegEx
+
+Regular expressions, while they can be utterly cryptic, entirely illegible beasts, they are also the most direct language available to programmers for writing instructions on how to process text.
+
+Elixir’s regex is based on PCRE http://www.pcre.org/[Perl Compatible Regular Expressions]
+
+
+For a general refresh about Regex see: link:regex.adoc{outfilesuffix}[Regex Guide]
+
+Other useful resources more related to Elixir:
+
+* https://regexr.com/[Online editor] Support PCRE
+* http://www.elixre.uk/[Elixir Regex Online Editor]
+* http://erlang.org/doc/man/re.html#regexp_syntax[Erlang’s regex syntax details] — documentation.
+* http://www.pcre.org/original/doc/html/pcrepattern.html[PCRE syntax sheet] — Erlang’s regex is derived directly from this page.
+* https://hexdocs.pm/elixir/Regex.html[Elixir Regex Module Doc]
+* http://elixir-lang.org/docs/stable/elixir/Regex.html[http://elixir-lang.org/docs/stable/elixir/Regex.html]
+* https://blog.grillwork.io/https-blog-grillwork-io-mastering-elixir-regex-e5b9f46671af
+
+=== Intro
+
+Elixir’s sigils and regular expressions are all just macros! You can create regexes using `Regex.compile!/2` or the sigil forms `~r` or `~R`, and they are compiled to Erlang’s `:re` module in the same way.
+
+You can delimit the regex sigil in several ways with Elixir:
+
+* `~r/hello/`
+* `~r|hello|`
+* `~r"hello"`
+* `~r'hello'`
+* `~r(hello)`
+* `~r[hello]`
+* `~r{hello}`
+* `~r<hello>`
+
+
+You can use the `~r{<regex>}` sigil or `~r/<regex>/`. Using the curly brackets version is more convenient as you can match / forward slash characters without having to escape it.
+
+
+
+The `Regex` module basic methods are the following:
+
+* `run`
+* `scan`
+* `split`
+* `replace`
+* `match?`
+
+=== Run
+
+`run` runs the regular expression against the given string until the first match.
+
+[source, elixir]
+----
+iex> Regex.run(~r{c(d)}, "abcd")
+["cd", "d"]
+iex> Regex.run(~r{e}, "abcd")
+nil
+----
+
+=== Scan
+
+`scan` performs run several times collecting all matches of the regular expression.
+
+[source, elixir]
+----
+iex> Regex.scan(~r/c(d|e)/, "abcd abce")
+[["cd", "d"], ["ce", "e"]]
+----
+
+=== Split
+
+`split` splits the given target based on the given pattern.
+
+[source, elixir]
+----
+iex> Regex.split(~r/-/, "a-b-c")
+["a", "b", "c"]
+----
+
+=== Replace
+
+`replace` takes in a regex, a string and a replacement, returns a new string where all matches are replaced by the replacement.
+
+Documentation[https://hexdocs.pm/elixir/Regex.html#replace/4]
+
+[source, elixir]
+----
+iex> Regex.replace(~r/b/, "abc", "d")
+"adc"
+
+iex> Regex.replace(~r/b/, "abc", "[\\0]") #\\N refers to the Nth character of the match
+"a[b]c"
+
+iex> Regex.replace(~r/a(b|d)c/, "abcadc", "[\\1]")
+"[b][d]"
+
+iex> Regex.replace(~r/a(b|d)c/, "abcadc", fn _, x -> "[#{x}]" end) # You can also pass functions as the replacement argument
+"[b][d]"
+----
+
+=== Match
+
+`match?` Test if a string matches `true = Regex.match?( ~r/foo/ , "Hello foo")``
+
 
 == Collections
 
 Elixir collections can hold values of any type (including other collections).
 
-=== Best Practices
+== Collection: Tuples
 
-=== Tuples
+Are ordered untyped collection of a fixed number of elements.
 
-Ordered collection
 
 `{ 1, 2 }      { :ok, 42, &quot;next&quot;  }   { :error, :enoent }`
 
@@ -1251,6 +1833,7 @@ CONVENTION:
 
 * A typical Elixir tuple has two to four elements, any more and you’ll probably want to look at maps, or structs.
 * It is common for functions to return a tuple where the first element is the atom :ok. A common idiom is to write matches that assume success
+
 [source, elixir]
 ----
 iex> { :ok, file } = File.open("Rakefile")
@@ -1273,27 +1856,76 @@ iex> count   
 42           
 iex> action  
 "next"
-
 ----
 
-=== Lists
+* To extract an element from the tuple use the `Kernel.elem/2` function, which accepts a tuple and the zero-based index of the element. Recall that the Kernel module is auto-imported, so you can call elem instead of Kernel.elem.
+* To modify an element of the tuple, you can use the `Kernel.put_elem/3`
 
-`[1,2,3]`
+[source, elixir]
+----
+iex(1)> person = {"Bob", 25}
+{"Bob", 25}
+iex(2)> age = elem(person, 1)
+25
 
-Are like linked list:
+iex(3)> put_elem(person, 1, 26)
+{"Bob", 26}
+----
+
+Recall that data in Elixir is immutable, so you can’t do an in-memory modification of a value.
+
+
+
+== Collection: Lists
+
+Usecase: manage dynamic, variable-sized collections of data
+
+The syntax deceptively resembles arrays from other languages: `[1,2,3]`
+
+List in Elixir are like linked list:
 
 * head contains a value
 * tails contains the list
-* O(1) easy to traverse linearly
-* O(n) expensive to access in random order (to get to the nth element, you have to scan through n–1 previous elements)
-[source, elixir]
-----
-“Chapter 7, Lists and Recursion, ”
-----
 
-Excerpt From: Thomas, Dave. “Programming Elixir: Functional |&gt; Concurrent |&gt; Pragmatic |&gt; Fun.” iBooks.
+Operations with Complexity O(1)
+  * traverse linearly
+  * push into the the top  `new_list = [:new_element | a_list]`
+  * pop from the top `List.first([1, 2, 3])` or better for recursion:
+```
+a_list = [5, :value, true]
+iex(3)> [h|t] = a_list
+[5, :value, true]
+iex(4)> h
+5
+iex(5)> t
+[:value, true]
+```
+  * get the head `hd([1, 2, 3, 4])`
+  * get the tail `tl([1, 2, 3, 4])`
 
-remove the head is cheap because also if the list is immutable you can return a pointer to the tail structure (which contains the whole data except the head)
+NOTE: see "Internals: recursive list definition" to understand why this is the complexity
+
+Operations with Complexity O(n)
+  * expensive to access in random order (to get to the nth element, you have to scan through n–1 previous elements) and to ther the length `Kernel.length/1`
+  * modifying an arbitrary element has a complexity
+  * appending to the end is expensive because it always takes n steps, n being the length of the list.
+  * Concatenation `[1, 2, 3] ++ [4, 5]` the complexity is O(n), n being the length of the left list (the one you’re appending to).
+  * Membership `1 in [1,2,3,4]`
+  * `Kernel.length/1`
+  * `List.replace_at/3`
+  * `List.insert_at`
+
+* Lists are never a good fit when direct access is called for. For those purposes, tuples, maps, or a higher-level data structure is appropriate.
+*  Lists are most efficient when new elements are pushed to the top, or popped from it.
+
+WARNING: Avoid adding elements to the end of a list. Lists are most efficient when new elements are pushed to the top, or popped from it.
+
+* For a detailed reference, see the documentation for the List module (https://hexdocs.pm/elixir/List.html).
+* There are also many helpful services in the Enum module (https://hexdocs.pm/elixir/Enum.html). The Enum module deals with many different enumerable structures and is not limited to lists. The concept of enumerables will be explained in detail in when we discuss protocols.
+
+* To get an element of a list, you can use the Enum.at/2 function: iex(3)> Enum.at(prime_numbers, 3)
+
+Cheatsheet lists:
 
 [source, elixir]
 ----
@@ -1303,41 +1935,139 @@ remove the head is cheap because also if the list is immutable you can return a 
 true         
 iex> "wombat" in [1, 2, 3, 4]
 false        
+
+iex(3)> Enum.at(prime_numbers, 3)
+7
+
+prime_numbers = [2, 3, 5, 7]
+length(prime_numbers)          # get the lenght
+
+Enum.at(prime_numbers, 3)      # get an element of a list
+
+new_primes = List.replace_at(prime_numbers, 0, 11)
+[11, 3, 5, 7]
+
+List.insert_at(prime_numbers, 3, 13)
+[11, 3, 5, 13, 7]
 ----
+
+==== Internals: recursive list definition
+
+REF: EIA_2nd pag 37
+
+An alternative way of looking at lists is to think of them as recursive structures.
+
+A list can be represented by a pair (head, tail), where:
+
+* `head` is the first element of the list
+* `tail` “points” to the (head, tail) pair of the remaining elements
+
+In Elixir, there’s a special syntax to support recursive list definition: `a_list = [head | tail]`
+
+Examples:
+
+```
+iex(1)> [1 | []]
+[1]
+
+iex(2)> [1 | [2 | []]]
+[1, 2]
+
+iex(3)> [1 | [2]]
+[1, 2]
+
+iex(4)> [1 | [2, 3, 4]]
+[1, 2, 3, 4]
+
+#a canonical recursive definition of a list:
+iex(1)> [1 | [2 | [3 | [4 | []]]]]
+[1, 2, 3, 4]
+```
+
+To get the head or the tail of the list, you can use the `hd` or `tl` function.
+
+```
+iex(1)> hd([1, 2, 3, 4])
+1
+
+iex(2)> tl([1, 2, 3, 4])
+[2, 3, 4]
+```
+
+NOTE: Both operations are O(1), because they amount to reading one or the other value from the (head, tail ) pair.
 
 ==== Keywords List
 
-* Allow more entries for a given key (!= map)
+A keyword list is a special case of a list:
 
-SHORTCUT to generate a list of key value tuples (a KEYWORD LIST):
+* each element is a two-element tuple,
+* and the first element of each tuple is an atom.
+* The second element can be of any type.
 
-`[ name: &quot;Dave&quot;, city: &quot;Dallas&quot;, likes: &quot;Programming&quot; ]`
+`iex(1)> days = [{:monday, 1}, {:tuesday, 2}, {:wednesday, 3}]`
 
-Elixir converts it into a list of two-value tuples:
+A Syntax SHORTCUT to generate the same list of key value tuples (a KEYWORD LIST) is:
 
-`[ {:name, &quot;Dave&quot;}, {:city, &quot;Dallas&quot;}, {:likes, &quot;Programming&quot;} ]`
+`iex(2)> days = [monday: 1, tuesday: 2, wednesday: 3]`
 
-`DB.save record, [ {:use_transaction, true}, {:logging, &quot;HIGH&quot;} ]` is equivalent to `DB.save record, use_transaction: true, logging: &quot;HIGH&quot;`
+Keyword lists are often used for small-size key/value structures, where keys are atoms. Many useful functions are available in the Keyword module (https://hexdocs.pm/ elixir/Keyword.html).
+
+For example, you can use Keyword.get/2 to fetch the value for a key: `Keyword.get(days, :monday)`
+Or Just as with maps, you can use the operator [] to fetch a value: `days[:tuesday]``
+
+WARNING: the complexity of a lookup operation is O(n), it's a list!
+
+USECASE: Keyword lists are most often useful for allowing clients to pass an arbitrary number of optional arguments.
+
+Example:
+
+[source, elixir]
+----
+iex(6)> IO.inspect([100, 200, 300])
+[100, 200, 300]
+
+iex(7)> IO.inspect([100, 200, 300], [width: 3])
+[100,
+200,
+300]
+----
+
+In fact, this pattern is so frequent that Elixir allows you to omit the square brackets if the last argument is a keyword list:
+
+[source, elixir]
+----
+iex(8)> IO.inspect([100, 200, 300], width: 3, limit: 1)
+[100,
+...]
+----
+
+Another example:
+`DB.save record, [ {:use_transaction, true}, {:logging, "HIGH"} ]` is equivalent to `DB.save record, use_transaction: true, logging: "HIGH";`
 
 
 Elixir allow also a more implicit conversion:
 
-“We can leave off the brackets if a keyword list appears as the last item in any context where a list of values is expected.
+In general we can leave off the brackets if a keyword list appears as the last item in any context where a list of values is expected:
 
-`iex&gt; [1, fred: 1, dave: 2]`
-
-Will be converted into `[1, {:fred, 1}, {:dave, 2}]`
-
-and printed as `{1, [fred: 1, dave: 2]}`
+* `[1, fred: 1, dave: 2]`
+* Will be converted into `[1, {:fred, 1}, {:dave, 2}]`
+* and printed as `{1, [fred: 1, dave: 2]}`
 
 in pratica una tuple di 2 elementi dentro una lista viene sempre stampata come una keyword list
 
-=== Maps
+NOTE: It’s best accept function optional parameters as keyword lists
+
+You may wonder if it’s better to use maps instead of keywords for optional arguments. A keyword list can contain multiple values for the same key. In addition, you can control the ordering of keyword list elements—something that isn’t possible with maps. Finally, many functions in standard libraries of Elixir and Erlang take their options as keyword lists. It’s best to stick to the existing convention and accept optional parameters via keyword lists.
+
+== Collection: Maps
+
+A map is a key/value store, where keys and values can be any term.
 
 * Allow only one entry for a given key (!= keyword list)
 * Efficient as they grow
 * can be used with pattern matching
 * use it when you need associative arrays
+
 [source, elixir]
 ----
 states = %{ "AL" => "Alabama", "WI" => "Wisconsin" }
@@ -1430,7 +2160,7 @@ map = %{ {"hi"} => "foo" }
 map = %{ [1,"hi"] => "JB" }
 ----
 
-=== Structs
+== Collection: Structs
 
 http://elixir-lang.org/getting-started/structs.html[http://elixir-lang.org/getting-started/structs.html]
 
@@ -1576,6 +2306,30 @@ WARNING: Are Records will be DEPRECATED http://elixir-lang.org/blog/2014/04/21/e
 
 Records in Elixir are simply tuples supported by modules which store record metadata
 
+= Immutability
+
+Elixir data can’t be mutated. Every function returns the new, modified version of the input data.
+
+The modification of the input will result in some data copying, BUT generally, most of the memory will be shared between the old and the new version.
+
+For more details EIA_2nd pag 62
+
+Keep in mind that:
+
+* tuples are always copied, but the copying is shallow.
+* Lists, however, have different properties:
+  * When you modify the nth element of a list, the new version will contain shallow copies of the first n – 1 elements.
+  * In contrast, pushing an element to the top of a list doesn’t copy anything
+
+
+Benefits:
+
+* side-effect-free functions and data consistency.
+
+Elixir isn’t a pure functional language:
+
+* functions may still have side effects (ex: write something to a file and issue a database or network call, which causes it to produce a side effect).
+* But you can be certain that a function won’t modify the value of any variable.
 
 = Sigils
 
@@ -1650,12 +2404,12 @@ The Pipe operator makes easy to combine functions.
 
 In functional languages, you will often want to combine functions by passing the result of one function as the argument to the next.
 
-The pipe operator `|&gt;` passes the result of an expression as the first parameter of another expression.
+The pipe operator `|>` passes the result of an expression as the first parameter of another expression.
 
 Example:
 
 * `foo(bar(baz(new_function(other_function()))))` is quite messy
-* `other_function() |&gt; new_function() |&gt; baz() |&gt; bar() |&gt; foo()` has the same meaning but much more readable
+* `other_function() |> new_function() |> baz() |> bar() |> foo()` has the same meaning but much more readable
 
 If you have more than one parameters, for example the `String.ends_with?(string, suffixes)` function, this syntax are equivalent:
 
