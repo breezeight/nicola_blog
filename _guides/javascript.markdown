@@ -14,14 +14,34 @@ categories: ["javascript"]
 
 # References:
 
+Books to start programming from scretch with Javascript:
+
+* [YDKJSY](https://github.com/getify/You-Dont-Know-JS) 
+ *  It's not just for someone picking up the language for the first time (though it's for them, too); it's for all software craftspeople who want to master their tools, who want to understand the ins and outs of their trade, and who want to select the proper methods for solving problems.
+* [EJS]Eloquent_JavaScript(https://eloquentjavascript.net/) 3rd edition 
+
 Books:
 
+* [YDKJSY](https://github.com/getify/You-Dont-Know-JS) 
+* [EJS]Eloquent_JavaScript(https://eloquentjavascript.net/) 3rd edition
+ * All code in this book may also be considered licensed under an MIT license.
+ * [GITHUB](https://github.com/marijnh/Eloquent-JavaScript)
+ * License "CC BY-NC 3.0"
 * [SOJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Secrets_of_the_JavaS.pdf)    http://www.manning.com/resig/
 * [FJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Functional_JavaScript.pdf)
 * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
     Mozilla Developer Network - Javascript
 * [FLJS](https://github.com/getify/Functional-Light-JS) Functional-Light JavaScript
 * [Codeacademy](http://www.codecademy.com/en/tracks/javascript)
+
+Books By Dr. Axel Rauschmayer [Exploring JS: JavaScript books for programmers](http://exploringjs.com/):
+
+* [JSFIP](http://exploringjs.com/impatient-js/index.html) JavaScript for impatient programmers (ES1–ES2018)
+  * A full modern guide to the language, No required knowledge (apart from programming).
+  * More compact than my other books, which go into more detail.
+* [EES6](http://exploringjs.com/es6.html) "Exploring ES6", Covers what’s new in ES6 (relative to ES5)
+* [EES20162017](http://exploringjs.com/es2016-es2017.html)  "Exploring ES2016 and ES2017", Covers what’s new in ES2016 and ES2017 (relative to ES6)
+* [EES20182019](http://exploringjs.com/es2018-es2019/index.html)  "Exploring ES2018 and ES2019", Covers what’s new in ES2018 and ES2019 (relative to ES2017)
 
 Blogs:
 
@@ -37,6 +57,12 @@ Video Courses:
 MISC
 
 * My Evernote about NodeJS: https://www.evernote.com/shard/s106/nl/2147483647/c61f9319-9f5c-4a91-b662-46bb5a8b644e/
+* ES6 in Depth by Mozilla: https://hacks.mozilla.org/category/es6-in-depth/
+* Full list of ES6 new features: http://es6-features.org
+
+# Glossary
+
+https://developer.mozilla.org/en-US/docs/Glossary
 
 # TODO
 typeof -> how does it works?
