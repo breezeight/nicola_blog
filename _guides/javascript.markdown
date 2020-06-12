@@ -67,6 +67,69 @@ https://developer.mozilla.org/en-US/docs/Glossary
 # TODO
 typeof -> how does it works?
 
+# Package Manager
+
+## Package.json syntax and SEMVER
+
+[Blog Post](https://bytearcher.com/articles/semver-explained-why-theres-a-caret-in-my-package-json/)
+
+Semver uses three part version number like `3.9.2` and call these three numbers from left to right as:
+
+* `major number`: 3  
+* `minor number`: 9
+* `patch number`: 2
+
+The basic contract for the module maintainer making changes is
+
+* backward incompatible change increments the major number
+* new functionality that is backwards compatible increments the minor number
+* simple bug fix to existing functionality increments the patch number
+
+When executing npm install in a clean project directory, the version that satisfies package.json is installed for each dependency. Instead of specifying in package.json the exact version to be installed, npm allows you to widen the range of accepted versions. You can allow newer patch level version with tilde (~) and newer minor or patch level version with caret (^). The default when using --save is to use caret (^).
+
+
+https://docs.npmjs.com/misc/semver
+
+Tilde Ranges, Allows patch-level changes if a minor version is specified on the comparator. Allows minor-level changes if not.:
+
+* Ex: `~1.2.3` means `>=1.2.3` and `<1.3.0`
+* Ex: `~1.2`   means `>=1.2.0` and `<1.3.0`
+* Ex: `~1`     means `>=1.0.0` and `<2.0.0`
+
+
+Caret Ranges ( ex: ^1.2.3 ) Allows changes that do not modify the left-most *non-zero digit* in the [major, minor, patch]:
+
+* Here `1` is the left-most non zero digit: `^1.2.3` means `>=1.2.3 and <2.0.0`
+* Here `2` is the left-most non zero digit: `^0.2.3` means `>=0.2.3 and <0.3.0`
+* Here `3` is the left-most non zero digit: `^0.0.3` means `>=0.0.3 and <0.0.4`
+
+NOTE: caret is the standard behavior
+
+
+## NPM
+
+## NPX
+An npm package runner — helps to execute packages without installing explicitly.
+
+Is included since  npm@5.2.0
+
+https://hackernoon.com/npx-npm-package-runner-7f6683e4304a
+
+## YARN
+
+List all installed package of a project :
+
+* [https://yarnpkg.com/lang/en/docs/cli/list/](doc)
+* all `yarn list --depth=0`
+* all and their dependencies `yarn list`
+* `yarn list --depth=0 --pattern react-native-localization`
+
+
+Perform a vulnerability audit against the installed packages:
+
+* [https://yarnpkg.com/en/docs/cli/audit](doc)
+* `yarn audit`
+
 # Standard Built-in objects
 
 Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
