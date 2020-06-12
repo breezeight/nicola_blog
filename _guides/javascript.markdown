@@ -2500,3 +2500,39 @@ https://www.npmjs.com/package/resolve
 * https://github.com/joyent/node/blob/master/lib/module.js#L380
 * What is the purpose of Node.js module.exports and how do you use it? http://stackoverflow.com/questions/5311334/what-is-the-purpose-of-node-js-module-exports-and-how-do-you-use-it
 
+
+# Browserify
+
+WARNING: capire se è ancora in uso nel 2019
+
+http://browserify.org/#install
+
+Browserify is a tool for compiling node-flavored commonjs modules for the browser:
+
+* Sharing code between Node.js and the browser
+* The module system that browserify uses is the same as node, so packages published to npm that were originally intended for use in node but not browsers will work just fine in the browser too.
+* people are publishing modules to npm which are intentionally designed to work in both node and in the browser using browserify and many packages on npm are intended for use in just the browser. npm is for all javascript, front or backend alike.
+
+
+* Getting started: https://github.com/browserify/browserify-handbook
+
+* https://blog.codecentric.de/en/2014/02/cross-platform-javascript/
+* introduction to Browserify and Grunt.js and how to leverage Browserify to write code that runs on Node.js and in the browser.
+
+ Node, of course, provides a require method in its environment that serves to synchronously load dependencies. The client side, however, is an entirely different beast. There is no require available natively in browsers, so Browserify implements it for us and gives us access to it by passing it into these closures.
+
+# Babel
+
+https://babeljs.io/docs/en/
+
+## What is Babel?
+
+Babel is a toolchain that is mainly used to convert ECMAScript 2015+ code into a backwards compatible version of JavaScript in current and older browsers or environments.
+
+Here are the main things Babel can do for you:
+
+* Transform syntax
+* Polyfill features that are missing in your target environment (through @babel/polyfill)
+* Source code transformations (codemods)
+* And more! (check out these videos for inspiration)
+
