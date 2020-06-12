@@ -1745,6 +1745,129 @@ Ref: http://benalman.com/news/2010/11/immediately-invoked-function-expression/
 
 in JavaScript, parens can’t contain statements.
 
+## Symbols
+
+Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
+
+The Symbol() function creates a new symbol of type `symbol`. Symbol is a primitive value (new in ECMAScript 2015).
+(It's a kind of factory)
+
+Syntax: `Symbol([description])`
+
+To create a new primitive symbol, you write Symbol() with an optional string as its description:
+
+```
+var sym1 = Symbol();
+var sym2 = Symbol('foo');
+var sym3 = Symbol('foo');
+```
+
+The above code creates three new symbols. Note that Symbol("foo") does not coerce the string "foo" into a symbol.
+Each symbol is unique, distinct from all others (even others that have the same description):
+
+```
+Symbol('foo') === Symbol('foo'); // false
+```
+
+The following syntax with the new operator will throw a TypeError: `var sym = new Symbol(); // TypeError`
+
+In JS, identifiers and most property keys are still considered strings. Symbols are just an extra option.
+
+### Use Symbols as Object Properties: Symbol-Keyed properties
+
+```
+// create a unique symbol
+var isMoving = Symbol("isMoving");
+var element = {};
+
+// Symbol-Keyed properties can be used only with the [] notation. NOTE that the
+element[isMoving] = true
+
+// string based properties can be acces
+element['foo']="bar"
+element.foo="baz"
+
+```
+
+A few notes about this code:
+
+* The string `"isMoving"` in `Symbol("isMoving")` is called a `description`. It’s helpful for debugging. It’s shown when you write the symbol to console.log(), when you convert it to a string using .toString(), and possibly in error messages. That’s all.
+
+* element[isMoving] is called a **symbol-keyed property** . It’s simply a property whose name is a symbol rather than a string. Apart from that, it is in every way a normal property.
+
+* symbol-keyed properties can’t be accessed using dot syntax, as in `obj.name`. They must be accessed using square brackets.
+
+* It’s trivial to access a symbol-keyed property if you’ve already got the symbol. The above example shows how to get and set element[isMoving], and we could also ask if (isMoving in element) or even delete element[isMoving] if we needed to.
+
+On the other hand, all of that is only possible as long as isMoving is in scope. This makes symbols a mechanism for weak encapsulation: a module that creates a few symbols for itself can use them on whatever objects it wants to, without fear of colliding with properties created by other code.
+
+### Well-known symbols
+
+JavaScript has a set of Symbols already allocated, used to access standard object's properties. They represent internal language behaviors and they can be accessed using the Symbol's properties.
+
+For example : Iteration symbols
+
+* `Symbol.iterator` : A method returning the default iterator for an object. Used by `for...of`.
+* `Symbol.asyncIterator` : A method that returns the default AsyncIterator for an object. Used by for `await...of`.
+
+A full references of this Symbols: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#Well-known_symbols
+
+### Global symbol registry: Shared symbols
+
+Ref: https://developer.mozilla.org/en-US/docs/Glossary/Symbol#Global_symbol_registry
+
+* `Symbol.for("tokenString")` returns a symbol value from the registry,
+* `Symbol.keyFor(symbolValue)` returns a token string from the registry;
+
+Each is the other's inverse, so the following is true: `Symbol.keyFor(Symbol.for("tokenString")) == "tokenString"; // true`
+
+
+### List Symbols of an Object
+
+`Reflect.ownKeys()`
+
+`Object.getOwnPropertySymbols()`:
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols
+
+### Symbol usescases
+
+Ref:
+
+* https://hacks.mozilla.org/2015/06/es6-in-depth-symbols/
+* https://stackoverflow.com/questions/21724326/what-is-the-motivation-for-bringing-symbols-to-es6
+
+Symbols are values that programs can create and use as property keys without risking name collisions.
+
+Just like a string or number, you can use a symbol as a property key. Because it’s not equal to any string, this symbol-keyed property is guaranteed not to collide with any other property.
+
+NOTE: The description of the Symbol doesn't affect the uniqueness
+
+For example if we have two animation framework that want to set a property on a dom element.
+
+```
+// create a unique symbol
+var isMovingFirstLib = Symbol("isMoving");
+
+var isMovingSecondLib = Symbol("isMoving");
+
+var myFakeDomElement = {}
+
+function animateFirstLib(element) {
+  element[isMovingFirstLib] = true
+}
+
+function animateSecondLib(element) {
+  element[isMovingSecondLib] = true
+}
+
+animateFirstLib(myFakeDomElement)
+animateSecondLib(myFakeDomElement)
+
+Reflect.ownKeys(myFakeDomElement) // Two unique property are set: [ Symbol(isMoving), Symbol(isMoving) ]
+
+```
+
 
 # Is JavaScript a pass-by-reference or pass-by-value language?
 
