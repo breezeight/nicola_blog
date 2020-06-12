@@ -2120,3 +2120,383 @@ Esperanto is a tool for converting ES6 modules to AMD, CommonJS or UMD. It's bui
 How use it?
 
 * Ember.js
+
+## Node Modules System
+
+Ref:
+
+* [Intro doc](https://github.com/maxogden/art-of-node/#modular-development-workflow)
+* [Official doc](https://nodejs.org/api/modules.html)
+* [Module Intenals] https://medium.com/better-programming/node-js-modules-basics-to-advanced-2464001229b6
+
+
+TODO:
+
+* Does NodeJS support es6 modules in 2019? https://medium.com/the-node-js-collection/an-update-on-es6-modules-in-node-js-42c958b890c
+* `export`
+* `require`
+* `require.resolve`
+
+In Node, the modularity is a first-class concept. In the Node.js module system, each file is treated as a separate module.
+
+So, if you are creating, let’s say, a demo.js file, this implies you are creating a module in Node. Basically modules help us encapsulating our code into manageable chunks.
+Anything that we define in our module (i.e. in our JavaScript file) remains limited to that module only, unless we want to expose it to other parts of our code.
+
+So, anything we define inside our module remains private to that module only.
+
+The NodeJS module system is derived from CommonJS.
+
+One of the useful tools Node.js adds on top of standard ECMAScript is a notation for defining and using modules.
+
+`require()` is a function for loading code from other files, it returns the exports of the module name that you specify.
+
+```
+var uniq = require('uniq');
+var nums = [ 5, 2, 1, 3, 2, 5, 4, 2, 0, 1 ];
+console.log(uniq(nums));
+```
+
+Note that `require()` returned a function and we assigned that return value to a variable called uniq. We could have picked any other name and it would have worked the same. `require()` returns the exports of the module name that you specify.
+
+TODO:
+
+* `export`
+* `require`
+* `require.resolve`
+
+A "module" exports objects and functions by adding them to exports, and another module can import it by using require. The semantics are explained well in the official documentation.
+
+`module.exports` is the object that's actually returned as the result of a `require` call.
+
+
+To test out which module actually gets loaded by node, you can use the `require.resolve('some_module')` command
+
+In the next paragraphs we will see how modularity was implement before NodeJS and then how NodeJS implemented modularity.
+
+### How Modularity Worked Before ES5 and NodeJS
+Ref: https://medium.com/better-programming/node-js-modules-basics-to-advanced-2464001229b6
+
+Prior to modules in Node.js or ES5 modules, the modularity in JavaScript was achieved using IIFE (Immediately Invoked Function Expression), which is, as the name suggests, a function which is invoked immediately after it is defined.
+
+```
+(function () {
+  const sum = (a, b) => {
+    return a + b;
+  };
+  const result = sum(2, 3)
+  console.log(result)
+})()
+
+sum(5, 8) // ReferenceError: sum not defined
+```
+
+Now, if we run this code, we will get the output as 5.
+The function sum is defined inside this IIFE and if any code outside that IIFE tries to access the sum function, it will result in ReferenceError: sum is not defined, i.e. the sum function is private to this particular IIFE.
+So, how do we access this sum function outside of this IIFE?
+
+```
+const exportObj = {};
+(function () {
+  const sum = (a, b) => {
+    return a + b;
+  };
+  const result1 = sum(2, 3)
+  console.log(result1) //5
+  exportObj.sum = sum;
+})()
+const result2 = exportObj.sum(5, 8)
+console.log(result2) // 13
+```
+
+To expose our sum function outside IIFE, we create an object (exportObj) outside IIFE, then, through closure, we access that object inside our IIFE and assign our sum function to one of its property.
+After that, we call the sum function on the exportObj object outside the IIFE. This time, we are able to get result without any errors.
+
+### How Modularity Works in Node.js
+
+We have seen above that, to achieve modularity prior to Node and ES5, we used functions.
+In Node.js, this wrapping function that wraps our code is not written by us but is automatically added by Node for us.
+
+Let’s look at an example to understand it better. Let’s say we defined one file, named sum.js, with the following content:
+
+```
+const sum = (a, b) => {
+  return a + b;
+};
+
+const result = sum(2, 3)
+console.log(result)
+```
+https://gist.github.com/udittyagi/e4b49683361c49fbff2fb3c5e62f93e7#file-sum-js
+
+So, in Node.js, this code is wrapped and looks something like this in our running environment:
+
+```
+(function (exports, require, module, __filename, __dirname) {
+  // Module code actually lives in here
+  const sum = (a, b) => {
+    return a + b;
+  };
+
+  const result = sum(2, 3)
+  console.log(result)
+});
+```
+https://gist.github.com/udittyagi/aa3c99a05504a210fa44249ac1477dad#file-summodule-js
+
+
+Everything is wrapped as we wrapped in our IIFE but, here, this wrapper function gets some arguments. We will discuss them in detail later.
+
+To check whether your code is wrapped in a function and whether we are receiving these arguments, or not. In JavaScript, we know that all functions receive an argument called arguments, so, if we get arguments in our code, it confirms that our code is inside a function: `console.log('Arguments given by node', arguments)`
+
+Example HERE: https://github.com/breezeight/javascript_nicola_courses/blob/master/node-modules-under-the-hood/README.md
+
+We can see that we get the output of arguments (arguments is an array-like object, whose keys are numeric, which is passed to every function by default). So, it confirms that our code is wrapped inside a function and that function receives five arguments, which are given by Node.js.
+Let’s discuss these five arguments one-by-one.
+
+
+#### Exports
+
+This is an object used to expose our functionalities in one module, so these functionalities can be used in other modules.
+
+We can expose anything, this can be a function, variable, constants, classes, etc. As we have done above in the How modularity worked before section, we have created a property on exportObj and then assigned a value to it.
+
+The same way we do it with exports object — we create a property on the exports object and then assign a value, or whatever you want to expose (variable, function, classes, constants), to that property.
+
+```
+const sum = (a, b) => {
+  return a + b;
+};
+const multiply = (a, b) => {
+  return a * b
+};
+exports.multiply = multiply;
+```
+
+Here, we expose the multiply function by assigning the function reference to a newly created multiply property on the exports object, i.e. multiply function is only available outside this module, not the sum function.
+Note: Do not provide a new reference to this exports object, i.e. don’t assign a new object to the exports argument. (We will discuss why not to do this.)
+
+
+#### Require
+
+This is a function that we use to import or require the functionalities from other modules. It is a compliment to the exports object, which is used to export functionalities. require, on the other hand, is used to import those functionalities.
+
+To require a module, we call the require function with either the path of the module (absolute or relative), which starts with /, ./, or ../ in the case of local modules, or the name of the module in the case of core modules and third-party modules.
+Then, it returns the exported content of the module that we require.
+
+Note: Basically, we get the reference of the object module.exports (we will discuss this) when we require a module.
+
+```
+const os = require('os'); //node's core module
+const express = require('express') // third party module
+const operations = require('./operations.js'); //local module
+
+//Do something with these modules
+const result1 = operations.multiply(2, 4);
+console.log('Multiply Result: ', result1)// 8
+
+const result2 = operations.sum(2, 3);// Error, as it is not exported.
+console.log('Sum Result: ', result2)
+```
+
+We implemented two functions, sum and multiply, but we have exported only multiply, so only that one is available outside of the operations.js module. That is why we will get an error if we try to call sum.
+Node’s require function has a lot more to offer than just importing the functionalities, we will dive deeper into this.
+
+#### Module
+
+This is the third argument passed, the module variable is a reference to the object representing the current module. It has various useful properties which we can see in the terminal with `console.log(module)` in any module.
+
+The module object contains all the data regarding our module, such as:
+
+* “Who is its parent? Who are its children?
+* What are all the paths it took to resolve third-party modules? 
+* Is it completely loaded, or not?”
+
+But the most important property of the module object is the exports property, we can also use this exports property on the module to export our data, rather than using exports arguments of the wrapper function.
+
+```
+const sum = (a, b) => {
+  return a + b;
+};
+const multiply = (a, b) => {
+  return a * b
+};
+
+module.exports = {
+  sum,
+  multiply
+}
+```
+
+So, this is the second way of exporting functionalities out of our module.
+Note: We will see the difference between exports and module.exports, and how they are connected to each other.
+
+Summary of the module object
+
+* module.filename is the fully resolved filename of the module.
+* module.id is the identifier for the module. Typically, this is the fully resolved filename, except for the main module, it is ‘.’ (period), see pic 3. Main module is the module that spins up your Node application, e.g if we write node app.js in the terminal, then app.js is the main module.
+* module.path is the directory name of your name module.
+* module.parent is an object which refers to the parent module.
+* module.children is an array of all the children module objects.
+* module.loaded is a boolean property which tells us whether or not the module is done loading, or is in the process of loading.
+* module.paths is an array of all the paths that Node will look up to resolve a module.
+
+TODO: rileggere la question di delle [CIRCULAR] reference qua https://medium.com/better-programming/node-js-modules-basics-to-advanced-2464001229b6
+
+Some of you might have noticed in pic 2 and pic 3, this weird [Circular] thing in module parent or children property. So, what is that?
+Actually, [Circular] defines a circular reference, as in pic 2, which prints out the module object of operations.js. The parent property of the operations.js module references the app.js module.
+Similarly, operations.js is a child module of app.js, so its children property should have a reference to the operations.js module. And, similarly, the operations.js module parent property again refers to the app.js module, so it will go into this infinite loop.
+To prevent this infinite loop, Node sees that, if any module’s parent or child is already loaded, it will not load them again and show this [Circular] instead.
+
+#### filename
+This is a variable that contains the absolute path of the current module.
+Given two modules: a and b, where b is a dependency of a and there is a directory structure of:
+/User/home/node_blog/a.js
+/User/home/node_blog/node_modules/b/b.js
+So, if we do console.log(__filename)within b.js, we will get /User/home/node_blog/node_modules/b/b.js. If we do console.log(__filename) within a.js, we will get /User/home/node_blog/a.js.
+
+#### dirname
+
+The directory name of the current module. This is the same as the path.dirname() of the __filename.
+So, for the above modules, a.js and b.js.
+If we do console.log(__dirname) within b.js, we will get /User/home/node_blog/node_modules/b/ and in a.js, we will get /User/home/node_blog/.
+Now we have studied the basics of the module. From now on, we will dive deep into this topic. Bear with me a bit longer as there are various interesting things we are going to discuss
+
+#### Difference Between module.exports and exports
+
+We use both `module.exports` and `exports` to export our functionalities out of our module.
+But, there is a slight difference between them. Rather, I’ll say that they are not different but they are similar. The `exports` object is just shorthand for `module.exports`.
+Inside Node, the exports object refers to the module.exports object. Which is somewhat like: `const exports = module.exports;`
+
+VERY IMPORTANT: when we require in a module, `module.exports` object is returned by the require function.
+
+And that is the reason we don’t change the reference of the exports object, because, if we change the exports object, that will no longer refer to the module.exports, resulting in the functionalities not being exported from our module.
+
+Can we use both module.exports and exports in a single module?
+Yes, we can, but there are some subtleties we should keep in mind if we are using both.
+Those are, when we use require in any module, we get the module.exports object and the exports object referring to module.exports, so it is necessary to maintain this reference.
+
+In the code below, the sum will not be exported as we have changed the reference of module.exports by assigning a new object to it but the exports object now also refers to the previous reference of module.exports.
+
+https://github.com/breezeight/javascript_nicola_courses/blob/master/node-modules-under-the-hood/operations_gotcha.js
+
+Test it: 
+
+* git clone git@github.com:breezeight/javascript_nicola_courses.git
+* cd javascript_nicola_courses
+* node node-modules-under-the-hood/app_export_gotcha.js
+
+#### Modules in Detail
+
+It is not necessary that only a file can be a module that we require. Other than files, we also have folders as modules that we can require in.
+
+Generally, a folder as a module is a module of modules, i.e. it contains various modules inside it to achieve functionality. This is what libraries do, they are organized in a self-contained directory and then they provide a single entry point to that directory.
+
+There are two ways in which we can require a folder.
+
+* Create a package.json in the root of the folder, which specifies a main module. An example package.json file might look like this:
+
+```
+{ "name" : "some-library",
+  "main" : "./lib/some-library.js" }
+```
+
+If this was in a folder at ./some-library, then require('./some-library') would attempt to load ./some-library/lib/some-library.js.
+
+This is the extent of Node.js awareness of package.json.
+
+*  If Node does not find any package.json in the root directory of the module, or in package.json if the main entry is missing or cannot be resolved. Then, Node.js will try to load index.js or index.node from that directory. For example, if there was no package.json file in the above example, then require('./some-library') would attempt to load:
+  * ./some-library/index.js
+  * ./some-library/index.node
+
+If these attempts fail, then Node.js will report the entire module as missing with the default error: `Error: Cannot find module ‘some-library’.`
+
+In file modules, .js file is also not the only module, we have .json files and .node files, they are also modules in Node.
+
+#### Requiring in Detail
+
+When we require a module it is not necessary to give the file extension. For example, if there is a `some-file.js` file that we want to require and it is on the same level, we can require it as: `const someFile = require(‘./some-file’);`
+That is without specifying the extension.
+While resolving the path of this file, Node follows a procedure.
+It first looks for some-file.js, if some-file.js is not present, it will look for some-file.json and if that is also not present, it will look for some-file.node.
+.js files are interpreted as JavaScript text files, and .json files are parsed as JSON text files, i.e. we get the JavaScript object. .node files are interpreted as compiled add-on modules.
+
+### How require looks for files
+
+Ref: https://github.com/browserify/browserify-handbook/blob/master/readme.markdown#how-node_modules-works
+
+**Relative** path : Paths that start with a `./` or `../` are always local to the file that calls require()
+
+* `require('./foo.js');` :  load a file foo.js from the same dir of your main.js file
+* `require('../foo.js');` : load from the parent dirs*
+
+**Non-relative** path: such as `require('xyz')` from /beep/boop/foo.js,  node searches these paths in order, stopping at the first match and raising an error if nothing is found:
+
+* `/beep/boop/node_modules/xyz`
+* `/beep/node_modules/xyz`
+* `/node_modules/xyz`
+
+
+For each xyz directory that exists, node will:
+
+* first look for an `xyz/package.json` to see if a `main` field exists. The "main" field defines which file should take charge if you require() the directory path.
+* second, if there is no package.json or no "main" field, index.js is assumed
+
+
+Example 1: if /beep/node_modules/xyz is the first match and /beep/node_modules/xyz/package.json has:
+
+```
+{
+  "name": "xyz",
+  "version": "1.2.3",
+  "main": "lib/abc.js"
+}
+```
+
+then the exports from /beep/node_modules/xyz/lib/abc.js will be returned by require('xyz').
+
+Example 2: If there is no package.json or no "main" field, `index.js` is assumed: `/beep/node_modules/xyz/index.js`
+
+If you need to, you can reach into a package to pick out a particular file. For example, to load the lib/clone.js file from the dat package, just do:
+
+```
+var clone = require('dat/lib/clone.js')
+```
+
+The recursive node_modules resolution will find the first dat package up the directory hierarchy, then the `lib/clone.js` file will be resolved from there. This `require('dat/lib/clone.js')` approach will work from any location where you can require('dat').
+
+
+### What is an export?
+
+A "module" exports objects and functions by adding them to exports, and another module can import it by using require. The semantics are explained well in the official documentation.
+
+`module.exports` is the object that's actually returned as the result of a `require` call.
+
+To test out which module actually gets loaded by node, you can use the `require.resolve('some_module')` command
+
+### Node.js: Require VS import
+
+* `require` is defined by the node module system
+* `import` ???? the rsvp npm package use it.... but other package no (ex: https://github.com/strongloop/express)   WHY??? WHAT is the DIFFERENCE?
+
+may be reading this will answer: https://appdividend.com/2019/01/23/javascript-import-statement-tutorial-with-example/
+
+
+https://medium.com/@geekguy/javascript-modues-exports-vs-exports-whats-the-difference-9a61cdb99386
+
+### HOWTO write a module
+
+https://github.com/maxogden/art-of-node/#how-to-write-a-module
+
+* By default node tries to load module/index.js when you require('module'), any other file name won't work unless you set the main field of package.json to point to it.
+
+### Require package
+
+https://www.npmjs.com/package/resolve
+
+
+### Internals
+
+* http://eli.thegreenplace.net/2013/05/27/how-require-loads-modules-in-node-js
+* https://github.com/joyent/node/blob/master/lib/module.js#L380
+* What is the purpose of Node.js module.exports and how do you use it? http://stackoverflow.com/questions/5311334/what-is-the-purpose-of-node-js-module-exports-and-how-do-you-use-it
+
