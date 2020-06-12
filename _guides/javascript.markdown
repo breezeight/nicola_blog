@@ -153,6 +153,159 @@ http://dorey.github.io/JavaScript-Equality-Table/?utm_content=buffer4f1b9&utm_me
 
 http://stackoverflow.com/questions/359494/does-it-matter-which-equals-operator-vs-i-use-in-javascript-comparisons
 
+# Control Flow
+
+## Exception handling statements: throw, try...catch, finally
+
+REF:
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#Exception_handling_statements
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch
+
+You can throw exceptions using the `throw` statement and handle them using the `try...catch` statements.
+
+Use the throw statement to throw an exception. When you throw an exception, you specify the expression containing the value to be thrown: `throw expression;`
+
+Any object can be thrown in JavaScript.
+
+```
+throw 'Error2';   // String type
+throw 42;         // Number type
+throw true;       // Boolean type
+throw {toString: function() { return "I'm an object!"; } };
+
+// Create an object type UserException
+function UserException(message) {
+  this.message = message;
+  this.name = 'UserException';
+}
+
+// Make the exception convert to a pretty string when used as a string
+// (e.g. by the error console)
+UserException.prototype.toString = function() {
+  return this.name + ': "' + this.message + '"';
+}
+
+// Create an instance of the object type and throw it
+throw new UserException('Value too high');
+```
+
+While it is fairly common to throw numbers or strings as errors it is frequently more effective to use one of the exception types specifically created for this purpose:
+
+* [ECMAScript exceptions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Error_types)
+* DOMException and DOMError
+
+The try statement consists of:
+
+* a `try block`, which contains one or more statements. {} must always be used, even for single statements.
+* At least one `catch clause`, or a `finally clause`.
+
+This gives us three forms for the try statement:
+
+* try...catch
+* try...finally
+* try...catch...finally
+
+Flow:
+
+* If any statement within the try block (or in a function called from within the try block) throws an exception, control immediately shifts to the catch block.
+* If no exception is thrown in the try block, the catch block is skipped.
+* The finally block executes after the try and catch blocks execute but before the statements following the try...catch statement.
+
+### Catch
+
+The catch block specifies an identifier (catchID in the preceding syntax) that holds the value specified by the throw statement:
+
+```
+try {
+  throw 'myException'; // generates an exception and create the 'myException' string object
+}
+catch (e) {
+  // statements to handle any exceptions
+  console.log(e); // e is the 'myException' string object. It logs 'myException'
+  console.log(typeof e); // string
+}
+```
+
+### Finally
+
+The finally block contains statements to execute:
+
+* after the try and catch blocks execute
+* but before the statements following the try...catch statement.
+
+The finally block executes whether or not an exception is thrown. If an exception is thrown, the statements in the finally block execute even if no catch block handles the exception.
+
+You can use the finally block to make your script fail gracefully when an exception occurs; for example, you may need to release a resource that your script has tied up. The following example opens a file and then executes statements that use the file (server-side JavaScript allows you to access files). If an exception is thrown while the file is open, the finally block closes the file before the script fails.
+
+```
+openMyFile();
+try {
+  writeMyFile(theData); //This may throw an error
+} catch(e) {  
+  handleError(e); // If we got an error we handle it
+} finally {
+  closeMyFile(); // always close the resource
+}
+If
+```
+
+If the finally block returns a value, this value becomes the return value of the entire try-catch-finally production, regardless of any return statements in the try and catch blocks:
+
+```
+function f() {
+  try {
+    console.log(0);
+    throw 'bogus';
+  } catch(e) {
+    console.log(1);
+    return true; // this return statement is suspended
+                 // until finally block has completed
+    console.log(2); // not reachable
+  } finally {
+    console.log(3);
+    return false; // overwrites the previous "return"
+    console.log(4); // not reachable
+  }
+  // "return false" is executed now  
+  console.log(5); // not reachable
+}
+f(); // console 0, 1, 3; returns false
+```
+
+Overwriting of return values by the finally block also applies to exceptions thrown or re-thrown inside of the catch block:
+
+```
+function f() {
+  try {
+    throw 'bogus';
+  } catch(e) {
+    console.log('caught inner "bogus"');
+    throw e; // this throw statement is suspended until
+             // finally block has completed
+  } finally {
+    return false; // overwrites the previous "throw"
+  }
+  // "return false" is executed now
+}
+
+try {
+  f();
+} catch(e) {
+  // this is never reached because the throw inside
+  // the catch is overwritten
+  // by the return in finally
+  console.log('caught outer "bogus"');
+}
+
+// OUTPUT
+// caught inner "bogus"
+```
+
+### Nesting try...catch statements
+
+You can nest one or more try...catch statements. If an inner try...catch statement does not have a catch block, it needs to have a finally block and the enclosing try...catch statement's catch block is checked for a match. For more information, see nested try-blocks on the try...catch reference page.
+
 # Functions
 
 A function definition is a regular binding where the value of the binding is the function:
