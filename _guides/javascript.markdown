@@ -1419,6 +1419,62 @@ function performAction(ninja, action = "skulking", message = ninja + " " + actio
 }
 ```
 
+## Named parameters via destructuring
+
+ref:
+* [[ExploringJS - Exploring ES6]](http://exploringjs.com/es6/ch_parameter-handling.html#_named-parameters-via-destructuring)
+
+You can simulate named parameters if you destructure with an object pattern in the parameter list:
+
+```
+function selectEntries({ start=0, end=-1, step=1 } = {}) { // (A)
+    // The object pattern is an abbreviation of:
+    // { start: start=0, end: end=-1, step: step=1 }
+    // Use the variables `start`, `end` and `step` here
+    console.log(`start = ${start}, end = ${end}, step = ${step}`)
+}
+
+selectEntries({ start: 10, end: 30, step: 2 });  // start = 10, end = 30, step = 2 
+selectEntries({ step: 3 });  // start = 0, end = -1, step = 3
+selectEntries({}); // start = 0, end = -1, step = 1
+selectEntries(); // start = 0, end = -1, step = 1
+```
+
+The `= {}` in line A enables you to call `selectEntries()` without paramters:
+
+```
+function selectEntries({ start=0, end=-1} ){console.log(`start = ${start}, end = ${end}, step = ${step}}
+//TypeError: Cannot destructure property `start` of 'undefined' or 'null'.
+```
+WHY? because the first param is undefined and the matching will be tried 
+
+## Paramters of a forEach() and destructuring
+
+NOTE: probably you use more the `for-of` loop in ES6 so you can avoid to use the feature described here but it's good to know if you read other code bases.
+
+ref: http://exploringjs.com/es6/ch_parameter-handling.html#_foreach-and-destructuring
+
+First example: destructuring the Arrays in an Array.
+
+```
+const items = [ ['foo', 3], ['bar', 9] ];
+items.forEach(([word, count]) => {
+    console.log(word+' '+count);
+});
+```
+
+Second example: destructuring the objects in an Array.
+
+```
+const items = [
+    { word:'foo', count:3 },
+    { word:'bar', count:9 },
+];
+items.forEach(({word, count}) => {
+    console.log(word+' '+count);
+});
+```
+
 ## Implicit parameters: arguments
 
 see [SOJS_2nd] ch 4.1.1
@@ -1958,6 +2014,68 @@ function extend(destination, source) {
 ~~~
 
 which we can call to extend our prototype…
+# Destructuring
+
+Refs:
+
+* [ExploringJS - Exploring ES6](https://exploringjs.com/es6/ch_destructuring.html#ch_destructuring)
+* [MindMap](https://drive.mindmup.com/map/10_OUi7vCUtiANR2pXZqHcwoY_WjQaXpX)
+
+Destructuring is a convenient way of extracting multiple values from data stored in (possibly nested) objects and Arrays. It can be used in locations that receive data (such as the left-hand side of an assignment) using different patterns.
+
+
+Decustructuring
+	a convenient way of extracting multiple values from data stored in (possibly nested) objects and Arrays
+	Where can destructuring be used?
+		Variable declaration and assignment
+		param definition
+		for-of loops
+	destructuring target pattern
+		Assignment target
+		Object Pattern
+			Most common: match the key x assign the value to my_var
+				const { x: my_var } = { x: 7, y: 3 }; // my_var = 7
+			Property value shorthands https://exploringjs.com/es6/ch_destructuring.html#_more-complex-default-values
+				const { x, y } = { x: 11, y: 8 }; // x = 11; y = 8 // Same as: const { x: x, y: y } = { x: 11, y: 8 };
+				 with default values:
+					const { x, y = 1 } = {}; // x = undefined; y = 1
+			ADVANCED: values to objects https://exploringjs.com/es6/ch_destructuring.html#_object-patterns-coerce-values-to-objects
+				const {length : len} = 'abc'; // len = 3
+			computed Property keys https://exploringjs.com/es6/ch_destructuring.html#_computed-property-keys
+				const FOO = 'foo'; const { [FOO]: f } = { foo: 123 }; // f = 123
+		Array pattern
+			Most common: match all elements
+				const [x,y] = [ {a:1}, {b:1}]. // x = {a: 1}
+			Array patterns work with iterables https://exploringjs.com/es6/ch_destructuring.html#_array-patterns-work-with-iterables (strings, array, etc)
+				A value is iterable if it has a method whose key is Symbol.iterator that returns an object. { * [Symbol.iterator]() { yield 1 } }; // OK, iterable 
+			Elision https://exploringjs.com/es6/ch_destructuring.html#_elision
+				const [,, x, y] = ['a', 'b', 'c', 'd']; // x = 'c'; y = 'd'
+			Rest Operator https://exploringjs.com/es6/ch_destructuring.html#sec_rest-operator
+				const [x, ...y] = ['a', 'b', 'c']; // x='a'; y=['b', 'c']
+	Default Values for Patternhttps://exploringjs.com/es6/ch_destructuring.html#sec_default-values-destructuring
+		For part of the pattern (an obj prop or array element)
+			missing obj prop
+				const {foo: x=3, bar: y} = {}; // x = 3; y = undefined
+			missing array elem
+				const [x=3, y] = []; // x = 3; y = undefined
+			If a part (an object property or an Array element) has no match in the source, it is matched against: 
+				its default value (if specified; it’s optional)
+				undefined (otherwise)
+		For the whole Pattern https://exploringjs.com/es6/ch_destructuring.html#_default-values-for-patterns
+			NON CAPISCO il senso ... const [{ prop: x=123 } = {}] = [{}]; 
+				TODO
+		provide a fallback if nothing is found in the source https://exploringjs.com/es6/ch_destructuring.html#_more-complex-default-values
+		undefined triggers default values
+			const {prop: y=2} = {prop: undefined}; // y = 2
+		Default values are computed on demand https://exploringjs.com/es6/ch_destructuring.html#_default-values-are-computed-on-demand
+		Default values can refer to other variables in the pattern https://exploringjs.com/es6/ch_destructuring.html#_default-values-can-refer-to-other-variables-in-the-pattern
+			const [x=3, y=x] = []; // x=3; y=3 const [x=3, y=x] = [7]; // x=7; y=7 const [x=3, y=x] = [7, 2]; // x=7; y=2
+	Examples
+		Multiple return values https://exploringjs.com/es6/ch_destructuring.html#sec_multiple-return-values
+	[ExploringJS - Exploring ES6] https://exploringjs.com/es6/ch_destructuring.html#ch_destructuring
+
+
+
 
 ~~~javascript
 var RoundButton = function(radius, label) {
