@@ -306,11 +306,151 @@ try {
 
 You can nest one or more try...catch statements. If an inner try...catch statement does not have a catch block, it needs to have a finally block and the enclosing try...catch statement's catch block is checked for a match. For more information, see nested try-blocks on the try...catch reference page.
 
+# Primitive values
+
+Ref: https://developer.mozilla.org/en-US/docs/Glossary/Primitive
+
+There are 6 primitive data types: string, number, boolean, null, undefined, symbol (new in ECMAScript 2015).
+
+Most of the time, a primitive value is represented directly at the lowest level of the language implementation.
+
+All primitives are immutable, i.e., they cannot be altered. It is important not to confuse a primitive itself with a variable assigned a primitive value. The variable may be reassigned a new value, but the existing value can not be changed in the ways that objects, arrays, and functions can be altered.
+
+# THIS
+
+* [YDKJS 1st Chapter 1: this Or That](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch1.md)
+
+This is one of the most misunderstood JS concepts, most common misconceptions about how it doesn't actually work are:
+
+* "this refers to the function itself, because in JS a function is an object" -> WRONG!
+  * Read here a full example [YDKJS 1st Chapter 1: this Or That](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch1.md#itself)
+* "this somehow refers to the function's scope." -> WRONG
+  * Read here a full example [YDKJS 1st Chapter 1: this Or That](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch1.md#its-scope)
+
+What is `this`?
+
+We said earlier that this is not an author-time binding but a runtime binding. It is contextual based on the conditions of the function's invocation. this binding has nothing to do with where a function is declared, but has instead everything to do with the manner in which the function is called.
+
+When a function is invoked, an activation record, otherwise known as an execution context, is created. This record contains information about where the function was called from (the call-stack), how the function was invoked, what parameters were passed, etc. One of the properties of this record is the this reference which will be used for the duration of that function's execution.
+
+`this` is actually a binding that is made when a function is invoked, and what it references is determined entirely by the call-site where the function is called.
+
+## Default Binding
+
+ref: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch2.md#default-binding
+
+If strict mode is in effect, the global object is not eligible for the default binding, so the this is instead set to undefined.
+
+Function invoked as a standalone function `f()`:
+* Strict mode: this is `undefined`
+* Non Strict mode: Window, the global context
+
+## Implicit binding
+
+https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch2.md#implicit-binding
+
+Function invoked as a method `obj.f()`
+
+Common problem: "Implicitly lost" https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch2.md#implicitly-lost
+
+* SCENARIO: Event handlers in popular JavaScript libraries are quite fond of forcing your callback to have a this which points to, for instance, the DOM element that triggered the event.
+
+## new Binding
+
+https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch2.md#new-binding
+
+Function invoked as a constructor: `new F()`
+
+`this` is the newly created object
+
+## Explicit binding 
+
+https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch2.md#explicit-binding
+
+`apply()` or `call()` or `bind()`
+
+Scenario: set "this" explicitly
+
+Usecases: Callback event  handlers
+
+### HARD bind
+
+The most typical way to wrap a function with a hard binding creates a pass-thru of any arguments passed and any return value received:
+
+```js
+function foo(something) {
+	console.log( this.a, something );
+	return this.a + something;
+}
+
+var obj = {
+	a: 2
+};
+
+var bar = function() {
+	return foo.apply( obj, arguments );
+};
+
+var b = bar( 3 ); // 2 3
+console.log( b ); // 5
+```
+
+Another way to express this pattern is to create a re-usable helper:
+
+```js
+function foo(something) {
+	console.log( this.a, something );
+	return this.a + something;
+}
+
+// simple `bind` helper
+function bind(fn, obj) {
+	return function() {
+		return fn.apply( obj, arguments );
+	};
+}
+
+var obj = {
+	a: 2
+};
+
+var bar = bind( foo, obj );
+
+var b = bar( 3 ); // 2 3
+console.log( b ); // 5
+```
+
+Since hard binding is such a common pattern, it's provided with a built-in utility as of ES5: Function.prototype.bind, and it's used like this:
+
+```js
+function foo(something) {
+	console.log( this.a, something );
+	return this.a + something;
+}
+
+var obj = {
+	a: 2
+};
+
+var bar = foo.bind( obj );
+
+var b = bar( 3 ); // 2 3
+console.log( b ); // 5
+```
+
+`bind(..)` returns a new function that is hard-coded to call the original function with the this context set as you specified.
+
+Note: As of ES6, the hard-bound function produced by bind(..) has a .name property that derives from the original target function. For example: bar = foo.bind(..) should have a bar.name value of "bound foo", which is the function call name that should show up in a stack trace.
+
 # Functions
+
+A function is a procedure, a collection of statements that can be invoked one or more times, may be provided some inputs, and may give back one or more outputs.
+
+ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md#functions
 
 A function definition is a regular binding where the value of the binding is the function:
 
-```
+```js
 const power = function(base, exponent) {
   let result = 1;
   for(let count = 0; count < exponent; count++) {
@@ -339,7 +479,7 @@ Invoke:
 * a `return` statement determines the value of the returned value and make cotrol jumping out to the caller.
 * It there isn't a `return` statement, the value returned is implicitly `undefined`.
 
-A function can be anonymous functions: `function(){return "test"}``
+A function can be anonymous functions: `function(){return "test"}`
 
 For more example about how to declare functions: see [SOJS] pag 40
 
@@ -369,8 +509,6 @@ console.log(add5(2));  // 7
 console.log(add10(2)); // 12
 ~~~
 
-
-
 This is an example of lexical scoping: in JavaScript, the scope of a variable is defined by its location within the source code (it is apparent lexically) and nested functions have access to variables declared in their outer scope.
 
 See a more detailed explanation in the [MDN guide](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Closures)
@@ -380,7 +518,7 @@ JavaScript reference to a function. In JavaScript, you can think of a
 function reference variable as having both a pointer to a function as
 well as a hidden pointer to a closure. In C, and most other common languages after a function returns, all the local variables are no longer accessible because the stack-frame is destroyed.
 
-#### Closure Example
+### Closure Example
 
 This example taken from SOJS is more advanced:
 
@@ -419,7 +557,7 @@ Function parameters are included in the closure of that function. (Seems obvi- o
 * All variables in an outer scope, even those declared after the function declaration, are included.
 * Within the same scope, variables not yet defined cannot be forward-referenced.
 
-#### Closure Example: Common mistake in for loops
+### Closure Example: Common mistake in for loops
 
 ~~~html
 <p id="help">Helpful notes will appear here</p>
@@ -551,7 +689,7 @@ setupHelp();
 ~~~
 
 
-#### Closure Example: Private variable using closures
+### Closure Example: Private variable using closures
 
 See [MDN Guide](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Closures#Emulating_private_methods_with_closures)
 See [SOJS_2nd] ch 5.2.1
@@ -585,7 +723,7 @@ See [SOJS_2nd] ch 5.2.1
              "We're able to access the internal feint count." );    //#8
 ~~~
 
-#### Keep state. Timers and callbacks using closures.
+### Keep state. Timers and callbacks using closures.
 
 SOJS ch 5.2.2
 
@@ -633,7 +771,7 @@ SOLUTION: use global Variables
 
 * CONS; If we keep the variables in the global scope, we need a set of three variables for each animation to run multiple animations.
 
-#### Common Errors with events handlers and how to fix them: bind()
+### Common Errors with events handlers and how to fix them: bind()
 
 SOJS ch 5.3:
 
