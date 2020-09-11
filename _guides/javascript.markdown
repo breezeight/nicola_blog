@@ -136,7 +136,20 @@ Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Ob
 
 ## Null VS undefined
 
-http://codechutney.in/blog/nodejs/javascript-null-vs-undefined/
+* https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md#values
+* http://codechutney.in/blog/nodejs/javascript-null-vs-undefined/
+
+TL;DR: better to use only undefined
+
+In addition to strings, numbers, and booleans, two other primitive values in JS programs are null and undefined. While there are differences between them (some historic and some contemporary), for the most part both values serve the purpose of indicating emptiness (or absence) of a value.
+
+Many developers prefer to treat them both consistently in this fashion, which is to say that the values are assumed to be indistinguishable. If care is taken, this is often possible. However, it's safest and best to use only undefined as the single empty value, even though null seems attractive in that it's shorter to type!
+
+```js
+while (value != undefined) {
+    console.log("Still got something!");
+}
+```
 
 # Expression, Statements and operators
 
