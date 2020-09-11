@@ -475,57 +475,153 @@ console.log( b ); // 5
 
 Note: As of ES6, the hard-bound function produced by bind(..) has a .name property that derives from the original target function. For example: bar = foo.bind(..) should have a bar.name value of "bound foo", which is the function call name that should show up in a stack trace.
 
-# Functions
+## Arrow Functions
 
-A function is a procedure, a collection of statements that can be invoked one or more times, may be provided some inputs, and may give back one or more outputs.
+See REF: see [SOJS_2nd] paragraph 4.3.1 for more details
 
-ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md#functions
+* IMPORTANT: Arrow functions don’t have their own this value. Instead, they remember the value of the this parameter at the time of their definition.
+* more concise way of creating functions
 
-A function definition is a regular binding where the value of the binding is the function:
+
+See REF: see [SOJS_2nd] paragraph 4.3.2 for more details
+
+* Every function has access to the `bind(function_context)` method
+* `bind()` return a new function has the same body, but its context is always bound to the `function_context` parameter.
+* For the new returned function, the value of the `this` parameter is always set to the object referenced by the `bind()` argument, regardless of the way the function was invoked. (similar to the arrow function).
+
+see below "Usecase: callback for browser Events" for an example
+
+## Usecase: callback for browser Events
+
+```
+<button id="test">Click Me!</button>
+        <script>
+          function Button(){
+            this.clicked = false;
+            this.click = function(){
+              this.clicked = true;
+              assert(button.clicked, "The button has been clicked");
+            };
+          }
+          var button = new Button();
+          var elem = document.getElementById("test");
+          elem.addEventListener("click", button.click);
+</script>
+```
+
+Problem: `assert(button.clicked, "The button has been clicked");` will fail because the function context of `button.click` will be `Window` or `undefined`
+
+See REF: see [SOJS_2nd] paragraph 4.2.4 for more details
+
+solutions:
+
+* Call or Apply
+* bind()
+* Arrow functions
+
+### Arrow function solution
+
+* When the click arrow function is defined the function context is the `button` object create with `new Button()`.
+* When the event handler callback `button.click` is invoked `this` will be assigned to `button`.
+
+```
+<button id="test">Click Me!</button>
+<script>
+  function Button(){
+     this.clicked = false;
+     this.click = () => {
+       this.clicked = true;   //NOTE: here we use "this"
+       assert(button.clicked,"The button has been clicked"); // here we assert on the button object
+      };
+  }
+  var button = new Button();
+  var elem = document.getElementById("test");
+  elem.addEventListener("click", button.click);
+</script>
+```
+
+WARNING: it's easy to make mistake see [SOJS_2nd] listing 4.14
+
+### Bind solutions
+
+This example uses the bind function to create a new function **bound to the button object**, when it's invoked `this` will remain the bouded object 
+
+```
+<button id="test">Click Me!</button>
+<script>
+  var button = {
+    clicked: false,
+    click: function(){
+      this.clicked = true;
+       assert(button.clicked,"The button has been clicked");
+    }
+  };
+  var elem = document.getElementById("test");
+  elem.addEventListener("click", button.click.bind(button));
+  var boundFunction = button.click.bind(button);
+  assert(boundFunction != button.click, "Calling bind creates a completly new function");
+</script>
+```
+
+# Objects
+
+* [YDKJS 1st Chapter 3: Objects](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md)
+
+## Syntax
+
+Objects come in two forms: the declarative (literal) form, and the constructed form.
 
 ```js
-const power = function(base, exponent) {
-  let result = 1;
-  for(let count = 0; count < exponent; count++) {
-    result *= base;
-  };
-  return result;
+The literal syntax for an object looks like this:
+
+var myObj = {
+	key: value
+	// ...
 };
 ```
 
-A function is created with an expression that begins with the keyword `function`.
+The constructed form looks like this:
 
-A function have:
+```js
+var myObj = new Object();
+myObj.key = value;
+```
 
-* zero o more parameters: they works like regular bindings, but the initial value is given by the caller of the function.
-* a body
+The constructed form and the literal form result in exactly the same sort of object. The only difference really is that you can add one or more key/value pairs to the literal declaration, whereas with constructed-form objects, you must add the properties one-by-one.
 
-Functions, not objects are at the core of JavaScript. JS is a Functional language, functions are first-class objects:
+Note: It's extremely uncommon to use the "constructed form" for creating objects as just shown. You would pretty much always want to use the literal syntax form. The same will be true of most of the built-in objects (see below).
 
-* Functions can be arguments of other functions.
-* All Functions have the **name** property, if it's anonymous name is an empty string.
-* Functions can be referenced by variables `var canFly = function(){ return true; };`
+## Built-in objects and primitive type Coercion
 
-Invoke:
+Ref: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#built-in-objects
 
-* A Function can be invoked through a variable that reference the function `var canFly = function(){ return true; }; canFly() )`
-* a `return` statement determines the value of the returned value and make cotrol jumping out to the caller.
-* It there isn't a `return` statement, the value returned is implicitly `undefined`.
+The primitive value "I am a string" is not an object, it's a primitive literal and immutable value. To perform operations on it, such as checking its length, accessing its individual character contents, etc, a String object is required.
 
-A function can be anonymous functions: `function(){return "test"}`
+```js
+var strPrimitive = "I am a string";
+typeof strPrimitive;							// "string"
+strPrimitive instanceof String;					// false
 
-For more example about how to declare functions: see [SOJS] pag 40
+var strObject = new String( "I am a string" );
+typeof strObject; 								// "object"
+strObject instanceof String;					// true
 
-Whatever we can do with objects, we can do with functions as well.
+// inspect the object sub-type
+Object.prototype.toString.call( strObject );	// [object String]
+```
 
-Functions are objects, just with an additional, special capability of **being invokable** : Functions can be called or invoked in order to perform an action.
+Luckily, the language automatically coerces a "string" primitive to a String object when necessary, which means you almost never need to explicitly create the Object form. 
 
-## Closures
+Consider:
 
-A closure is a special kind of object that combines two things:
+```js
+var strPrimitive = "I am a string";
+console.log( strPrimitive.length );			// 13
+console.log( strPrimitive.charAt( 3 ) );	// "m"
+```
 
-* a function
-* the environment in which that function was created.
+In both cases, we call a property or method on a string primitive, and the engine automatically coerces it to a String object, so that the property/method access works.
+
 
 
 ~~~javascript
