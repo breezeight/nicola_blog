@@ -36,9 +36,10 @@ Books:
 
 Books By Dr. Axel Rauschmayer [Exploring JS: JavaScript books for programmers](http://exploringjs.com/):
 
-* [JSFIP](http://exploringjs.com/impatient-js/index.html) JavaScript for impatient programmers (ES1–ES2018)
+* [JSFIP](http://exploringjs.com/impatient-js/index.html) JavaScript for impatient programmers (ES1–ES2020)
   * A full modern guide to the language, No required knowledge (apart from programming).
   * More compact than my other books, which go into more detail.
+  * [JSFIP ES2020 Update](https://exploringjs.com/impatient-js/ch_about-book.html#new-in-es2020-edition): Operators, undefined, “Typed Arrays: handling binary data (Advanced)”, Modules, Single Objects, Promise combinators: working with Arrays of Promises”, 
 * [EES6](http://exploringjs.com/es6.html) "Exploring ES6", Covers what’s new in ES6 (relative to ES5)
 * [EES20162017](http://exploringjs.com/es2016-es2017.html)  "Exploring ES2016 and ES2017", Covers what’s new in ES2016 and ES2017 (relative to ES6)
 * [EES20182019](http://exploringjs.com/es2018-es2019/index.html)  "Exploring ES2018 and ES2019", Covers what’s new in ES2018 and ES2019 (relative to ES2017)
@@ -59,6 +60,8 @@ MISC
 * My Evernote about NodeJS: https://www.evernote.com/shard/s106/nl/2147483647/c61f9319-9f5c-4a91-b662-46bb5a8b644e/
 * ES6 in Depth by Mozilla: https://hacks.mozilla.org/category/es6-in-depth/
 * Full list of ES6 new features: http://es6-features.org
+
+* Nicola Testing "4.1 - TDD Jest" https://docs.google.com/presentation/d/1VO5His3lxFu_MP3zLlrh9M-R6T7VlqYw7upvAug7qHg/edit#slide=id.p
 
 # Glossary
 
@@ -157,14 +160,31 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 
 See the elequent JS pdf book for a nice introduction to the topic.
 
+REF: [Statements and declarations by category](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements)
+
 ## Equality operator === vs ==
 
 Always use === equals unless you have a good reason to use ==.
+
+Fatto molto bene: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md#comparisons
+
 
 http://dorey.github.io/JavaScript-Equality-Table/?utm_content=buffer4f1b9&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
 
 
 http://stackoverflow.com/questions/359494/does-it-matter-which-equals-operator-vs-i-use-in-javascript-comparisons
+
+## Logical AND (&&)
+
+Ref:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND 
+
+The AND && operator does the following:
+
+* Evaluate operands from left to right.
+* For each operand, convert it to a boolean. If the result is false, stop and return the original value of that result.
+* If all other operands have been assessed (i.e. all were truthy), return the last operand.
+
+As I said, each operand is convert to a boolean, if it's 0 it's falsy and every other value different than 0 (1, 56, -2, etc etc) are truthy
 
 # Control Flow
 
