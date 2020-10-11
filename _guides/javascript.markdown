@@ -622,6 +622,525 @@ console.log( strPrimitive.charAt( 3 ) );	// "m"
 
 In both cases, we call a property or method on a string primitive, and the engine automatically coerces it to a String object, so that the property/method access works.
 
+## Contents
+
+ref: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#contents
+
+The contents of an object consist of values (any type) stored at specifically named locations, which we call `properties`.
+
+What is stored in the container are these property names, which act as pointers (technically, references) to where the values are stored.
+
+
+Consider:
+
+```js
+var myObject = {
+	a: 2
+};
+
+myObject.a;		// 2
+
+myObject["a"];	// 2
+```
+
+To access the value at the location a in myObject, we need to use either the `.` operator or the `[ ]` operator. 
+
+* The .a syntax is usually referred to as "property" access,
+* whereas the `["a"]` syntax is usually referred to as "key" access.
+
+In reality, they both access the same location, and will pull out the same value, 2, so the terms can be used interchangeably. We will use the most common term, "property access" from here on.
+
+The main difference between the two syntaxes is:
+* the . operator requires an Identifier compatible property name after it,
+* whereas the [".."] syntax can take basically any UTF-8/unicode compatible string as the name for the property.
+
+EXAMPLE: To reference a property of the name "Super-Fun!", for instance, you would have to use the ["Super-Fun!"] access syntax, as Super-Fun! is not a valid Identifier property name.
+
+Also, since the [".."] syntax uses a string's value to specify the location, this means the program can * programmatically build up* the value of the string, such as:
+
+```js
+var wantA = true;
+var myObject = {
+	a: 2
+};
+
+var idx;
+
+if (wantA) {
+	idx = "a";
+}
+
+// later
+
+console.log( myObject[idx] ); // 2
+```
+
+In objects, property names are always strings. If you use any other value besides a string (primitive) as the property, it will first be converted to a string. This even includes numbers, which are commonly used as array indexes, so be careful not to confuse the use of numbers between objects and arrays.
+
+```js
+var myObject = { };
+
+myObject[true] = "foo";
+myObject[3] = "bar";
+myObject[myObject] = "baz";
+
+myObject["true"];				// "foo"
+myObject["3"];					// "bar"
+myObject["[object Object]"];	// "baz"
+```
+
+### Computed Property Names [ES6]
+
+https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#computed-property-names
+
+Example:
+
+```js
+var prefix = "foo";
+
+var myObject = {
+	[prefix + "bar"]: "hello",
+	[prefix + "baz"]: "world"
+};
+
+myObject["foobar"]; // hello
+myObject["foobaz"]; // world
+```
+
+USECASE: .... ??? TODO vedi ref ma cercare altro
+
+### Property VS Method
+
+https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#property-vs-method
+
+Some developers like to make a distinction when talking about a property access on an object, if the value being accessed happens to be a function. Because it's tempting to think of the function as belonging to the object, and in other languages, functions which belong to objects (aka, "classes") are referred to as "methods", it's not uncommon to hear, "method access" as opposed to "property access".
+
+BUT Every time you access a property on an object, that is a property access, regardless of the type of value you get back. If you happen to get a function from that property access, it's not magically a "method" at that point. There's nothing special (outside of possible implicit this binding as explained earlier) about a function that comes from a property access.
+
+The safest conclusion is probably that "function" and "method" are interchangeable in JavaScript.
+
+### Duplicating Objects
+
+https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#duplicating-objects
+
+* Shallow Copy: ES6 has now defined Object.assign(..)
+* Deep Copy: Still an open issue in JS, some lib cope with it
+
+ISSUES: Circular Reference
+
+Shallow Copy example:
+
+```js
+function anotherFunction() { /*..*/ }
+
+var anotherObject = {
+	c: true
+};
+
+var anotherArray = [];
+
+var myObject = {
+	a: 2,
+	b: anotherObject,	// reference, not a copy!
+	c: anotherArray,	// another reference!
+	d: anotherFunction
+};
+
+var newObj = Object.assign( {}, myObject );
+
+newObj.a;						// 2
+newObj.b === anotherObject;		// true
+newObj.c === anotherArray;		// true
+newObj.d === anotherFunction;	// true
+```
+
+### Property Descriptors
+
+https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#property-descriptors
+
+as of ES5, all properties are described in terms of a property descriptor.
+
+Consider this code:
+
+```js
+var myObject = {
+	a: 2
+};
+
+Object.getOwnPropertyDescriptor( myObject, "a" );
+// {
+//    value: 2,
+//    writable: true,
+//    enumerable: true,
+//    configurable: true
+// }
+```
+
+As you can see, the property descriptor (called a "data descriptor" since it's only for holding a data value) for our normal object property a is much more than just its value of 2. 
+
+It includes 3 other characteristics:
+
+* writable:  If a property has writable set to false then that property’s value cannot be reassigned another value.
+  * example: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#writable
+* enumerable: will show up in certain object-property enumerations, such as the for..in loop
+  * example: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#enumerable
+* configurable: we can modify its descriptor definition or delete the property.
+  * example: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#configurable
+
+While we can see what the default values for the property descriptor characteristics are when we create a normal property, we can use `Object.defineProperty(..)` to add a new property, or modify an existing one (if it's configurable!), with the desired characteristics.
+
+For example:
+
+```js
+var myObject = {};
+
+Object.defineProperty( myObject, "a", {
+	value: 2,
+	writable: true,
+	configurable: true,
+	enumerable: true
+} );
+
+myObject.a; // 2
+```
+
+Using `defineProperty(..)`, we added the plain, normal a property to myObject in a manually explicit way. However, you generally wouldn't use this manual approach unless you wanted to modify one of the descriptor characteristics from its normal behavior.
+
+All Object Properties have Property Descriptors:
+
+* Every object property has a property descriptor, even if we don’t set one using the Object.defineProperty() method.
+* We can use another method, Object.getOwnPropertyDescriptor(), to read a property descriptor. 
+
+
+#### Enumerable and Value
+
+Ref: https://medium.com/intrinsic/javascript-object-property-descriptors-proxies-and-preventing-extension-1e1907aa9d10
+
+The most basic property descriptors are value and enumerable. value contains the value which will be returned when the property is being read. enumerable determines whether or not the property will be visible when listing the properties of the object. Here’s a code sample using these two property descriptors:
+
+```js
+const obj = {}
+Object.defineProperty(obj, 'foo', {
+  value: 'hello', // the property value
+  enumerable: false // property will not be listed
+})
+console.log(obj) // {}
+console.log(obj.foo) // 'hello'
+console.log(Object.keys(obj)) // []
+console.log(Reflect.ownKeys(obj)) // [ 'foo' ]
+console.log('foo' in obj) // true
+```
+
+The enumerable property descriptor has been set to false:
+
+* it becomes a harder to discover the foo property if we don’t know to look for it. 
+* For example, when we call `console.log(obj)`, we get an empty object in return.`
+* When we call `Object.keys(obj)`, we get an empty array in response.
+* BUT If we know the name of the property we can still use the in operator, like we’re doing with 'foo' in obj, which returns a true. However, keep in mind this doesn’t completely hide the property, as we can still find it using `Reflect.ownKeys(obj)`.
+
+#### Use-case: Enumerable
+
+Adding a method to an object’s prototype causes that property will now be present in for...in loops and you always need to use `Object#hasOwnProperty()` when enumerating properties.
+By specifically setting this enumerable property of the method to `false` you can solve the problem.
+
+```js
+const proto = {}
+const obj = { ok: 1 }
+obj.__proto__ = proto
+for (let key in obj) console.log(key) // [ok]
+
+proto.bad = () => 42
+
+for (let key in obj) console.log(key) // [ok,bad]
+for (let key in obj) {
+  if (obj.hasOwnProperty(key)) {
+    console.log(key) // [ok]
+  }
+}
+```
+
+In this first example we’ve created a method on our object’s prototype called bad by simply assigning the method to a property using proto.bad. What we instead need to do is the following:
+
+```js
+const proto = {}
+const obj = { ok: 1 }
+obj.__proto__ = proto
+for (let key in obj) console.log(key) // [ok]
+
+Object.defineProperty(proto, 'good', {
+  value: () => 42,
+  enumerable: false
+})
+
+for (let key in obj) console.log(key) // [ok]
+```
+
+In this new example we create a method called good, and that method is set using the more verbose Object.defineProperty() syntax. Now, when we iterate the properties of our object, we don’t see our rogue prototype method and we no longer need to use the Object#hasOwnProperty() check.
+
+#### Writable and Configurable
+
+If a property has writable set to false then that property’s value cannot be reassigned another value. If a property has configurable set to false then it cannot be deleted and it cannot have its property descriptor changed again. The following code example shows these two property descriptors at work:
+
+```js
+const obj = Object.defineProperty({}, 'foo', {
+  value: 'hello',
+  writable: false, // reassignable?
+  configurable: false // deletable/redefinable?
+})
+obj.foo = 'bye'
+console.log(obj.foo) // 'hello'
+delete obj.foo
+console.log(obj.foo) // 'hello'
+Object.defineProperty(obj, 'foo', {
+  value: 1
+}) // TypeError: Cannot redefine property: foo
+```
+
+#### Getter/Setter Property Descriptors
+
+Getters and Setters are some pretty interesting property descriptors, specifically because they allow us to call functions which we define when reading or writing to an object. These are powerful tools with security and performance considerations. The following is an example of the get and set property descriptors:
+
+```js
+const obj = { realAge: 0 }
+
+Object.defineProperty(obj, 'age', {
+  get: function() {
+    return this.realAge
+  },
+  set: function(value) {
+    this.realAge = Number(value)
+  }
+})
+
+console.log(obj.age) // 0
+obj.age = '32'
+console.log(obj.age) // 32
+```
+
+In this example, we have an object which has a numeric realAge property. For sake of this example consider it being hidden from the outside world. Now, we also have another property called age which is how others will interact with the underlying realAge property. The get property descriptor for age will be called when we read the property, and will simply return realAge. However the set property descriptor will first take the value which is provided, convert it into a Number, and then set realAge to the number we’ve created. This feature prevents others from setting a non-numeric age value on our object and keeps our data in a consistent shape.
+
+ES6 SYNTAX: 
+
+```js
+const obj = {
+  realAge: 0,
+  get age() {
+    return this.realAge
+  },
+  set age(value) {
+    this.realAge = Number(value)
+  }
+}
+```
+
+When using the getter/setter object literal syntax, things look a little bit different from usual:
+
+```js
+const obj2 = {
+  get b() { }
+}
+
+console.log(Object.getOwnPropertyDescriptor(obj2, 'b'))
+//{
+//  get: Function,
+//  set: undefined,
+//  enumerable: true,
+//  configurable: true
+//} // (e.g. Accessor Property)
+```
+
+This is a different type of property descriptor, called an `Accessor Property` and looks a little different than the one before it:
+
+* the value and writable properties are missing
+* and that the get and set properties are now present.
+
+### Immutability: Sealing, Preventing Extension, and Freezing 
+
+Refs:
+
+* https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#immutability
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
+* https://medium.com/intrinsic/javascript-object-property-descriptors-proxies-and-preventing-extension-1e1907aa9d10
+
+Objects are extensible by default:
+
+* they can have new properties added to them or removed from them.
+* and (in engines that support `__proto__`) their `__proto__` property can be modified.
+
+It is sometimes desired to make properties or objects that cannot be changed (either by accident or intentionally). ES5 adds support for handling that in a variety of different nuanced ways.
+
+Sealing, Preventing Extension, and Freezing allow you to lock down an object to varying degrees:
+
+* `Object.preventExtensions()`
+* `Object.seal()`
+* `Object.freeze()`
+
+Each one of these approaches has the same effect; an object will no longer be extensible, meaning that new properties cannot be added to the object. However there are small nuances which affect each approach as well.
+
+WARNING:
+
+* all of these approaches create SHALLOW immutability.
+* If an object has a reference to another object (array, object, function, etc), the contents of that object are not affected, and remain mutable. Example:
+* For that reason you may want to consider recursively locking down objects.
+
+```js
+"use strict";
+
+let myImmutableObject = {
+  foo: [1,2,3] 
+};
+
+Object.freeze(myImmutableObject)
+
+console.log("After freezing an object I can still modify the referenced variables")
+
+console.log(myImmutableObject.foo); // [1,2,3]
+myImmutableObject.foo.push( 4 );
+console.log(myImmutableObject.foo); // [1,2,3,4]
+
+try {
+  myImmutableObject.foo = [];  
+} catch (e){
+  console.log("But I cannot modify the object properties")
+  console.log(e)
+}
+```
+
+#### Preventing Extension
+
+`Object.preventExtensions()` 
+
+* ADD: prevents new properties from ever being added to an object (i.e. prevents future extensions to the object).
+* Existing properties can be modified and deleted
+* Existing property descriptors are not modified.
+
+`Object.isExtensible()` method to see if an object can be extended.
+
+Note: is the weakest protection when compared to sealing and freezing
+
+```js
+const obj = { p: 'first' }
+Object.preventExtensions(obj)
+
+obj.p = 'second' // OK
+obj.p2 = 'new val' // fail silently, throw in strict
+
+console.log(obj) // { p: 'second' }
+console.log(Object.isExtensible(obj)) // false
+console.log(Object.getOwnPropertyDescriptor(obj, 'p'))
+// { value: 'second', writable: true,
+//   enumerable: true, configurable: true }
+delete obj.p // OK
+```
+
+#### Sealing
+
+`Object.seal()`:
+
+* Every property on a sealed object will have its `configurable` property descriptor set to `false`
+* `writable`, `enumerable` don't change
+
+`Object.isSealed()` method to see if an object has been sealed.
+
+USE-CASE: an object and you want it to adhere to a certain set of expectations regarding the properties it has, however you don’t necessarily want to prevent changes to those properties.
+
+```js
+const obj = { p: 'first' }
+Object.seal(obj)
+
+obj.p = 'second' // OK
+delete obj.p // fail silently, throw in strict
+obj.p2 = 'new val' // fail silently, throw in strict
+
+console.log(obj) // { p: 'second' }
+console.log(Object.isSealed(obj)) // true
+console.log(Object.getOwnPropertyDescriptor(obj, 'p'))
+// { value: 'second', writable: true,
+//   enumerable: true, configurable: false }
+```
+
+#### Freezing
+
+`Object.freeze()`:
+
+* no properties can be reassigned, added, or deleted.
+* each property will have both their `writable` and `configurable` values set to false
+
+`Object.isFrozen()` method which will tell you if an object is frozen.
+
+```js
+const obj = { p: 'first' }
+Object.freeze(obj)
+
+obj.p = 'second' // fail silently, throw in strict
+delete obj.p // fail silently, throw in strict
+obj.p2 = 'new val' // fail silently, throw in strict
+
+console.log(obj) // { p: 'first' }
+console.log(Object.isFrozen(obj)) // true
+console.log(Object.getOwnPropertyDescriptor(obj, 'p'))
+// { value: 'first', writable: false,
+//   enumerable: true, configurable: false }
+```
+
+#### Summary
+
+
+![summary](images/js_immutability_summary.png)
+
+Note that isExt is short for isExtensible. reassign is whether or not a property can be assigned another value. del is whether or not properties can be deleted. add is whether or not a new property can be added.
+
+# Functions
+
+A function is a procedure, a collection of statements that can be invoked one or more times, may be provided some inputs, and may give back one or more outputs.
+
+ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md#functions
+
+A function definition is a regular binding where the value of the binding is the function:
+
+```js
+const power = function(base, exponent) {
+  let result = 1;
+  for(let count = 0; count < exponent; count++) {
+    result *= base;
+  };
+  return result;
+};
+```
+
+A function is created with an expression that begins with the keyword `function`.
+
+A function have:
+
+* zero o more parameters: they works like regular bindings, but the initial value is given by the caller of the function.
+* a body
+
+Functions, not objects are at the core of JavaScript. JS is a Functional language, functions are first-class objects:
+
+* Functions can be arguments of other functions.
+* All Functions have the **name** property, if it's anonymous name is an empty string.
+* Functions can be referenced by variables `var canFly = function(){ return true; };`
+
+Invoke:
+
+* A Function can be invoked through a variable that reference the function `var canFly = function(){ return true; }; canFly() )`
+* a `return` statement determines the value of the returned value and make cotrol jumping out to the caller.
+* It there isn't a `return` statement, the value returned is implicitly `undefined`.
+
+A function can be anonymous functions: `function(){return "test"}`
+
+For more example about how to declare functions: see [SOJS] pag 40
+
+Whatever we can do with objects, we can do with functions as well.
+
+Functions are objects, just with an additional, special capability of **being invokable** : Functions can be called or invoked in order to perform an action.
+
+## Closures
+
+A closure is a special kind of object that combines two things:
+
+* a function
+* the environment in which that function was created.
 
 
 ~~~javascript
