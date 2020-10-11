@@ -1992,6 +1992,237 @@ Whenever a function is called:
 
 NOTE: This might seem odd at first. Why don’t we just traverse the whole stack of execution contexts and search their matching environments for iden- tifier mappings? Technically, this would work in our example. But remember, a JavaScript function can be passed around as any other object, so the posi- tion of the function definition and the position from where the function is called generally aren’t related (remember closures).
 
+### Metaphore: conversation Compiler-ScopeManager-Engine
+
+SEE: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch2.md#a-conversation-among-friends
+
+TL;DR:
+
+```js
+var students = [
+    { id: 14, name: "Kyle" },
+    { id: 73, name: "Suzy" },
+    { id: 112, name: "Frank" },
+    { id: 6, name: "Sarah" }
+];
+```
+
+Let's now meet the members of the JS engine that will have conversations as they process that program:
+
+* Engine: responsible for start-to-finish compilation and execution of our JavaScript program.
+
+* Compiler: one of Engine's friends; handles all the dirty work of parsing and code-generation.
+
+* Scope Manager: another friend of Engine; collects and maintains a look-up list of all the declared variables/identifiers, and enforces a set of rules as to how these are accessible to currently executing code.
+
+A typical line of code consist of two parts: declaration and initialization-assignment. Engine sees two distinct operations:
+
+* `declaration`: which Compiler will handle during compilation
+* `initialization`: which Engine will handle during execution.
+
+Once Compiler gets to code-generation, there's more detail to consider than may be obvious. A reasonable assumption would be that Compiler will produce code for the first statement such as: "Allocate memory for a variable, label it students, then stick a reference to the array into that variable." But there's more to it.
+
+Here's how Compiler will handle that statement:
+
+* Encountering var students, Compiler will ask Scope Manager to see if a variable named students already exists for that particular scope bucket. If so, Compiler would ignore this declaration and move on. Otherwise, Compiler will produce code that (at execution time) asks Scope Manager to create a new variable called students in that scope bucket.
+
+* Compiler then produces code for Engine to later execute, to handle the students = [] assignment. The code Engine runs will first ask Scope Manager if there is a variable called students accessible in the current scope bucket. If not, Engine keeps looking elsewhere (see "Nested Scope"). Once Engine finds a variable, it assigns the reference of the [ .. ] array to it.
+
+
+Later, when the Engine is executing, since the declaration has an initialization assignment, Engine asks Scope Manager to look up the variable, and assigns to it once found.
+
+### Looking up errors
+
+Ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch2.md#lookup-failures
+
+"Reference Error: XYZ is not defined" is thrown when we cannot resolve the lookup of an identifier:
+
+* and is a source variable 
+* or When is a target variable and STRICT MODE is enabled
+
+### var VS Accidental Global Variables
+
+Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var#Description
+
+TL;DR:
+
+* It is recommended to always declare variables, regardless of whether they are in a function or global scope.
+* In ECMAScript 5 strict mode, assigning to an undeclared variable throws an error.
+
+
+Assigning a value to an undeclared variable implicitly creates it as a global variable (it becomes a property of the global object) when the assignment is executed.
+
+The differences between declared and undeclared variables are:
+
+1. Declared variables (var,let,const) are constrained in the execution context in which they are declared. Undeclared variables are always global.
+
+```js
+function x() {
+  y = 1;     // Throws a ReferenceError in strict mode.
+  var z = 2;
+}
+
+x();
+
+console.log(y); // 1
+console.log(z); // Throws a ReferenceError: z is not defined outside x.
+```
+
+2. Declared variables are created before any code is executed. Undeclared variables do not exist until the code assigning to them is executed.
+
+```js
+console.log(a); // Uncaught ReferenceError: a is not defined
+```
+
+```js
+console.log(a);                // undefined
+console.log('still going...'); // still going...
+var a = 1;
+console.log(a);                // 1
+```
+
+3. Declared variables are a non-configurable property of their execution context (function or global). Undeclared variables are configurable (e.g. can be deleted).
+
+```js
+var a = 1;
+b = 2;
+
+delete this.a; // Throws a TypeError in strict mode. Fails silently otherwise.
+delete this.b;
+
+console.log(a, b); // Throws a ReferenceError.
+// The 'b' property was deleted and no longer exists.
+```
+
+If the variable is a target and strict-mode is not in effect, a confusing and surprising legacy behavior kicks in. The deeply unfortunate outcome is that the global scope's Scope Manager will just create an accidental global variable to fulfill that target assignment!
+
+Consider:
+
+```js
+function getStudentName() {
+    // assignment to an undeclared variable :(
+    nextStudent = "Suzy";
+}
+
+getStudentName();
+
+console.log(nextStudent);
+// "Suzy" -- oops, an accidental-global variable!
+```
+
+Here's how that conversation would go:
+
+* Engine: Hey Scope Manager (for the function), I have a target reference for nextStudent, ever heard of it?
+* (Function) Scope Manager: Nope, never heard of it. Try the next outer scope.
+* Engine: Hey Scope Manager (for the global scope), I have a target reference for nextStudent, ever heard of it?
+* (Global) Scope Manager: Nope, but since we're in non-strict-mode, I helped you out and just created a global variable for you, here you go!
+
+Yuck. This sort of accident (almost certain to lead to bugs eventually) is a great example of the protections of strict-mode, and why it's such a bad idea to not use it.
+
+### Scope is only partially determined at compile time
+
+Ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch3.md#lookup-is-mostly-conceptual
+
+
+lexical scope is partially determined during the initial compilation processing, exeption are: 
+
+* variable that isn't declared in any lexically available scopes in the current file (ex: modules)
+
+Because each file is its own separate program from the perspective of JS compilation.
+
+So the ultimate determination of whether the variable was ever appropriately declared in some accessible bucket may need to be deferred to the run-time.
+
+
+### Scope: Variable Shadowing
+
+Ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch3.md#shadowing
+
+When two variables have the same name the one in the inner scope hide the one in the outer scope.
+
+"Variables lookup" starts with the current scope and works its way outward/upward, stopping as soon as a matching variable is found.
+
+EXAMPLE: a function parameter shadows (or is shadowing) a global variable with the same name
+
+In the global scope, `var` declarations and `function-declarations` also expose themselves as properties (of the same name as the identifier) on the global object.
+
+NOTE: this is not true for `let`, `const`, `class`
+
+```js
+var studentName = "Suzy";
+// In the browser is mirrored to:
+window.studentName
+```
+
+### Scope: Legal and Illegal shadowing examples
+
+
+* let (in an inner scope) can always shadow an outer scope's var. var (in an inner scope) can only shadow an outer scope's let if there is a function boundary in between.
+
+* Ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch3.md#illegal-shadowing
+* Examples: https://github.com/breezeight/javascript_nicola_courses/tree/master/you-dont-know-js-yet/scope-and-closure/ch3-the-scope-chain
+
+### Function Name Scope
+
+https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch3.md#function-name-scope
+
+This example will create a variable in the enclosing scope (in this case, the global scope) named askQuestion:
+
+```js
+function askQuestion() {
+    // ..
+}
+```
+
+With this function definition you will obtain the same result of the above example but  it will not "hoist" :
+
+```js
+var askQuestion = function(){
+    // ..
+};
+```
+
+A 3rd, not obvious case is:
+
+```js
+var askQuestion = function ofTheTeacher(){
+    // ..
+};
+askQuestion();
+// function ofTheTeacher()...
+
+console.log(ofTheTeacher);
+// ReferenceError: 'ofTheTeacher' is not defined
+```
+WARNING: `ofTheTeacher` is declared as an identifier inside the function itself:
+
+See https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch3.md#function-name-scope for more details
+
+### Arrow Function and scope
+
+https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch3.md#arrow-functions
+
+Arrow functions have the same rules with respect to lexical scope as function functions do. An arrow function, with or without { .. } around its body, still creates a separate, inner nested bucket of scope. Variable declarations inside this nested scope bucket behave the same as in function functions.
+
+### Global Scope in different Environment
+
+The global scope of a JS program is a rich topic, with much more utility and nuance than you would likely assume. Many corner cases will rise, related to:
+
+* The env your are running (Browser, Web Workers, NodeJS...)
+* How you bundle and load your JS files
+
+TODO: read this https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch4.md#chapter-4-around-the-global-scope
+
+### Limiting Scope Exposure (BEST PRACTICE)
+
+https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch6.md
+
+### More about Forward Declaration in Javascript or Hoisting
+
+See:
+* http://www.i-programmer.info/programming/javascript/5364-javascript-hoisting-explained.html
+* http://www.w3schools.com/js/js_hoisting.asp
+
+**NOTE** JavaScript in _strict mode_ does not allow variables to be used if they are not declared.
 
 ## Lexical scoping: Explaining Value vs. Reference in Javascript
 
@@ -2230,7 +2461,10 @@ console.log(num); // Returns 6
 
 ### Is JS a compile or interpreted language?
 
-Ref: Kyle Simpson https://frontendmasters.com/courses/advanced-javascript/
+Ref:
+
+* Kyle Simpson https://frontendmasters.com/courses/advanced-javascript/
+* YDKJSY "The (not so) Secret Lifecycle of Variables" https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch5.md
 
 To understand Lexical Environment in JS you must understand that JS is a compiled language. Most of us think that JAVA or CPP are compiled languages because we use compilers to ship our application as bytecode or machine readable Executables, but it not the right way to classify a compiled language.
 
@@ -2238,6 +2472,44 @@ With JS we distribute our source code so a lot of people tend to say it is inter
 
 What is an interpreted language?  Let's look at Bash scripting: when the bash interpreter is running line 3, it has NO IDEA of what to expect at line 4.
 Instead a compiled language read the whole source code before running it! This is the main point!
+
+### Hoisting YDNJSY metaphor
+
+https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch5.md#hoisting-yet-another-metaphor
+
+The hoisting (metaphor) proposes that JS pre-processes (during compiling) the original program and re-arranges it slightly, so that all the declarations have been moved to the top of their respective scopes, before execution. Moreover, the hoisting metaphor asserts that function declarations are, in their entirety, hoisted to the top of each scope, as well.
+
+Consider:
+
+```js
+studentName = "Suzy"
+greeting();
+// Hello Suzy!
+
+function greeting() {
+    console.log(`Hello ${ studentName }!`);
+}
+
+var studentName;
+```
+
+The "rule" of the hoisting metaphor is that function declarations are hoisted first, then variables immediately after all the functions. Thus, hoisting suggests that program is re-written by the JS engine to look like this:
+
+```js
+function greeting() {
+    console.log(`Hello ${ studentName }!`);
+}
+var studentName;
+
+studentName = "Suzy";
+greeting();
+// Hello Suzy!
+```
+
+### Re-Declaration of variables and functions
+
+https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch5.md#re-declaration
+
 
 
 ### Simplified overview of how a JS Engine parse and execute code
@@ -2355,6 +2627,10 @@ step 2, scan for `function declarations` (without going into the body of other f
   * If that identifier name already exists, its value is overwritten.
   * NOTE: this explain how hoi
 * If we’re dealing with `block environments`: this step is skipped.
+  * NOTE: ECMAScript 5, the current official specification of the JavaScript language, does not define the behavior for function declarations inside blocks.
+  * NOTE: in ES6 are allowed https://stackoverflow.com/questions/31419897/what-are-the-precise-semantics-of-block-level-functions-in-es6
+  * NOTE: MY OPINION, avoid them....
+  * TODO: https://stackoverflow.com/questions/25111087/why-is-a-function-declaration-within-a-condition-block-hoisted-to-function-scope
 
 step 3, scan for `variable declarations`:
 
@@ -2373,6 +2649,64 @@ step 3, scan for `variable declarations`:
   * all the expressions and statement are evaluated in order.
 
 
+
+Puting it all together — compilation + execution:   Hoisting is simply a mental construct. You saw hoisting in action during the compilation phase in the example above. Understanding how JavaScript is compiled and executed is the key to understanding hoisting. Let’s go through one more simpler conversation in the context of hoisting and examine what happens with the code before, during and after compilation.
+
+```
+  // Code as authored by developer, Before Compilation
+  a;
+  b;
+  var a = b;
+  var b = 2;
+  b;
+  a;
+```
+
+```
+  /*  
+      During Compilation
+      Notice: Variable declarations have been **hoisted** to the top of the
+      containing scope. In this case, the global scope.
+  */
+  var a;
+  var b;
+  a;
+  b;
+  a = b;
+  b = 2;
+  b;
+  a;
+```
+
+```
+  /*
+      After Compilation
+      Notice: The var keyword has been compiled away.
+  */
+  a;      // undefined // line 4
+  b;      // undefined // line 5
+  a = b;
+  b = 2;
+  b;      // 2
+  a;      // undefined
+```
+
+Now that you understand how variables get hoisted during the compilation phase, understanding the execution phase is much easier. Below is the conversation that occurs during the execution phase, as shown in the After Compilation figure above.
+
+* Line 4: Hey global scope, I have an RHS reference for a variable named a. Ever heard of it?
+  * The global scope has because a was registered on line 5 in the compilation phase, its value is undefined.
+* Line 5: Hey global scope, I have an RHS reference for a variable named b. Ever heard of it?
+  * The global scope has because b was registered on line 6 in the compilation phase, its value is undefined.
+* Line 6: Hey global scope, I have an LHS reference for a variable named a. Ever heard of it?
+  * The global scope has because a was registered on line 5 in the compilation phase, so the assignment occurs.
+* Line 7: Hey global scope, I have an LHS reference for a variable named b. Ever heard of it?
+  * The global scope has because b was registered on line 6 in the compilation phase, so the assignment occurs.
+* Line 8: Hey global scope, I have an RHS reference for a variable named b. Ever heard of it?
+  * The global scope has because b was registered on line 6 in the compilation phase and a value was assigned to it on line 7 in the [current] execution phase, its value is the number 2.
+* Line 9: Hey global scope, I have an RHS reference for a variable named a. Ever heard of it?
+  * The global scope has because a was registered on line 5 in the compilation phase and b was assigned to it on line 6 in the [current] execution phase. As b was undefined at the time of its assignment to a, the value of a is undefined.
+
+To keep our example short and simple, I did not include functions. Note that functions are hoisted in the same way variables are. Functions get hoisted above variables during the compilation phase.
 
 ### Problem of overriding function identifiers
 
@@ -2406,6 +2740,9 @@ assert(typeof fun === "number", "Still a number");
 
 ```
 
+## Exploring how closures work
+
+TODO: see [SOJS_2nd] ch 5.6
 
 
 
