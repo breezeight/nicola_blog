@@ -1806,6 +1806,8 @@ alert(foo); // print 10
 
 http://www.codecademy.com/forum_questions/4f166ff96390db0001003803
 
+
+
 ## Difference between identifier and variable (in JavaScript)
 
 Ref: https://stackoverflow.com/questions/28185877/difference-between-identifier-and-variable-in-javascript#28185939
@@ -1923,25 +1925,18 @@ inner is defined after a but it is in scope before the variable a).
 * for the purpose of declaration scopes the global context act acts like
 one big function encompassing the code on the page.
 
-
-
-http://www.smashingmagazine.com/2009/08/01/what-you-need-to-know-about-javascript-scope/
-
-### More about Forward Declaration in Javascript or Hoisting
-
-See:
-* http://www.i-programmer.info/programming/javascript/5364-javascript-hoisting-explained.html
-* http://www.w3schools.com/js/js_hoisting.asp
-
-**NOTE** JavaScript in _strict mode_ does not allow variables to be used if they are not declared.
-
-
 ## Lexical Context (or Scope)
 
 Ref:
 
 * See [SOJS_2nd] 5.4
 * Mozilla: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
+
+By the time you've written your first few programs, you're probably starting to feel more comfortable with creating variables and storing values in them. Working with variables is one of the most foundational things we do in programming!
+
+But you may not have considered very closely the underlying mechanisms used by the engine to organize and manage these variables. I don't mean how the memory is allocated on the computer, but rather: how does JS know which variables are accessible by any given statement, and how does it handle two variables of the same name?
+
+The answers to questions like these take the form of well-defined rules called scope.
 
 `Lexical environment` or `scope` is an internal JavaScript engine construct used to keep track of the mapping from identifiers to specific variables. It's an internal implementation of the JavaScript scoping mechanism.
 
@@ -1968,23 +1963,25 @@ Each `execution context` has a `lexical environment` associated with it, that co
 
 NOTE In pre-ES6 versions of JavaScript, a lexical environment could be associated with only a function. Variables could be only function scoped. This caused a lot of confusion. Because JavaScript is a C-like language, people coming from other C-like languages (such as C++, C#, or Java) naturally expected some low-level concepts, such as the existence of block scopes, to be the same. With ES6, this is finally fixed.
 
-**Scope Nesting**:
+Scope Nesting:
 
 * in Javascript you can access variables defined in outer code structures.
 * JS supports closure
 
-Both behaviours are supported by JS engines using a linked list of `lexical environment`: each lexical environment has to keep track of its outer (parent) lexical envi- ronment.
+Both behaviours are supported by JS engines using a linked list of `lexical environment`: each lexical environment has to keep track of its outer (parent) lexical environment.
 
 If an identifier can’t be found in the current environment, the outer environment is searched. This stops either when:
 
 * the matching variable is found,
 * or with a reference error if we’ve reached the global environment and there’s no sign of the searched-for identifier.
 
+![image](https://raw.githubusercontent.com/getify/You-Dont-Know-JS/2nd-ed/scope-closures/images/fig2.png)
+
 Ref: See [SOJS_2nd] figure 5.9
 
 In order to support the closure, how is the outer lexical environment set when we call a function?
 
-* JavaScript does this by taking advantage of functions as first-class objects. Whenever a function is created, a reference to the lexical environment in which the function was created is stored in an internal (meaning that you can’t access or manip- ulate it directly) property named [[Environment]]; double brackets is the notation that we’ll use to mark these internal properties.
+* JavaScript does this by taking advantage of functions as first-class objects. Whenever a function is created, a reference to the lexical environment in which the function was created is stored in an internal (meaning that you can’t access or manipulate it directly) property named [[Environment]]; double brackets is the notation that we’ll use to mark these internal properties.
 
 Whenever a function is called:
 
@@ -2185,7 +2182,6 @@ function reportActivity(){
 
 ## HOW JS Engine register identifiers in a lexical environment: functions and variables Hoisting
 
-
 REF:
 * [SOJS_2nd] 5.5.3
 * Mozilla MDN: https://developer.mozilla.org/en-US/docs/Glossary/Hoisting
@@ -2264,7 +2260,6 @@ Decorations are: `var`, `let`, `function`, etc
 * the initialization operation `foo = "bar";`
 
 It's really important to look at our code knowing this concept to understand `hoisting`.
-
 
 Every JavaScript engine process your code in two phases: `Compilation Phase` and `Execution Phase`. Modern engines will compile your code using advanced techniques like JIT but for educational porpouse of understanding hoisting we will keep thing simple.
 
@@ -2690,7 +2685,6 @@ assert(ninja2.getMyThis() === ninja2,
 ### This: invoke functions as a construct
 
 A constructor is a function like any other functions.
-
 
 NOTE: do not to confuse these `function constructors` with `constructor functions`:
 
