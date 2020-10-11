@@ -1090,6 +1090,302 @@ console.log(Object.getOwnPropertyDescriptor(obj, 'p'))
 
 Note that isExt is short for isExtensible. reassign is whether or not a property can be assigned another value. del is whether or not properties can be deleted. add is whether or not a new property can be added.
 
+### Getter/Setter
+
+If you don't modify and default, when you access an object property:
+
+* the default `[[Put]]` operation completely control how values are set to existing or new properties.
+* the default `[[Get]]` control how values are retrieved from existing properties.
+
+#### Standard [[Get]]
+
+Consider:
+
+```js
+var myObject = {
+	a: 2
+};
+
+myObject.a; // 2
+myObject.b; // undefined
+```
+
+According to the spec, the code above actually performs a [[Get]] operation (kinda like a function call: [[Get]]()) on the myObject:
+* The default built-in [[Get]] operation for an object first inspects the object for a property of the requested name, and if it finds it, it will return the value accordingly.
+* if it does not find a property of the requested name it will traverse of the [[Prototype]] chain, if any.
+* if it cannot through any means come up with a value for the requested property, it instead returns the value `undefined`.
+
+NOTE see also the Paragraph "#### Getter/Setter Property Descriptors"
+
+#### Standard [[Put]]
+
+If the property is present, the `[[Put]]` algorithm will roughly check:
+
+* Is the property an accessor descriptor (see below)? If so, call the setter, if any.
+* Is the property a data descriptor with writable of false? If so, silently fail in non-strict mode, or throw TypeError in strict mode.
+* Otherwise, set the value to the existing property as normal.
+
+If the property is not yet present on the object in question, the [[Put]] operation is even more nuanced and complex.
+
+TODO We will revisit this scenario in Chapter 5 when we discuss [[Prototype]] to give it more clarity.
+
+#### Define Setter and Getter
+
+When you define a property to have either a getter or a setter or both, its definition becomes an "accessor descriptor" (as opposed to a "data descriptor").
+
+For accessor-descriptors, the `value` and `writable` characteristics of the descriptor are moot and ignored, and instead JS considers the set and get characteristics of the property (as well as configurable and enumerable).
+
+Consider:
+
+```js
+var myObject = {
+	// define a getter for `a`
+	get a() {
+		return 2;
+	}
+};
+
+Object.defineProperty(
+	myObject,	// target
+	"b",		// property name
+	{			// descriptor
+		// define a getter for `b`
+		get: function(){ return this.a * 2 },
+
+		// make sure `b` shows up as an object property
+		enumerable: true
+	}
+);
+
+myObject.a; // 2
+
+myObject.b; // 4
+
+//we didn't define a setter
+myObject.a = 3;
+myObject.a; // 2
+```
+
+Either through object-literal syntax with `get a() { .. }` or through explicit definition with `defineProperty(..)`, in both cases we created a property on the object that actually doesn't hold a value, but whose access automatically results in a hidden function call to the getter function, with whatever value it returns being the result of the property access.
+
+Since we only defined a getter for a, if we try to set the value of a later, the set operation won't throw an error but will just silently throw the assignment away. Even if there was a valid setter, our custom getter is hard-coded to return only 2, so the set operation would be moot.
+
+To make this scenario more sensible, properties should also be defined with setters, which override the default [[Put]] operation (aka, assignment), per-property, just as you'd expect. You will almost certainly want to always declare both getter and setter (having only one or the other often leads to unexpected/surprising behavior):
+
+```js
+var myObject = {
+	// define a getter for `a`
+	get a() {
+		return this._a_;
+	},
+
+	// define a setter for `a`
+	set a(val) {
+		this._a_ = val * 2;
+	}
+};
+
+myObject.a = 2;
+
+myObject.a; // 4
+```
+
+Note: In this example, we actually store the specified value 2 of the assignment ([[Put]] operation) into another variable _a_. The _a_ name is purely by convention for this example and implies nothing special about its behavior -- it's a normal property like any other.
+
+### Property Existence
+
+If you reference a variable that cannot be resolved within the applicable lexical scope look-up a `ReferenceError` is thrown.
+
+Instead the result is undefined for a not existing object property:
+
+```js
+var myObject = {
+	a: undefined
+};
+
+myObject.a; // undefined
+myObject.b; // undefined
+```
+
+From a value perspective, there is no difference between these two references -- they both result in undefined, you cannot distinguish whether a property exists and holds the explicit value undefined, or whether the property does not exist and undefined was the default return value after [[Get]] failed to return something explicitly. 
+
+How you can distinguish these two scenarios?
+
+We can ask an object if it has a certain property without asking to get that property's value:
+
+```js
+var myObject = {
+	a: 2
+};
+
+("a" in myObject);				// true
+("b" in myObject);				// false
+
+myObject.hasOwnProperty( "a" );	// true
+myObject.hasOwnProperty( "b" );	// false
+
+myObject2 = Object.create(myObject); // {}
+
+myObject2.b //undefined
+myObject2.a // 2  // gotten from the prototype
+myObject2.hasOwnProperty( "a"); // false  // it belongs to the prototype
+
+for (const property in myObject2) {
+  console.log(`${property}: ${myObject2[property]}`);
+}
+```
+
+`in` operator checks if:
+
+* the property is in the object
+* or exists at any higher level of the [[Prototype]] chain object
+
+`hasOwnProperty(..)` checks:
+
+* only if myObject has the property,
+* DOESN'T traverse the prototype chain
+
+Note: The in operator has the appearance that it will check for the existence of a value inside a container, but it actually checks for the existence of a property name. This difference is important to note with respect to arrays, as the temptation to try a check like 4 in [2, 4, 6] is strong, but this will not behave as expected:
+
+```js
+4 in [2, 4, 6]          //false  // 4 is not a property
+"length" in [2, 4, 6]   //true   // "length" is a property
+```
+### Enumeration and Interation
+
+https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#enumeration
+
+The `enumerable` property descriptor means "the object will be included if the object's properties are iterated through".
+
+In the example below you'll notice that:
+
+* `myObject.b` in fact exists and has an accessible value` 
+* but it doesn't show up in a `for..in` loop (though, surprisingly, it is revealed by the in operator existence check). 
+
+```js
+var myObject = { };
+
+Object.defineProperty(
+	myObject,
+	"a",
+	// make `a` enumerable, as normal
+	{ enumerable: true, value: 2 }
+);
+
+Object.defineProperty(
+	myObject,
+	"b",
+	// make `b` NON-enumerable
+	{ enumerable: false, value: 3 }
+);
+
+myObject.b; // 3
+("b" in myObject); // true
+myObject.hasOwnProperty( "b" ); // true
+
+// .......
+
+for (var k in myObject) {
+	console.log( k, myObject[k] );
+}
+// "a" 2
+```
+
+* `propertyIsEnumerable(..)` tests whether the given property name exists directly on the object and is also `enumerable:true`
+* `Object.keys(..)` returns an array of all enumerable properties. DON'T consult the [[Prototype]]
+* `Object.getOwnPropertyNames(..)` returns an array of all properties, enumerable or not. DON'T consult the [[Prototype]]
+
+PROBLEM: There is no built-in way to get a list of all properties consulting also the `[[Prototype]]` chain.
+* SOLUTION You could approximate such a utility by recursively traversing the [[Prototype]] chain of an object, and for each level, capturing the list from Object.keys(..) -- only enumerable properties.
+
+### Iteration
+
+#### for...in
+
+The `for...in` statement:
+
+* iterates over all enumerable properties of an object that are keyed by strings (ignoring ones keyed by Symbols)
+* CONSULT the [[Prototype]] 
+
+```js
+var myObject = { };
+
+Object.defineProperty( myObject, "a", { enumerable: true, value: 2 });
+Object.defineProperty( myObject, "b", { enumerable: false, value: 3 });
+// Shows up the prototype behaviour
+myObject2 = Object.create(myObject);
+Object.defineProperty( myObject2, "c", { enumerable: true, value: 4 });
+
+// "b" is not enumerable, "a" is defined in the Prototype
+for (var k in myObject2) {
+	console.log( k, myObject2[k] );
+}
+// "a" 2
+// "c" 4
+```
+
+#### for with Arrays
+
+Array Note: `for..in` loops applied to arrays can give somewhat unexpected results, in that the enumeration of an array will include not only all the numeric indices, but also any enumerable properties. It's a good idea to use for..in loops only on objects, and traditional for loops with numeric index iteration for the values stored in arrays.
+
+With numerically-indexed arrays, iterating over the values is typically done with a standard for loop, like:
+
+```js
+var myArray = [1, 2, 3];
+
+for (var i = 0; i < myArray.length; i++) {
+	console.log( myArray[i] );
+}
+// 1 2 3
+```
+
+#### helpers for arrays: forEach, some, every 
+
+Each of these helpers accepts a function callback to apply to each element in the array, differing only in how they respectively respond to a return value from the callback:
+
+`forEach(..)`
+*	will iterate over all values in the array
+*	ignores any callback return values
+
+`some(..)`
+*	keeps going until the end or the callback returns a true (or "truthy") value
+
+`every(..)`
+* keeps going until the end or the callback returns a false (or "falsy") value
+
+#### for..of
+
+If you iterate on an object with a for..in loop, you're also only getting at the values indirectly, because it's actually iterating only over the enumerable properties of the object, leaving you to access the properties manually to get the values.
+
+if you want to iterate over the values directly instead of the array indices (or object properties), ES6 adds a `for..of` loop syntax for iterating over arrays (and objects, if the object defines its own custom iterator):
+
+```js
+var myArray = [ 1, 2, 3 ];
+
+// Print values not indexes
+for (var v of myArray) {
+	console.log( v );
+}
+// 1
+// 2
+// 3
+```
+
+
+The for..of loop asks for an iterator object (from a default internal function known as @@iterator in spec-speak) of the thing to be iterated, and the loop then iterates over the successive return values from calling that iterator object's next() method, once for each loop iteration.
+
+Arrays have a built-in @@iterator, so for..of works easily on them, as shown. But let's manually iterate the array, using the built-in @@iterator, to see how it works:
+
+```js
+var myArray = [ 1, 2, 3 ];
+var it = myArray[Symbol.iterator]();
+
+it.next(); // { value:1, done:false }
+it.next(); // { value:2, done:false }
+it.next(); // { value:3, done:false }
+it.next(); // { done:true }
+```
+
 # Functions
 
 A function is a procedure, a collection of statements that can be invoked one or more times, may be provided some inputs, and may give back one or more outputs.
