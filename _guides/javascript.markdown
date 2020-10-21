@@ -7,67 +7,68 @@ categories: ["javascript"]
 ---
 
 # Contents
+
 {:.no_toc}
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
+- Will be replaced with the ToC, excluding the "Contents" header
+  {:toc}
 
 # References:
 
 Books to start programming from scretch with Javascript:
 
-* [YDKJSY](https://github.com/getify/You-Dont-Know-JS) 
- *  It's not just for someone picking up the language for the first time (though it's for them, too); it's for all software craftspeople who want to master their tools, who want to understand the ins and outs of their trade, and who want to select the proper methods for solving problems.
-* [EJS]Eloquent_JavaScript(https://eloquentjavascript.net/) 3rd edition 
+- [YDKJSY](https://github.com/getify/You-Dont-Know-JS)
+- It's not just for someone picking up the language for the first time (though it's for them, too); it's for all software craftspeople who want to master their tools, who want to understand the ins and outs of their trade, and who want to select the proper methods for solving problems.
+- [EJS]Eloquent_JavaScript(https://eloquentjavascript.net/) 3rd edition
 
 Books:
 
-* [YDKJSY](https://github.com/getify/You-Dont-Know-JS) 
-* [EJS]Eloquent_JavaScript(https://eloquentjavascript.net/) 3rd edition
- * All code in this book may also be considered licensed under an MIT license.
- * [GITHUB](https://github.com/marijnh/Eloquent-JavaScript)
- * License "CC BY-NC 3.0"
-* [SOJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Secrets_of_the_JavaS.pdf)    http://www.manning.com/resig/
-* [FJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Functional_JavaScript.pdf)
-* [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
-    Mozilla Developer Network - Javascript
-* [FLJS](https://github.com/getify/Functional-Light-JS) Functional-Light JavaScript
-* [Codeacademy](http://www.codecademy.com/en/tracks/javascript)
+- [YDKJSY](https://github.com/getify/You-Dont-Know-JS)
+- [EJS]Eloquent_JavaScript(https://eloquentjavascript.net/) 3rd edition
+- All code in this book may also be considered licensed under an MIT license.
+- [GITHUB](https://github.com/marijnh/Eloquent-JavaScript)
+- License "CC BY-NC 3.0"
+- [SOJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Secrets_of_the_JavaS.pdf) http://www.manning.com/resig/
+- [FJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Functional_JavaScript.pdf)
+- [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
+  Mozilla Developer Network - Javascript
+- [FLJS](https://github.com/getify/Functional-Light-JS) Functional-Light JavaScript
+- [Codeacademy](http://www.codecademy.com/en/tracks/javascript)
 
 Books By Dr. Axel Rauschmayer [Exploring JS: JavaScript books for programmers](http://exploringjs.com/):
 
-* [JSFIP](http://exploringjs.com/impatient-js/index.html) JavaScript for impatient programmers (ES1–ES2020)
-  * A full modern guide to the language, No required knowledge (apart from programming).
-  * More compact than my other books, which go into more detail.
-  * [JSFIP ES2020 Update](https://exploringjs.com/impatient-js/ch_about-book.html#new-in-es2020-edition): Operators, undefined, “Typed Arrays: handling binary data (Advanced)”, Modules, Single Objects, Promise combinators: working with Arrays of Promises”, 
-* [EES6](http://exploringjs.com/es6.html) "Exploring ES6", Covers what’s new in ES6 (relative to ES5)
-* [EES20162017](http://exploringjs.com/es2016-es2017.html)  "Exploring ES2016 and ES2017", Covers what’s new in ES2016 and ES2017 (relative to ES6)
-* [EES20182019](http://exploringjs.com/es2018-es2019/index.html)  "Exploring ES2018 and ES2019", Covers what’s new in ES2018 and ES2019 (relative to ES2017)
+- [JSFIP](http://exploringjs.com/impatient-js/index.html) JavaScript for impatient programmers (ES1–ES2020)
+  - A full modern guide to the language, No required knowledge (apart from programming).
+  - More compact than my other books, which go into more detail.
+  - [JSFIP ES2020 Update](https://exploringjs.com/impatient-js/ch_about-book.html#new-in-es2020-edition): Operators, undefined, “Typed Arrays: handling binary data (Advanced)”, Modules, Single Objects, Promise combinators: working with Arrays of Promises”,
+- [EES6](http://exploringjs.com/es6.html) "Exploring ES6", Covers what’s new in ES6 (relative to ES5)
+- [EES20162017](http://exploringjs.com/es2016-es2017.html) "Exploring ES2016 and ES2017", Covers what’s new in ES2016 and ES2017 (relative to ES6)
+- [EES20182019](http://exploringjs.com/es2018-es2019/index.html) "Exploring ES2018 and ES2019", Covers what’s new in ES2018 and ES2019 (relative to ES2017)
 
 Blogs:
 
-* http://perfectionkills.com/
+- http://perfectionkills.com/
 
 Video Courses:
 
-* Good introduction to NodeJS that go through a lot of JS basic concepts, GOOD for beginners: https://www.youtube.com/playlist?list=PLSn0N7ekG2FjiNp23kxOcjK8Xe0xRRO8a
-* Advanced JavaScript By Kyle Simpson:
-  * https://frontendmasters.com/courses/advanced-javascript/
-
+- Good introduction to NodeJS that go through a lot of JS basic concepts, GOOD for beginners: https://www.youtube.com/playlist?list=PLSn0N7ekG2FjiNp23kxOcjK8Xe0xRRO8a
+- Advanced JavaScript By Kyle Simpson:
+  - https://frontendmasters.com/courses/advanced-javascript/
 
 MISC
 
-* My Evernote about NodeJS: https://www.evernote.com/shard/s106/nl/2147483647/c61f9319-9f5c-4a91-b662-46bb5a8b644e/
-* ES6 in Depth by Mozilla: https://hacks.mozilla.org/category/es6-in-depth/
-* Full list of ES6 new features: http://es6-features.org
+- My Evernote about NodeJS: https://www.evernote.com/shard/s106/nl/2147483647/c61f9319-9f5c-4a91-b662-46bb5a8b644e/
+- ES6 in Depth by Mozilla: https://hacks.mozilla.org/category/es6-in-depth/
+- Full list of ES6 new features: http://es6-features.org
 
-* Nicola Testing "4.1 - TDD Jest" https://docs.google.com/presentation/d/1VO5His3lxFu_MP3zLlrh9M-R6T7VlqYw7upvAug7qHg/edit#slide=id.p
+- Nicola Testing "4.1 - TDD Jest" https://docs.google.com/presentation/d/1VO5His3lxFu_MP3zLlrh9M-R6T7VlqYw7upvAug7qHg/edit#slide=id.p
 
 # Glossary
 
 https://developer.mozilla.org/en-US/docs/Glossary
 
 # TODO
+
 typeof -> how does it works?
 
 # VS Code Extensions: best practices
@@ -76,7 +77,7 @@ When writing JavaScript with an editor such as Visual Studio Code, there are a n
 
 `ESLint` can both format your code and analyze it to make suggestions for improvement. It is also configurable. This means that you can customize how your code is evaluated.
 
-`Prettier` reprint the entire program from scratch in a consistent way. Linter only highlight if you write  but worse – they might conflict with Prettier. Luckily it’s easy to turn off rules that conflict or are unnecessary with Prettier (see #Setup).
+`Prettier` reprint the entire program from scratch in a consistent way. Linter only highlight if you write but worse – they might conflict with Prettier. Luckily it’s easy to turn off rules that conflict or are unnecessary with Prettier (see #Setup).
 
 For code formatting the best solution is to invoke `Prettier` on save of a file (see #Setup).
 
@@ -84,7 +85,7 @@ For code formatting the best solution is to invoke `Prettier` on save of a file 
 
 ## Setup
 
-* [Ref](https://medium.com/matheus-barbosa/integrating-prettier-eslint-airbnb-style-guide-editorconfig-no-vscode-ff950263adbf)
+- [Ref](https://medium.com/matheus-barbosa/integrating-prettier-eslint-airbnb-style-guide-editorconfig-no-vscode-ff950263adbf)
 
 If it's a new project use the `npm init` command to initialize your project will create a package.json.
 
@@ -95,7 +96,7 @@ code --install-extension EditorConfig.EditorConfig
 code --install-extension esbenp.prettier-vscode
 
 # Install the libraries **ESLint** and **Prettier** in your project
-npm install --save-dev --save-exact eslint prettier 
+npm install --save-dev --save-exact eslint prettier
 
 # Install the configuration of Airbnb
 npx install-peerdeps --dev eslint-config-airbnb
@@ -140,25 +141,24 @@ Insert on User Settings in VScode:
 
 (To open the User Settings, use the shortcut `Ctrl + Shift + P` then search for: `_Preferences: Open Settings (JSON)_`)
 
-
 NOTES:
-* [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier): Turns off all rules that are unnecessary or might conflict with Prettier.
-* [eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier): Runs Prettier as an ESLint rule and reports differences as individual ESLint issues.
 
+- [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier): Turns off all rules that are unnecessary or might conflict with Prettier.
+- [eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier): Runs Prettier as an ESLint rule and reports differences as individual ESLint issues.
 
 ## ESLint
 
 [Homepage](https://eslint.org/)
 
-* statically analyzes your code to quickly find problems
-* Customize: Preprocess code, use custom parsers, and write your own rules that work alongside ESLint's built-in rules. 
+- statically analyzes your code to quickly find problems
+- Customize: Preprocess code, use custom parsers, and write your own rules that work alongside ESLint's built-in rules.
 
-At the bottom of the `.eslintrc.json` file, you will see a `rules` object. 
+At the bottom of the `.eslintrc.json` file, you will see a `rules` object.
 To customize the errors that trigger ESLint or to disable ESLint’s response to certain pieces of code, you will add key-value pairs to the "rules" object. The key will match the name of the rule you want to add or change. The value will match the severity level of the issue. You have three choices for severity level:
 
-* `error` - produces a red underline
-* `warn` - will produce a yellow underline
-* `off` - will not display anything.
+- `error` - produces a red underline
+- `warn` - will produce a yellow underline
+- `off` - will not display anything.
 
 EX: If you do not want to produce any error messages for `console.log` statements, you can use the `no-console` rule name as the key. Input off as the value for no-console:
 
@@ -188,10 +188,8 @@ Now, if you include single quotes in your quote, ESLint will raise an error.
 
 [Homepage](https://github.com/prettier/prettier)
 
-* Opinionated Code Formatter
-*  It enforces a consistent style by parsing your code and re-printing it with its own rules that take the maximum line length into account, wrapping code when necessary.
-
-
+- Opinionated Code Formatter
+- It enforces a consistent style by parsing your code and re-printing it with its own rules that take the maximum line length into account, wrapping code when necessary.
 
 https://prettier.io/docs/en/integrating-with-linters.html
 
@@ -203,49 +201,45 @@ https://prettier.io/docs/en/integrating-with-linters.html
 
 Semver uses three part version number like `3.9.2` and call these three numbers from left to right as:
 
-* `major number`: 3  
-* `minor number`: 9
-* `patch number`: 2
+- `major number`: 3
+- `minor number`: 9
+- `patch number`: 2
 
 The basic contract for the module maintainer making changes is
 
-* backward incompatible change increments the major number
-* new functionality that is backwards compatible increments the minor number
-* simple bug fix to existing functionality increments the patch number
+- backward incompatible change increments the major number
+- new functionality that is backwards compatible increments the minor number
+- simple bug fix to existing functionality increments the patch number
 
 When executing npm install in a clean project directory, the version that satisfies package.json is installed for each dependency. Instead of specifying in package.json the exact version to be installed, npm allows you to widen the range of accepted versions. You can allow newer patch level version with tilde (~) and newer minor or patch level version with caret (^). The default when using --save is to use caret (^).
-
 
 https://docs.npmjs.com/misc/semver
 
 Tilde Ranges, Allows patch-level changes if a minor version is specified on the comparator. Allows minor-level changes if not.:
 
-* Ex: `~1.2.3` means `>=1.2.3` and `<1.3.0`
-* Ex: `~1.2`   means `>=1.2.0` and `<1.3.0`
-* Ex: `~1`     means `>=1.0.0` and `<2.0.0`
+- Ex: `~1.2.3` means `>=1.2.3` and `<1.3.0`
+- Ex: `~1.2` means `>=1.2.0` and `<1.3.0`
+- Ex: `~1` means `>=1.0.0` and `<2.0.0`
 
+Caret Ranges ( ex: ^1.2.3 ) Allows changes that do not modify the left-most _non-zero digit_ in the [major, minor, patch]:
 
-Caret Ranges ( ex: ^1.2.3 ) Allows changes that do not modify the left-most *non-zero digit* in the [major, minor, patch]:
-
-* Here `1` is the left-most non zero digit: `^1.2.3` means `>=1.2.3 and <2.0.0`
-* Here `2` is the left-most non zero digit: `^0.2.3` means `>=0.2.3 and <0.3.0`
-* Here `3` is the left-most non zero digit: `^0.0.3` means `>=0.0.3 and <0.0.4`
+- Here `1` is the left-most non zero digit: `^1.2.3` means `>=1.2.3 and <2.0.0`
+- Here `2` is the left-most non zero digit: `^0.2.3` means `>=0.2.3 and <0.3.0`
+- Here `3` is the left-most non zero digit: `^0.0.3` means `>=0.0.3 and <0.0.4`
 
 NOTE: caret is the standard behavior
-
 
 ## NPM
 
 [CheatSheet](https://devhints.io/npm)
 
-* -E, --save-exact: Saved dependencies will be configured with an exact version rather than using npm’s default semver range operator.
-
-
+- -E, --save-exact: Saved dependencies will be configured with an exact version rather than using npm’s default semver range operator.
 
 ## NPX
+
 An npm package runner — helps to execute packages without installing explicitly.
 
-Is included since  npm@5.2.0
+Is included since npm@5.2.0
 
 https://hackernoon.com/npx-npm-package-runner-7f6683e4304a
 
@@ -253,16 +247,15 @@ https://hackernoon.com/npx-npm-package-runner-7f6683e4304a
 
 List all installed package of a project :
 
-* [https://yarnpkg.com/lang/en/docs/cli/list/](doc)
-* all `yarn list --depth=0`
-* all and their dependencies `yarn list`
-* `yarn list --depth=0 --pattern react-native-localization`
-
+- [https://yarnpkg.com/lang/en/docs/cli/list/](doc)
+- all `yarn list --depth=0`
+- all and their dependencies `yarn list`
+- `yarn list --depth=0 --pattern react-native-localization`
 
 Perform a vulnerability audit against the installed packages:
 
-* [https://yarnpkg.com/en/docs/cli/audit](doc)
-* `yarn audit`
+- [https://yarnpkg.com/en/docs/cli/audit](doc)
+- `yarn audit`
 
 # Standard Built-in objects
 
@@ -270,8 +263,8 @@ Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Ob
 
 ## Null VS undefined
 
-* https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md#values
-* http://codechutney.in/blog/nodejs/javascript-null-vs-undefined/
+- https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md#values
+- http://codechutney.in/blog/nodejs/javascript-null-vs-undefined/
 
 TL;DR: better to use only undefined
 
@@ -281,7 +274,7 @@ Many developers prefer to treat them both consistently in this fashion, which is
 
 ```js
 while (value != undefined) {
-    console.log("Still got something!");
+  console.log("Still got something!");
 }
 ```
 
@@ -299,21 +292,19 @@ Always use === equals unless you have a good reason to use ==.
 
 Fatto molto bene: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md#comparisons
 
-
 http://dorey.github.io/JavaScript-Equality-Table/?utm_content=buffer4f1b9&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
-
 
 http://stackoverflow.com/questions/359494/does-it-matter-which-equals-operator-vs-i-use-in-javascript-comparisons
 
 ## Logical AND (&&)
 
-Ref:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND 
+Ref:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND
 
 The AND && operator does the following:
 
-* Evaluate operands from left to right.
-* For each operand, convert it to a boolean. If the result is false, stop and return the original value of that result.
-* If all other operands have been assessed (i.e. all were truthy), return the last operand.
+- Evaluate operands from left to right.
+- For each operand, convert it to a boolean. If the result is false, stop and return the original value of that result.
+- If all other operands have been assessed (i.e. all were truthy), return the last operand.
 
 As I said, each operand is convert to a boolean, if it's 0 it's falsy and every other value different than 0 (1, 56, -2, etc etc) are truthy
 
@@ -323,8 +314,8 @@ As I said, each operand is convert to a boolean, if it's 0 it's falsy and every 
 
 REF:
 
-* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#Exception_handling_statements
-* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#Exception_handling_statements
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch
 
 You can throw exceptions using the `throw` statement and handle them using the `try...catch` statements.
 
@@ -356,25 +347,25 @@ throw new UserException('Value too high');
 
 While it is fairly common to throw numbers or strings as errors it is frequently more effective to use one of the exception types specifically created for this purpose:
 
-* [ECMAScript exceptions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Error_types)
-* DOMException and DOMError
+- [ECMAScript exceptions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Error_types)
+- DOMException and DOMError
 
 The try statement consists of:
 
-* a `try block`, which contains one or more statements. {} must always be used, even for single statements.
-* At least one `catch clause`, or a `finally clause`.
+- a `try block`, which contains one or more statements. {} must always be used, even for single statements.
+- At least one `catch clause`, or a `finally clause`.
 
 This gives us three forms for the try statement:
 
-* try...catch
-* try...finally
-* try...catch...finally
+- try...catch
+- try...finally
+- try...catch...finally
 
 Flow:
 
-* If any statement within the try block (or in a function called from within the try block) throws an exception, control immediately shifts to the catch block.
-* If no exception is thrown in the try block, the catch block is skipped.
-* The finally block executes after the try and catch blocks execute but before the statements following the try...catch statement.
+- If any statement within the try block (or in a function called from within the try block) throws an exception, control immediately shifts to the catch block.
+- If no exception is thrown in the try block, the catch block is skipped.
+- The finally block executes after the try and catch blocks execute but before the statements following the try...catch statement.
 
 ### Catch
 
@@ -395,8 +386,8 @@ catch (e) {
 
 The finally block contains statements to execute:
 
-* after the try and catch blocks execute
-* but before the statements following the try...catch statement.
+- after the try and catch blocks execute
+- but before the statements following the try...catch statement.
 
 The finally block executes whether or not an exception is thrown. If an exception is thrown, the statements in the finally block execute even if no catch block handles the exception.
 
@@ -406,7 +397,7 @@ You can use the finally block to make your script fail gracefully when an except
 openMyFile();
 try {
   writeMyFile(theData); //This may throw an error
-} catch(e) {  
+} catch(e) {
   handleError(e); // If we got an error we handle it
 } finally {
   closeMyFile(); // always close the resource
@@ -431,7 +422,7 @@ function f() {
     return false; // overwrites the previous "return"
     console.log(4); // not reachable
   }
-  // "return false" is executed now  
+  // "return false" is executed now
   console.log(5); // not reachable
 }
 f(); // console 0, 1, 3; returns false
@@ -482,14 +473,14 @@ All primitives are immutable, i.e., they cannot be altered. It is important not 
 
 # THIS
 
-* [YDKJS 1st Chapter 1: this Or That](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch1.md)
+- [YDKJS 1st Chapter 1: this Or That](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch1.md)
 
 This is one of the most misunderstood JS concepts, most common misconceptions about how it doesn't actually work are:
 
-* "this refers to the function itself, because in JS a function is an object" -> WRONG!
-  * Read here a full example [YDKJS 1st Chapter 1: this Or That](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch1.md#itself)
-* "this somehow refers to the function's scope." -> WRONG
-  * Read here a full example [YDKJS 1st Chapter 1: this Or That](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch1.md#its-scope)
+- "this refers to the function itself, because in JS a function is an object" -> WRONG!
+  - Read here a full example [YDKJS 1st Chapter 1: this Or That](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch1.md#itself)
+- "this somehow refers to the function's scope." -> WRONG
+  - Read here a full example [YDKJS 1st Chapter 1: this Or That](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch1.md#its-scope)
 
 What is `this`?
 
@@ -506,8 +497,9 @@ ref: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%
 If strict mode is in effect, the global object is not eligible for the default binding, so the this is instead set to undefined.
 
 Function invoked as a standalone function `f()`:
-* Strict mode: this is `undefined`
-* Non Strict mode: Window, the global context
+
+- Strict mode: this is `undefined`
+- Non Strict mode: Window, the global context
 
 ## Implicit binding
 
@@ -517,7 +509,7 @@ Function invoked as a method `obj.f()`
 
 Common problem: "Implicitly lost" https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch2.md#implicitly-lost
 
-* SCENARIO: Event handlers in popular JavaScript libraries are quite fond of forcing your callback to have a this which points to, for instance, the DOM element that triggered the event.
+- SCENARIO: Event handlers in popular JavaScript libraries are quite fond of forcing your callback to have a this which points to, for instance, the DOM element that triggered the event.
 
 ## new Binding
 
@@ -527,7 +519,7 @@ Function invoked as a constructor: `new F()`
 
 `this` is the newly created object
 
-## Explicit binding 
+## Explicit binding
 
 https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch2.md#explicit-binding
 
@@ -543,63 +535,63 @@ The most typical way to wrap a function with a hard binding creates a pass-thru 
 
 ```js
 function foo(something) {
-	console.log( this.a, something );
-	return this.a + something;
+  console.log(this.a, something);
+  return this.a + something;
 }
 
 var obj = {
-	a: 2
+  a: 2,
 };
 
-var bar = function() {
-	return foo.apply( obj, arguments );
+var bar = function () {
+  return foo.apply(obj, arguments);
 };
 
-var b = bar( 3 ); // 2 3
-console.log( b ); // 5
+var b = bar(3); // 2 3
+console.log(b); // 5
 ```
 
 Another way to express this pattern is to create a re-usable helper:
 
 ```js
 function foo(something) {
-	console.log( this.a, something );
-	return this.a + something;
+  console.log(this.a, something);
+  return this.a + something;
 }
 
 // simple `bind` helper
 function bind(fn, obj) {
-	return function() {
-		return fn.apply( obj, arguments );
-	};
+  return function () {
+    return fn.apply(obj, arguments);
+  };
 }
 
 var obj = {
-	a: 2
+  a: 2,
 };
 
-var bar = bind( foo, obj );
+var bar = bind(foo, obj);
 
-var b = bar( 3 ); // 2 3
-console.log( b ); // 5
+var b = bar(3); // 2 3
+console.log(b); // 5
 ```
 
 Since hard binding is such a common pattern, it's provided with a built-in utility as of ES5: Function.prototype.bind, and it's used like this:
 
 ```js
 function foo(something) {
-	console.log( this.a, something );
-	return this.a + something;
+  console.log(this.a, something);
+  return this.a + something;
 }
 
 var obj = {
-	a: 2
+  a: 2,
 };
 
-var bar = foo.bind( obj );
+var bar = foo.bind(obj);
 
-var b = bar( 3 ); // 2 3
-console.log( b ); // 5
+var b = bar(3); // 2 3
+console.log(b); // 5
 ```
 
 `bind(..)` returns a new function that is hard-coded to call the original function with the this context set as you specified.
@@ -610,15 +602,14 @@ Note: As of ES6, the hard-bound function produced by bind(..) has a .name proper
 
 See REF: see [SOJS_2nd] paragraph 4.3.1 for more details
 
-* IMPORTANT: Arrow functions don’t have their own this value. Instead, they remember the value of the this parameter at the time of their definition.
-* more concise way of creating functions
-
+- IMPORTANT: Arrow functions don’t have their own this value. Instead, they remember the value of the this parameter at the time of their definition.
+- more concise way of creating functions
 
 See REF: see [SOJS_2nd] paragraph 4.3.2 for more details
 
-* Every function has access to the `bind(function_context)` method
-* `bind()` return a new function has the same body, but its context is always bound to the `function_context` parameter.
-* For the new returned function, the value of the `this` parameter is always set to the object referenced by the `bind()` argument, regardless of the way the function was invoked. (similar to the arrow function).
+- Every function has access to the `bind(function_context)` method
+- `bind()` return a new function has the same body, but its context is always bound to the `function_context` parameter.
+- For the new returned function, the value of the `this` parameter is always set to the object referenced by the `bind()` argument, regardless of the way the function was invoked. (similar to the arrow function).
 
 see below "Usecase: callback for browser Events" for an example
 
@@ -646,14 +637,14 @@ See REF: see [SOJS_2nd] paragraph 4.2.4 for more details
 
 solutions:
 
-* Call or Apply
-* bind()
-* Arrow functions
+- Call or Apply
+- bind()
+- Arrow functions
 
 ### Arrow function solution
 
-* When the click arrow function is defined the function context is the `button` object create with `new Button()`.
-* When the event handler callback `button.click` is invoked `this` will be assigned to `button`.
+- When the click arrow function is defined the function context is the `button` object create with `new Button()`.
+- When the event handler callback `button.click` is invoked `this` will be assigned to `button`.
 
 ```
 <button id="test">Click Me!</button>
@@ -675,7 +666,7 @@ WARNING: it's easy to make mistake see [SOJS_2nd] listing 4.14
 
 ### Bind solutions
 
-This example uses the bind function to create a new function **bound to the button object**, when it's invoked `this` will remain the bouded object 
+This example uses the bind function to create a new function **bound to the button object**, when it's invoked `this` will remain the bouded object
 
 ```
 <button id="test">Click Me!</button>
@@ -696,7 +687,7 @@ This example uses the bind function to create a new function **bound to the butt
 
 # Objects
 
-* [YDKJS 1st Chapter 3: Objects](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md)
+- [YDKJS 1st Chapter 3: Objects](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md)
 
 ## Syntax
 
@@ -730,25 +721,25 @@ The primitive value "I am a string" is not an object, it's a primitive literal a
 
 ```js
 var strPrimitive = "I am a string";
-typeof strPrimitive;							// "string"
-strPrimitive instanceof String;					// false
+typeof strPrimitive; // "string"
+strPrimitive instanceof String; // false
 
-var strObject = new String( "I am a string" );
-typeof strObject; 								// "object"
-strObject instanceof String;					// true
+var strObject = new String("I am a string");
+typeof strObject; // "object"
+strObject instanceof String; // true
 
 // inspect the object sub-type
-Object.prototype.toString.call( strObject );	// [object String]
+Object.prototype.toString.call(strObject); // [object String]
 ```
 
-Luckily, the language automatically coerces a "string" primitive to a String object when necessary, which means you almost never need to explicitly create the Object form. 
+Luckily, the language automatically coerces a "string" primitive to a String object when necessary, which means you almost never need to explicitly create the Object form.
 
 Consider:
 
 ```js
 var strPrimitive = "I am a string";
-console.log( strPrimitive.length );			// 13
-console.log( strPrimitive.charAt( 3 ) );	// "m"
+console.log(strPrimitive.length); // 13
+console.log(strPrimitive.charAt(3)); // "m"
 ```
 
 In both cases, we call a property or method on a string primitive, and the engine automatically coerces it to a String object, so that the property/method access works.
@@ -761,63 +752,63 @@ The contents of an object consist of values (any type) stored at specifically na
 
 What is stored in the container are these property names, which act as pointers (technically, references) to where the values are stored.
 
-
 Consider:
 
 ```js
 var myObject = {
-	a: 2
+  a: 2,
 };
 
-myObject.a;		// 2
+myObject.a; // 2
 
-myObject["a"];	// 2
+myObject["a"]; // 2
 ```
 
-To access the value at the location a in myObject, we need to use either the `.` operator or the `[ ]` operator. 
+To access the value at the location a in myObject, we need to use either the `.` operator or the `[ ]` operator.
 
-* The .a syntax is usually referred to as "property" access,
-* whereas the `["a"]` syntax is usually referred to as "key" access.
+- The .a syntax is usually referred to as "property" access,
+- whereas the `["a"]` syntax is usually referred to as "key" access.
 
 In reality, they both access the same location, and will pull out the same value, 2, so the terms can be used interchangeably. We will use the most common term, "property access" from here on.
 
 The main difference between the two syntaxes is:
-* the . operator requires an Identifier compatible property name after it,
-* whereas the [".."] syntax can take basically any UTF-8/unicode compatible string as the name for the property.
+
+- the . operator requires an Identifier compatible property name after it,
+- whereas the [".."] syntax can take basically any UTF-8/unicode compatible string as the name for the property.
 
 EXAMPLE: To reference a property of the name "Super-Fun!", for instance, you would have to use the ["Super-Fun!"] access syntax, as Super-Fun! is not a valid Identifier property name.
 
-Also, since the [".."] syntax uses a string's value to specify the location, this means the program can * programmatically build up* the value of the string, such as:
+Also, since the [".."] syntax uses a string's value to specify the location, this means the program can _ programmatically build up_ the value of the string, such as:
 
 ```js
 var wantA = true;
 var myObject = {
-	a: 2
+  a: 2,
 };
 
 var idx;
 
 if (wantA) {
-	idx = "a";
+  idx = "a";
 }
 
 // later
 
-console.log( myObject[idx] ); // 2
+console.log(myObject[idx]); // 2
 ```
 
 In objects, property names are always strings. If you use any other value besides a string (primitive) as the property, it will first be converted to a string. This even includes numbers, which are commonly used as array indexes, so be careful not to confuse the use of numbers between objects and arrays.
 
 ```js
-var myObject = { };
+var myObject = {};
 
 myObject[true] = "foo";
 myObject[3] = "bar";
 myObject[myObject] = "baz";
 
-myObject["true"];				// "foo"
-myObject["3"];					// "bar"
-myObject["[object Object]"];	// "baz"
+myObject["true"]; // "foo"
+myObject["3"]; // "bar"
+myObject["[object Object]"]; // "baz"
 ```
 
 ### Computed Property Names [ES6]
@@ -830,8 +821,8 @@ Example:
 var prefix = "foo";
 
 var myObject = {
-	[prefix + "bar"]: "hello",
-	[prefix + "baz"]: "world"
+  [prefix + "bar"]: "hello",
+  [prefix + "baz"]: "world",
 };
 
 myObject["foobar"]; // hello
@@ -854,35 +845,37 @@ The safest conclusion is probably that "function" and "method" are interchangeab
 
 https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#duplicating-objects
 
-* Shallow Copy: ES6 has now defined Object.assign(..)
-* Deep Copy: Still an open issue in JS, some lib cope with it
+- Shallow Copy: ES6 has now defined Object.assign(..)
+- Deep Copy: Still an open issue in JS, some lib cope with it
 
 ISSUES: Circular Reference
 
 Shallow Copy example:
 
 ```js
-function anotherFunction() { /*..*/ }
+function anotherFunction() {
+  /*..*/
+}
 
 var anotherObject = {
-	c: true
+  c: true,
 };
 
 var anotherArray = [];
 
 var myObject = {
-	a: 2,
-	b: anotherObject,	// reference, not a copy!
-	c: anotherArray,	// another reference!
-	d: anotherFunction
+  a: 2,
+  b: anotherObject, // reference, not a copy!
+  c: anotherArray, // another reference!
+  d: anotherFunction,
 };
 
-var newObj = Object.assign( {}, myObject );
+var newObj = Object.assign({}, myObject);
 
-newObj.a;						// 2
-newObj.b === anotherObject;		// true
-newObj.c === anotherArray;		// true
-newObj.d === anotherFunction;	// true
+newObj.a; // 2
+newObj.b === anotherObject; // true
+newObj.c === anotherArray; // true
+newObj.d === anotherFunction; // true
 ```
 
 ### Property Descriptors
