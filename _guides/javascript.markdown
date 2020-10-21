@@ -1316,6 +1316,26 @@ myObject.a; // 4
 
 Note: In this example, we actually store the specified value 2 of the assignment ([[Put]] operation) into another variable _a_. The _a_ name is purely by convention for this example and implies nothing special about its behavior -- it's a normal property like any other.
 
+#### You cannot have a setter and property with same name
+
+If you define a setter `name(value)` and then a property `name`:
+
+```js
+p = {
+  set name(value) {
+    this.name = value;
+  },
+  name: "default",
+};
+```
+
+The setter will be replaced by a simple property:
+
+```js
+console.log(p);
+//{name: "default"}
+```
+
 ### Property Existence
 
 If you reference a variable that cannot be resolved within the applicable lexical scope look-up a `ReferenceError` is thrown.
