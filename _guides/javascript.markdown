@@ -1510,6 +1510,298 @@ it.next(); // { value:3, done:false }
 it.next(); // { done:true }
 ```
 
+### [ADVANCED] Iterator Protocol and the Iterable Protocol
+
+Ref:
+
+- Long story https://codeburst.io/a-simple-guide-to-es6-iterators-in-javascript-with-examples-189d052c3d8e
+- [MDN The iterable protocol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol)
+- https://hacks.mozilla.org/2015/04/es6-in-depth-iterators-and-the-for-of-loop/
+
+Iterators are a new way to loop over any collection in JavaScript. They were introduced in ES6.
+
+Symbols offer names that are unique and cannot clash with other property names. `Symbol.iterator` will return an object called an iterator. This iterator will have a method called next which will return an object with keys value and done.
+
+- `value` key will contain the current value. It can be of any type.
+- `done` key is boolean. It denotes whether all the values have been fetched or not.
+
+The `Iteration Protocol` establishes the relationship between: iterables, iterators, and next.
+
+- An `iterable` is a data structure that wants to make its elements accessible to the public. It does so by implementing a method whose key is Symbol.iterator. That method is a factory for iterators. That is, it will create iterators.
+- An `iterator` is a pointer for traversing the elements of a data structure.
+
+The `iteration protocol` is defined here https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol
+
+#### Making Object iterable
+
+We need to implement the `iterable protocol`, we add a method called `Symbol.iterator`. We will use computed property syntax to set this key. A short example is:
+
+```js
+const iterable = {
+  [Symbol.iterator]() {
+    let step = 0;
+    const iterator = {
+      // we make the iterator. It’s an object with next method defined
+      next() {
+        // The next method returns the value according to step variable.
+        step++;
+        if (step === 1) {
+          return { value: "This", done: false };
+        } else if (step === 2) {
+          return { value: "is", done: false };
+        } else if (step === 3) {
+          return { value: "iterable", done: false };
+        }
+        return { value: undefined, done: true };
+      },
+    };
+    return iterator;
+  },
+};
+
+// we retrieve the iterator
+var iterator = iterable[Symbol.iterator]();
+
+// we called next. We keep calling next until done becomes true.
+iterator.next(); // { value: 'This', done: false }
+iterator.next(); // { value: 'is', done: false }
+iterator.next(); // { value: 'iterable', done: false }
+iterator.next(); //{ value: undefined, done: true }
+```
+
+This is exactly what happens in `for-of` loop. The for-of loops takes an iterable, and creates its iterator. It keeps on calling the next() until done is true.
+
+HISTORY: That [Symbol.iterator] syntax seems weird. What is going on there? It has to do with the method’s name. The standard committee could have just called this method .iterator(), but then, your existing code might already have some objects with .iterator() methods, and that could get pretty confusing. So the standard uses a symbol, rather than a string, as the name of this method.
+
+#### Iterators: return and throw
+
+- An iterator object can also implement optional `.return()` and `.throw(exc)` methods. If it needs to do some cleanup or free up resources it was using. Most iterator objects won’t need to implement it.
+- The `for–of` loop calls `.return()` if the loop exits prematurely, due to an exception or a break or return statement.
+- .throw(exc) is even more of a special case: for–of never calls it at all. But we’ll hear more about it next week.
+
+### Natively Iterables objects in JavaScript
+
+A lot of things are iterables in JavaScript:
+
+- Arrays and TypedArrays
+- Strings — iterate over each character or Unicode code-points.
+- Maps — iterates over its key-value pairs
+- Sets — iterates over their elements
+- arguments — An array-like special variable in functions
+- DOM elements (Work in Progress)
+
+```js
+a = [1, 2, 3];
+i = a[Symbol.iterator]();
+i.next(); // { value: 1, done: false }
+```
+
+```js
+a = [0, 2, 3]; // Arrays are iterable
+for (const value of a) {
+} // OK
+
+b = 1;
+for (const value of b) {
+} // TypeError: b is not iterable
+```
+
+Set:
+
+```js
+// make a set from an array of words
+var words = ["foo", "bar", "foo"];
+var uniqueWords = new Set(words);
+
+for (var word of uniqueWords) {
+  console.log(word);
+}
+```
+
+A Map is slightly different: the data inside it is made of key-value pairs, so you’ll want to use destructuring to unpack the key and value into two separate variables:
+
+```js
+for (var [key, value] of phoneBookMap) {
+  console.log(key + "'s phone number is: " + value);
+}
+```
+
+Destructuring is yet another new ES6 feature.
+
+### for-of VS for-in and foreach
+
+Ref:
+
+- [Mozilla Ref](https://hacks.mozilla.org/2015/04/es6-in-depth-iterators-and-the-for-of-loop/)
+- http://exploringjs.com/es6/ch_generators.html#_ways-of-iterating-over-a-generator
+
+Since ES5, you can use the built-in forEach method:
+
+```
+ myArray.forEach(function (value) {
+  console.log(value);
+});
+```
+
+CONS: you can’t break out of this loop using a break statement or return from the enclosing function using a return statement.
+
+How about the old `for–in` loop?
+
+```
+ for (var index in ["foo", "bar"]) {    // don't actually do this
+  console.log(myArray[index]);
+}
+```
+
+CONS:
+
+- The values assigned to index in this code are the strings "0", "1", "2" and so on, not actual numbers. Since you probably don’t want string arithmetic ("2" + 1 == "21"), this is inconvenient at best.
+- The loop body will execute not only for array elements, but also for any other expando properties someone may have added. For example, if your array has an enumerable property myArray.name, then this loop will execute one extra time, with index == "name". Even properties on the array’s prototype chain can be visited.
+- Most astonishing of all, in some circumstances, this code can loop over the array elements in an arbitrary order.
+- **In short, for–in was designed to work on plain old Objects with string keys. For Arrays, it’s not so great.**
+
+HISTORY: So there was never any question of “fixing” for–in to be more helpful when used with arrays. The only way for ES6 to improve matters was to add some kind of new loop syntax.
+
+SOLUTION the `for-of` loop:
+
+```js
+for (var value of myArray) {
+  console.log(value);
+}
+```
+
+Hmm. After all that build-up, it doesn’t seem all that impressive, does it? Well, we’ll see whether `for–of` has any neat tricks up its sleeve. For now, just note that:
+
+- this is the most concise, direct syntax yet for looping through array elements
+- it avoids all the pitfalls of for–in
+- unlike forEach(), it works with break, continue, and return
+
+NOTE:
+
+- The `for–in` loop is for looping over **object properties**.
+  - `for–of` does not work with plain old Objects, but if you want to iterate over an object’s properties you can either use for–in
+  - BETTER SOLUTION: `Object.keys()` expose an object iterable object, so you can avoid `for-in` completly: `for (var key of Object.keys(someObject))`
+- The `for–of` loop is for looping over **data—like the values** in an array.
+
+for–of is not just for arrays. It also works on most array-like objects like:
+
+- DOM NodeLists
+- Unicode characters: `for (var chr of "😺😲"){}`
+- Map and Set objects (new in ES6).
+- Any object with an `myObject[Symbol.iterator]()` method
+
+The `for-of loops` require an iterable. Otherwise, it will throw a TypeError.
+Like the for/foreach statements in those other languages(Java, C#, etc), for–of works entirely in terms of method calls. What Arrays, Maps, Sets, and the other objects we talked about all have in common is that they have an iterator method.
+
+### Iterating over an interable: Destructuring of Arrays
+
+TODO: questa parte non mi torna moltissimo... non capisco come si relazionano il destructuring e
+
+The code
+
+```
+const array = ['a', 'b', 'c', 'd', 'e'];
+const [first, ,third, ,last] = array;
+```
+
+is equivalent to
+
+```
+const array = ['a', 'b', 'c', 'd', 'e'];
+const iterator = array[Symbol.iterator]();
+const first = iterator.next().value
+iterator.next().value // Since it was skipped, so it's not assigned
+const third = iterator.next().value
+iterator.next().value // Since it was skipped, so it's not assigned
+const last = iterator.next().value
+```
+
+### Iterating over an interable with the spread operator (…)
+
+re: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+
+Spread syntax `...` allows an iterable such as an array expression or string to be expanded in places where zero or more arguments (for function calls) or elements (for array literals) are expected.
+
+#### Function Call example
+
+```js
+function sum(x, y, z) {
+  return x + y + z;
+}
+
+const numbers = [1, 2, 3];
+
+console.log(sum(...numbers));
+// expected output: 6
+
+// is equivalent to using the apply method
+console.log(sum.apply(null, numbers));
+```
+
+#### Array Litteral Example
+
+In the example below the spread operator `...` turns iterable objects into elements of an array literal.
+
+```
+const array = ['a', 'b', 'c', 'd', 'e'];
+const newArray = [1, ...array, 2, 3];
+```
+
+NOTE: array literal
+
+And is equivalent to this ES5 code
+
+```
+const array = ['a', 'b', 'c', 'd', 'e'];
+const iterator = array[Symbol.iterator]();
+const newArray = [1];
+for (let nextValue = iterator.next(); nextValue.done !== true; nextValue = iterator.next()) {
+  newArray.push(nextValue.value);
+}
+newArray.push(2)
+newArray.push(3)
+```
+
+Promise.all and Promise.race accept iterables over Promises.
+
+#### Other Less common examples
+
+// Merge Array
+[...array1, ...array2]
+
+// Clone Array
+[...array]
+
+// String → Array
+[...'string']
+
+// Set → Array
+[...new Set([1,2,3])]
+
+// Node List → Array
+[...nodeList]
+
+// Arguments → Array
+[...arguments]
+
+See here for details: https://www.samanthaming.com/tidbits/92-6-use-cases-of-spread-with-array/#_6-arguments-to-array
+
+### Maps and Sets
+
+The constructor of a Map turns an iterable over [key, value] pairs into a Map and the constructor of a Set turns an iterable over elements into a Set—
+
+const map = new Map([[1, 'one'], [2, 'two']]);
+map.get(1)
+// one
+const set = new Set(['a', 'b', 'c]);
+set.has('c');
+// true
+Iterators are also a precursor to understanding generator functions.
+
+### other Examples
+
+https://gist.github.com/ArfatSalman/49f05cbeb05bb929ada4a3b386ec8aac#file-iterableobject-js
+
 # Functions
 
 A function is a procedure, a collection of statements that can be invoked one or more times, may be provided some inputs, and may give back one or more outputs.
