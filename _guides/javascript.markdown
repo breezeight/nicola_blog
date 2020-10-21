@@ -3313,47 +3313,63 @@ Function invocations are usually passed two implicit parameters:
 
 `arguments`:
 
-* a collection of all arguments passed to a function;
-* NOTE: with rest parameters, introduced in the preceding chapter, the need for the arguments parameter has been greatly reduced
-* (has a `length` property).
-* Is not an Array but array notation can be used `arguments[2]`.
+- a collection of all arguments passed to a function;
+- NOTE: with rest parameters, introduced in the preceding chapter, the need for the arguments parameter has been greatly reduced
+- (has a `length` property).
+- Is not an Array but array notation can be used `arguments[2]`.
 
 `this`:
 
-* the function context
-* represent different things, depends on the invocation type
+- the function context
+- represent different things, depends on the invocation type
 
 By implicit, we mean that these parameters aren’t explicitly listed in the function signature, but are silently passed to the function and accessible within the function. They can be referenced within the function just like any other explicitly named parameter.
 
 Parametes alias:
 
-* Arguments object is an alias for the function parameters, if we change the arguments object, the change is also reflected in the matching function parameter.
-* with `use strict` this behavior is disabled.
+- Arguments object is an alias for the function parameters, if we change the arguments object, the change is also reflected in the matching function parameter.
+- with `use strict` this behavior is disabled.
+
+## Parameters: Handling an Array returned via a Promise
+
+ref: http://exploringjs.com/es6/ch_parameter-handling.html#_handling-an-array-returned-via-a-promise
+
+## Parametes: Transforming Maps
+
+ref: http://exploringjs.com/es6/ch_parameter-handling.html#_transforming-maps
+
+## Coding style tips: Optional parameters
+
+ref: http://exploringjs.com/es6/ch_parameter-handling.html#_optional-parameters
+
+## Coding style tips: Enforcing a maximum arity
+
+http://exploringjs.com/es6/ch_parameter-handling.html#_enforcing-a-maximum-arity
 
 ## Implicit parameters: "this" is the "function context"
 
 **JAVA, CPP Developer WARNING** :
 
-* In such languages, this usually points to an instance of the class within which the method is defined. The `this` is
-* But beware! in JavaScript this is true only when invoking a function as a method **it's not the only one way**  a function can be invoked.
+- In such languages, this usually points to an instance of the class within which the method is defined. The `this` is
+- But beware! in JavaScript this is true only when invoking a function as a method **it's not the only one way** a function can be invoked.
 
 in JS `this`:
 
-* Represent the function context
-* Depends by HOW the function is **INVOKED**
+- Represent the function context
+- Depends by HOW the function is **INVOKED**
 
 We can invoke a function in four ways:
 
-* As a **function**: `skulk()`, in which the function is invoked in a straightforward manner
-* As a **method**: `ninja.skulk()`, which ties the invocation to an object, enabling object-oriented programming
-* As a **constructor**: `new Ninja()`, in which a new object is brought into being
-* Via the function’s **apply or call methods**: skulk.call(ninja)or skulk.apply(ninja) Here are examples:
+- As a **function**: `skulk()`, in which the function is invoked in a straightforward manner
+- As a **method**: `ninja.skulk()`, which ties the invocation to an object, enabling object-oriented programming
+- As a **constructor**: `new Ninja()`, in which a new object is brought into being
+- Via the function’s **apply or call methods**: skulk.call(ninja)or skulk.apply(ninja) Here are examples:
 
 ```
 function skulk(name) {}
 function Ninja(name) {}
 
-/// Invoked as a function  
+/// Invoked as a function
 skulk('Hattori');
 (function(who){ return who; })('Hattori');
 
