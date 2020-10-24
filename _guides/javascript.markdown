@@ -4335,6 +4335,717 @@ for (const x of tree) {
 
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
 
+# Modularity in JS
+
+In JS we achive modularity with:
+
+- Modules
+- Prototype and classes
+
+## Prototype
+
+Ref:
+
+- [JSINFO](https://javascript.info/prototypes)
+- [MDN Object prototypes - Basic](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes)
+- [MDN Advanced](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain#Using_prototypes_in_JavaScript)
+- [YDKJSY: this & Object Prototypes](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch5.md)
+- [JSFIP Prototype chains](https://exploringjs.com/impatient-js/ch_proto-chains-classes.html#prototype-chains)
+- [FreeCodeCamp Prototype intro](https://www.freecodecamp.org/news/a-guide-to-prototype-based-class-inheritance-in-javascript-84953db26df0/)
+
+### CheatSheet and TL;DR
+
+Def: A prototype is an object to which the search for a particular property can be delegated to.
+
+TODO elencare tutti i modi di usare la prototype inheritance
+
+EVERY OBJECT:
+
+- has a constructor property
+- has a prototype that is either null or an object
+- can have "own properties" (Non-inherited properties)
+- if an object doesn't have a property JS looks up in the object prototype
+
+ONLY FUNCTIONS:
+
+- have a prototype property
+- Object.setPrototypeOf (obj.\_\_proto=... is deprecated)
+- Object.create(proto[, descriptors]) – creates an empty object with given proto as [[Prototype]] and optional property descriptors.
+- Classes are syntactical sugar over JS https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
+
+WARNIGN: It's important to understand that there is a distinction between an object's prototype (available via Object.getPrototypeOf(obj), or via the deprecated **proto** property) and the prototype property on constructor functions. The former is the property on each instance, and the latter is the property on the constructor. That is, Object.getPrototypeOf(new Foobar()) refers to the same object as Foobar.prototype.
+
+### Intro
+
+In programming, we often want to take something and extend it.
+
+A prototype is an object to which the search for a particular property can be delegated to. Prototypes serve a similar purpose to that of classes in classical object-oriented languages.
+
+For instance, we have a user object with its properties and methods, and want to make admin and guest as slightly modified variants of it. We’d like to reuse what we have in user, not copy/reimplement its methods, just build a new object on top of it.
+
+JavaScript objects use prototype-based inheritance. Its design is logically similar (but different in implementation) from class inheritance in strictly Object Oriented Programming languages.
+
+It can be loosely described by saying that when methods or properties are attached to object’s prototype they become available for use on that object and its descendants. But this process often takes place behind the scenes.
+
+When writing code, you will not even need to touch the `prototype` property directly. When executing the `split` method, you would call it directly from a string literal as: `”hello”.split(“e”)` or from a variable: `string.split(“,”)`;
+
+When you use class and extends keywords internally JavaScript will still use prototype-based inheritance. It just simplifies the syntax. Perhaps this is why it’s important to understand how prototype-based inheritance works. It’s still at the core of the language design.
+
+This is why in many tutorials you will see String.prototype.split written instead of just String.split. This means that there is a method split that can be used with objects of type string because it is attached to that object’s prototype property.
+
+Note: ES6 Proxies are outside of our discussion scope in this section, but everything we discuss here about normal [[Get]] and [[Put]] behavior does not apply if a Proxy is involved.
+
+### Object's prototype
+
+Prototypal inheritance is a language feature that helps in that.
+
+`[[Prototype]`: In JavaScript, every objects have a special hidden property `[[Prototype]]` (as named in the specification), that is either null or references another object. That object is called “a prototype”.
+
+This property is HIDDEN, to manipulate it we use:
+
+- Object.getPrototypeOf
+- Object.setPrototypeOf
+
+GET
+
+- `myObject.__proto__` **DEPRECATED**
+- `Object.getPrototypeOf(obj: Object) : Object`
+
+SET
+
+- `myObject.__proto__ = ....` **DEPRECATED**
+- `Object.create(proto: Object, [propertiesObject: Object]) : Object` (BEST way when you create an object)
+  - prepertiesObjects: property descriptors to be added
+- `Object.setPrototypeOf`
+- the `new` operator
+
+Ref: [MDN Object.create](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
+
+The prototype is a little bit “magical”. When we want to read a property from object, and it’s missing, JavaScript automatically takes it from the prototype. In programming, such thing is called “prototypal inheritance”. Many cool language features and programming techniques are based on it.
+
+```js
+let animal = {
+  eats: true,
+};
+let rabbit = {
+  jumps: true,
+};
+
+rabbit.__proto__ = animal; // (*)
+
+// we can find both properties in rabbit now:
+alert(rabbit.eats); // true (**)
+alert(rabbit.jumps); // true
+```
+
+If we later add a method to animal rabbit will inherit it:
+
+```js
+animal.walk = function () {
+  alert("Animal walk");
+};
+rabbit.walk();
+```
+
+The prototype chain can be longer:
+
+```js
+let animal = {
+  eats: true,
+  walk() {
+    alert("Animal walk");
+  },
+};
+
+let rabbit = {
+  jumps: true,
+  __proto__: animal,
+};
+
+let longEar = {
+  earLength: 10,
+  __proto__: rabbit,
+};
+
+// walk is taken from the prototype chain
+longEar.walk(); // Animal walk
+alert(longEar.jumps); // true (from rabbit)
+```
+
+what happens is:
+
+- The js engine initially checks to see if the longEar object has a walk() method available on it and it doesn't.
+- So the js engine checks to see if the longEar's prototype object has a walk() method available on it.
+- It doesn't, then the browser checks rabbit's prototype object's prototype object, and it has. So the method is called, and all is good!
+
+![](images/js_prototype_long_chain.png)
+
+There are only two limitations:
+
+- The references can’t go in circles. JavaScript will throw an error if we try to assign **proto** in a circle.
+- The value of **proto** can be either an object or null. Other types are ignored.
+- Also it may be obvious, but still: there can be only one [[Prototype]]. An object may not inherit from two others.
+
+Given that a prototype object can have a prototype itself, we get a chain of objects – the so-called `prototype chain`.
+
+![](images/js_prototype_chain.svg)
+
+Prototypes are JavaScript’s only inheritance mechanism: each object has a prototype that is either null or an object.
+
+### This and Prototype
+
+REF: https://javascript.info/prototype-inheritance#the-value-of-this
+
+```js
+let user = {
+  name: "John",
+  surname: "Smith",
+
+  set fullName(value) {
+    [this.name, this.surname] = value.split(" ");
+  },
+
+  get fullName() {
+    return `${this.name} ${this.surname}`;
+  },
+};
+
+let admin = {
+  __proto__: user,
+  isAdmin: true,
+};
+
+alert(admin.fullName); // John Smith (*)
+
+// setter triggers!
+admin.fullName = "Alice Cooper"; // (**)
+```
+
+### Setting & Shadowing Properties. Inherited Setters
+
+Refs:
+
+- https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch5.md#setting--shadowing-properties
+- https://javascript.info/prototype-inheritance#writing-doesn-t-use-prototype
+
+An interesting question may arise in the example above: what’s the value of this inside `set fullName(value)`? Where are the properties `this.name` and `this.surname` written: into user or admin?
+
+The answer is simple: this is not affected by prototypes at all.
+
+No matter where the method is found: in an object or its prototype. In a method call, this is always the object before the dot.
+
+So, the setter call admin.fullName= uses admin as this, not user.
+
+That is actually a super-important thing, because we may have a big object with many methods, and have objects that inherit from it. And when the inheriting objects run the inherited methods, they will modify only their own states, not the state of the big object.
+
+For instance, here animal represents a “method storage”, and rabbit makes use of it.
+
+The call rabbit.sleep() sets this.isSleeping on the rabbit object:
+
+```js
+// animal has methods
+let animal = {
+  walk() {
+    if (!this.isSleeping) {
+      alert(`I walk`);
+    }
+  },
+  sleep() {
+    this.isSleeping = true;
+  },
+};
+
+let rabbit = {
+  name: "White Rabbit",
+  __proto__: animal,
+};
+
+// modifies rabbit.isSleeping
+rabbit.sleep();
+
+alert(rabbit.isSleeping); // true
+alert(animal.isSleeping); // undefined (no such property in the prototype)
+```
+
+If we had other objects, like bird, snake, etc., inheriting from animal, they would also gain access to methods of animal. But this in each method call would be the corresponding object, evaluated at the call-time (before dot), not animal. So when we write data into this, it is stored into these objects.
+
+As a result, methods are shared, but the object state is not.
+
+### More on setting a property
+
+We will now revisit this situation more completely.
+
+```
+myObject.foo = "bar";
+```
+
+If the myObject object already has a normal data accessor property called foo directly present on it, the assignment is as simple as changing the value of the existing property.
+
+If foo is not already present directly on myObject, the [[Prototype]] chain is traversed, just like for the [[Get]] operation. If foo is not found anywhere in the chain, the property foo is added directly to myObject with the specified value, as expected.
+
+However, if foo is already present somewhere higher in the chain, nuanced (and perhaps surprising) behavior can occur with the myObject.foo = "bar" assignment. We'll examine that more in just a moment.
+
+If the property name foo ends up both on myObject itself and at a higher level of the [[Prototype]] chain that starts at myObject, this is called shadowing. The foo property directly on myObject shadows any foo property which appears higher in the chain, because the myObject.foo look-up would always find the foo property that's lowest in the chain.
+
+As we just hinted, shadowing foo on myObject is not as simple as it may seem. We will now examine three scenarios for the myObject.foo = "bar" assignment when foo is not already on myObject directly, but is at a higher level of myObject's [[Prototype]] chain:
+
+1. If a normal data accessor (see Chapter 3) property named foo is found anywhere higher on the [[Prototype]] chain, and it's not marked as read-only (writable:false) then a new property called foo is added directly to myObject, resulting in a shadowed property.
+2. If a foo is found higher on the [[Prototype]] chain, but it's marked as read-only (writable:false), then both the setting of that existing property as well as the creation of the shadowed property on myObject are disallowed. If the code is running in strict mode, an error will be thrown. Otherwise, the setting of the property value will silently be ignored. Either way, no shadowing occurs.
+3. If a foo is found higher on the [[Prototype]] chain and it's a setter (see Chapter 3), then the setter will always be called. No foo will be added to (aka, shadowed on) myObject, nor will the foo setter be redefined.
+   Most developers assume that assignment of a property ([[Put]]) will always result in shadowing if the property already exists higher on the [[Prototype]] chain, but as you can see, that's only true in one (#1) of the three situations just described.
+
+If you want to shadow foo in cases #2 and #3, you cannot use = assignment, but must instead use Object.defineProperty(..) (see Chapter 3) to add foo to myObject.
+
+Note: Case #2 may be the most surprising of the three. The presence of a read-only property prevents a property of the same name being implicitly created (shadowed) at a lower level of a [[Prototype]] chain. The reason for this restriction is primarily to reinforce the illusion of class-inherited properties. If you think of the foo at a higher level of the chain as having been inherited (copied down) to myObject, then it makes sense to enforce the non-writable nature of that foo property on myObject. If you however separate the illusion from the fact, and recognize that no such inheritance copying actually occurred (see Chapters 4 and 5), it's a little unnatural that myObject would be prevented from having a foo property just because some other object had a non-writable foo on it. It's even stranger that this restriction only applies to = assignment, but is not enforced when using Object.defineProperty(..).
+
+Shadowing with methods leads to ugly explicit pseudo-polymorphism (see Chapter 4) if you need to delegate between them. Usually, shadowing is more complicated and nuanced than it's worth, so you should try to avoid it if possible. See Chapter 6 for an alternative design pattern, which among other things discourages shadowing in favor of cleaner alternatives.
+
+Shadowing can even occur implicitly in subtle ways, so care must be taken if trying to avoid it. Consider:
+
+```js
+var anotherObject = {
+  a: 2,
+};
+
+var myObject = Object.create(anotherObject);
+
+anotherObject.a; // 2
+myObject.a; // 2
+
+anotherObject.hasOwnProperty("a"); // true
+myObject.hasOwnProperty("a"); // false
+
+myObject.a++; // oops, implicit shadowing!
+
+anotherObject.a; // 2
+myObject.a; // 3
+
+myObject.hasOwnProperty("a"); // true
+```
+
+Though it may appear that `myObject.a++` should (via delegation) look-up and just increment the anotherObject.a property itself in place, instead the ++ operation corresponds to `myObject.a = myObject.a + 1`. The result is [[Get]] looking up a property via [[Prototype]] to get the current value 2 from `anotherObject.a`, incrementing the value by one, then [[Put]] assigning the 3 value to a new shadowed property a on myObject. Oops!
+
+Be very careful when dealing with delegated properties that you modify. If you wanted to increment `anotherObject.a`, the only proper way is `anotherObject.a++`.
+
+### Constructor Function
+
+All functions have a prototype property that initially references an empty object:
+
+- This property doesn’t serve much purpose until the function is used as a constructor (using the `new` operator).
+- this empty object's prototype is `Object.prototype`, so it inherits from Object
+- The prototype object initially has only one property, `constructor`, that references back to the function (we will see how it is used)
+
+```js
+function f() {}
+Object.getPrototypeOf(f.prototype) === Object.prototype;
+```
+
+NOTE:
+
+- It's important to understand that there is a distinction between an object's prototype (available via `Object.getPrototypeOf(obj)`, or via the deprecated `__proto__` property) and the prototype property on constructor functions.
+- The former is the property on each instance, and the latter is the property on the constructor. That is, Object.getPrototypeOf(new Foobar()) refers to the same object as Foobar.prototype.
+- REF: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes
+
+Now we will see how JS use the function prototype property to create and initialize an object.
+
+For example we define a seemingly donothing function named `Ninja` that we’ll invoke in two ways:
+
+- as a “normal” function, const ninja1 = Ninja();
+- and as a constructor, const ninja2 = new Ninja();.
+
+```js
+function Ninja() {}
+Ninja.prototype.swingSword = function () {
+  return true;
+};
+
+const ninja1 = Ninja();
+
+//As expected a function without an explicit return statement, returns undefined
+assert(ninja1 === undefined, "No instance of Ninja created.");
+
+// With new something different happen, it return an object
+const ninja2 = new Ninja();
+assert(
+  ninja2 && ninja2.swingSword && ninja2.swingSword(),
+  "Instance exists and method is callable."
+);
+
+//Ninja.prototype is the ninja2 prototype object
+Object.getPrototypeOf(ninja2) === Ninja.prototype;
+
+// ninja2 and ninja3 have the same prototype
+const ninja3 = new Ninja();
+Object.getPrototypeOf(ninja2) === Object.getPrototypeOf(ninja3);
+```
+
+When we call the function via the new operator, invoking it as a constructor, and something completely different happens:
+
+- The function is once again called, but this time a newly allocated object has been created
+- and it is set as the context of the function (and is accessible through the this keyword).
+- The result returned from the new operator is a reference to this new object
+- that object has a `swingSword` method that we can call
+- the prototype of the newly constructed object is set to the object referenced by the constructor function’s prototype property.
+
+Notice that all objects created with the Ninja constructor will have access to the swingSword method. Now that’s code reuse!
+
+![](images/js_prototype_ninja.png)
+
+IMPORTANT:
+
+- The prototype property is one of the most confusingly-named parts of JavaScript — you might think that this points to the prototype object of the current object, but it doesn't (that's an internal object that can be accessed by `__proto__`, remember?). prototype instead is a property containing an object on which you define members that you want to be inherited.
+- Ref: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes
+
+### Example and problems with prototype and references
+
+Ref: https://medium.com/better-programming/prototypes-in-javascript-5bba2990e04b
+
+```js
+//Create an empty constructor function
+function Person() {}
+//Add property name, age to the prototype property of the Person constructor function
+Person.prototype.name = "Ashwin";
+Person.prototype.age = 26;
+//Arrays are of reference type in JavaScript
+Person.prototype.friends = ["Jadeja", "Vijay"];
+Person.prototype.sayName = function () {
+  console.log(this.name);
+};
+
+//Create an object using the Person constructor function
+var person1 = new Person();
+
+//Access the name property using the person object
+console.log(person1.name); // Output" Ashwin
+
+var person2 = new Person();
+//Access the name property using the person2 object
+console.log(person2.name); // Output: Ashwin
+
+//Now, let’s define a property name on the person1 object
+person1.name = "Anil";
+console.log(person1.name); //Output: Anil
+console.log(person2.name); //Output: Ashwin
+```
+
+- Here person1.name outputs “Anil”. As mentioned earlier, the JavaScript engine first tries to find the property on the object itself. In this case, name property is present on the object person1 itself, hence JavaScript engines outputs the value of name property of person1.
+- In the case of person2, the name property is not present on the object. Hence, it outputs person2’s prototype object’s property name.
+
+The code above is doing what we expect but let's see what happen if we try to change person1.friend array:
+
+```js
+//Add a new element to the friends array
+person1.friends.push("Amit");
+
+console.log(person1.friends); // Output: "Jadeja, Vijay, Amit"
+console.log(person2.friends); // Output: "Jadeja, Vijay, Amit"
+```
+
+PROBLEM: we are changing also person2's friends! This happens because we are referncing the same array from the prototype. We are not setting a new property as with `name` we are updating the same array.
+
+To solve the problems with the prototype and the problems with the constructor, we can combine both the constructor and function:
+
+- Problem with the constructor function: Every object has its own instance of the function
+- Problem with the prototype: Modifying a property using one object reflects the other object also
+
+To solve both problems, we can define all the object-specific properties inside the constructor and all shared properties and methods inside the prototype as shown below:
+
+```js
+//Define the object specific properties inside the constructor
+function Human(name, age) {
+  (this.name = name), (this.age = age), (this.friends = ["Jadeja", "Vijay"]);
+}
+//Define the shared properties and methods using the prototype
+Human.prototype.sayName = function () {
+  console.log(this.name);
+};
+//Create two objects using the Human constructor function
+var person1 = new Human("Virat", 31);
+var person2 = new Human("Sachin", 40);
+
+//Lets check if person1 and person2 have points to the same instance of the sayName function
+console.log(person1.sayName === person2.sayName); // true
+
+//Let's modify friends property and check
+person1.friends.push("Amit");
+
+console.log(person1.friends); // Output: "Jadeja, Vijay, Amit"
+console.log(person2.friends); //Output: "Jadeja, Vijay"
+```
+
+Here as we have wanted each object to have their own name, age, and friends property. Hence, we have defined these properties inside the constructor using this. However, as sayName is defined on the prototype object, it will be shared among all the objects.
+In the above example, the friend’s property of person2 did not change on changing the friends' property of person1.
+
+![](images/js_prototype_example1.png)
+
+### Example: Problem when you replace a prototype
+
+You can change the reference to a function's prototype but it can cause strange behaviours if you already create some object with that function: you could end up with objects created with the same function that behaves differently (see example below).
+
+The reference between an object and the function’s prototype is established at
+the time of object instantiation. Newly created objects will have a reference to the new prototype and will have access to the pierce method, whereas the old, pre-prototype-change objects keep their original prototype, happily swinging their swords.
+
+```js
+function Ninja() {
+  this.swung = true;
+}
+const ninja1 = new Ninja();
+
+// !! Change the constructor function prototype
+Ninja.prototype.swingSword = function () {
+  return this.swung;
+};
+
+Ninja.prototype = {
+  pierce: function () {
+    return true;
+  },
+};
+
+const ninja2 = new Ninja();
+
+//
+ninja1.pierce(); // Uncaught TypeError: ninja1.pierce is not a function
+ninja2.pierce(); //true
+```
+
+![](images/js_redefine_prototype.png)
+
+### Constructor property and instanceof
+
+REF: [SOJSN2ND] 7.3.2 The instanceof operator
+
+`instanceof` operator checks whether the prototype of the argument function is in the prototype chain of the object.
+
+```js
+function Person() {}
+function Admin() {}
+Admin.prototype = new Person();
+admin = new Admin();
+admin instanceof Person; // true
+```
+
+![](images/js_instance_of_example.png)
+
+```js
+> [] instanceof Array
+true
+> 2 instanceof Array
+false
+```
+
+THE INSTANCEOF CAVEAT: if we change the prototype of Admin the result is false:
+
+```js
+function Person() {}
+function Admin() {}
+Admin.prototype = new Person();
+admin = new Admin();
+admin instanceof Person; // true
+
+Admin.prototype = {};
+admin2 = new Admin();
+admin2 instanceof Person; // false
+```
+
+This will surprise us only if we cling to the inaccurate assumption that the instanceof operator tells us whether an instance was created by a particular function constructor. If, on the other hand, we take the real semantics of the instanceof operator—that it checks only whether the prototype of the function on the right side is in the prototype chain of the object on the left side—we won’t be surprised.
+
+NOTE: Many developer belive that each object in JavaScript has an implicit property named `constructor` that references the constructor function that was used to create the object. And because the prototype is a property of the constructor, each object has a way to find its prototype.
+
+This behavior is quite standard but is not reliable.
+`.constructor` is extremely unreliable, and an unsafe reference to rely upon in your code.
+
+- [REF](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch5.md#mechanics)
+
+For example:
+
+```js
+function Foo() {
+  /* .. */
+}
+
+Foo.prototype = {
+  /* .. */
+}; // create a new prototype object
+
+var a1 = new Foo();
+a1.constructor === Foo; // false!
+a1.constructor === Object; // true!
+```
+
+Especially when you create multiple level of prototypal inheritance:
+
+- [REF](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch5.md#constructor-redux)
+
+**NOTE**: _ONLY functions_ have a prototype property, _EVERY object_ has a
+costructor property!
+
+### Writing doesn’t use prototype
+
+The prototype is only used for reading properties.
+
+Write/delete operations work directly with the object.
+
+In the example below, we assign its own walk method to rabbit:
+
+```js
+let animal = {
+  eats: true,
+  walk() {
+    /* this method won't be used by rabbit */
+  },
+};
+
+let rabbit = {
+  __proto__: animal,
+};
+
+rabbit.walk = function () {
+  alert("Rabbit! Bounce-bounce!");
+};
+
+rabbit.walk(); // Rabbit! Bounce-bounce!
+```
+
+From now on, rabbit.walk() call finds the method immediately in the object and executes it, without using the prototype:
+
+Accessor properties are an exception, as assignment is handled by a setter function. So writing to such a property is actually the same as calling a function.
+
+For that reason admin.fullName works correctly in the code below:
+
+```js
+let user = {
+  name: "John",
+  surname: "Smith",
+
+  set fullName(value) {
+    [this.name, this.surname] = value.split(" ");
+  },
+
+  get fullName() {
+    return `${this.name} ${this.surname}`;
+  },
+};
+
+let admin = {
+  __proto__: user,
+  isAdmin: true,
+};
+
+alert(admin.fullName); // John Smith (*)
+
+// setter triggers!
+admin.fullName = "Alice Cooper"; // (**)
+```
+
+Here in the line (\*) the property admin.fullName has a getter in the prototype user, so it is called. And in the line (\*\*) the property has a setter in the prototype, so it is called.
+
+HowTo call a prototype method that is hidden by an object method:
+
+- `Person.prototype.getName.call(this);`
+- Ref: https://stackoverflow.com/questions/11542192/override-function-in-javascript
+
+### [Advanced] for..in loop
+
+https://javascript.info/prototype-inheritance#for-in-loop
+
+The for..in loop iterates over inherited properties too.
+If that’s not what we want, and we’d like to exclude inherited properties, there’s a built-in method obj.hasOwnProperty(key): it returns true if obj has its own (not inherited) property named key.
+
+### [DEPRECATED] **proto**
+
+Ref:
+
+- https://javascript.info/prototype-methods
+- https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes
+
+`__proto__` is a historical getter/setter for [[Prototype]]
+
+Please note that `__proto__` is not the same as [[Prototype]]. It’s a getter/setter for it.
+
+It exists for historical reasons. In modern language it is replaced with functions `Object.getPrototypeOf/Object.setPrototypeOf` that also get/set the prototype. We’ll study the reasons for that and these functions later.
+
+By the specification, **proto** must only be supported by browsers, but in fact all environments including server-side support it. For now, as **proto** notation is a little bit more intuitively obvious, we’ll use it in the examples.
+
+## "(Prototypal) Inheritance"
+
+We traditionally think of "inheritance" as being a relationship between two "classes", rather than between "class" and "instance". Until now we saw only this kind of relationship.
+
+In JS you can achive inheritance creating setting up Prototype Chain (prototype linkage). It's important to notice that it's still a linkage between objects, that create a delegation mechanism.
+
+here's the typical "prototype style" code that creates such links:
+
+```js
+function Foo(name) {
+  this.name = name;
+}
+
+Foo.prototype.myName = function () {
+  return this.name;
+};
+
+function Bar(name, label) {
+  Foo.call(this, name);
+  this.label = label;
+}
+
+// here, we make a new `Bar.prototype`
+// linked to `Foo.prototype`
+Bar.prototype = Object.create(Foo.prototype);
+
+// Beware! Now `Bar.prototype.constructor` is gone,
+// and might need to be manually "fixed" if you're
+// in the habit of relying on such properties!
+
+Bar.prototype.myLabel = function () {
+  return this.label;
+};
+
+var a = new Bar("a", "obj a");
+
+a.myName(); // "a"
+a.myLabel(); // "obj a"
+```
+
+The important part is `Bar.prototype = Object.create( Foo.prototype )`. `Object.create(..)` creates a "new" object out of thin air, and links that new object's internal [[Prototype]] to the object you specify (Foo.prototype in this case).
+
+In other words, that line says: "make a new 'Bar dot prototype' object that's linked to 'Foo dot prototype'."
+
+When function `Bar() { .. }` is declared, Bar, like any other function, has a .prototype link to its default object. But that object is not linked to Foo.prototype like we want. So, we create a new object that is linked as we want, effectively throwing away the original incorrectly-linked object.
+
+Note: A common mis-conception/confusion here is that either of the following approaches would also work, but they do not work as you'd expect:
+
+```js
+// doesn't work like you want!
+Bar.prototype = Foo.prototype;
+
+// works kinda like you want, but with
+// side-effects you probably don't want :(
+Bar.prototype = new Foo();
+```
+
+`Bar.prototype = Foo.prototype` doesn't create a new object for `Bar.prototype` to be linked to. It just makes `Bar.prototype` be another reference to `Foo.prototype`, which effectively links Bar directly to the same object as Foo links to: `Foo.prototype`. This means when you start assigning, like Bar.prototype.myLabel = ..., you're modifying not a separate object but the shared Foo.prototype object itself, which would affect any objects linked to Foo.prototype. This is almost certainly not what you want. If it is what you want, then you likely don't need Bar at all, and should just use only Foo and make your code simpler.
+
+`Bar.prototype = new Foo()` does in fact create a new object which is duly linked to `Foo.prototype` as we'd want. But, it uses the Foo(..) "constructor call" to do it. If that function has any **side-effects** (such as logging, changing state, registering against other objects, adding data properties to this, etc.), those side-effects happen at the time of this linking (and likely against the wrong object!), rather than only when the eventual Bar() "descendants" are created, as would likely be expected.
+
+So, we're left with using Object.create(..) to make a new object that's properly linked, but without having the side-effects of calling Foo(..). The slight downside is that we have to create a new object, throwing the old one away, instead of modifying the existing default object we're provided.
+
+ES6: It would be nice if there was a standard and reliable way to modify the linkage of an existing object. Prior to ES6, there's a non-standard and not fully-cross-browser way, via the .**proto** property, which is settable. ES6 adds a `Object.setPrototypeOf(..)` helper utility, which does the trick in a standard and predictable way.
+
+Compare the pre-ES6 and ES6-standardized techniques for linking Bar.prototype to Foo.prototype, side-by-side:
+
+```js
+// pre-ES6
+// throws away default existing `Bar.prototype`
+Bar.prototype = Object.create(Foo.prototype);
+
+// ES6+
+// modifies existing `Bar.prototype`
+Object.setPrototypeOf(Bar.prototype, Foo.prototype);
+```
+
+Ignoring the slight performance disadvantage (throwing away an object that's later garbage collected) of the Object.create(..) approach, it's a little bit shorter and may be perhaps a little easier to read than the ES6+ approach. But it's probably a syntactic wash either way.
+
   a = a * 10;
   b.item = "changed";
   c = {item: "changed"};
