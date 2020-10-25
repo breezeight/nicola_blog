@@ -3473,35 +3473,69 @@ assert(ninja2.getMyThis() === ninja2,
 
 ### This: invoke functions as a construct
 
-A constructor is a function like any other functions.
+REF: [SOTJSN2nd] 4.2.3 invocation as a constructor
+
+A constructor is a function like any other functions, the main difference is that we expect to use it with the `new` operator.
+
+When a constructor function is invoked with `new`, a couple of special actions take place:
+
+- A new empty object is created.
+- This object is passed to the constructor as the this parameter, and thus becomes the constructor’s function context.
+- The newly constructed object is returned as the new operator’s value (with an exception that we’ll get to in short order).
+
+Example:
+
+```js
+function Ninja() {
+  // A constructor that creates a skulk property on whatever object is the function context.
+  this.skulk = function () {
+    return this;
+  };
+}
+```
+
+In this example, we create a function named Ninja that we’ll use to construct, well, ninjas. When invoked with the keyword new, an empty object instance is created and passed to the function as its function context, the this parameter. The constructor creates a property named skulk on this object, which is assigned a function, making that function a method of the newly created object.
 
 NOTE: do not to confuse these `function constructors` with `constructor functions`:
 
-* A function constructor enables us to create functions from dynamically created strings.
-* Constructor functions, the topic of this section, are functions that we use to create and initialize object instances
+- A function constructor enables us to create functions from dynamically created strings.
+- Constructor functions, the topic of this section, are functions that we use to create and initialize object instances
+
+The intent of constructors is to initialize the new object that will be created by the function invocation to initial conditions. And although such functions can be called as “normal” functions, or even assigned to object properties in order to be invoked as methods, they’re generally not useful as such.
+
+`constructor functions` return value:
+
+- If the constructor returns an object, that object is returned as the value of the whole new expression, and the newly constructed object passed as this to the constructor is discarded.
+- If, however, a nonobject is returned from the constructor, the returned value is ignored, and the newly created object is returned.
+
+Naming Convention:
+
+- Functions and methods are generally named starting with a verb that describes what they do (skulk, creep, sneak, doSomethingWonderful, and so on) and start with a lowercase letter.
+- Constructors, on the other hand, are usually named as a noun that describes the object that’s being constructed and start with an uppercase character: Ninja, Samurai, Emperor, Ronin, and so on.
+
+###
 
 ### This: Invoke function with call() and apply()
 
 REF: see [SOJS_2nd] paragraph 4.2.4
 
-
 Scenario: set "this" explicitly
 
 Usecases:
 
-* browser event handlers
-* implement a "foreach", implement a callback system
+- browser event handlers
+- implement a "foreach", implement a callback system
 
 `apply()`: To invoke a function using its `apply()` method we pass two parameters to apply()
 
-* the object to be used as the function context(this),
-* an array of values to be used as the invocation arguments.
+- the object to be used as the function context(this),
+- an array of values to be used as the invocation arguments.
 
 The `call()` method is used in a similar manner, except that the arguments are passed directly in the argument list rather than as an array.
 
 Syntax example:
 
-~~~javascript
+```javascript
 <script type="text/javascript">
   function juggle() {
     var result = 0;
