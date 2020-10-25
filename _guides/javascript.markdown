@@ -1025,46 +1025,83 @@ Object.defineProperty(obj, 'foo', {
 Getters and Setters are some pretty interesting property descriptors, specifically because they allow us to call functions which we define when reading or writing to an object. These are powerful tools with security and performance considerations. The following is an example of the get and set property descriptors:
 
 ```js
-const obj = { realAge: 0 }
+const obj = { realAge: 0 };
 
-Object.defineProperty(obj, 'age', {
-  get: function() {
-    return this.realAge
+Object.defineProperty(obj, "age", {
+  get: function () {
+    return this.realAge;
   },
-  set: function(value) {
-    this.realAge = Number(value)
-  }
-})
+  set: function (value) {
+    this.realAge = Number(value);
+  },
+});
 
-console.log(obj.age) // 0
-obj.age = '32'
-console.log(obj.age) // 32
+console.log(obj.age); // 0
+obj.age = "32";
+console.log(obj.age); // 32
 ```
 
 In this example, we have an object which has a numeric realAge property. For sake of this example consider it being hidden from the outside world. Now, we also have another property called age which is how others will interact with the underlying realAge property. The get property descriptor for age will be called when we read the property, and will simply return realAge. However the set property descriptor will first take the value which is provided, convert it into a Number, and then set realAge to the number we’ve created. This feature prevents others from setting a non-numeric age value on our object and keeps our data in a consistent shape.
 
-ES6 SYNTAX: 
+Descriptors for accessor properties are different from those for data properties.
+
+For accessor properties, there is no value or writable, but instead there are get and set functions.
+
+That is, an accessor descriptor may have:
+
+- get – a function without arguments, that works when a property is read,
+- set – a function with one argument, that is called when the property is set,
+- enumerable – same as for data properties,
+- configurable – same as for data properties.
+
+For instance, to create an accessor fullName with defineProperty, we can pass a descriptor with get and set:
+
+```js
+let user = {
+  name: "John",
+  surname: "Smith",
+};
+
+Object.defineProperty(user, "fullName", {
+  get() {
+    return `${this.name} ${this.surname}`;
+  },
+
+  set(value) {
+    [this.name, this.surname] = value.split(" ");
+  },
+});
+
+alert(user.fullName); // John Smith
+
+for (let key in user) alert(key); // name, surname
+```
+
+Please note that a property can be either an accessor (has get/set methods) or a data property (has a value), not both.
+If we try to supply both get and value in the same descriptor, there will be an error.
+
+#### ES6 Getter/setter syntax
 
 ```js
 const obj = {
   realAge: 0,
   get age() {
-    return this.realAge
+    return this.realAge;
   },
   set age(value) {
-    this.realAge = Number(value)
-  }
-}
+    this.realAge = Number(value);
+  },
+};
 ```
 
 When using the getter/setter object literal syntax, things look a little bit different from usual:
 
 ```js
 const obj2 = {
-  get b() { }
-}
+  get b() {},
+};
 
-console.log(Object.getOwnPropertyDescriptor(obj2, 'b'))
+console.log(Object.getOwnPropertyDescriptor(obj2, "b"));
 //{
 //  get: Function,
 //  set: undefined,
@@ -1075,110 +1112,190 @@ console.log(Object.getOwnPropertyDescriptor(obj2, 'b'))
 
 This is a different type of property descriptor, called an `Accessor Property` and looks a little different than the one before it:
 
-* the value and writable properties are missing
-* and that the get and set properties are now present.
+- the value and writable properties are missing
+- and that the get and set properties are now present.
 
-### Immutability: Sealing, Preventing Extension, and Freezing 
+### Setter/Getter - Private variables
+
+#### Solution 1 - Convention
+
+Ref: https://javascript.info/property-accessors#smarter-getters-setters
+
+Getters/setters can be used as wrappers over “real” property values to gain more control over operations with them.
+
+For instance, if we want to forbid too short names for user, we can have a setter name and keep the value in a separate property \_name:
+
+```js
+let user = {
+  get name() {
+    return this._name;
+  },
+
+  set name(value) {
+    if (value.length < 4) {
+      alert("Name is too short, need at least 4 characters");
+      return;
+    }
+    this._name = value;
+  },
+};
+
+user.name = "Pete";
+alert(user.name); // Pete
+
+user.name = ""; // Name is too short...
+```
+
+So, the name is stored in `_name` property, and the access is done via getter and setter.
+
+Technically, external code is able to access the name directly by using `user._name`. But there is a widely known convention that properties starting with an underscore "\_" are internal and should not be touched from outside the object.
+
+#### Solution 2 - Constructor Function and closure
+
+Ref:
+
+- https://itnext.io/how-to-control-access-to-your-javascript-objects-1a75435c04e3
+- [SOTJSN2nd] 5.6.1 Revisiting mimicking private variables with closures
+
+```js
+function Trump() {
+  let _taxReturns = true;
+
+  this.getReturns = () => {
+    console.log("getting returns");
+    return _taxReturns;
+  };
+
+  this.setReturns = (value) => {
+    console.log("setting returns");
+    if (!(value === true || value === false)) {
+      throw new TypeError(
+        `YOURE FIRED! cannot set value to ${value}, expected boolean value`
+      );
+    }
+    _taxReturns = value;
+  };
+}
+```
+
+Access to our `_taxReturns` variable is really restricted. Using `using Object.defineProperty` we can define getter and setters:
+
+```js
+function Trump() {
+  let _taxReturns = true;
+
+  Object.defineProperty(this, "taxReturns", {
+    get: () => _taxReturns,
+    set: (value) => {
+      _taxReturns = value;
+    },
+  });
+}
+```
+
+### Immutability: Sealing, Preventing Extension, and Freezing
 
 Refs:
 
-* https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#immutability
-* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
-* https://medium.com/intrinsic/javascript-object-property-descriptors-proxies-and-preventing-extension-1e1907aa9d10
+- https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#immutability
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
+- https://medium.com/intrinsic/javascript-object-property-descriptors-proxies-and-preventing-extension-1e1907aa9d10
 
 Objects are extensible by default:
 
-* they can have new properties added to them or removed from them.
-* and (in engines that support `__proto__`) their `__proto__` property can be modified.
+- they can have new properties added to them or removed from them.
+- and (in engines that support `__proto__`) their `__proto__` property can be modified.
 
 It is sometimes desired to make properties or objects that cannot be changed (either by accident or intentionally). ES5 adds support for handling that in a variety of different nuanced ways.
 
 Sealing, Preventing Extension, and Freezing allow you to lock down an object to varying degrees:
 
-* `Object.preventExtensions()`
-* `Object.seal()`
-* `Object.freeze()`
+- `Object.preventExtensions()`
+- `Object.seal()`
+- `Object.freeze()`
 
 Each one of these approaches has the same effect; an object will no longer be extensible, meaning that new properties cannot be added to the object. However there are small nuances which affect each approach as well.
 
 WARNING:
 
-* all of these approaches create SHALLOW immutability.
-* If an object has a reference to another object (array, object, function, etc), the contents of that object are not affected, and remain mutable. Example:
-* For that reason you may want to consider recursively locking down objects.
+- all of these approaches create SHALLOW immutability.
+- If an object has a reference to another object (array, object, function, etc), the contents of that object are not affected, and remain mutable. Example:
+- For that reason you may want to consider recursively locking down objects.
 
 ```js
 "use strict";
 
 let myImmutableObject = {
-  foo: [1,2,3] 
+  foo: [1, 2, 3],
 };
 
-Object.freeze(myImmutableObject)
+Object.freeze(myImmutableObject);
 
-console.log("After freezing an object I can still modify the referenced variables")
+console.log(
+  "After freezing an object I can still modify the referenced variables"
+);
 
 console.log(myImmutableObject.foo); // [1,2,3]
-myImmutableObject.foo.push( 4 );
+myImmutableObject.foo.push(4);
 console.log(myImmutableObject.foo); // [1,2,3,4]
 
 try {
-  myImmutableObject.foo = [];  
-} catch (e){
-  console.log("But I cannot modify the object properties")
-  console.log(e)
+  myImmutableObject.foo = [];
+} catch (e) {
+  console.log("But I cannot modify the object properties");
+  console.log(e);
 }
 ```
 
 #### Preventing Extension
 
-`Object.preventExtensions()` 
+`Object.preventExtensions()`
 
-* ADD: prevents new properties from ever being added to an object (i.e. prevents future extensions to the object).
-* Existing properties can be modified and deleted
-* Existing property descriptors are not modified.
+- ADD: prevents new properties from ever being added to an object (i.e. prevents future extensions to the object).
+- Existing properties can be modified and deleted
+- Existing property descriptors are not modified.
 
 `Object.isExtensible()` method to see if an object can be extended.
 
 Note: is the weakest protection when compared to sealing and freezing
 
 ```js
-const obj = { p: 'first' }
-Object.preventExtensions(obj)
+const obj = { p: "first" };
+Object.preventExtensions(obj);
 
-obj.p = 'second' // OK
-obj.p2 = 'new val' // fail silently, throw in strict
+obj.p = "second"; // OK
+obj.p2 = "new val"; // fail silently, throw in strict
 
-console.log(obj) // { p: 'second' }
-console.log(Object.isExtensible(obj)) // false
-console.log(Object.getOwnPropertyDescriptor(obj, 'p'))
+console.log(obj); // { p: 'second' }
+console.log(Object.isExtensible(obj)); // false
+console.log(Object.getOwnPropertyDescriptor(obj, "p"));
 // { value: 'second', writable: true,
 //   enumerable: true, configurable: true }
-delete obj.p // OK
+delete obj.p; // OK
 ```
 
 #### Sealing
 
 `Object.seal()`:
 
-* Every property on a sealed object will have its `configurable` property descriptor set to `false`
-* `writable`, `enumerable` don't change
+- Every property on a sealed object will have its `configurable` property descriptor set to `false`
+- `writable`, `enumerable` don't change
 
 `Object.isSealed()` method to see if an object has been sealed.
 
 USE-CASE: an object and you want it to adhere to a certain set of expectations regarding the properties it has, however you don’t necessarily want to prevent changes to those properties.
 
 ```js
-const obj = { p: 'first' }
-Object.seal(obj)
+const obj = { p: "first" };
+Object.seal(obj);
 
-obj.p = 'second' // OK
-delete obj.p // fail silently, throw in strict
-obj.p2 = 'new val' // fail silently, throw in strict
+obj.p = "second"; // OK
+delete obj.p; // fail silently, throw in strict
+obj.p2 = "new val"; // fail silently, throw in strict
 
-console.log(obj) // { p: 'second' }
-console.log(Object.isSealed(obj)) // true
-console.log(Object.getOwnPropertyDescriptor(obj, 'p'))
+console.log(obj); // { p: 'second' }
+console.log(Object.isSealed(obj)); // true
+console.log(Object.getOwnPropertyDescriptor(obj, "p"));
 // { value: 'second', writable: true,
 //   enumerable: true, configurable: false }
 ```
@@ -5079,6 +5196,112 @@ Object.setPrototypeOf(Bar.prototype, Foo.prototype);
 ```
 
 Ignoring the slight performance disadvantage (throwing away an object that's later garbage collected) of the Object.create(..) approach, it's a little bit shorter and may be perhaps a little easier to read than the ES6+ approach. But it's probably a syntactic wash either way.
+
+## Classes
+
+REF: [SOJSN2ND] 7.4.1 Using the class keyword
+
+ES6 introduces a new class keyword that provides a much more elegant way of creating objects and implementing inheritance than manually implementing it ourselves with prototypes.
+
+```js
+//Defines a constructor function that will be called when we call the class with the keyword new
+class Ninja {
+  constructor(name) {
+    this.name = name;
+  }
+  //Defines an additional method accessible to all Ninja instances
+  swingSword() {
+    return true;
+  }
+}
+```
+
+- CONSTRUCTOR: We can explicitly define a constructor function: it will be invoked when instantiating a Ninja, the newly created instance with the this keyword, and we can easily add new properties, such as the name property.
+- METHODS: we can also define methods that will be accessible to all Ninja instances (`swingSword()`)
+- we can create a Ninja instance by calling the Ninja class with the keyword `new`: `var ninja = new Ninja("Yoshi");`
+
+### CLASSES ARE SYNTACTIC SUGAR
+
+Under the hood we’re still dealing with good old prototypes; classes are syntactic sugar designed to make our lives a bit easier when mimicking classes in JavaScript.
+
+The class above can be translated to functionally identical ES5 code:
+
+```js
+function Ninja(name) {
+  this.name = name;
+}
+
+Ninja.prototype.swingSword = function () {
+  return true;
+};
+```
+
+### Static Methods
+
+```js
+class Ninja {
+  constructor(name, level) {
+    this.name = name;
+    this.level = level;
+  }
+
+  swingSword() {
+    return true;
+  }
+
+  //Uses the static keyword to make a static method
+  static compare(ninja1, ninja2) {
+    return ninja1.level - ninja2.level;
+  }
+}
+```
+
+The compare method, which compares the skill levels of two ninjas, is defined on the class level, and not the instance level! Later we test that this effectively means that the compare method isn’t accessible from ninja instances but is accessible from the Ninja class.
+
+We can also look at how “static” methods can be implemented in pre-ES6 code:
+
+```js
+function Ninja(){}
+Ninja.compare = function(ninja1, ninja2){...}
+```
+
+### Implementing inheritance
+
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  dance() {
+    return true;
+  }
+}
+
+class Ninja extends Person {
+  constructor(name, weapon) {
+    super(name);
+    this.weapon = weapon;
+  }
+
+  wieldWeapon() {
+    return true;
+  }
+}
+var person = new Person("Bob");
+
+assert(person instanceof Person, "A person's a person");
+assert(person.dance(), "A person can dance.");
+assert(person.name === "Bob", "We can call it by name.");
+assert(!(person instanceof Ninja), "But it's not a Ninja");
+assert(!("wieldWeapon" in person), "And it cannot wield a weapon");
+var ninja = new Ninja("Yoshi", "Wakizashi");
+assert(ninja instanceof Ninja, "A ninja's a ninja");
+assert(ninja.wieldWeapon(), "That can wield a weapon");
+assert(ninja instanceof Person, "But it's also a person");
+assert(ninja.name === "Yoshi", "That has a name");
+assert(ninja.dance(), "And enjoys dancing");
+```
 
   a = a * 10;
   b.item = "changed";
