@@ -5440,57 +5440,92 @@ To check if a selection contains elements:
 
 Ref:
 
-* https://nolanlawson.com/2015/10/19/the-struggles-of-publishing-a-javascript-library/
-* Long overview Oct 28, 2018: https://medium.com/@ajmeyghani/javascript-bundlers-a-comparison-e63f01f2a364
-* Eloquent_JavaScript.pdf ch 10
-* june 2016:
+- https://nolanlawson.com/2015/10/19/the-struggles-of-publishing-a-javascript-library/
+- Long overview Oct 28, 2018: https://medium.com/@ajmeyghani/javascript-bundlers-a-comparison-e63f01f2a364
+- Eloquent_JavaScript.pdf ch 10
 
 ## Intro: Modules, Module Loaders, Modules Bundlers
 
+Ref:
 
-Why do we Modules?
+- https://www.jvandemo.com/a-10-minute-primer-to-javascript-modules-module-formats-module-loaders-and-module-bundlers/
+- https://medium.com/@ajmeyghani/javascript-bundlers-a-comparison-e63f01f2a364
+- http://exploringjs.com/es6/ch_modules.html
 
-* to create reusable code
-* to provide a clear public **interface** to it
-* to state the dependency between reusable code (which other modules need to be present to be able to use a given module and to automatically load dependencies).
+Why do we need modules?
 
+- to create reusable code
+- to provide a clear public **interface** to it
+- to state the dependency between reusable code (which other modules need to be present to be able to use a given module and to automatically load dependencies).
 
+We will look at:
 
-https://medium.com/@ajmeyghani/javascript-bundlers-a-comparison-e63f01f2a364
+- Module formats: what are they and what are the different module definitions for JavaScript.
+- Module loaders: what are loaders and how can they be used.
+- Module bundlers: what are JavaScript bundlers, what is the process for setting up each, and how do they compare against each other.
 
+The modules ecosystem is quite complex. JavaScript has had modules for a long time. However, they were implemented via libraries, not built into the language. ES6/ES2015 is the first time that JavaScript has built-in modules. EcmaScript 5 and earlier editions were not designed with modules in mind. Over time, developers came up with different patterns to simulate modular design in JavaScript.
 
-Modules: what are they and what are the different module definitions for JavaScript.
-Module loaders: what are loaders and how can they be used.
-Bundlers: what are JavaScript bundlers, what is the process for setting up each, and how do they compare against each other.
+### Module Formats Intro
 
-**Module loaders** are used to load JavaScript modules at runtime, usually for development. Most notable loaders are:
+A module format is the syntax we can use to define a module. Before EcmaScript 6 or ES2015, JavaScript did not have an official syntax to define modules. Therefore, smart developers came up with various formats to define modules in JavaScript. Some of the most widely adapted and well known formats are:
 
-* RequireJS
-* SystemJS
+- Asynchronous Module Definition (AMD)
+- CommonJS
+- Universal Module Definition (UMD)
+- System.register
+- ES6 module format
 
-**Module bundlers** are used to bundle several modules into one or more optimized bundles for the browser. Most notable bundlers are:
+- Module bundlers: what are JavaScript bundlers, what is the process for setting up each, and how do they compare against each other.
 
-* Webpack,
-* Rollup,
-* Google Closure Compiler.
+### Module Loaders Intro
 
+Module loaders are used to load JavaScript modules at runtime, usually for development. Most notable loaders are:
+
+- RequireJS: a library
+- SystemJS:
+
+becaouse the JS standard different module definitions for JavaScript
+
+### Module Bundlers Intro
+
+Module bundlers are used to bundle several modules into one or more optimized bundles for the browser. Most notable bundlers are:
+
+- Webpack,
+- SnowPack (nice one!)
+- Rollup,
+- Google Closure Compiler.
+- Parcel
+- Broserify
 
 The Google Closure Compiler (Closure) is a code analyzer and optimizer that can also be used to create bundles. Closure is probably the most mature analyzer and optimizer out there. If you want to analyze your code and output the most optimized code possible, Closure will be your best friend. Rollup has a great Closure plugin that I’m going to cover later.
 
-Most of the bundlers these days have very similar features. The one feature that varies among them is tree shaking for CJS or ES modules. Out of all the bundlers, Webpack has the most consistent built-in support for ES and CJS module tree shaking. Rollup and Parcel do have tree shaking but Webpack’s is just a little better overall. Parcel however is working on making tree shaking available for both CJS and ES modules. Until tree shaking matures among bundlers it’s best to carefully examine what you are importing to minimize the final bundle size.
+Most of the bundlers these days have very similar features.
+
+**Tree Shaking**
+The one feature that varies among them is tree shaking for CJS or ES modules (dead-code elimination). Out of all the bundlers, Webpack has the most consistent built-in support for ES and CJS module tree shaking. Rollup and Parcel do have tree shaking but Webpack’s is just a little better overall. Parcel however is working on making tree shaking available for both CJS and ES modules. Until tree shaking matures among bundlers it’s best to carefully examine what you are importing to minimize the final bundle size.
 Overall all bundlers are pretty fast if you are careful about what you are importing. In the worst case in can take up to 7 seconds to bundle a very simple project.
 
 Zero-config or not, you’ll have to spend some time experimenting with each bundler to learn them well. If a bundler is labelled as zero-config that does not mean that you don’t have to configure anything for production. It’s mostly true for development, but for production you have to create configuration files regardless. I think a better term would have been “bundlers for development”, rather than “bundlers with zero configuration”.
 
+Tree Shaking:
 
-
-* Tree Shaking:
-
-** ref: https://webpack.js.org/guides/tree-shaking/
-** Tree shaking is a term commonly used in the JavaScript context for **dead-code elimination**. It relies on the static structure of ES2015 module syntax, i.e. import and export. The name and concept have been popularized by the ES2015 module bundler rollup.
-
+- ref: https://webpack.js.org/guides/tree-shaking/
+- Tree shaking is a term commonly used in the JavaScript context for **dead-code elimination**. It relies on the static structure of ES2015 module syntax, i.e. import and export. The name and concept have been popularized by the ES2015 module bundler rollup.
 
 ## History: Pre 2015
+
+[JSFIP](https://exploringjs.com/impatient-js/ch_modules.html#scripts): another point of view about using js script manually.
+
+Riassunto:
+
+- ESM looks like the best modularity pattern
+  - Browser support is good
+  - NodeJS has experimental support (https://nodejs.org/api/esm.html#esm_package_exports)
+  - TypeScript use this format
+- CJS is still the way to go in NodeJS JS app. Many lib for NodeJS
+
+TL;DR: In 2020 learn ESM first and then CJS if you need to use NodeJS
 
 Until 2015, the JavaScript language had no built-in module system.
 
@@ -5521,64 +5556,234 @@ Just putting your JavaScript code into different files does not satisfy these re
 
 **For a long time this was the main approach used in web programming, but it is mostly obsolete now.**
 
-## History: CommonJS, AMD-RequireJS, UMD
+## NON Standard formats: CommonJS, AMD-RequireJS, UMD
 
-TODO: Mi sembra di capire che sia obsoleto ma no so se nel 2019 sia necessario capirci qualcosa
+Let's have a quick look at each one of them so you can recognize their syntax.
 
 Two prominent module definitions were developed as part of the community effort: `CJS (CommonJS)` and `AMD (Asynchronous Module Definition)`.
 
-`CJS`:
+`CommonJS` format:
 
-* was defined as a **synchronous** definition intended for **server-side JavaScript**.
-* Node’s module system is practically based on CJS with some minor differences.
+- Main Target: Backend.
+- was defined as a **synchronous** definition intended for **server-side JavaScript**.
+- Node’s module system is practically based on CJS with some minor differences.
+- uses `require` and `module.exports` to define dependencies and modules
+- CommonJS modules work quite well and, in combination with NPM, have allowed the JavaScript community to start sharing code on a large scale. But now is obsolete.
+- The imported result is a copy of the imported object.
 
-`AMD`:
+```
+var dep1 = require('./dep1');
+var dep2 = require('./dep2');
 
-* was defined an **asynchronous** model intended for modules in the browser
-* `RequireJS` is the most popular implementation of AMD.
+module.exports = function(){
+  // ...
+}
+```
 
+`AMD` format:
 
-You may have also heard of the term `UMD` thrown around a lot. UMD stands for Universal Module Definition. It’s essentially a piece of JavaScript code placed at the top of libraries that enables any loader to load them regardless of the environment they are in.
+- Main Target: Frontend
+- Imports modules: Asynchronously.
+- was defined an **asynchronous** model intended for modules in the browser
+- `RequireJS` is the most popular implementation of AMD.
+- The AMD format is used in browsers and uses a `define` function to define modules
 
-A standard module system was finally introduced in 2015 as part of the ES2015 (ES6) specification. It defined the semantics for importing and exporting modules asynchronously.
+```
+//Calling define with a dependency array and a factory function
+define(['dep1', 'dep2'], function (dep1, dep2) {
 
-CommonJS modules work quite well and, in combination with NPM, have allowed the JavaScript community to start sharing code on a large scale. But now is obsolete.
+    //Define the module value by returning a value.
+    return function () {};
+});
+```
+
+`UMD` format:
+
+- Main Target: Frontend and Backend (“Universal”).
+- UMD stands for Universal Module Definition. It’s essentially a piece of JavaScript code placed at the top of libraries that enables any loader to load them regardless of the environment they are in.
+- It's more like an interface for bringing compatibility in Frontend and Backend environments to both AMD and CJS.
+
+`ESM - ECMAScript Modules (2015)` format:
+
+- Main Target: Frontend and Backend.
+- A standard module system was finally introduced in 2015 as part of the ES2015 (ES6) specification. It defined the semantics for importing and exporting modules asynchronously.
+- Works in many modern browsers
+- Tree-shaking support due to ES6's static module structure
 
 Ref:
 
-* Eloquent_JavaScript.pdf ch 10
+- Eloquent_JavaScript.pdf ch 10
 
+## Current state of Modules in Node.js
 
-## ES6 Modules - Ecmascript 2015
+2020 July:
 
-* [Intro](http://www.wintellect.com/blogs/nstieglitz/5-great-features-in-es6-harmony)
-* [ES6 Draft](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)
-* [Easy Summary](http://www.frontendjournal.com/javascript-es6-learn-important-features-in-a-few-minutes/)
+- With the release of Node version 13.9.0, ES modules can now be used without an experimental flag since they are enabled by default.
 
-## ES6 Modules
+- https://2ality.com/2019/10/hybrid-npm-packages.html
+- https://blog.logrocket.com/es-modules-in-node-today/
+- https://medium.com/@nirsky/make-your-npm-package-work-on-both-node-js-and-browser-58bff1a18f55
 
-JavaScript standard from 2015 introduces its own, different module system. It is usually called ES modules, where ES stands for ECMAScript.
+2019 July :
+https://blog.logrocket.com/es-modules-in-node-js-12-from-experimental-to-release/
 
-JavaScript standard from 2015 introduces its own, differ- ent module system. It is usually called ES modules, where ES stands for ECMAScript.
+## ESM ES6/ES2015 Modules: Standard Javascript Modules
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
+- [javascript.info Modules](https://javascript.info/modules-intro)
+
+  - Good intro for beginners
+  - Super brief History of modules
+  - basic usage of import/export with browser example
+  - `<script type="module">` : Always "use strict", Module-level scope, A module code is evaluated only the first time when imported, import.meta, "this" is undefined, Module scripts are deferred, `<script async type="module">` , External scripts, No “bare” modules allowed, Compatibility, “nomodule”,
+
+- [Intro](http://www.wintellect.com/blogs/nstieglitz/5-great-features-in-es6-harmony)
+- [ES6 Draft](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)
+- [Easy Summary](http://www.frontendjournal.com/javascript-es6-learn-important-features-in-a-few-minutes/)
+- [JSFIP Modules ES2020](https://exploringjs.com/impatient-js/ch_modules.html)
+- [Yeuda draft](https://gist.github.com/wycats/51c96e3adcdb3a68cbc3)
+- http://eviltrout.com/2014/05/03/getting-started-with-es6.html
+
+JavaScript standard from 2015 introduces its own, different module system. It is usually called ES modules (ESM), where ES stands for ECMAScript.
+
+The full standard of ES modules comprises the following parts:
+
+1. Syntax (how code is written): What is a module? How are imports and exports declared? Etc.
+2. Semantics (how code is executed): How are variable bindings exported? How are imports connected with exports? Etc.
+3. A programmatic loader API for configuring module loading (https://javascript.info/modules-dynamic-imports). Usecase: conditional imports.
 
 Why use ES6 modules?
 
-* it's the first time we've had modules that are actually part of the language.
-* Now that the standard has been formalised, we can look forward to a future in which browsers (and node.js, eventually) natively support ES6 modules. So code written in ES6 modules is future-proof.
+- it's the first time we've had modules that are actually part of the language.
+- Now that the standard has been formalised, we can look forward to a future in which browsers (and node.js, eventually) natively support ES6 modules. So code written in ES6 modules is future-proof.
 
-### Syntax
+- A **module** is simply a file with JavaScript code in it.
+- By default anything you declare in a file in a ES6 project is not available outside that file. You have to use the export keyword to explicitly make it available.
+- An ES module’s interface is not a single value but a set of named bindings.
 
-Some reference about ES6 module:
+Modules can load each other and use special directives export and import to interchange functionality, call functions of one module from another one:
 
-* http://www.2ality.com/2013/07/es6-modules.html
-* http://www.2ality.com/2014/09/es6-modules-final.html
-* [Yeuda draft](https://gist.github.com/wycats/51c96e3adcdb3a68cbc3)
-* http://eviltrout.com/2014/05/03/getting-started-with-es6.html
+- `export` keyword labels variables and functions that should be accessible from outside the current module.
+- `import` allows the import of functionality from other modules.
 
-* A **module** is simply a file with JavaScript code in it.
-* By default anything you declare in a file in a ES6 project is not available outside that file. You have to use the export keyword to explicitly make it available.
-* A module can export multiple things by prefixing their declarations with the keyword **export** .
-* An ES module’s interface is not a single value but a set of named bindings.
+WARNING:
+
+- in this paragraph we'll describe the ESM syntax and convention. Many bundlers (ex: Webpack) use a similar syntax but with a slightly different behaviour.
+
+### Cheatsheet: syntax of ECMAScript modules
+
+Ref: [JSFIP Modules ES2020](https://exploringjs.com/impatient-js/ch_modules.html#overview-syntax-of-ecmascript-modules)
+
+#### 24.1.1 Exporting
+
+```js
+// Named exports
+export function f() {}
+export const one = 1;
+export { foo, b as bar };
+
+// Default exports
+export default function f() {} // declaration with optional name
+// Replacement for `const` (there must be exactly one value)
+export default 123;
+
+// Re-exporting from another module
+export * from "./some-module.mjs";
+export { foo, b as bar } from "./some-module.mjs";
+```
+
+#### 24.1.2 Importing
+
+```js
+// Named imports
+import { foo, bar as b } from "./some-module.mjs";
+// Namespace import
+import * as someModule from "./some-module.mjs";
+// Default import
+import someModule from "./some-module.mjs";
+
+// Combinations:
+import someModule, * as someModule from "./some-module.mjs";
+import someModule, { foo, bar as b } from "./some-module.mjs";
+
+// Empty import (for modules with side effects)
+import "./some-module.mjs";
+```
+
+### Named Export
+
+Each module can have zero or more named exports.
+
+We can label any declaration as exported by placing export before it, be it a variable, function or a class.
+
+For instance, here all exports are valid:
+
+```js
+// export an array
+export let months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+// export a constant
+export const MODULES_BECAME_STANDARD_YEAR = 2015;
+
+// export a class
+export class User {
+  constructor(name) {
+    this.name = name;
+  }
+}
+```
+
+Also, we can put export separately from declarations.
+
+Here we first declare, and then export:
+
+```js
+// 📁 say.js
+function sayHi(user) {
+  alert(`Hello, ${user}!`);
+}
+
+function sayBye(user) {
+  alert(`Bye, ${user}!`);
+}
+
+export { sayHi, sayBye }; // a list of exported variables
+```
+
+...Or, technically we could put export above functions as well.
+
+Summary:
+
+- To export something, we put the keyword export in front of a declaration.
+- Entities that are not exported are private to a module and can’t be accessed from outside.
+
+WARNING: No semicolons after export class/function
+
+Please note that export before a class or a function does not make it a function expression. It’s still a function declaration, albeit exported.
+
+Most JavaScript style guides don’t recommend semicolons after function and class declarations.
+
+That’s why there’s no need for a semicolon at the end of export class and export function:
+
+```js
+export function sayHi(user) {
+  alert(`Hello, ${user}!`);
+} // no ; at the end
+```
+
+### Named Export
+
+### example
 
 File structure:
 
@@ -5595,10 +5800,10 @@ Define a module:
 //------ lib.js ------
 export const sqrt = Math.sqrt;
 export function square(x) {
-    return x * x;
+  return x * x;
 }
 export function diag(x, y) {
-    return sqrt(square(x) + square(y));
+  return sqrt(square(x) + square(y));
 }
 ```
 
@@ -5614,10 +5819,10 @@ console.log(diag(4, 3)); // 5
 you can also import the whole module and refer to its named exports via property notation:
 
 ```javascript
-    //------ main.js ------
+//------ main.js ------
 import * as lib from "lib";
-    console.log(lib.square(11)); // 121
-    console.log(lib.diag(4, 3)); // 5
+console.log(lib.square(11)); // 121
+console.log(lib.diag(4, 3)); // 5
 ```
 
 ### Traspiler
@@ -5643,9 +5848,205 @@ How use it?
 
 - rsvp
 
-#### ES6Modules
+### HOW-TO ESM and Browser
 
-* https://github.com/ember-cli/broccoli-es6modules
+The import statement cannot be used in embedded scripts unless such script has a type="module":
+
+```html
+<script type="module">
+  ....
+</script>
+
+------------------------------------------
+
+<!DOCTYPE html>
+<script type="module">
+  import { sayHi } from "./say.js";
+  document.body.innerHTML = sayHi("John");
+</script>
+```
+
+```js
+//say.js
+export function sayHi(user) {
+  return `Hello, ${user}!`;
+}
+```
+
+WARNING! : Modules work only via HTTP(s), not in local files
+
+If you try to open a web-page locally, via `file://` protocol, you’ll find that import/export directives don’t work. Use a local web-server, such as static-server or use the “live server” capability of your editor, such as VS Code Live Server Extension to test modules.
+
+Ref: [JSINFO](https://javascript.info/modules-intro)
+
+- Good intro to ESM for beginners
+- Super brief History of modules
+- basic usage of import/export with browser example
+- `<script type="module">` : Always "use strict", Module-level scope, A module code is evaluated only the first time when imported
+
+#### [ADVANCED] import.meta
+
+#### [ADVANCED] In a module, top-level "this" is undefined.
+
+So the global scope pollution is avoided by desing. Ref: https://javascript.info/modules-intro#in-a-module-this-is-undefined
+
+Compare it to non-module scripts, where this is a global object:
+
+```js
+<script>
+  alert(this); // [object Window]
+</script>
+
+<script type="module">
+  alert(this); // undefined
+</script>
+```
+
+#### [ADVANCED] Module scripts are deferred
+
+In other words:
+
+- downloading external module scripts `<script type="module" src="...">`doesn’t block HTML processing, they load in parallel with other resources.
+- module scripts wait until the HTML document is fully ready (even if they are tiny and load faster than HTML), and then run.
+- relative order of scripts is maintained: scripts that go first in the document, execute first.
+
+As a side-effect, module scripts always “see” the fully loaded HTML-page, including HTML elements below them.
+
+```js
+<script type="module">
+  alert(typeof button); // object: the script can 'see' the button below
+  // as modules are deferred, the script runs after the whole page is loaded
+</script>
+
+Compare to regular script below:
+
+<script>
+  alert(typeof button); // Error: button is undefined, the script can't see elements below
+  // regular scripts run immediately, before the rest of the page is processed
+</script>
+
+<button id="button">Button</button>
+```
+
+Please note: the second script actually runs before the first! So we’ll see undefined first, and then object.
+
+That’s because modules are deferred, so we wait for the document to be processed. The regular script runs immediately, so we see its output first.
+
+When using modules, we should be aware that the HTML page shows up as it loads, and JavaScript modules run after that, so the user may see the page before the JavaScript application is ready. Some functionality may not work yet. We should put “loading indicators”, or otherwise ensure that the visitor won’t be confused by that.
+
+#### [ADVANCED] Async on inline scripts
+
+If you add the `async` keyword:
+
+```js
+<script async type="module">
+```
+
+The module async scripts run immediately when ready, independently of other scripts or the HTML document (otherwise it would have waited the previous html and script tags).
+
+Also non module script support async but only works on external scripts, For module scripts, it works on inline scripts as well.
+
+USE-CASES: functionality that doesn’t depend on anything, like counters, ads, document-level event listeners.
+
+```js
+<!-- all dependencies are fetched (analytics.js), and the script runs -->
+<!-- doesn't wait for the document or other <script> tags -->
+<script async type="module">
+  import {counter} from './analytics.js';
+
+  counter.count();
+</script>
+```
+
+#### [ADVANCED] External module scripts
+
+External scripts that have type="module" are different in two aspects:
+
+1. External scripts with the same src run only once:
+
+```js
+<!-- the script my.js is fetched and executed only once -->
+<script type="module" src="my.js"></script>  <!-- FETCH AND LOAD!!! -->
+<script type="module" src="my.js"></script>  <!-- DO NOTING!!! -->
+```
+
+2. External scripts that are fetched from another origin (e.g. another site) require CORS headers, as described in the chapter Fetch: Cross-Origin Requests. In other words, if a module script is fetched from another origin, the remote server must supply a header Access-Control-Allow-Origin allowing the fetch.
+
+```js
+<!-- another-site.com must supply Access-Control-Allow-Origin -->
+<!-- otherwise, the script won't execute -->
+<script type="module" src="http://another-site.com/their.js"></script>
+That ensures better security by default.
+```
+
+#### [ADVANCED] No “bare” modules allowed in a Browser
+
+In the browser, import must get either a relative or absolute URL. Modules without any path are called “bare” modules. Such modules are not allowed in import.
+
+For instance, this import is invalid:
+
+```js
+import { sayHi } from "sayHi"; // Error, "bare" module
+// the module must have a path, e.g. './sayHi.js' or wherever the module is
+```
+
+Certain environments, like Node.js or bundle tools allow bare modules, without any path, as they have their own ways for finding modules and hooks to fine-tune them. But browsers do not support bare modules yet.
+
+#### [ADVANCED] Compatibility, “nomodule”
+
+Old browsers do not understand type="module". Scripts of an unknown type are just ignored. For them, it’s possible to provide a fallback using the nomodule attribute:
+
+```js
+<script type="module">
+  alert("Runs in modern browsers");
+</script>
+
+<script nomodule>
+  alert("Modern browsers know both type=module and nomodule, so skip this")
+  alert("Old browsers ignore script with unknown type=module, but execute this.");
+</script>
+```
+
+#### A notes about build tools
+
+SEE https://javascript.info/modules-intro#build-tools
+
+TL;DR: In real-life, browser modules are rarely used in their “raw” form. Usually, we bundle them together with a special tool such as Webpack and deploy to the production server (Eventhough it's really useful to use them raw when you teach or do some quick esperiment). That's why we use babel, webpack etc
+
+### HOW-TO ESM and NodeJS
+
+Native support for ES modules in Node.js:
+
+- Node.js 12+ supports ESM natively behind the flag --experimental-modules
+- Node.js 13.2.0+ supports native ESM without that flag.
+
+Ref:
+
+- https://nodejs.org/api/esm.html#esm_ecmascript_modules
+
+Node.js will treat the following as ES modules when passed to node as the initial input, or when referenced by import statements within ES module code:
+
+- Files ending in `.mjs`.
+
+- Files ending in .js when the nearest parent package.json file contains a top-level field `"type"` with a value of `"module"`.
+
+- Strings passed in as an argument to --eval, or piped to node via STDIN, with the flag --input-type=module.
+
+Node.js will treat as CommonJS all other forms of input, such as .js files where the nearest parent package.json file contains no top-level "type" field, or string input without the flag --input-type. This behavior is to preserve backward compatibility. However, now that Node.js supports both CommonJS and ES modules, it is best to be explicit whenever possible. Node.js will treat the following as CommonJS when passed to node as the initial input, or when referenced by import statements within ES module code:
+
+- Files ending in .cjs.
+
+- Files ending in .js when the nearest parent package.json file contains a top-level field "type" with a value of "commonjs".
+
+- Strings passed in as an argument to --eval or --print, or piped to node via STDIN, with the flag --input-type=commonjs
+
+### HOW-TO write Hybrid npm packages (ESM and CommonJS)
+
+https://2ality.com/2019/10/hybrid-npm-packages.html
+
+### ES6Modules
+
+- https://github.com/ember-cli/broccoli-es6modules
 
 ES6Modules wraps the esperanto library. All options described for esperanto can be provided here.
 
@@ -5919,7 +6320,7 @@ In the code below, the sum will not be exported as we have changed the reference
 
 https://github.com/breezeight/javascript_nicola_courses/blob/master/node-modules-under-the-hood/operations_gotcha.js
 
-Test it: 
+Test it:
 
 - git clone git@github.com:breezeight/javascript_nicola_courses.git
 - cd javascript_nicola_courses
@@ -6029,13 +6430,136 @@ https://github.com/maxogden/art-of-node/#how-to-write-a-module
 
 https://www.npmjs.com/package/resolve
 
-
 ### Internals
 
-* http://eli.thegreenplace.net/2013/05/27/how-require-loads-modules-in-node-js
-* https://github.com/joyent/node/blob/master/lib/module.js#L380
-* What is the purpose of Node.js module.exports and how do you use it? http://stackoverflow.com/questions/5311334/what-is-the-purpose-of-node-js-module-exports-and-how-do-you-use-it
+- http://eli.thegreenplace.net/2013/05/27/how-require-loads-modules-in-node-js
+- https://github.com/joyent/node/blob/master/lib/module.js#L380
+- What is the purpose of Node.js module.exports and how do you use it? http://stackoverflow.com/questions/5311334/what-is-the-purpose-of-node-js-module-exports-and-how-do-you-use-it
 
+# CDN
+
+## JSDelivr
+
+https://www.jsdelivr.com/
+
+## CDNJS.com
+
+an lternative to Unpkg, looks better ordinazied but soffers of similar problems:
+
+- To include a package into the CDN it must be added to this repo https://github.com/cdnjs/packages/blob/master/CONTRIBUTING.md
+- NON STANDARD: The author of the package is in charge of defining which files he want to expose into the CDN and in which format
+
+For example the date-fns package:
+
+- uses travis to run a script on every new tag https://github.com/date-fns/date-fns/blob/master/.travis.yml#L35
+- Use WebPack with the option libraryTarget: 'umd'.
+  - This exposes your library under all the module definitions, allowing it to work with CommonJS, AMD and as global variable. Take a look at the UMD Repository to learn more.
+  - CDNJS config: https://github.com/cdnjs/packages/blob/master/packages/d/date-fns.json
+  - Webpack config:https://github.com/date-fns/date-fns/blob/master/config/webpack.js
+
+## Unpkg: global CDN for everything on NPM
+
+https://unpkg.com/
+
+Use unpkg to quickly and easily load any file from any package using a URL like: `unpkg.com/:package@:version/:file`
+
+NOTE: The unpkg CDN is powered by Cloudflare on Google Cloud
+
+To get a specific version:
+
+If I enter the url: https://unpkg.com/angular-calendar@0.21.3
+It would serve: https://unpkg.com/angular-calendar@0.21.3/dist/umd/angular-calendar.js
+
+To get the latest version:
+
+If I enter the url: https://unpkg.com/angular-calendar
+It would serve: https://unpkg.com/angular-calendar@0.23.6/bundles/angular-calendar.umd.js
+
+To browse the files in a package:
+
+If you append a / to the url, it will list all the files in the package, ie.
+
+https://unpkg.com/angular-calendar@0.21.3/ will list all the files in that particular package.
+
+Examples
+Using a fixed version:
+
+unpkg.com/react@16.7.0/umd/react.production.min.js
+unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js
+You may also use a semver range or a tag instead of a fixed version number, or omit the version/tag entirely to use the latest tag.
+
+unpkg.com/react@^16/umd/react.production.min.js
+unpkg.com/react/umd/react.production.min.js
+
+# Webpack
+
+https://www.youtube.com/watch?v=MpGLUVbqoYQ&t=0s
+
+The Webpack core goal is: it takes a bunch of different assets, different files of different types (javascript, images, like SVG P&G JPEGs, CSS stylesheets or less or sass), all sorts of different files and it combines them down, it bundles them, into smaller group of files.
+
+A standard setup is:
+
+- One file for your JavaScript
+- one for your third-party JavaScript (ex: vendor js)
+- one for your CSS
+- one for your app code app
+- one for each image
+- ....
+
+Webpack is very configurable which is where it can become a little tedious and pretty intimidating to people who are learning it. But the idea behind it is very simple.
+
+In addition to just bundling things together and just shoving them into a file it's also managing dependencies it's:
+
+- making sure that code that needs to load first is loading first
+- so if you write a file that depends on three other files those three need to be included first so often it's a very complex web of dependencies and larger apps and it would be very difficult to manage it on your own.
+- webpack does it for you and it spits out one or two or however many files you tell it to bundle and I like how the
+
+Webpack Loaders are responsible for the dependencies
+
+## Getting Started
+
+https://webpack.js.org/guides/getting-started/
+
+## Concepts
+
+[Webpack Guide Concepts](https://webpack.js.org/concepts/)
+
+## Exmaples
+
+### Create React App (Ejected)
+
+npx create-react-app my-app
+cd my-app
+npm run eject
+
+The webpack config is:
+
+- config/webpack.config.js
+- config/webpackDevServer.config.js
+
+## Loaders
+
+https://webpack.js.org/concepts/loaders/
+
+`module.rules` allows you to specify several loaders within your webpack configuration.
+
+Loaders are evaluated/executed from right to left (or from bottom to top).
+
+### Most Common loaders
+
+https://webpack.js.org/loaders/
+
+TODO
+
+### Writing a Loader
+
+https://webpack.js.org/contribute/writing-a-loader/
+
+## Webpack 5
+
+- Module Federation allows a JavaScript application to dynamically load code from another application and  in the process, share dependencies. If an application consuming a federated module does not have a dependency needed by the federated code,  Webpack will download the missing dependency from that federated build origin.
+
+Ref: https://indepth.dev/webpack-5-module-federation-a-game-changer-in-javascript-architecture/
 
 # Browserify
 
