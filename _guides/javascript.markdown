@@ -28,7 +28,7 @@ Books:
 - All code in this book may also be considered licensed under an MIT license.
 - [GITHUB](https://github.com/marijnh/Eloquent-JavaScript)
 - License "CC BY-NC 3.0"
-- [SOJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Secrets_of_the_JavaS.pdf) http://www.manning.com/resig/
+- [SOTJSN2nd](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Secrets_of_the_JavaS.pdf) http://www.manning.com/resig/
 - [FJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Functional_JavaScript.pdf)
 - [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
   Mozilla Developer Network - Javascript
@@ -888,10 +888,10 @@ Consider this code:
 
 ```js
 var myObject = {
-	a: 2
+  a: 2,
 };
 
-Object.getOwnPropertyDescriptor( myObject, "a" );
+Object.getOwnPropertyDescriptor(myObject, "a");
 // {
 //    value: 2,
 //    writable: true,
@@ -904,12 +904,12 @@ As you can see, the property descriptor (called a "data descriptor" since it's o
 
 It includes 3 other characteristics:
 
-* writable:  If a property has writable set to false then that property’s value cannot be reassigned another value.
-  * example: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#writable
-* enumerable: will show up in certain object-property enumerations, such as the for..in loop
-  * example: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#enumerable
-* configurable: we can modify its descriptor definition or delete the property.
-  * example: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#configurable
+- writable: If a property has writable set to false then that property’s value cannot be reassigned another value.
+  - example: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#writable
+- enumerable: will show up in certain object-property enumerations, such as the for..in loop
+  - example: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#enumerable
+- configurable: we can modify its descriptor definition or delete the property.
+  - example: https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#configurable
 
 While we can see what the default values for the property descriptor characteristics are when we create a normal property, we can use `Object.defineProperty(..)` to add a new property, or modify an existing one (if it's configurable!), with the desired characteristics.
 
@@ -918,12 +918,12 @@ For example:
 ```js
 var myObject = {};
 
-Object.defineProperty( myObject, "a", {
+Object.defineProperty(myObject, "a", {
 	value: 2,
 	writable: true,
 	configurable: true,
-	enumerable: true
-} );
+  enumerable: true,
+});
 
 myObject.a; // 2
 ```
@@ -932,9 +932,8 @@ Using `defineProperty(..)`, we added the plain, normal a property to myObject in
 
 All Object Properties have Property Descriptors:
 
-* Every object property has a property descriptor, even if we don’t set one using the Object.defineProperty() method.
-* We can use another method, Object.getOwnPropertyDescriptor(), to read a property descriptor. 
-
+- Every object property has a property descriptor, even if we don’t set one using the Object.defineProperty() method.
+- We can use another method, Object.getOwnPropertyDescriptor(), to read a property descriptor.
 
 #### Enumerable and Value
 
@@ -943,24 +942,24 @@ Ref: https://medium.com/intrinsic/javascript-object-property-descriptors-proxies
 The most basic property descriptors are value and enumerable. value contains the value which will be returned when the property is being read. enumerable determines whether or not the property will be visible when listing the properties of the object. Here’s a code sample using these two property descriptors:
 
 ```js
-const obj = {}
-Object.defineProperty(obj, 'foo', {
-  value: 'hello', // the property value
-  enumerable: false // property will not be listed
-})
-console.log(obj) // {}
-console.log(obj.foo) // 'hello'
-console.log(Object.keys(obj)) // []
-console.log(Reflect.ownKeys(obj)) // [ 'foo' ]
-console.log('foo' in obj) // true
+const obj = {};
+Object.defineProperty(obj, "foo", {
+  value: "hello", // the property value
+  enumerable: false, // property will not be listed
+});
+console.log(obj); // {}
+console.log(obj.foo); // 'hello'
+console.log(Object.keys(obj)); // []
+console.log(Reflect.ownKeys(obj)); // [ 'foo' ]
+console.log("foo" in obj); // true
 ```
 
 The enumerable property descriptor has been set to false:
 
-* it becomes a harder to discover the foo property if we don’t know to look for it. 
-* For example, when we call `console.log(obj)`, we get an empty object in return.`
-* When we call `Object.keys(obj)`, we get an empty array in response.
-* BUT If we know the name of the property we can still use the in operator, like we’re doing with 'foo' in obj, which returns a true. However, keep in mind this doesn’t completely hide the property, as we can still find it using `Reflect.ownKeys(obj)`.
+- it becomes a harder to discover the foo property if we don’t know to look for it.
+- For example, when we call `console.log(obj)`, we get an empty object in return.`
+- When we call `Object.keys(obj)`, we get an empty array in response.
+- BUT If we know the name of the property we can still use the in operator, like we’re doing with 'foo' in obj, which returns a true. However, keep in mind this doesn’t completely hide the property, as we can still find it using `Reflect.ownKeys(obj)`.
 
 #### Use-case: Enumerable
 
@@ -968,17 +967,17 @@ Adding a method to an object’s prototype causes that property will now be pres
 By specifically setting this enumerable property of the method to `false` you can solve the problem.
 
 ```js
-const proto = {}
-const obj = { ok: 1 }
-obj.__proto__ = proto
-for (let key in obj) console.log(key) // [ok]
+const proto = {};
+const obj = { ok: 1 };
+obj.__proto__ = proto;
+for (let key in obj) console.log(key); // [ok]
 
-proto.bad = () => 42
+proto.bad = () => 42;
 
-for (let key in obj) console.log(key) // [ok,bad]
+for (let key in obj) console.log(key); // [ok,bad]
 for (let key in obj) {
   if (obj.hasOwnProperty(key)) {
-    console.log(key) // [ok]
+    console.log(key); // [ok]
   }
 }
 ```
@@ -986,17 +985,17 @@ for (let key in obj) {
 In this first example we’ve created a method on our object’s prototype called bad by simply assigning the method to a property using proto.bad. What we instead need to do is the following:
 
 ```js
-const proto = {}
-const obj = { ok: 1 }
-obj.__proto__ = proto
-for (let key in obj) console.log(key) // [ok]
+const proto = {};
+const obj = { ok: 1 };
+obj.__proto__ = proto;
+for (let key in obj) console.log(key); // [ok]
 
-Object.defineProperty(proto, 'good', {
+Object.defineProperty(proto, "good", {
   value: () => 42,
-  enumerable: false
-})
+  enumerable: false,
+});
 
-for (let key in obj) console.log(key) // [ok]
+for (let key in obj) console.log(key); // [ok]
 ```
 
 In this new example we create a method called good, and that method is set using the more verbose Object.defineProperty() syntax. Now, when we iterate the properties of our object, we don’t see our rogue prototype method and we no longer need to use the Object#hasOwnProperty() check.
@@ -1006,18 +1005,18 @@ In this new example we create a method called good, and that method is set using
 If a property has writable set to false then that property’s value cannot be reassigned another value. If a property has configurable set to false then it cannot be deleted and it cannot have its property descriptor changed again. The following code example shows these two property descriptors at work:
 
 ```js
-const obj = Object.defineProperty({}, 'foo', {
-  value: 'hello',
+const obj = Object.defineProperty({}, "foo", {
+  value: "hello",
   writable: false, // reassignable?
-  configurable: false // deletable/redefinable?
-})
-obj.foo = 'bye'
-console.log(obj.foo) // 'hello'
-delete obj.foo
-console.log(obj.foo) // 'hello'
-Object.defineProperty(obj, 'foo', {
-  value: 1
-}) // TypeError: Cannot redefine property: foo
+  configurable: false, // deletable/redefinable?
+});
+obj.foo = "bye";
+console.log(obj.foo); // 'hello'
+delete obj.foo;
+console.log(obj.foo); // 'hello'
+Object.defineProperty(obj, "foo", {
+  value: 1,
+}); // TypeError: Cannot redefine property: foo
 ```
 
 #### Getter/Setter Property Descriptors
@@ -1304,28 +1303,27 @@ console.log(Object.getOwnPropertyDescriptor(obj, "p"));
 
 `Object.freeze()`:
 
-* no properties can be reassigned, added, or deleted.
-* each property will have both their `writable` and `configurable` values set to false
+- no properties can be reassigned, added, or deleted.
+- each property will have both their `writable` and `configurable` values set to false
 
 `Object.isFrozen()` method which will tell you if an object is frozen.
 
 ```js
-const obj = { p: 'first' }
-Object.freeze(obj)
+const obj = { p: "first" };
+Object.freeze(obj);
 
-obj.p = 'second' // fail silently, throw in strict
-delete obj.p // fail silently, throw in strict
-obj.p2 = 'new val' // fail silently, throw in strict
+obj.p = "second"; // fail silently, throw in strict
+delete obj.p; // fail silently, throw in strict
+obj.p2 = "new val"; // fail silently, throw in strict
 
-console.log(obj) // { p: 'first' }
-console.log(Object.isFrozen(obj)) // true
-console.log(Object.getOwnPropertyDescriptor(obj, 'p'))
+console.log(obj); // { p: 'first' }
+console.log(Object.isFrozen(obj)); // true
+console.log(Object.getOwnPropertyDescriptor(obj, "p"));
 // { value: 'first', writable: false,
 //   enumerable: true, configurable: false }
 ```
 
 #### Summary
-
 
 ![summary](images/js_immutability_summary.png)
 
@@ -1335,8 +1333,8 @@ Note that isExt is short for isExtensible. reassign is whether or not a property
 
 If you don't modify and default, when you access an object property:
 
-* the default `[[Put]]` operation completely control how values are set to existing or new properties.
-* the default `[[Get]]` control how values are retrieved from existing properties.
+- the default `[[Put]]` operation completely control how values are set to existing or new properties.
+- the default `[[Get]]` control how values are retrieved from existing properties.
 
 #### Standard [[Get]]
 
@@ -1344,7 +1342,7 @@ Consider:
 
 ```js
 var myObject = {
-	a: 2
+  a: 2,
 };
 
 myObject.a; // 2
@@ -1352,9 +1350,10 @@ myObject.b; // undefined
 ```
 
 According to the spec, the code above actually performs a [[Get]] operation (kinda like a function call: [[Get]]()) on the myObject:
-* The default built-in [[Get]] operation for an object first inspects the object for a property of the requested name, and if it finds it, it will return the value accordingly.
-* if it does not find a property of the requested name it will traverse of the [[Prototype]] chain, if any.
-* if it cannot through any means come up with a value for the requested property, it instead returns the value `undefined`.
+
+- The default built-in [[Get]] operation for an object first inspects the object for a property of the requested name, and if it finds it, it will return the value accordingly.
+- if it does not find a property of the requested name it will traverse of the [[Prototype]] chain, if any.
+- if it cannot through any means come up with a value for the requested property, it instead returns the value `undefined`.
 
 NOTE see also the Paragraph "#### Getter/Setter Property Descriptors"
 
@@ -1362,9 +1361,9 @@ NOTE see also the Paragraph "#### Getter/Setter Property Descriptors"
 
 If the property is present, the `[[Put]]` algorithm will roughly check:
 
-* Is the property an accessor descriptor (see below)? If so, call the setter, if any.
-* Is the property a data descriptor with writable of false? If so, silently fail in non-strict mode, or throw TypeError in strict mode.
-* Otherwise, set the value to the existing property as normal.
+- Is the property an accessor descriptor (see below)? If so, call the setter, if any.
+- Is the property a data descriptor with writable of false? If so, silently fail in non-strict mode, or throw TypeError in strict mode.
+- Otherwise, set the value to the existing property as normal.
 
 If the property is not yet present on the object in question, the [[Put]] operation is even more nuanced and complex.
 
@@ -1383,18 +1382,21 @@ var myObject = {
 	// define a getter for `a`
 	get a() {
 		return 2;
-	}
+  },
 };
 
 Object.defineProperty(
-	myObject,	// target
-	"b",		// property name
-	{			// descriptor
+  myObject, // target
+  "b", // property name
+  {
+    // descriptor
 		// define a getter for `b`
-		get: function(){ return this.a * 2 },
+    get: function () {
+      return this.a * 2;
+    },
 
 		// make sure `b` shows up as an object property
-		enumerable: true
+    enumerable: true,
 	}
 );
 
@@ -1423,7 +1425,7 @@ var myObject = {
 	// define a setter for `a`
 	set a(val) {
 		this._a_ = val * 2;
-	}
+  },
 };
 
 myObject.a = 2;
@@ -1461,7 +1463,7 @@ Instead the result is undefined for a not existing object property:
 
 ```js
 var myObject = {
-	a: undefined
+  a: undefined,
 };
 
 myObject.a; // undefined
@@ -1476,20 +1478,20 @@ We can ask an object if it has a certain property without asking to get that pro
 
 ```js
 var myObject = {
-	a: 2
+  a: 2,
 };
 
-("a" in myObject);				// true
-("b" in myObject);				// false
+"a" in myObject; // true
+"b" in myObject; // false
 
-myObject.hasOwnProperty( "a" );	// true
-myObject.hasOwnProperty( "b" );	// false
+myObject.hasOwnProperty("a"); // true
+myObject.hasOwnProperty("b"); // false
 
 myObject2 = Object.create(myObject); // {}
 
-myObject2.b //undefined
-myObject2.a // 2  // gotten from the prototype
-myObject2.hasOwnProperty( "a"); // false  // it belongs to the prototype
+myObject2.b; //undefined
+myObject2.a; // 2  // gotten from the prototype
+myObject2.hasOwnProperty("a"); // false  // it belongs to the prototype
 
 for (const property in myObject2) {
   console.log(`${property}: ${myObject2[property]}`);
@@ -1498,20 +1500,21 @@ for (const property in myObject2) {
 
 `in` operator checks if:
 
-* the property is in the object
-* or exists at any higher level of the [[Prototype]] chain object
+- the property is in the object
+- or exists at any higher level of the [[Prototype]] chain object
 
 `hasOwnProperty(..)` checks:
 
-* only if myObject has the property,
-* DOESN'T traverse the prototype chain
+- only if myObject has the property,
+- DOESN'T traverse the prototype chain
 
 Note: The in operator has the appearance that it will check for the existence of a value inside a container, but it actually checks for the existence of a property name. This difference is important to note with respect to arrays, as the temptation to try a check like 4 in [2, 4, 6] is strong, but this will not behave as expected:
 
 ```js
-4 in [2, 4, 6]          //false  // 4 is not a property
-"length" in [2, 4, 6]   //true   // "length" is a property
+4 in [2, 4, 6]; //false  // 4 is not a property
+"length" in [2, 4, 6]; //true   // "length" is a property
 ```
+
 ### Enumeration and Interation
 
 https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/this%20%26%20object%20prototypes/ch3.md#enumeration
@@ -1520,11 +1523,11 @@ The `enumerable` property descriptor means "the object will be included if the o
 
 In the example below you'll notice that:
 
-* `myObject.b` in fact exists and has an accessible value` 
-* but it doesn't show up in a `for..in` loop (though, surprisingly, it is revealed by the in operator existence check). 
+- `myObject.b` in fact exists and has an accessible value`
+- but it doesn't show up in a `for..in` loop (though, surprisingly, it is revealed by the in operator existence check).
 
 ```js
-var myObject = { };
+var myObject = {};
 
 Object.defineProperty(
 	myObject,
@@ -1541,23 +1544,24 @@ Object.defineProperty(
 );
 
 myObject.b; // 3
-("b" in myObject); // true
-myObject.hasOwnProperty( "b" ); // true
+"b" in myObject; // true
+myObject.hasOwnProperty("b"); // true
 
 // .......
 
 for (var k in myObject) {
-	console.log( k, myObject[k] );
+  console.log(k, myObject[k]);
 }
 // "a" 2
 ```
 
-* `propertyIsEnumerable(..)` tests whether the given property name exists directly on the object and is also `enumerable:true`
-* `Object.keys(..)` returns an array of all enumerable properties. DON'T consult the [[Prototype]]
-* `Object.getOwnPropertyNames(..)` returns an array of all properties, enumerable or not. DON'T consult the [[Prototype]]
+- `propertyIsEnumerable(..)` tests whether the given property name exists directly on the object and is also `enumerable:true`
+- `Object.keys(..)` returns an array of all enumerable properties. DON'T consult the [[Prototype]]
+- `Object.getOwnPropertyNames(..)` returns an array of all properties, enumerable or not. DON'T consult the [[Prototype]]
 
 PROBLEM: There is no built-in way to get a list of all properties consulting also the `[[Prototype]]` chain.
-* SOLUTION You could approximate such a utility by recursively traversing the [[Prototype]] chain of an object, and for each level, capturing the list from Object.keys(..) -- only enumerable properties.
+
+- SOLUTION You could approximate such a utility by recursively traversing the [[Prototype]] chain of an object, and for each level, capturing the list from Object.keys(..) -- only enumerable properties.
 
 ### Iteration
 
@@ -1565,21 +1569,21 @@ PROBLEM: There is no built-in way to get a list of all properties consulting als
 
 The `for...in` statement:
 
-* iterates over all enumerable properties of an object that are keyed by strings (ignoring ones keyed by Symbols)
-* CONSULT the [[Prototype]] 
+- iterates over all enumerable properties of an object that are keyed by strings (ignoring ones keyed by Symbols)
+- CONSULT the [[Prototype]]
 
 ```js
-var myObject = { };
+var myObject = {};
 
-Object.defineProperty( myObject, "a", { enumerable: true, value: 2 });
-Object.defineProperty( myObject, "b", { enumerable: false, value: 3 });
+Object.defineProperty(myObject, "a", { enumerable: true, value: 2 });
+Object.defineProperty(myObject, "b", { enumerable: false, value: 3 });
 // Shows up the prototype behaviour
 myObject2 = Object.create(myObject);
-Object.defineProperty( myObject2, "c", { enumerable: true, value: 4 });
+Object.defineProperty(myObject2, "c", { enumerable: true, value: 4 });
 
 // "b" is not enumerable, "a" is defined in the Prototype
 for (var k in myObject2) {
-	console.log( k, myObject2[k] );
+  console.log(k, myObject2[k]);
 }
 // "a" 2
 // "c" 4
@@ -1595,7 +1599,7 @@ With numerically-indexed arrays, iterating over the values is typically done wit
 var myArray = [1, 2, 3];
 
 for (var i = 0; i < myArray.length; i++) {
-	console.log( myArray[i] );
+  console.log(myArray[i]);
 }
 // 1 2 3
 ```
@@ -1605,14 +1609,17 @@ for (var i = 0; i < myArray.length; i++) {
 Each of these helpers accepts a function callback to apply to each element in the array, differing only in how they respectively respond to a return value from the callback:
 
 `forEach(..)`
-*	will iterate over all values in the array
-*	ignores any callback return values
+
+- will iterate over all values in the array
+- ignores any callback return values
 
 `some(..)`
-*	keeps going until the end or the callback returns a true (or "truthy") value
+
+- keeps going until the end or the callback returns a true (or "truthy") value
 
 `every(..)`
-* keeps going until the end or the callback returns a false (or "falsy") value
+
+- keeps going until the end or the callback returns a false (or "falsy") value
 
 #### for..of
 
@@ -1621,24 +1628,23 @@ If you iterate on an object with a for..in loop, you're also only getting at the
 if you want to iterate over the values directly instead of the array indices (or object properties), ES6 adds a `for..of` loop syntax for iterating over arrays (and objects, if the object defines its own custom iterator):
 
 ```js
-var myArray = [ 1, 2, 3 ];
+var myArray = [1, 2, 3];
 
 // Print values not indexes
 for (var v of myArray) {
-	console.log( v );
+  console.log(v);
 }
 // 1
 // 2
 // 3
 ```
 
-
 The for..of loop asks for an iterator object (from a default internal function known as @@iterator in spec-speak) of the thing to be iterated, and the loop then iterates over the successive return values from calling that iterator object's next() method, once for each loop iteration.
 
 Arrays have a built-in @@iterator, so for..of works easily on them, as shown. But let's manually iterate the array, using the built-in @@iterator, to see how it works:
 
 ```js
-var myArray = [ 1, 2, 3 ];
+var myArray = [1, 2, 3];
 var it = myArray[Symbol.iterator]();
 
 it.next(); // { value:1, done:false }
@@ -1948,11 +1954,11 @@ ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md#f
 A function definition is a regular binding where the value of the binding is the function:
 
 ```js
-const power = function(base, exponent) {
+const power = function (base, exponent) {
   let result = 1;
-  for(let count = 0; count < exponent; count++) {
+  for (let count = 0; count < exponent; count++) {
     result *= base;
-  };
+  }
   return result;
 };
 ```
@@ -1961,20 +1967,20 @@ A function is created with an expression that begins with the keyword `function`
 
 A function have:
 
-* zero o more parameters: they works like regular bindings, but the initial value is given by the caller of the function.
-* a body
+- zero o more parameters: they works like regular bindings, but the initial value is given by the caller of the function.
+- a body
 
 Functions, not objects are at the core of JavaScript. JS is a Functional language, functions are first-class objects:
 
-* Functions can be arguments of other functions.
-* All Functions have the **name** property, if it's anonymous name is an empty string.
-* Functions can be referenced by variables `var canFly = function(){ return true; };`
+- Functions can be arguments of other functions.
+- All Functions have the **name** property, if it's anonymous name is an empty string.
+- Functions can be referenced by variables `var canFly = function(){ return true; };`
 
 Invoke:
 
-* A Function can be invoked through a variable that reference the function `var canFly = function(){ return true; }; canFly() )`
-* a `return` statement determines the value of the returned value and make cotrol jumping out to the caller.
-* It there isn't a `return` statement, the value returned is implicitly `undefined`.
+- A Function can be invoked through a variable that reference the function `var canFly = function(){ return true; }; canFly() )`
+- a `return` statement determines the value of the returned value and make cotrol jumping out to the caller.
+- It there isn't a `return` statement, the value returned is implicitly `undefined`.
 
 A function can be anonymous functions: `function(){return "test"}`
 
@@ -1988,23 +1994,23 @@ Functions are objects, just with an additional, special capability of **being in
 
 A closure is a special kind of object that combines two things:
 
-* a function
-* the environment in which that function was created.
+- a function
+- the environment in which that function was created.
 
-
-~~~javascript
+```javascript
 function makeAdder(x) {
-  return function(y) { // is the inner function, a closure
-    return x + y;      // x is the local variable
+  return function (y) {
+    // is the inner function, a closure
+    return x + y; // x is the local variable
   };
 }
 
 var add5 = makeAdder(5);
 var add10 = makeAdder(10);
 
-console.log(add5(2));  // 7
+console.log(add5(2)); // 7
 console.log(add10(2)); // 12
-~~~
+```
 
 This is an example of lexical scoping: in JavaScript, the scope of a variable is defined by its location within the source code (it is apparent lexically) and nested functions have access to variables declared in their outer scope.
 
@@ -2019,30 +2025,31 @@ well as a hidden pointer to a closure. In C, and most other common languages aft
 
 This example taken from SOJS is more advanced:
 
-~~~javascript
-      var outerValue = 'ninja';
+```javascript
+var outerValue = "ninja";
       var later;
 
       function outerFunction() {
-        var innerValue = 'samurai';
+  var innerValue = "samurai";
 
-        function innerFunction(paramValue) {                       //#1
-          assert(outerValue,"Inner can see the ninja.");
-          assert(innerValue,"Inner can see the samurai.");
-          assert(paramValue,"Inner can see the wakizashi.");       //#2
-          assert(tooLate,"Inner can see the ronin,");              // All variables in an outer scope, even those declared after the function declaration, are included.
+  function innerFunction(paramValue) {
+    //#1
+    assert(outerValue, "Inner can see the ninja.");
+    assert(innerValue, "Inner can see the samurai.");
+    assert(paramValue, "Inner can see the wakizashi."); //#2
+    assert(tooLate, "Inner can see the ronin,"); // All variables in an outer scope, even those declared after the function declaration, are included.
         }
 
         later = innerFunction;
       }
 
-      assert(!tooLate,"Outer can't see the ronin");                //#3
+assert(!tooLate, "Outer can't see the ronin"); //#3
 
-      var tooLate = 'ronin';                                       //#4
+var tooLate = "ronin"; //#4
 
       outerFunction();
-      later('wakizashi');                                          //#5
-~~~
+later("wakizashi"); //#5
+```
 
 `open /devel/SRC/JAVASCRIPT/ninja-code/chapter-5/listing-5.3.html`
 
@@ -2051,40 +2058,40 @@ This “bubble,” containing the function and its variables, stays around as lo
 
 Function parameters are included in the closure of that function. (Seems obvi- ous, but now we’ve said it for sure.
 
-* All variables in an outer scope, even those declared after the function declaration, are included.
-* Within the same scope, variables not yet defined cannot be forward-referenced.
+- All variables in an outer scope, even those declared after the function declaration, are included.
+- Within the same scope, variables not yet defined cannot be forward-referenced.
 
 ### Closure Example: Common mistake in for loops
 
-~~~html
+```html
 <p id="help">Helpful notes will appear here</p>
-<p>E-mail: <input type="text" id="email" name="email"></p>
-<p>Name: <input type="text" id="name" name="name"></p>
-<p>Age: <input type="text" id="age" name="age"></p>
-~~~
+<p>E-mail: <input type="text" id="email" name="email" /></p>
+<p>Name: <input type="text" id="name" name="name" /></p>
+<p>Age: <input type="text" id="age" name="age" /></p>
+```
 
-~~~javascript
+```javascript
 function showHelp(help) {
-  document.getElementById('help').innerHTML = help;
+  document.getElementById("help").innerHTML = help;
 }
 
 function setupHelp() {
   var helpText = [
-      {'id': 'email', 'help': 'Your e-mail address'},
-      {'id': 'name', 'help': 'Your full name'},
-      {'id': 'age', 'help': 'Your age (you must be over 16)'}
+    { id: "email", help: "Your e-mail address" },
+    { id: "name", help: "Your full name" },
+    { id: "age", help: "Your age (you must be over 16)" },
     ];
 
   for (var i = 0; i < helpText.length; i++) {
     var item = helpText[i];
-    document.getElementById(item.id).onfocus = function() {
+    document.getElementById(item.id).onfocus = function () {
       showHelp(item.help);
+    };
     }
   }
-}
 
 setupHelp();
-~~~
+```
 
 [View On JsFiddle](http://jsfiddle.net/v7gjv)
 
@@ -2098,22 +2105,22 @@ only once.
 To fix the above example we need to define a new scope for each
 interation in the for loop using a function factory:
 
-~~~javascript
+```javascript
 function showHelp(help) {
-  document.getElementById('help').innerHTML = help;
+  document.getElementById("help").innerHTML = help;
 }
 
 function makeHelpCallback(help) {
-  return function() {
+  return function () {
     showHelp(help);
   };
 }
 
 function setupHelp() {
   var helpText = [
-      {'id': 'email', 'help': 'Your e-mail address'},
-      {'id': 'name', 'help': 'Your full name'},
-      {'id': 'age', 'help': 'Your age (you must be over 16)'}
+    { id: "email", help: "Your e-mail address" },
+    { id: "name", help: "Your full name" },
+    { id: "age", help: "Your age (you must be over 16)" },
     ];
 
   for (var i = 0; i < helpText.length; i++) {
@@ -2122,15 +2129,16 @@ function setupHelp() {
   }
 }
 
-setupHelp()
-~~~
+setupHelp();
+```
 
 [View On JsFiddle](http://jsfiddle.net/v7gjv/1)
 
 This works as expected. Rather than the callbacks all sharing a single environment, the makeHelpCallback function creates a new environment for each one in which help refers to the corresponding string from the helpText array.
 
 This doesn't works, see comments to understand why:
-~~~javascript
+
+```javascript
 function showHelp(help) {
   document.getElementById('help').innerHTML = help;
 }
@@ -2154,11 +2162,11 @@ function setupHelp() {
 }
 
 setupHelp()
-~~~
+```
 
 Also this doesn't work, WHY?
 
-~~~javascript
+```javascript
 
 function showHelp(help) {
   document.getElementById('help').innerHTML = help;
@@ -2183,42 +2191,47 @@ function setupHelp() {
 }
 
 setupHelp();
-~~~
-
+```
 
 ### Closure Example: Private variable using closures
 
 See [MDN Guide](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Closures#Emulating_private_methods_with_closures)
 See [SOJS_2nd] ch 5.2.1
 
-* All assert are true, we can use the accessor method to obtain the value of the private variable, but that we cannot access it directly.
-* The JavaScript scoping rules for this variable limit its accessibility to within the constructor.  
+- All assert are true, we can use the accessor method to obtain the value of the private variable, but that we cannot access it directly.
+- The JavaScript scoping rules for this variable limit its accessibility to within the constructor.
 
-~~~javascript
+```javascript
+function Ninja() {
+  //#1
 
-      function Ninja() {                                            //#1
+  var feints = 0; //#2
 
-        var feints = 0;                                             //#2
+  this.getFeints = function () {
+    //#3
+    return feints; //#3
+  }; //#3
 
-        this.getFeints = function(){                                //#3
-          return feints;                                            //#3
-        };                                                          //#3
-
-        this.feint = function(){                                    //#4
-          feints++;                                                 //#4
-        };                                                          //#4
+  this.feint = function () {
+    //#4
+    feints++; //#4
+  }; //#4
       }
 
-      var ninja = new Ninja();                                      //#5
+var ninja = new Ninja(); //#5
 
-      ninja.feint();                                                //#6
+ninja.feint(); //#6
 
-      assert(ninja.feints === undefined,                            //#7
-          "And the private data is inaccessible to us." );          //#7
+assert(
+  ninja.feints === undefined, //#7
+  "And the private data is inaccessible to us."
+); //#7
 
-      assert(ninja.getFeints() == 1,                                //#8
-             "We're able to access the internal feint count." );    //#8
-~~~
+assert(
+  ninja.getFeints() == 1, //#8
+  "We're able to access the internal feint count."
+); //#8
+```
 
 ### Keep state. Timers and callbacks using closures.
 
@@ -2230,17 +2243,16 @@ SCENARIO: when a function is called at an unspecified later time and need to kee
 
 SOLUTION 1: object oriented
 
-* you can keep the state in an object instance
-* CONS: it's verbose. You have to write a lot of code just to
-* PRO: each animation gets its own private “bubble” of variables, you can instantiate multiple animation.
+- you can keep the state in an object instance
+- CONS: it's verbose. You have to write a lot of code just to
+- PRO: each animation gets its own private “bubble” of variables, you can instantiate multiple animation.
 
 SOLUTION 2: use closures
 
-* PRO: less verbose. With a single function definition you get the same result.
-* PRO: each animation gets its own private “bubble” of variables, you can instantiate multiple animation.
-* NOTE: Without closures, doing multiple things at once, whether event handling, anima- tions, or even server requests, would be incredibly difficult. If you’ve been waiting for a reason to care about closures, this is it!
-* in the below example `elem` and `tick` are kept by the closure `setInterval`:
-
+- PRO: less verbose. With a single function definition you get the same result.
+- PRO: each animation gets its own private “bubble” of variables, you can instantiate multiple animation.
+- NOTE: Without closures, doing multiple things at once, whether event handling, anima- tions, or even server requests, would be incredibly difficult. If you’ve been waiting for a reason to care about closures, this is it!
+- in the below example `elem` and `tick` are kept by the closure `setInterval`:
 
 ```
 <div id="box1">First Box</div>
@@ -2266,100 +2278,81 @@ SOLUTION 2: use closures
 
 SOLUTION: use global Variables
 
-* CONS; If we keep the variables in the global scope, we need a set of three variables for each animation to run multiple animations.
+- CONS; If we keep the variables in the global scope, we need a set of three variables for each animation to run multiple animations.
 
 ### Common Errors with events handlers and how to fix them: bind()
 
 SOJS ch 5.3:
 
-~~~javascript
+```javascript
   var button = {
     clicked: false,
-    click: function(){
+  click: function () {
       this.clicked = true;
-      assert(button.clicked,"The button has been clicked");
+    assert(button.clicked, "The button has been clicked");
       //FAILS: the context of the click function is not referring to the button object as we intended.
-    }
+  },
   };
   var elem = document.getElementById("test");
-  elem.addEventListener("click",button.click,false);
-~~~
+elem.addEventListener("click", button.click, false);
+```
 
 the context of the click function is not referring to the button object as we intended.
 To solve:
 
-~~~javascript
-
-  function bind(context,name){
-    return function(){
-      return context[name].apply(context,arguments);
+```javascript
+function bind(context, name) {
+  return function () {
+    return context[name].apply(context, arguments);
     };
 }
   var button = {
     clicked: false,
-    click: function(){
+  click: function () {
       this.clicked = true;
-      assert(button.clicked,"The button has been clicked");
+    assert(button.clicked, "The button has been clicked");
       console.log(this);
-} };
-var elem = document.getElementById("test"); elem.addEventListener("click",bind(button,"click"),false);
-
-~~~
-
+  },
+};
+var elem = document.getElementById("test");
+elem.addEventListener("click", bind(button, "click"), false);
+```
 
 The secret sauce that we’ve added here is the bind() method. This method is designed to create and return a new anonymous function that calls the original function, using apply(), so that we can force the context to be whatever object we want.
 
-### Functions Prototype
-
-All functions have a prototype property that initially references an empty object. This property doesn’t serve much purpose until the function is used as a constructor (using the `new` operator).
-
-Instance members created inside a constructor will occlude properties of the same name defined in the prototype.
-
-Each object in JavaScript has an implicit property named `constructor` that references the constructor that was used to create the object. And because the prototype is a property of the constructor, each object has a way to find its prototype.
-
-**NOTE**: _ONLY functions_ have a prototype property, _EVERY object_ has a
-costructor property!
-
-* _instanceof_ operator for a constructed object tests for its constructor.
-
 ### JS Scope Exercise
+
 http://stackoverflow.com/questions/18067742/variable-scope-in-nested-functions-in-javascript
 
 http://doppnet.com/2011/10/10-advanced-javascript-interview-questions/
 
 http://www.codecademy.com/forums/javascript-intro/4/exercises/2
 
-
 ### Scope example
 
 #### Ex 1
 
-
-~~~javascript
+```javascript
 var foo;
 function setFoo(val) {
   var foo = val;
 }
 setFoo(10);
 alert(foo); // print undefined
-~~~
+```
 
 if you remove the var:
 
-~~~javascript
-
+```javascript
 var foo;
 function setFoo(val) {
-   foo = val;  //removed var
+  foo = val; //removed var
 }
 setFoo(10);
 alert(foo); // print 10
-
-~~~
+```
 
 http://www.codecademy.com/forum_questions/4f166ff96390db0001003803
-
-
 
 ## Difference between identifier and variable (in JavaScript)
 
@@ -2369,24 +2362,23 @@ The difference between identifiers and variables is the same as that between nam
 
 Names identify people. They can also identify dogs, for example. Names are not people, nor are people names. But you can say that I am Amadan (since saying that I am identified by the name Amadan sounds clunky).
 
-Identifiers identify variables.  Identifiers are not variables, nor are variables identifiers.
+Identifiers identify variables. Identifiers are not variables, nor are variables identifiers.
 
 ```
 var pippo = 2;
 ```
 
-* `pippo` is the identifier
-* `2` is the value of the variable
-* the variable is a generic container that can contain different type of values (strings, arrays, etc), it's the memory location.
+- `pippo` is the identifier
+- `2` is the value of the variable
+- the variable is a generic container that can contain different type of values (strings, arrays, etc), it's the memory location.
 
 NOTE: since saying that is the variable containing the value `2` is identified by the identifier `pippo` sounds clunky, usually you say that that variable is `pippo`.
 
-
 A good analogy for a variable would be locker boxes:
 
-* **identifiers**: the number written on the box. A way to reference a variable in your source code.
-* **value**: the contents of whatever you put inside.
-* **variable**: the box. A variable is memory space identified by an identifier that can contain a value (whether a primitive value or a reference value) as its content.
+- **identifiers**: the number written on the box. A way to reference a variable in your source code.
+- **value**: the contents of whatever you put inside.
+- **variable**: the box. A variable is memory space identified by an identifier that can contain a value (whether a primitive value or a reference value) as its content.
 
 A variable is not necessarily the memory location of a value, because a variable can contain a reference, and not an object itself (kind of like putting an address of a piece of real-estate into a locker, as opposed to trying to stuff a whole house into the box). So, in this stretched example, the house is the value; the locker is the variable; the "284" written on the locker is the identifier; and the piece of paper with "102 Nowhere Lane, Nowhereville" is a reference to the value, and also the contents of the variable. If the value is small and simple enough (in programming terms, a "primitive"), you can stuff the value itself into the variable, instead of the reference.
 
@@ -2431,8 +2423,8 @@ which defines a variable whose identifier is hello, and whose contents is a refe
 
 Ref:
 
-* [SOJS_2nd] 5.3
-* https://medium.com/@gaurav.pandvia/understanding-javascript-function-executions-tasks-event-loop-call-stack-more-part-1-5683dea1f5ec
+- [SOJS_2nd] 5.3
+- https://medium.com/@gaurav.pandvia/understanding-javascript-function-executions-tasks-event-loop-call-stack-more-part-1-5683dea1f5ec
 
 In JavaScript, the fundamental unit of execution is a function.
 
@@ -2440,18 +2432,18 @@ Problem: When a function call another function, our program execution has to ret
 
 The JS runtime internally uses the the `execution context` and the `Call Stack` to achieve this:
 
-* `execution context`: is a data structure which records the function calls executed for each code structure (function, code block, etc); basically where in the program we are (which statements and expression have been runned). There are only one global execution context and one execution context for each function execution.
-* Every time a function is invoked the JS engine pauses the current execution context and create a new one, which is pushed on the `Call Stack`.
-* `Call Stack`: is a data structure which records the of current and stopped Execution context
-* each time a function return its Execution Context is *popped out* from the stack and *discarded*.
-* Video animation : https://youtu.be/8aGhZQkoFbQ?t=270
-* NOTE: in [SOJS_2nd] the Call Stack is called `Execution Context Stack`
+- `execution context`: is a data structure which records the function calls executed for each code structure (function, code block, etc); basically where in the program we are (which statements and expression have been runned). There are only one global execution context and one execution context for each function execution.
+- Every time a function is invoked the JS engine pauses the current execution context and create a new one, which is pushed on the `Call Stack`.
+- `Call Stack`: is a data structure which records the of current and stopped Execution context
+- each time a function return its Execution Context is _popped out_ from the stack and _discarded_.
+- Video animation : https://youtu.be/8aGhZQkoFbQ?t=270
+- NOTE: in [SOJS_2nd] the Call Stack is called `Execution Context Stack`
 
 This is because JavaScript is based on a **single-threaded execution model**:
 
-* Only one piece of code can be executed at a time.
-* Every time a function is invoked, the current execution context has to be stopped, and a new function execution context, in which the function code will be evaluated, has to be created.
-* See [SOJS_2nd] Figure 5.6
+- Only one piece of code can be executed at a time.
+- Every time a function is invoked, the current execution context has to be stopped, and a new function execution context, in which the function code will be evaluated, has to be created.
+- See [SOJS_2nd] Figure 5.6
 
 TODO : Blocking: https://youtu.be/8aGhZQkoFbQ?t=439
 
@@ -2461,29 +2453,29 @@ Each binding has a scope. A scope is the part the part of the program in which t
 
 In JS **scope are declared by functions not blocks** In the example x is still in scope after the end of the block because the function scope is not changed:
 
-~~~
+```
 if(window) {
   var x = 123
 }
 alert(x)
-~~~
+```
 
-* named global functions are property of the window object
-* a function is available throughout the scope it is declared. Also if it
+- named global functions are property of the window object
+- a function is available throughout the scope it is declared. Also if it
 is declared at the end of the scope it is available also at the
 beginning of the scope.
-* a variable is available only after it is declared to the end of the
+- a variable is available only after it is declared to the end of the
 scope (the inner example here file:///devel/SRC/JAVASCRIPT/ninja-code/chapter-3/listing-3.2.html,
 inner is defined after a but it is in scope before the variable a).
-* for the purpose of declaration scopes the global context act acts like
+- for the purpose of declaration scopes the global context act acts like
 one big function encompassing the code on the page.
 
 ## Lexical Context (or Scope)
 
 Ref:
 
-* See [SOJS_2nd] 5.4
-* Mozilla: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
+- See [SOJS_2nd] 5.4
+- Mozilla: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
 
 By the time you've written your first few programs, you're probably starting to feel more comfortable with creating variables and storing values in them. Working with variables is one of the most foundational things we do in programming!
 
@@ -2506,9 +2498,9 @@ The lexical environment is consulted when the ninja variable is accessed in the 
 
 Usually, a lexical environment is associated with a specific structure of JavaScript code. It can be associated with:
 
-* a function,
-* a block of code,
-* or the catch part of a try-catch statement.
+- a function,
+- a block of code,
+- or the catch part of a try-catch statement.
 
 Each of these structures (functions, blocks, and catch parts) can have its own separate identifier mappings. Each of these code structures gets an associated lexical environment **every time** the **code is evaluated**.
 
@@ -2518,15 +2510,15 @@ NOTE In pre-ES6 versions of JavaScript, a lexical environment could be associate
 
 Scope Nesting:
 
-* in Javascript you can access variables defined in outer code structures.
-* JS supports closure
+- in Javascript you can access variables defined in outer code structures.
+- JS supports closure
 
 Both behaviours are supported by JS engines using a linked list of `lexical environment`: each lexical environment has to keep track of its outer (parent) lexical environment.
 
 If an identifier can’t be found in the current environment, the outer environment is searched. This stops either when:
 
-* the matching variable is found,
-* or with a reference error if we’ve reached the global environment and there’s no sign of the searched-for identifier.
+- the matching variable is found,
+- or with a reference error if we’ve reached the global environment and there’s no sign of the searched-for identifier.
 
 ![image](https://raw.githubusercontent.com/getify/You-Dont-Know-JS/2nd-ed/scope-closures/images/fig2.png)
 
@@ -2534,14 +2526,13 @@ Ref: See [SOJS_2nd] figure 5.9
 
 In order to support the closure, how is the outer lexical environment set when we call a function?
 
-* JavaScript does this by taking advantage of functions as first-class objects. Whenever a function is created, a reference to the lexical environment in which the function was created is stored in an internal (meaning that you can’t access or manipulate it directly) property named [[Environment]]; double brackets is the notation that we’ll use to mark these internal properties.
+- JavaScript does this by taking advantage of functions as first-class objects. Whenever a function is created, a reference to the lexical environment in which the function was created is stored in an internal (meaning that you can’t access or manipulate it directly) property named [[Environment]]; double brackets is the notation that we’ll use to mark these internal properties.
 
 Whenever a function is called:
 
-* a new function execution context is created and pushed onto the execution context stack.
-* a new associated lexical environment is created.
-* Now comes the **crucial part**: For the outer environment of the newly created lexical environment, the JavaScript engine puts the environment referenced by the called function’s internal [[Environment]] property, the environment in which the now-called function was created!
-
+- a new function execution context is created and pushed onto the execution context stack.
+- a new associated lexical environment is created.
+- Now comes the **crucial part**: For the outer environment of the newly created lexical environment, the JavaScript engine puts the environment referenced by the called function’s internal [[Environment]] property, the environment in which the now-called function was created!
 
 NOTE: This might seem odd at first. Why don’t we just traverse the whole stack of execution contexts and search their matching environments for iden- tifier mappings? Technically, this would work in our example. But remember, a JavaScript function can be passed around as any other object, so the posi- tion of the function definition and the position from where the function is called generally aren’t related (remember closures).
 
@@ -2556,31 +2547,30 @@ var students = [
     { id: 14, name: "Kyle" },
     { id: 73, name: "Suzy" },
     { id: 112, name: "Frank" },
-    { id: 6, name: "Sarah" }
+  { id: 6, name: "Sarah" },
 ];
 ```
 
 Let's now meet the members of the JS engine that will have conversations as they process that program:
 
-* Engine: responsible for start-to-finish compilation and execution of our JavaScript program.
+- Engine: responsible for start-to-finish compilation and execution of our JavaScript program.
 
-* Compiler: one of Engine's friends; handles all the dirty work of parsing and code-generation.
+- Compiler: one of Engine's friends; handles all the dirty work of parsing and code-generation.
 
-* Scope Manager: another friend of Engine; collects and maintains a look-up list of all the declared variables/identifiers, and enforces a set of rules as to how these are accessible to currently executing code.
+- Scope Manager: another friend of Engine; collects and maintains a look-up list of all the declared variables/identifiers, and enforces a set of rules as to how these are accessible to currently executing code.
 
 A typical line of code consist of two parts: declaration and initialization-assignment. Engine sees two distinct operations:
 
-* `declaration`: which Compiler will handle during compilation
-* `initialization`: which Engine will handle during execution.
+- `declaration`: which Compiler will handle during compilation
+- `initialization`: which Engine will handle during execution.
 
 Once Compiler gets to code-generation, there's more detail to consider than may be obvious. A reasonable assumption would be that Compiler will produce code for the first statement such as: "Allocate memory for a variable, label it students, then stick a reference to the array into that variable." But there's more to it.
 
 Here's how Compiler will handle that statement:
 
-* Encountering var students, Compiler will ask Scope Manager to see if a variable named students already exists for that particular scope bucket. If so, Compiler would ignore this declaration and move on. Otherwise, Compiler will produce code that (at execution time) asks Scope Manager to create a new variable called students in that scope bucket.
+- Encountering var students, Compiler will ask Scope Manager to see if a variable named students already exists for that particular scope bucket. If so, Compiler would ignore this declaration and move on. Otherwise, Compiler will produce code that (at execution time) asks Scope Manager to create a new variable called students in that scope bucket.
 
-* Compiler then produces code for Engine to later execute, to handle the students = [] assignment. The code Engine runs will first ask Scope Manager if there is a variable called students accessible in the current scope bucket. If not, Engine keeps looking elsewhere (see "Nested Scope"). Once Engine finds a variable, it assigns the reference of the [ .. ] array to it.
-
+- Compiler then produces code for Engine to later execute, to handle the students = [] assignment. The code Engine runs will first ask Scope Manager if there is a variable called students accessible in the current scope bucket. If not, Engine keeps looking elsewhere (see "Nested Scope"). Once Engine finds a variable, it assigns the reference of the [ .. ] array to it.
 
 Later, when the Engine is executing, since the declaration has an initialization assignment, Engine asks Scope Manager to look up the variable, and assigns to it once found.
 
@@ -2590,8 +2580,8 @@ Ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch2.m
 
 "Reference Error: XYZ is not defined" is thrown when we cannot resolve the lookup of an identifier:
 
-* and is a source variable 
-* or When is a target variable and STRICT MODE is enabled
+- and is a source variable
+- or When is a target variable and STRICT MODE is enabled
 
 ### var VS Accidental Global Variables
 
@@ -2599,9 +2589,8 @@ Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statement
 
 TL;DR:
 
-* It is recommended to always declare variables, regardless of whether they are in a function or global scope.
-* In ECMAScript 5 strict mode, assigning to an undeclared variable throws an error.
-
+- It is recommended to always declare variables, regardless of whether they are in a function or global scope.
+- In ECMAScript 5 strict mode, assigning to an undeclared variable throws an error.
 
 Assigning a value to an undeclared variable implicitly creates it as a global variable (it becomes a property of the global object) when the assignment is executed.
 
@@ -2611,7 +2600,7 @@ The differences between declared and undeclared variables are:
 
 ```js
 function x() {
-  y = 1;     // Throws a ReferenceError in strict mode.
+  y = 1; // Throws a ReferenceError in strict mode.
   var z = 2;
 }
 
@@ -2628,10 +2617,10 @@ console.log(a); // Uncaught ReferenceError: a is not defined
 ```
 
 ```js
-console.log(a);                // undefined
-console.log('still going...'); // still going...
+console.log(a); // undefined
+console.log("still going..."); // still going...
 var a = 1;
-console.log(a);                // 1
+console.log(a); // 1
 ```
 
 3. Declared variables are a non-configurable property of their execution context (function or global). Undeclared variables are configurable (e.g. can be deleted).
@@ -2665,10 +2654,10 @@ console.log(nextStudent);
 
 Here's how that conversation would go:
 
-* Engine: Hey Scope Manager (for the function), I have a target reference for nextStudent, ever heard of it?
-* (Function) Scope Manager: Nope, never heard of it. Try the next outer scope.
-* Engine: Hey Scope Manager (for the global scope), I have a target reference for nextStudent, ever heard of it?
-* (Global) Scope Manager: Nope, but since we're in non-strict-mode, I helped you out and just created a global variable for you, here you go!
+- Engine: Hey Scope Manager (for the function), I have a target reference for nextStudent, ever heard of it?
+- (Function) Scope Manager: Nope, never heard of it. Try the next outer scope.
+- Engine: Hey Scope Manager (for the global scope), I have a target reference for nextStudent, ever heard of it?
+- (Global) Scope Manager: Nope, but since we're in non-strict-mode, I helped you out and just created a global variable for you, here you go!
 
 Yuck. This sort of accident (almost certain to lead to bugs eventually) is a great example of the protections of strict-mode, and why it's such a bad idea to not use it.
 
@@ -2676,15 +2665,13 @@ Yuck. This sort of accident (almost certain to lead to bugs eventually) is a gre
 
 Ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch3.md#lookup-is-mostly-conceptual
 
-
 lexical scope is partially determined during the initial compilation processing, exeption are: 
 
-* variable that isn't declared in any lexically available scopes in the current file (ex: modules)
+- variable that isn't declared in any lexically available scopes in the current file (ex: modules)
 
 Because each file is its own separate program from the perspective of JS compilation.
 
 So the ultimate determination of whether the variable was ever appropriately declared in some accessible bucket may need to be deferred to the run-time.
-
 
 ### Scope: Variable Shadowing
 
@@ -2703,16 +2690,15 @@ NOTE: this is not true for `let`, `const`, `class`
 ```js
 var studentName = "Suzy";
 // In the browser is mirrored to:
-window.studentName
+window.studentName;
 ```
 
 ### Scope: Legal and Illegal shadowing examples
 
+- let (in an inner scope) can always shadow an outer scope's var. var (in an inner scope) can only shadow an outer scope's let if there is a function boundary in between.
 
-* let (in an inner scope) can always shadow an outer scope's var. var (in an inner scope) can only shadow an outer scope's let if there is a function boundary in between.
-
-* Ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch3.md#illegal-shadowing
-* Examples: https://github.com/breezeight/javascript_nicola_courses/tree/master/you-dont-know-js-yet/scope-and-closure/ch3-the-scope-chain
+- Ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch3.md#illegal-shadowing
+- Examples: https://github.com/breezeight/javascript_nicola_courses/tree/master/you-dont-know-js-yet/scope-and-closure/ch3-the-scope-chain
 
 ### Function Name Scope
 
@@ -2726,10 +2712,10 @@ function askQuestion() {
 }
 ```
 
-With this function definition you will obtain the same result of the above example but  it will not "hoist" :
+With this function definition you will obtain the same result of the above example but it will not "hoist" :
 
 ```js
-var askQuestion = function(){
+var askQuestion = function () {
     // ..
 };
 ```
@@ -2737,7 +2723,7 @@ var askQuestion = function(){
 A 3rd, not obvious case is:
 
 ```js
-var askQuestion = function ofTheTeacher(){
+var askQuestion = function ofTheTeacher() {
     // ..
 };
 askQuestion();
@@ -2746,6 +2732,7 @@ askQuestion();
 console.log(ofTheTeacher);
 // ReferenceError: 'ofTheTeacher' is not defined
 ```
+
 WARNING: `ofTheTeacher` is declared as an identifier inside the function itself:
 
 See https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch3.md#function-name-scope for more details
@@ -2760,8 +2747,8 @@ Arrow functions have the same rules with respect to lexical scope as function fu
 
 The global scope of a JS program is a rich topic, with much more utility and nuance than you would likely assume. Many corner cases will rise, related to:
 
-* The env your are running (Browser, Web Workers, NodeJS...)
-* How you bundle and load your JS files
+- The env your are running (Browser, Web Workers, NodeJS...)
+- How you bundle and load your JS files
 
 TODO: read this https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch4.md#chapter-4-around-the-global-scope
 
@@ -2772,8 +2759,9 @@ https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch6.md
 ### More about Forward Declaration in Javascript or Hoisting
 
 See:
-* http://www.i-programmer.info/programming/javascript/5364-javascript-hoisting-explained.html
-* http://www.w3schools.com/js/js_hoisting.asp
+
+- http://www.i-programmer.info/programming/javascript/5364-javascript-hoisting-explained.html
+- http://www.w3schools.com/js/js_hoisting.asp
 
 **NOTE** JavaScript in _strict mode_ does not allow variables to be used if they are not declared.
 
@@ -2781,20 +2769,19 @@ See:
 
 ref:
 
-* https://codeburst.io/explaining-value-vs-reference-in-javascript-647a975e12a0
+- https://codeburst.io/explaining-value-vs-reference-in-javascript-647a975e12a0
 
 Javascript has 5 data types that are `passed by value`, we’ll call these primitive types:
 
-* Boolean,
-* null,
-* undefined,
-* String,
-* Number
+- Boolean,
+- null,
+- undefined,
+- String,
+- Number
 
 Javascript has 3 data types that are passed by reference: Array, Function, and Object. These are all technically Objects, so we’ll refer to them collectively as Objects.
 
 Esempi stronzi:
-
 
 ```
 x=1
@@ -2803,7 +2790,6 @@ console.log(`x=${x} xx=${xx}`)
 x=2 // the identifier x now refer a different variable but xx still reference the old variable
 console.log(`x=${x} xx=${xx}`)
 ```
-
 
 ```
 x=1
@@ -2839,7 +2825,6 @@ x=2
 report();
 ```
 
-
 ```
 x = {
   'first_name': 'Mario',
@@ -2866,7 +2851,6 @@ x=2
 report();
 ```
 
-
 ```
 var hundred = 100;
 var two = 2;
@@ -2882,30 +2866,30 @@ Ref: see [SOJS_2nd] ch 5.5
 
 In JavaScript, we can use three keywords for defining variables:
 
-* `var`
-  * been part of JavaScript since its beginning
-* `let`
-  * ES6 additions
-* `const`
-  * ES6 additions
-  * we have to provide an initialization value when it’s declared and we can’t assign a completely new value to it afterward.
-  * We can’t assign a completely new object, but there’s nothing stopping us from modifying the one we already have (ex: add item to an array).
+- `var`
+  - been part of JavaScript since its beginning
+- `let`
+  - ES6 additions
+- `const`
+  - ES6 additions
+  - we have to provide an initialization value when it’s declared and we can’t assign a completely new value to it afterward.
+  - We can’t assign a completely new object, but there’s nothing stopping us from modifying the one we already have (ex: add item to an array).
 
 They differ in two aspects:
 
-* mutability
-* their relationship toward the lexical environment.
+- mutability
+- their relationship toward the lexical environment.
 
 ### Variable definition keywords: mutability
 
 Usecase: const primitive type
 
-* `const` is expecially usefull for all the type that in JS can be assigned only by value (string, Boolean, number, etc)
-* ex: `const MAX_BUFFER_SIZE = 256` will guarantee that `MAX_BUFFER_SIZE` cannot be changed. We are safeguarded our code against unwanted or accidental modifications.
+- `const` is expecially usefull for all the type that in JS can be assigned only by value (string, Boolean, number, etc)
+- ex: `const MAX_BUFFER_SIZE = 256` will guarantee that `MAX_BUFFER_SIZE` cannot be changed. We are safeguarded our code against unwanted or accidental modifications.
 
 Usecase: const object
 
-*  we can’t assign a completely new value to a const variable. But there’s nothing stopping us from modifying the current one
+- we can’t assign a completely new value to a const variable. But there’s nothing stopping us from modifying the current one
 
 ```
 const secondConst = {};
@@ -2939,10 +2923,8 @@ assert(typeof functionActivity === "undefined"
 
 ```
 
-
-* DIFFERENT FROM CPP and JAVA: we can access the variables defined with the `for` code blocks even outside those blocks
-* None of the function variables are accessible outside of the function.
-
+- DIFFERENT FROM CPP and JAVA: we can access the variables defined with the `for` code blocks even outside those blocks
+- None of the function variables are accessible outside of the function.
 
 `let` and `const`: They define variables in the closest lexical environment (which can be a block environment, a loop environ- ment, a function environment, or even the global environment).
 
@@ -2967,9 +2949,10 @@ function reportActivity(){
 ## HOW JS Engine register identifiers in a lexical environment: functions and variables Hoisting
 
 REF:
-* [SOJS_2nd] 5.5.3
-* Mozilla MDN: https://developer.mozilla.org/en-US/docs/Glossary/Hoisting
-* https://john-dugan.com/hoisting-in-javascript/
+
+- [SOJS_2nd] 5.5.3
+- Mozilla MDN: https://developer.mozilla.org/en-US/docs/Glossary/Hoisting
+- https://john-dugan.com/hoisting-in-javascript/
 
 Hoisting is a term you will not find used in any normative specification prose prior to ECMAScript® 2015 Language Specification.
 
@@ -2994,8 +2977,8 @@ Even though we call the function in our code first, before the function is writt
 
 Hoisting works well with other data types and variables:
 
-* The variables can be initialized and used before they are declared.
-* But **only declarations** are hoisted, not initializations.
+- The variables can be initialized and used before they are declared.
+- But **only declarations** are hoisted, not initializations.
 
 If we never declare a variable we get an error:
 
@@ -3016,14 +2999,14 @@ console.log(num); // Returns 6
 
 Ref:
 
-* Kyle Simpson https://frontendmasters.com/courses/advanced-javascript/
-* YDKJSY "The (not so) Secret Lifecycle of Variables" https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch5.md
+- Kyle Simpson https://frontendmasters.com/courses/advanced-javascript/
+- YDKJSY "The (not so) Secret Lifecycle of Variables" https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch5.md
 
 To understand Lexical Environment in JS you must understand that JS is a compiled language. Most of us think that JAVA or CPP are compiled languages because we use compilers to ship our application as bytecode or machine readable Executables, but it not the right way to classify a compiled language.
 
 With JS we distribute our source code so a lot of people tend to say it is interpreted language but it's not. All JS engine will compile your source code before running it, every single time you execute it.
 
-What is an interpreted language?  Let's look at Bash scripting: when the bash interpreter is running line 3, it has NO IDEA of what to expect at line 4.
+What is an interpreted language? Let's look at Bash scripting: when the bash interpreter is running line 3, it has NO IDEA of what to expect at line 4.
 Instead a compiled language read the whole source code before running it! This is the main point!
 
 ### Hoisting YDNJSY metaphor
@@ -3035,12 +3018,12 @@ The hoisting (metaphor) proposes that JS pre-processes (during compiling) the or
 Consider:
 
 ```js
-studentName = "Suzy"
+studentName = "Suzy";
 greeting();
 // Hello Suzy!
 
 function greeting() {
-    console.log(`Hello ${ studentName }!`);
+  console.log(`Hello ${studentName}!`);
 }
 
 var studentName;
@@ -3050,7 +3033,7 @@ The "rule" of the hoisting metaphor is that function declarations are hoisted fi
 
 ```js
 function greeting() {
-    console.log(`Hello ${ studentName }!`);
+  console.log(`Hello ${studentName}!`);
 }
 var studentName;
 
@@ -3063,26 +3046,24 @@ greeting();
 
 https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch5.md#re-declaration
 
-
-
 ### Simplified overview of how a JS Engine parse and execute code
 
 Ref:
 
- * https://john-dugan.com/hoisting-in-javascript/
- * [SOJS_2nd] 5.5.3
+- https://john-dugan.com/hoisting-in-javascript/
+- [SOJS_2nd] 5.5.3
 
 To understand how Lexical Environment works we need to
 
-* know how the step "finding decorations of variables and functions" of the compilation process is managed.
-* know how the JS engine registrers identifiers
+- know how the step "finding decorations of variables and functions" of the compilation process is managed.
+- know how the JS engine registrers identifiers
 
 Decorations are: `var`, `let`, `function`, etc
 
 `var foo = "bar";` is a single JS statement but is treated by the engine as two different operations that happens at different time:
 
-* the decoration operation `var foo`
-* the initialization operation `foo = "bar";`
+- the decoration operation `var foo`
+- the initialization operation `foo = "bar";`
 
 It's really important to look at our code knowing this concept to understand `hoisting`.
 
@@ -3111,99 +3092,105 @@ baz(); 		// Error!
 
 JavaScript Compilation, The first step taken by the browser’s JavaScript engine:
 
-* Line 1: Hey global scope, I have a declaration for a variable named foo.
-* Line 3: Hey global scope, I have a declaration for a function1 named bar.
-  * NOTE: Since bar is a function, we recursively decent into its scope and continue compilation.
-* Line 4: Hey bar scope, I have a declaration for a variable named foo.
-* Line 6: Hey bar scope, I have a declaration for a function named baz.
-* Line 6: Hey baz scope, I have a declaration for a parameter named foo.
+- Line 1: Hey global scope, I have a declaration for a variable named foo.
+- Line 3: Hey global scope, I have a declaration for a function1 named bar.
+  - NOTE: Since bar is a function, we recursively decent into its scope and continue compilation.
+- Line 4: Hey bar scope, I have a declaration for a variable named foo.
+- Line 6: Hey bar scope, I have a declaration for a function named baz.
+- Line 6: Hey baz scope, I have a declaration for a parameter named foo.
 
 JavaScript Execution, The second step take by the browser’s JavaScript engine.
 
 There are two terms that you need to be familiar with as we enter the execution phase: LHS and RHS. LHS stands for left hand side, and RHS stands for right hand side. LHS references are located on the left hand side of the = assignment operator. RHS references are located on the right hand size of the of the = assignment operator, or implied when there is no LHS reference. If this seams a bit confusing, a good way to think about LHS versus RHS is target versus source. LHS is the target, and RHS is the source.
 
-* Line 1: Hey global scope, I have an LHS reference for a variable named foo. Ever heard of it?
-  * The global scope has because foo was registered on line 1 in the compilation phase, so the assignment occurs.
-  * NOTE: Lines 3–11 don’t exist in the execution phase because they were compiled away. So, we move to line 13.
+- Line 1: Hey global scope, I have an LHS reference for a variable named foo. Ever heard of it?
 
-* Line 13: Hey global scope, I have an RHS2 reference for a variable named bar. Ever heard of it?
-  * The global scope has because bar was registered as a function on line 3 in the compilation phase, so the function executes.
-  * NOTE: The reason line 13 is an RHS is because there is no assignment. As such, we cannot establish a left/right reference. Therefore, we know that the value on line 13 represents the source.
+  - The global scope has because foo was registered on line 1 in the compilation phase, so the assignment occurs.
+  - NOTE: Lines 3–11 don’t exist in the execution phase because they were compiled away. So, we move to line 13.
 
-* Line 4: Hey bar scope, I have an LHS reference for a variable named foo. Ever heard of it?
-  * The bar scope has because foo was registered on line 1 in the compilation phase, so the the assignment occurs.
-  * Within the bar scope, foo will always refer to the value assigned to it on line 4. This is because the foo variable on line 4 is preceded with the var keyword, and will therefore be the first reference to foo inside the bar scope.
-  * NOTE: Lines 6–9 don’t exist in the execution phase because they were compiled away. So, we move to line 10.
+- Line 13: Hey global scope, I have an RHS2 reference for a variable named bar. Ever heard of it?
 
-* Line 10: Hey bar scope, I have an RHS reference for a variable named baz. Ever heard of it?
-  * The bar scope has because baz was registered as a function on line 6 in the compilation phase, so the function executes.
+  - The global scope has because bar was registered as a function on line 3 in the compilation phase, so the function executes.
+  - NOTE: The reason line 13 is an RHS is because there is no assignment. As such, we cannot establish a left/right reference. Therefore, we know that the value on line 13 represents the source.
 
-* Line 7: Hey baz scope, I have an LHS reference for a variable named foo. Ever heard of it?
-  * The baz scope has because foo was declared as a parameter of the baz function on line 6 in the compilation phase, so the assignment occurs.
+- Line 4: Hey bar scope, I have an LHS reference for a variable named foo. Ever heard of it?
 
-* Line 8: Hey baz scope, I have an LHS reference for a variable named bam. Ever heard of it?
-  * The baz scope has not. Therefore we look for bam in the next outer scope, the bar scope.
-* Line 8: Hey bar scope, I have an LHS reference for a variable named bam. Ever heard of it?
-  * The bar scope has not. Therefore we look for bam in the next outer scope, the global scope.
-* Line 8: Hey global scope, I have an LHS reference for a variable named bam. Ever heard of it?
-  * The global scope has not. Therefore the global scope automatically registers a variable named bam.
-  * NOTE: If you are in strict mode, the bam variable will not be registered. Therefore, because bam doesn’t exist a reference error will be thrown.
+  - The bar scope has because foo was registered on line 1 in the compilation phase, so the the assignment occurs.
+  - Within the bar scope, foo will always refer to the value assigned to it on line 4. This is because the foo variable on line 4 is preceded with the var keyword, and will therefore be the first reference to foo inside the bar scope.
+  - NOTE: Lines 6–9 don’t exist in the execution phase because they were compiled away. So, we move to line 10.
 
-* Line 14: Hey global scope, I have an RHS reference for a variable named foo. Ever heard of it?
-  * The global scope has because foo was declared on line 1 in the compilation phase, its value is the string “bar”.
+- Line 10: Hey bar scope, I have an RHS reference for a variable named baz. Ever heard of it?
 
-* Line 15: Hey global scope, I have an RHS reference for a variable named bam. Ever heard of it?
-  * The global scope has because bar was automatically created two steps back, its value is the string “yay”.
-  * NOTE if you are in strict mode, a reference error will be thrown because bam doesn’t exist.
+  - The bar scope has because baz was registered as a function on line 6 in the compilation phase, so the function executes.
 
-* Line 16: Hey global scope, I have an RHS reference for a variable named baz. Ever heard of it?
-  * The global scope has not because baz was exists in the function scope of bar. Therefore, baz is inaccessible to the global scope and a reference error is thrown.
+- Line 7: Hey baz scope, I have an LHS reference for a variable named foo. Ever heard of it?
+
+  - The baz scope has because foo was declared as a parameter of the baz function on line 6 in the compilation phase, so the assignment occurs.
+
+- Line 8: Hey baz scope, I have an LHS reference for a variable named bam. Ever heard of it?
+  - The baz scope has not. Therefore we look for bam in the next outer scope, the bar scope.
+- Line 8: Hey bar scope, I have an LHS reference for a variable named bam. Ever heard of it?
+  - The bar scope has not. Therefore we look for bam in the next outer scope, the global scope.
+- Line 8: Hey global scope, I have an LHS reference for a variable named bam. Ever heard of it?
+
+  - The global scope has not. Therefore the global scope automatically registers a variable named bam.
+  - NOTE: If you are in strict mode, the bam variable will not be registered. Therefore, because bam doesn’t exist a reference error will be thrown.
+
+- Line 14: Hey global scope, I have an RHS reference for a variable named foo. Ever heard of it?
+
+  - The global scope has because foo was declared on line 1 in the compilation phase, its value is the string “bar”.
+
+- Line 15: Hey global scope, I have an RHS reference for a variable named bam. Ever heard of it?
+
+  - The global scope has because bar was automatically created two steps back, its value is the string “yay”.
+  - NOTE if you are in strict mode, a reference error will be thrown because bam doesn’t exist.
+
+- Line 16: Hey global scope, I have an RHS reference for a variable named baz. Ever heard of it?
+  - The global scope has not because baz was exists in the function scope of bar. Therefore, baz is inaccessible to the global scope and a reference error is thrown.
 
 During the `Compilation Phase`, the engine will search for `decorations of variables and functions`:
 
 The behavior depends on type of code (global code, function code, or block code), for each of type:
 
-  * code is parsed but isn’t executed.
-  * new lexical environment is created.
-  * JS engine visits and registers all declared variables and functions within the current lexical environment. The exact behavior depends on the type of variable (let, var, const, function declaration) and the type of environment (global, function, or block). The process of `registering variables` is as follows:
+- code is parsed but isn’t executed.
+- new lexical environment is created.
+- JS engine visits and registers all declared variables and functions within the current lexical environment. The exact behavior depends on the type of variable (let, var, const, function declaration) and the type of environment (global, function, or block). The process of `registering variables` is as follows:
 
 step 1 create `arguments identifier`:
 
-* If we’re creating a `function lexical environment`: the implicit `arguments` identifier is created, along with all formal function parameters and their argument values.
-* If we’re dealing with a nonfunction environment, this step is skipped.
+- If we’re creating a `function lexical environment`: the implicit `arguments` identifier is created, along with all formal function parameters and their argument values.
+- If we’re dealing with a nonfunction environment, this step is skipped.
 
 step 2, scan for `function declarations` (without going into the body of other functions):
 
-* If we’re creating a `global or a function environment`:
-  * scan for function declarations (but not function expressions or arrow functions!).
-  * For each discovered function declaration, a new function is created and bound to an identifier in the environment with the function’s name.
-  * If that identifier name already exists, its value is overwritten.
-  * NOTE: this explain how hoi
-* If we’re dealing with `block environments`: this step is skipped.
-  * NOTE: ECMAScript 5, the current official specification of the JavaScript language, does not define the behavior for function declarations inside blocks.
-  * NOTE: in ES6 are allowed https://stackoverflow.com/questions/31419897/what-are-the-precise-semantics-of-block-level-functions-in-es6
-  * NOTE: MY OPINION, avoid them....
-  * TODO: https://stackoverflow.com/questions/25111087/why-is-a-function-declaration-within-a-condition-block-hoisted-to-function-scope
+- If we’re creating a `global or a function environment`:
+  - scan for function declarations (but not function expressions or arrow functions!).
+  - For each discovered function declaration, a new function is created and bound to an identifier in the environment with the function’s name.
+  - If that identifier name already exists, its value is overwritten.
+  - NOTE: this explain how hoi
+- If we’re dealing with `block environments`: this step is skipped.
+  - NOTE: ECMAScript 5, the current official specification of the JavaScript language, does not define the behavior for function declarations inside blocks.
+  - NOTE: in ES6 are allowed https://stackoverflow.com/questions/31419897/what-are-the-precise-semantics-of-block-level-functions-in-es6
+  - NOTE: MY OPINION, avoid them....
+  - TODO: https://stackoverflow.com/questions/25111087/why-is-a-function-declaration-within-a-condition-block-hoisted-to-function-scope
 
 step 3, scan for `variable declarations`:
 
-* In `function or global environments`:
-  * all variables declared with the keyword `var` and defined outside other functions (but they can be placed within blocks!) are found,
-  * and all variables declared with the keywords `let` and `const` defined outside other functions and blocks are found.
-* In `block environments`:
-  * the code is scanned only for variables declared with the keywords `let` and `const`, directly in the current block.
-* For each discovered variable:
-  * if the identifier doesn’t exist in the environment, the identifier is registered and its value initialized to `undefined`.
-  * if the identifier exists, it’s left with its value.
+- In `function or global environments`:
+  - all variables declared with the keyword `var` and defined outside other functions (but they can be placed within blocks!) are found,
+  - and all variables declared with the keywords `let` and `const` defined outside other functions and blocks are found.
+- In `block environments`:
+  - the code is scanned only for variables declared with the keywords `let` and `const`, directly in the current block.
+- For each discovered variable:
 
+  - if the identifier doesn’t exist in the environment, the identifier is registered and its value initialized to `undefined`.
+  - if the identifier exists, it’s left with its value.
 
-* second phase:
-  * starts after this has been accomplished
-  * all the expressions and statement are evaluated in order.
+- second phase:
+  - starts after this has been accomplished
+  - all the expressions and statement are evaluated in order.
 
-
-
-Puting it all together — compilation + execution:   Hoisting is simply a mental construct. You saw hoisting in action during the compilation phase in the example above. Understanding how JavaScript is compiled and executed is the key to understanding hoisting. Let’s go through one more simpler conversation in the context of hoisting and examine what happens with the code before, during and after compilation.
+Puting it all together — compilation + execution: Hoisting is simply a mental construct. You saw hoisting in action during the compilation phase in the example above. Understanding how JavaScript is compiled and executed is the key to understanding hoisting. Let’s go through one more simpler conversation in the context of hoisting and examine what happens with the code before, during and after compilation.
 
 ```
   // Code as authored by developer, Before Compilation
@@ -3246,18 +3233,18 @@ Puting it all together — compilation + execution:   Hoisting is simply a menta
 
 Now that you understand how variables get hoisted during the compilation phase, understanding the execution phase is much easier. Below is the conversation that occurs during the execution phase, as shown in the After Compilation figure above.
 
-* Line 4: Hey global scope, I have an RHS reference for a variable named a. Ever heard of it?
-  * The global scope has because a was registered on line 5 in the compilation phase, its value is undefined.
-* Line 5: Hey global scope, I have an RHS reference for a variable named b. Ever heard of it?
-  * The global scope has because b was registered on line 6 in the compilation phase, its value is undefined.
-* Line 6: Hey global scope, I have an LHS reference for a variable named a. Ever heard of it?
-  * The global scope has because a was registered on line 5 in the compilation phase, so the assignment occurs.
-* Line 7: Hey global scope, I have an LHS reference for a variable named b. Ever heard of it?
-  * The global scope has because b was registered on line 6 in the compilation phase, so the assignment occurs.
-* Line 8: Hey global scope, I have an RHS reference for a variable named b. Ever heard of it?
-  * The global scope has because b was registered on line 6 in the compilation phase and a value was assigned to it on line 7 in the [current] execution phase, its value is the number 2.
-* Line 9: Hey global scope, I have an RHS reference for a variable named a. Ever heard of it?
-  * The global scope has because a was registered on line 5 in the compilation phase and b was assigned to it on line 6 in the [current] execution phase. As b was undefined at the time of its assignment to a, the value of a is undefined.
+- Line 4: Hey global scope, I have an RHS reference for a variable named a. Ever heard of it?
+  - The global scope has because a was registered on line 5 in the compilation phase, its value is undefined.
+- Line 5: Hey global scope, I have an RHS reference for a variable named b. Ever heard of it?
+  - The global scope has because b was registered on line 6 in the compilation phase, its value is undefined.
+- Line 6: Hey global scope, I have an LHS reference for a variable named a. Ever heard of it?
+  - The global scope has because a was registered on line 5 in the compilation phase, so the assignment occurs.
+- Line 7: Hey global scope, I have an LHS reference for a variable named b. Ever heard of it?
+  - The global scope has because b was registered on line 6 in the compilation phase, so the assignment occurs.
+- Line 8: Hey global scope, I have an RHS reference for a variable named b. Ever heard of it?
+  - The global scope has because b was registered on line 6 in the compilation phase and a value was assigned to it on line 7 in the [current] execution phase, its value is the number 2.
+- Line 9: Hey global scope, I have an RHS reference for a variable named a. Ever heard of it?
+  - The global scope has because a was registered on line 5 in the compilation phase and b was assigned to it on line 6 in the [current] execution phase. As b was undefined at the time of its assignment to a, the value of a is undefined.
 
 To keep our example short and simple, I did not include functions. Note that functions are hoisted in the same way variables are. Functions get hoisted above variables during the compilation phase.
 
@@ -3267,12 +3254,13 @@ If you look at the code below we declare the `fun` function below the `var fun =
 
 This behavior follows as a direct consequence of the steps taken when registering identifiers:
 
-* in the first phase
-  * functions defined with function declarations are created and associated to their identifiers before any code is evaluated: `fun` is bound to a function
-  * then the `var fun` variable is discoved but it's already bound, therefore left untouched
+- in the first phase
 
-* in the second phase:
-  * `var fun = 3;` is executed and `function fun(){}` is skipped beacouse already processed.
+  - functions defined with function declarations are created and associated to their identifiers before any code is evaluated: `fun` is bound to a function
+  - then the `var fun` variable is discoved but it's already bound, therefore left untouched
+
+- in the second phase:
+  - `var fun = 3;` is executed and `function fun(){}` is skipped beacouse already processed.
 
 ```
 // fun refers to a function.
@@ -3297,31 +3285,28 @@ assert(typeof fun === "number", "Still a number");
 
 TODO: see [SOJS_2nd] ch 5.6
 
-
-
 ## How to use functions: usecases
 
 see [SOJS] ch 4
 
-+ Recursion
+- Recursion
 Recursion in named functions The pilfered reference problem The callee property 70
-+ Fun with function as objects
+- Fun with function as objects
 Recursion with methods 65 Inline named functions 68
 Storing functions 72 ■ Self-memoizing functions 73 Faking array methods 76
-+ Checking for functions 86
-
+- Checking for functions 86
 
 ## Arguments and function parameters
 
 see [SOJS] ch 3.4
 
-* A parameter is a variable that we list as part of a function definition.
-* An argument is a value that we pass to the function when we invoke it.
+- A parameter is a variable that we list as part of a function definition.
+- An argument is a value that we pass to the function when we invoke it.
 
 When a list of arguments is supplied as a part of a function invocation, these argu- ments are assigned to the parameters in the function definition in the order specified. The first argument gets assigned to the first parameter, the second argument to the second parameter, and so on.
 
-* If **more arguments than parameters** : the “excess” arguments aren’t assigned to parameter names:
-* if **more parameters than arguments** : the parameters that have no corresponding argument are set to `undefined`.
+- If **more arguments than parameters** : the “excess” arguments aren’t assigned to parameter names:
+- if **more parameters than arguments** : the parameters that have no corresponding argument are set to `undefined`.
 
 ```
 function practice (ninja, weapon, technique) { ... }
@@ -3336,30 +3321,36 @@ practice ("Yoshi");
 
 NOTE: available since ES6 standard
 
+ref: http://exploringjs.com/es6/ch_parameter-handling.html#_rest-parameters
 
-* Only the last function parameter can be a rest parameter.
-* By prefixing the last-named argument of a function with an ellipsis `...`, we turn it into an array called the rest parameters, which contains the remaining passed-in arguments.
+- Only the last function parameter can be a rest parameter.
+- By prefixing the last-named argument of a function with an ellipsis `...`, we turn it into an array called the rest parameters, which contains the remaining passed-in arguments.
 
 ```
-function multiMax(first, ...remainingNumbers){
-  # remainingNumbers is an array
+function format(pattern, ...params) {
+    return {pattern, params};
 }
+format(1, 2, 3);
+    // { pattern: 1, params: [ 2, 3 ] }
+format();
+    // { pattern: undefined, params: [] }
 ```
 
 ## Default Parameters
 
 NOTE: available since ES6 standard
 
+ref: http://exploringjs.com/es6/ch_parameter-handling.html#_default-parameter-values
+
 Scenario:
 
-* a function with a parameter that has **almost** always the same
-* JS don't have function overloading, so default params are a possible solution.
-
+- a function with a parameter that has **almost** always the same
+- JS don't have function overloading, so default params are a possible solution.
 
 Before ES6:
 
-* we checks whether the value of the action parameter is undefined (by using the typeof operator), and if it is, the func- tion sets the value of the action variable to skulking.
-* If the action parameter is sent through a function call (it’s not undefined), we keep the value.
+- we checks whether the value of the action parameter is undefined (by using the typeof operator), and if it is, the func- tion sets the value of the action variable to skulking.
+- If the action parameter is sent through a function call (it’s not undefined), we keep the value.
 
 ```
 function performAction(ninja, action){
@@ -3389,7 +3380,8 @@ function performAction(ninja, action = "skulking", message = ninja + " " + actio
 ## Named parameters via destructuring
 
 ref:
-* [[ExploringJS - Exploring ES6]](http://exploringjs.com/es6/ch_parameter-handling.html#_named-parameters-via-destructuring)
+
+- [[ExploringJS - Exploring ES6]](http://exploringjs.com/es6/ch_parameter-handling.html#_named-parameters-via-destructuring)
 
 You can simulate named parameters if you destructure with an object pattern in the parameter list:
 
@@ -3413,7 +3405,8 @@ The `= {}` in line A enables you to call `selectEntries()` without paramters:
 function selectEntries({ start=0, end=-1} ){console.log(`start = ${start}, end = ${end}, step = ${step}}
 //TypeError: Cannot destructure property `start` of 'undefined' or 'null'.
 ```
-WHY? because the first param is undefined and the matching will be tried 
+
+WHY? because the first param is undefined and the matching will be tried
 
 ## Paramters of a forEach() and destructuring
 
@@ -3528,20 +3521,19 @@ skulk.apply(ninja, ['Hattori']);
 
 For all but the call and apply approaches, the function invocation operator is a set of parentheses following any expression that evaluates to a function reference.
 
-
 ### This: invoke as a function
 
 We say that a function is invoked “as a function” to distinguish it from the other invocation mechanisms: methods, constructors, and apply/call.
 
 This type of invocation occurs when:
 
-* a function is invoked using the () operator,
-* and the expression to which the () operator is applied doesn’t reference the function as a property of an object. (In that case, we’d have a method invocation, but we discuss that next.)
+- a function is invoked using the () operator,
+- and the expression to which the () operator is applied doesn’t reference the function as a property of an object. (In that case, we’d have a method invocation, but we discuss that next.)
 
 Strict VS NON Strict mode:
 
-* nonstrict mode: `this` will be the global context (the window object)
-* strict mode: `this` will be `undefined`.
+- nonstrict mode: `this` will be the global context (the window object)
+- strict mode: `this` will be `undefined`.
 
 ### This: invoke as method
 
@@ -3551,9 +3543,9 @@ NOTE: this example is simple, the best way to create an object is using the `con
 
 The function is invoked as a method of that object:
 
-* When a function is assigned to a property of an object
-* when the invocation occurs by referencing the function using that property
-* When we invoke a function as a method of an object, that object becomes `this`, the function context.
+- When a function is assigned to a property of an object
+- when the invocation occurs by referencing the function using that property
+- When we invoke a function as a method of an object, that object becomes `this`, the function context.
 
 Here’s an example:
 
@@ -3630,8 +3622,6 @@ Naming Convention:
 - Functions and methods are generally named starting with a verb that describes what they do (skulk, creep, sneak, doSomethingWonderful, and so on) and start with a lowercase letter.
 - Constructors, on the other hand, are usually named as a noun that describes the object that’s being constructed and start with an uppercase character: Ninja, Samurai, Emperor, Ronin, and so on.
 
-###
-
 ### This: Invoke function with call() and apply()
 
 REF: see [SOJS_2nd] paragraph 4.2.4
@@ -3668,7 +3658,7 @@ Syntax example:
 ￼￼￼￼￼￼￼  assert(ninja1.result === 10,"juggled via apply");
   assert(ninja2.result === 26,"juggled via call");
 </script>
-~~~
+```
 
 #### Usecase: Build a toy version of "forEach"
 
@@ -3688,10 +3678,9 @@ function(collection) {
 
 Functional style:
 
-* Our iteration function accepts the collection to be iterated over and a callback function.
-* Using `call()` the callback is invoked such that the current is the function context.
-* The assert test that the function context is correct for each invocation of the callback
-
+- Our iteration function accepts the collection to be iterated over and a callback function.
+- Using `call()` the callback is invoked such that the current is the function context.
+- The assert test that the function context is correct for each invocation of the callback
 
 ```
 function forEach(list, callback) {
@@ -3710,106 +3699,15 @@ forEach(weapons, function(index){
 
 ## Using apply() to supply variable arguments
 
-~~~ javascript
-function smallest(array){
+```javascript
+function smallest(array) {
   return Math.min.apply(Math, array);
 }
 
-smallest([0, 1, 2, 3])
-~~~
+smallest([0, 1, 2, 3]);
+```
 
 Also note that we specify the context as being the Math object. This isn’t necessary
-
-## Arrow Functions
-
-See REF: see [SOJS_2nd] paragraph 4.3.1 for more details
-
-* IMPORTANT: Arrow functions don’t have their own this value. Instead, they remember the value of the this parameter at the time of their definition.
-* more concise way of creating functions
-
-## This: using the bind method
-
-See REF: see [SOJS_2nd] paragraph 4.3.2 for more details
-
-* Every function has access to the `bind(function_context)` method
-* `bind()` return a new function has the same body, but its context is always bound .
-* For the new returned function, the value of the `this` parameter is always set to the object referenced by the `bind()` argument, regardless of the way the function was invoked. (similar to the arrow function).
-
-see below "Usecase: callback for browser Events" for an example
-
-## Usecase: callback for browser Events
-
-```
-<button id="test">Click Me!</button>
-        <script>
-          function Button(){
-            this.clicked = false;
-            this.click = function(){
-              this.clicked = true;
-              assert(button.clicked, "The button has been clicked");
-            };
-          }
-          var button = new Button();
-          var elem = document.getElementById("test");
-          elem.addEventListener("click", button.click);
-</script>
-```
-
-Problem: `assert(button.clicked, "The button has been clicked");` will fail because the function context of `button.click` will be `Window` or `undefined`
-
-See REF: see [SOJS_2nd] paragraph 4.2.4 for more details
-
-solutions:
-
-* Call or Apply
-* bind()
-* Arrow functions
-
-### Arrow function solution
-
-* When the click arrow function is defined the function context is the `button` object create with `new Button()`.
-* When the event handler callback `button.click` is invoked `this` will be assigned to `button`.
-
-```
-<button id="test">Click Me!</button>
-<script>
-  function Button(){
-     this.clicked = false;
-     this.click = () => {
-       this.clicked = true;   //NOTE: here we use "this"
-       assert(button.clicked,"The button has been clicked"); // here we assert on the button object
-      };
-  }
-  var button = new Button();
-  var elem = document.getElementById("test");
-  elem.addEventListener("click", button.click);
-</script>
-```
-
-WARNING: it's easy to make mistake see [SOJS_2nd] listing 4.14
-
-
-### Bind solutions
-
-This example uses the bind function to create a new function **bound to the button object**, when it's invoked `this` will remain the bouded object 
-
-```
-<button id="test">Click Me!</button>
-<script>
-  var button = {
-    clicked: false,
-    click: function(){
-      this.clicked = true;
-       assert(button.clicked,"The button has been clicked");
-    }
-  };
-  var elem = document.getElementById("test");
-  elem.addEventListener("click", button.click.bind(button));
-  var boundFunction = button.click.bind(button);
-  assert(boundFunction != button.click, "Calling bind creates a completly new function");
-</script>
-```
-
 
 ## Design Pattern: Immediately-Invoked Function Expression (IIFE)
 
@@ -3863,13 +3761,13 @@ element.foo="baz"
 
 A few notes about this code:
 
-* The string `"isMoving"` in `Symbol("isMoving")` is called a `description`. It’s helpful for debugging. It’s shown when you write the symbol to console.log(), when you convert it to a string using .toString(), and possibly in error messages. That’s all.
+- The string `"isMoving"` in `Symbol("isMoving")` is called a `description`. It’s helpful for debugging. It’s shown when you write the symbol to console.log(), when you convert it to a string using .toString(), and possibly in error messages. That’s all.
 
-* element[isMoving] is called a **symbol-keyed property** . It’s simply a property whose name is a symbol rather than a string. Apart from that, it is in every way a normal property.
+- element[isMoving] is called a **symbol-keyed property** . It’s simply a property whose name is a symbol rather than a string. Apart from that, it is in every way a normal property.
 
-* symbol-keyed properties can’t be accessed using dot syntax, as in `obj.name`. They must be accessed using square brackets.
+- symbol-keyed properties can’t be accessed using dot syntax, as in `obj.name`. They must be accessed using square brackets.
 
-* It’s trivial to access a symbol-keyed property if you’ve already got the symbol. The above example shows how to get and set element[isMoving], and we could also ask if (isMoving in element) or even delete element[isMoving] if we needed to.
+- It’s trivial to access a symbol-keyed property if you’ve already got the symbol. The above example shows how to get and set element[isMoving], and we could also ask if (isMoving in element) or even delete element[isMoving] if we needed to.
 
 On the other hand, all of that is only possible as long as isMoving is in scope. This makes symbols a mechanism for weak encapsulation: a module that creates a few symbols for itself can use them on whatever objects it wants to, without fear of colliding with properties created by other code.
 
@@ -3879,8 +3777,8 @@ JavaScript has a set of Symbols already allocated, used to access standard objec
 
 For example : Iteration symbols
 
-* `Symbol.iterator` : A method returning the default iterator for an object. Used by `for...of`.
-* `Symbol.asyncIterator` : A method that returns the default AsyncIterator for an object. Used by for `await...of`.
+- `Symbol.iterator` : A method returning the default iterator for an object. Used by `for...of`.
+- `Symbol.asyncIterator` : A method that returns the default AsyncIterator for an object. Used by for `await...of`.
 
 A full references of this Symbols: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#Well-known_symbols
 
@@ -3888,11 +3786,10 @@ A full references of this Symbols: https://developer.mozilla.org/en-US/docs/Web/
 
 Ref: https://developer.mozilla.org/en-US/docs/Glossary/Symbol#Global_symbol_registry
 
-* `Symbol.for("tokenString")` returns a symbol value from the registry,
-* `Symbol.keyFor(symbolValue)` returns a token string from the registry;
+- `Symbol.for("tokenString")` returns a symbol value from the registry,
+- `Symbol.keyFor(symbolValue)` returns a token string from the registry;
 
 Each is the other's inverse, so the following is true: `Symbol.keyFor(Symbol.for("tokenString")) == "tokenString"; // true`
-
 
 ### List Symbols of an Object
 
@@ -3900,14 +3797,14 @@ Each is the other's inverse, so the following is true: `Symbol.keyFor(Symbol.for
 
 `Object.getOwnPropertySymbols()`:
 
-* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols
 
 ### Symbol usescases
 
 Ref:
 
-* https://hacks.mozilla.org/2015/06/es6-in-depth-symbols/
-* https://stackoverflow.com/questions/21724326/what-is-the-motivation-for-bringing-symbols-to-es6
+- https://hacks.mozilla.org/2015/06/es6-in-depth-symbols/
+- https://stackoverflow.com/questions/21724326/what-is-the-motivation-for-bringing-symbols-to-es6
 
 Symbols are values that programs can create and use as property keys without risking name collisions.
 
@@ -5448,13 +5345,6 @@ Is a simple mechanism to make code run as soon as it is loaded.
 
 In JavaScript, parens can’t contain statements.
 
-
-# Event Loop
-
-Event Loop: it's executed by the browser.
-Browser event loop processing is single thread (events processed in FIFO order) but the mechanism that manage events before their handlers are executed are not on the same thread
-
-
 # Window Object
 
 http://www.w3schools.com/js/js_window.asp
@@ -5474,12 +5364,12 @@ document.getElementById("header");
 
 The Problem:
 
-* Multi-tiered inheritance hierarchies are occasionally useful for describing the natural order of objects but if the primary motivation is function re-use they can quickly become gnarly labyrinths of meaningless subtypes, frustrating redundancies and unmanageable logic (“is a button a rectangle or is it a control? tell you what, lets make Button inherit from Rectangle, and Rectangle can inherit from Control…wait a minute….”).
-* The most straightforward approach is **delegation**: any public function can be invoked directly via `call` or `apply`. However delegation is so convenient that sometimes it actually works against structural discipline in your code; moreover the syntax can get a little wordy.
+- Multi-tiered inheritance hierarchies are occasionally useful for describing the natural order of objects but if the primary motivation is function re-use they can quickly become gnarly labyrinths of meaningless subtypes, frustrating redundancies and unmanageable logic (“is a button a rectangle or is it a control? tell you what, lets make Button inherit from Rectangle, and Rectangle can inherit from Control…wait a minute….”).
+- The most straightforward approach is **delegation**: any public function can be invoked directly via `call` or `apply`. However delegation is so convenient that sometimes it actually works against structural discipline in your code; moreover the syntax can get a little wordy.
 
 Here there is a naive implementation:
 
-~~~javascript
+```javascript
 function extend(destination, source) {
   for (var k in source) {
     if (source.hasOwnProperty(k)) {
@@ -5488,74 +5378,12 @@ function extend(destination, source) {
   }
   return destination;
 }
-~~~
+```
 
 which we can call to extend our prototype…
-# Destructuring
 
-Refs:
-
-* [ExploringJS - Exploring ES6](https://exploringjs.com/es6/ch_destructuring.html#ch_destructuring)
-* [MindMap](https://drive.mindmup.com/map/10_OUi7vCUtiANR2pXZqHcwoY_WjQaXpX)
-
-Destructuring is a convenient way of extracting multiple values from data stored in (possibly nested) objects and Arrays. It can be used in locations that receive data (such as the left-hand side of an assignment) using different patterns.
-
-
-Decustructuring
-	a convenient way of extracting multiple values from data stored in (possibly nested) objects and Arrays
-	Where can destructuring be used?
-		Variable declaration and assignment
-		param definition
-		for-of loops
-	destructuring target pattern
-		Assignment target
-		Object Pattern
-			Most common: match the key x assign the value to my_var
-				const { x: my_var } = { x: 7, y: 3 }; // my_var = 7
-			Property value shorthands https://exploringjs.com/es6/ch_destructuring.html#_more-complex-default-values
-				const { x, y } = { x: 11, y: 8 }; // x = 11; y = 8 // Same as: const { x: x, y: y } = { x: 11, y: 8 };
-				 with default values:
-					const { x, y = 1 } = {}; // x = undefined; y = 1
-			ADVANCED: values to objects https://exploringjs.com/es6/ch_destructuring.html#_object-patterns-coerce-values-to-objects
-				const {length : len} = 'abc'; // len = 3
-			computed Property keys https://exploringjs.com/es6/ch_destructuring.html#_computed-property-keys
-				const FOO = 'foo'; const { [FOO]: f } = { foo: 123 }; // f = 123
-		Array pattern
-			Most common: match all elements
-				const [x,y] = [ {a:1}, {b:1}]. // x = {a: 1}
-			Array patterns work with iterables https://exploringjs.com/es6/ch_destructuring.html#_array-patterns-work-with-iterables (strings, array, etc)
-				A value is iterable if it has a method whose key is Symbol.iterator that returns an object. { * [Symbol.iterator]() { yield 1 } }; // OK, iterable 
-			Elision https://exploringjs.com/es6/ch_destructuring.html#_elision
-				const [,, x, y] = ['a', 'b', 'c', 'd']; // x = 'c'; y = 'd'
-			Rest Operator https://exploringjs.com/es6/ch_destructuring.html#sec_rest-operator
-				const [x, ...y] = ['a', 'b', 'c']; // x='a'; y=['b', 'c']
-	Default Values for Patternhttps://exploringjs.com/es6/ch_destructuring.html#sec_default-values-destructuring
-		For part of the pattern (an obj prop or array element)
-			missing obj prop
-				const {foo: x=3, bar: y} = {}; // x = 3; y = undefined
-			missing array elem
-				const [x=3, y] = []; // x = 3; y = undefined
-			If a part (an object property or an Array element) has no match in the source, it is matched against: 
-				its default value (if specified; it’s optional)
-				undefined (otherwise)
-		For the whole Pattern https://exploringjs.com/es6/ch_destructuring.html#_default-values-for-patterns
-			NON CAPISCO il senso ... const [{ prop: x=123 } = {}] = [{}]; 
-				TODO
-		provide a fallback if nothing is found in the source https://exploringjs.com/es6/ch_destructuring.html#_more-complex-default-values
-		undefined triggers default values
-			const {prop: y=2} = {prop: undefined}; // y = 2
-		Default values are computed on demand https://exploringjs.com/es6/ch_destructuring.html#_default-values-are-computed-on-demand
-		Default values can refer to other variables in the pattern https://exploringjs.com/es6/ch_destructuring.html#_default-values-can-refer-to-other-variables-in-the-pattern
-			const [x=3, y=x] = []; // x=3; y=3 const [x=3, y=x] = [7]; // x=7; y=7 const [x=3, y=x] = [7, 2]; // x=7; y=2
-	Examples
-		Multiple return values https://exploringjs.com/es6/ch_destructuring.html#sec_multiple-return-values
-	[ExploringJS - Exploring ES6] https://exploringjs.com/es6/ch_destructuring.html#ch_destructuring
-
-
-
-
-~~~javascript
-var RoundButton = function(radius, label) {
+```javascript
+var RoundButton = function (radius, label) {
   this.radius = radius;
   this.label = label;
 };
@@ -5563,7 +5391,7 @@ var RoundButton = function(radius, label) {
 extend(RoundButton.prototype, circleFns);
 extend(RoundButton.prototype, buttonFns);
 //etc. ...
-~~~
+```
 
 See [this post](http://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins/) for more about different approach.
 
@@ -5571,16 +5399,13 @@ See the ember guide for the Ember.Mixin.
 
 # Browser Events
 
-
-
-
 # Browser Debugger TIPS
 
-* `alert("my message")`
+- `alert("my message")`
 
 ## DOM breakpoint
 
-* `on subtree modification`
+- `on subtree modification`
 
 ## Event listeners
 
@@ -5590,19 +5415,17 @@ If you use the ispector there is a tab that list all listeners.
 
 TODO: dovrebbe essere possibile fare delle mappe per non avere dei mega file CSS e JS
 
-
-
 # JQuery
 
 REFs:
 
-* https://jquery.com/
-* [JQuery Learning Center](http://learn.jquery.com/)
+- https://jquery.com/
+- [JQuery Learning Center](http://learn.jquery.com/)
 
 ## How to select elements
 
-* [Intro](https://learn.jquery.com/using-jquery-core/selecting-elements/)
-* [Selector reference](http://api.jquery.com/category/selectors/)
+- [Intro](https://learn.jquery.com/using-jquery-core/selecting-elements/)
+- [Selector reference](http://api.jquery.com/category/selectors/)
 
 The most basic concept of jQuery is to "select some elements and do something with them." jQuery supports most CSS3 selectors, as well as some non-standard selectors.
 
@@ -5610,8 +5433,8 @@ When a selection is made using `$()`, an object is always returned
 
 To check if a selection contains elements:
 
-* https://learn.jquery.com/using-jquery-core/selecting-elements/#does-my-selection-contain-any-elements
-* `if ( $( "div.foo" ).length )`
+- https://learn.jquery.com/using-jquery-core/selecting-elements/#does-my-selection-contain-any-elements
+- `if ( $( "div.foo" ).length )`
 
 # JavaScript modules, loaders and bundlers.
 
@@ -5759,16 +5582,16 @@ Some reference about ES6 module:
 
 File structure:
 
-~~~ bash
+```bash
 calculator/
   lib/
     calc.js
   main.js
-~~~
+```
 
 Define a module:
 
-~~~javascript
+```javascript
 //------ lib.js ------
 export const sqrt = Math.sqrt;
 export function square(x) {
@@ -5777,27 +5600,28 @@ export function square(x) {
 export function diag(x, y) {
     return sqrt(square(x) + square(y));
 }
-~~~
+```
 
 Use a module:
 
-~~~javascript
+```javascript
 //------ main.js ------
-import { square, diag } from 'lib';
+import { square, diag } from "lib";
 console.log(square(11)); // 121
 console.log(diag(4, 3)); // 5
-~~~
+```
 
 you can also import the whole module and refer to its named exports via property notation:
 
-~~~javascript
+```javascript
     //------ main.js ------
-    import * as lib from 'lib';
+import * as lib from "lib";
     console.log(lib.square(11)); // 121
     console.log(lib.diag(4, 3)); // 5
-~~~
+```
 
 ### Traspiler
+
 The great news is you can use ES6 modules today! You just have to run your code through a **transpiler**
 
 [ES6 module transpiler](https://github.com/esnext/es6-module-transpiler)
@@ -5808,16 +5632,16 @@ The subset of the ES6 module syntax supported by the transpiler is described [he
 
 #### ES6 Module transpiler
 
-* [ES6 Module Traspiler](https://github.com/esnext/es6-module-transpiler)
-* [NPM node package](https://www.npmjs.com/package/es6-module-transpiler): npm install -g es6-module-transpiler
+- [ES6 Module Traspiler](https://github.com/esnext/es6-module-transpiler)
+- [NPM node package](https://www.npmjs.com/package/es6-module-transpiler): npm install -g es6-module-transpiler
 
-* [Broccoli Plugin](https://github.com/mmun/broccoli-es6-module-transpiler)
+- [Broccoli Plugin](https://github.com/mmun/broccoli-es6-module-transpiler)
 
 Supported syntax : https://github.com/esnext/es6-module-transpiler#supported-es6-module-syntax
 
 How use it?
 
-* rsvp
+- rsvp
 
 #### ES6Modules
 
@@ -5825,35 +5649,33 @@ How use it?
 
 ES6Modules wraps the esperanto library. All options described for esperanto can be provided here.
 
-#### Esperanto
+### Esperanto
 
 Refs:
 
-* [Homepage](http://esperantojs.org/)
-* [Github Homepage](https://github.com/esperantojs/esperanto)
+- [Homepage](http://esperantojs.org/)
+- [Github Homepage](https://github.com/esperantojs/esperanto)
 
 Esperanto is a tool for converting ES6 modules to AMD, CommonJS or UMD. It's built for speed, interoperability and ease of use.
 
-
 How use it?
 
-* Ember.js
+- Ember.js
 
-## Node Modules System
+## Node Modules
 
 Ref:
 
-* [Intro doc](https://github.com/maxogden/art-of-node/#modular-development-workflow)
-* [Official doc](https://nodejs.org/api/modules.html)
-* [Module Intenals] https://medium.com/better-programming/node-js-modules-basics-to-advanced-2464001229b6
-
+- [Intro doc](https://github.com/maxogden/art-of-node/#modular-development-workflow)
+- [Official doc](https://nodejs.org/api/modules.html)
+- [Module Intenals] https://medium.com/better-programming/node-js-modules-basics-to-advanced-2464001229b6
 
 TODO:
 
-* Does NodeJS support es6 modules in 2019? https://medium.com/the-node-js-collection/an-update-on-es6-modules-in-node-js-42c958b890c
-* `export`
-* `require`
-* `require.resolve`
+- Does NodeJS support es6 modules in 2019? https://medium.com/the-node-js-collection/an-update-on-es6-modules-in-node-js-42c958b890c
+- `export`
+- `require`
+- `require.resolve`
 
 In Node, the modularity is a first-class concept. In the Node.js module system, each file is treated as a separate module.
 
@@ -5878,20 +5700,20 @@ Note that `require()` returned a function and we assigned that return value to a
 
 TODO:
 
-* `export`
-* `require`
-* `require.resolve`
+- `export`
+- `require`
+- `require.resolve`
 
 A "module" exports objects and functions by adding them to exports, and another module can import it by using require. The semantics are explained well in the official documentation.
 
 `module.exports` is the object that's actually returned as the result of a `require` call.
-
 
 To test out which module actually gets loaded by node, you can use the `require.resolve('some_module')` command
 
 In the next paragraphs we will see how modularity was implement before NodeJS and then how NodeJS implemented modularity.
 
 ### How Modularity Worked Before ES5 and NodeJS
+
 Ref: https://medium.com/better-programming/node-js-modules-basics-to-advanced-2464001229b6
 
 Prior to modules in Node.js or ES5 modules, the modularity in JavaScript was achieved using IIFE (Immediately Invoked Function Expression), which is, as the name suggests, a function which is invoked immediately after it is defined.
@@ -5944,6 +5766,7 @@ const sum = (a, b) => {
 const result = sum(2, 3)
 console.log(result)
 ```
+
 https://gist.github.com/udittyagi/e4b49683361c49fbff2fb3c5e62f93e7#file-sum-js
 
 So, in Node.js, this code is wrapped and looks something like this in our running environment:
@@ -5959,8 +5782,8 @@ So, in Node.js, this code is wrapped and looks something like this in our runnin
   console.log(result)
 });
 ```
-https://gist.github.com/udittyagi/aa3c99a05504a210fa44249ac1477dad#file-summodule-js
 
+https://gist.github.com/udittyagi/aa3c99a05504a210fa44249ac1477dad#file-summodule-js
 
 Everything is wrapped as we wrapped in our IIFE but, here, this wrapper function gets some arguments. We will discuss them in detail later.
 
@@ -5970,7 +5793,6 @@ Example HERE: https://github.com/breezeight/javascript_nicola_courses/blob/maste
 
 We can see that we get the output of arguments (arguments is an array-like object, whose keys are numeric, which is passed to every function by default). So, it confirms that our code is wrapped inside a function and that function receives five arguments, which are given by Node.js.
 Let’s discuss these five arguments one-by-one.
-
 
 #### Exports
 
@@ -5992,7 +5814,6 @@ exports.multiply = multiply;
 
 Here, we expose the multiply function by assigning the function reference to a newly created multiply property on the exports object, i.e. multiply function is only available outside this module, not the sum function.
 Note: Do not provide a new reference to this exports object, i.e. don’t assign a new object to the exports argument. (We will discuss why not to do this.)
-
 
 #### Require
 
@@ -6025,9 +5846,9 @@ This is the third argument passed, the module variable is a reference to the obj
 
 The module object contains all the data regarding our module, such as:
 
-* “Who is its parent? Who are its children?
-* What are all the paths it took to resolve third-party modules? 
-* Is it completely loaded, or not?”
+- “Who is its parent? Who are its children?
+- What are all the paths it took to resolve third-party modules?
+- Is it completely loaded, or not?”
 
 But the most important property of the module object is the exports property, we can also use this exports property on the module to export our data, rather than using exports arguments of the wrapper function.
 
@@ -6050,13 +5871,13 @@ Note: We will see the difference between exports and module.exports, and how the
 
 Summary of the module object
 
-* module.filename is the fully resolved filename of the module.
-* module.id is the identifier for the module. Typically, this is the fully resolved filename, except for the main module, it is ‘.’ (period), see pic 3. Main module is the module that spins up your Node application, e.g if we write node app.js in the terminal, then app.js is the main module.
-* module.path is the directory name of your name module.
-* module.parent is an object which refers to the parent module.
-* module.children is an array of all the children module objects.
-* module.loaded is a boolean property which tells us whether or not the module is done loading, or is in the process of loading.
-* module.paths is an array of all the paths that Node will look up to resolve a module.
+- module.filename is the fully resolved filename of the module.
+- module.id is the identifier for the module. Typically, this is the fully resolved filename, except for the main module, it is ‘.’ (period), see pic 3. Main module is the module that spins up your Node application, e.g if we write node app.js in the terminal, then app.js is the main module.
+- module.path is the directory name of your name module.
+- module.parent is an object which refers to the parent module.
+- module.children is an array of all the children module objects.
+- module.loaded is a boolean property which tells us whether or not the module is done loading, or is in the process of loading.
+- module.paths is an array of all the paths that Node will look up to resolve a module.
 
 TODO: rileggere la question di delle [CIRCULAR] reference qua https://medium.com/better-programming/node-js-modules-basics-to-advanced-2464001229b6
 
@@ -6066,17 +5887,18 @@ Similarly, operations.js is a child module of app.js, so its children property s
 To prevent this infinite loop, Node sees that, if any module’s parent or child is already loaded, it will not load them again and show this [Circular] instead.
 
 #### filename
+
 This is a variable that contains the absolute path of the current module.
 Given two modules: a and b, where b is a dependency of a and there is a directory structure of:
 /User/home/node_blog/a.js
 /User/home/node_blog/node_modules/b/b.js
-So, if we do console.log(__filename)within b.js, we will get /User/home/node_blog/node_modules/b/b.js. If we do console.log(__filename) within a.js, we will get /User/home/node_blog/a.js.
+So, if we do console.log(**filename)within b.js, we will get /User/home/node_blog/node_modules/b/b.js. If we do console.log(**filename) within a.js, we will get /User/home/node_blog/a.js.
 
 #### dirname
 
-The directory name of the current module. This is the same as the path.dirname() of the __filename.
+The directory name of the current module. This is the same as the path.dirname() of the **filename.
 So, for the above modules, a.js and b.js.
-If we do console.log(__dirname) within b.js, we will get /User/home/node_blog/node_modules/b/ and in a.js, we will get /User/home/node_blog/.
+If we do console.log(**dirname) within b.js, we will get /User/home/node_blog/node_modules/b/ and in a.js, we will get /User/home/node_blog/.
 Now we have studied the basics of the module. From now on, we will dive deep into this topic. Bear with me a bit longer as there are various interesting things we are going to discuss
 
 #### Difference Between module.exports and exports
@@ -6099,9 +5921,9 @@ https://github.com/breezeight/javascript_nicola_courses/blob/master/node-modules
 
 Test it: 
 
-* git clone git@github.com:breezeight/javascript_nicola_courses.git
-* cd javascript_nicola_courses
-* node node-modules-under-the-hood/app_export_gotcha.js
+- git clone git@github.com:breezeight/javascript_nicola_courses.git
+- cd javascript_nicola_courses
+- node node-modules-under-the-hood/app_export_gotcha.js
 
 #### Modules in Detail
 
@@ -6111,7 +5933,7 @@ Generally, a folder as a module is a module of modules, i.e. it contains various
 
 There are two ways in which we can require a folder.
 
-* Create a package.json in the root of the folder, which specifies a main module. An example package.json file might look like this:
+- Create a package.json in the root of the folder, which specifies a main module. An example package.json file might look like this:
 
 ```
 { "name" : "some-library",
@@ -6122,9 +5944,9 @@ If this was in a folder at ./some-library, then require('./some-library') would 
 
 This is the extent of Node.js awareness of package.json.
 
-*  If Node does not find any package.json in the root directory of the module, or in package.json if the main entry is missing or cannot be resolved. Then, Node.js will try to load index.js or index.node from that directory. For example, if there was no package.json file in the above example, then require('./some-library') would attempt to load:
-  * ./some-library/index.js
-  * ./some-library/index.node
+- If Node does not find any package.json in the root directory of the module, or in package.json if the main entry is missing or cannot be resolved. Then, Node.js will try to load index.js or index.node from that directory. For example, if there was no package.json file in the above example, then require('./some-library') would attempt to load:
+- ./some-library/index.js
+- ./some-library/index.node
 
 If these attempts fail, then Node.js will report the entire module as missing with the default error: `Error: Cannot find module ‘some-library’.`
 
@@ -6144,21 +5966,19 @@ Ref: https://github.com/browserify/browserify-handbook/blob/master/readme.markdo
 
 **Relative** path : Paths that start with a `./` or `../` are always local to the file that calls require()
 
-* `require('./foo.js');` :  load a file foo.js from the same dir of your main.js file
-* `require('../foo.js');` : load from the parent dirs*
+- `require('./foo.js');` : load a file foo.js from the same dir of your main.js file
+- `require('../foo.js');` : load from the parent dirs\*
 
-**Non-relative** path: such as `require('xyz')` from /beep/boop/foo.js,  node searches these paths in order, stopping at the first match and raising an error if nothing is found:
+**Non-relative** path: such as `require('xyz')` from /beep/boop/foo.js, node searches these paths in order, stopping at the first match and raising an error if nothing is found:
 
-* `/beep/boop/node_modules/xyz`
-* `/beep/node_modules/xyz`
-* `/node_modules/xyz`
-
+- `/beep/boop/node_modules/xyz`
+- `/beep/node_modules/xyz`
+- `/node_modules/xyz`
 
 For each xyz directory that exists, node will:
 
-* first look for an `xyz/package.json` to see if a `main` field exists. The "main" field defines which file should take charge if you require() the directory path.
-* second, if there is no package.json or no "main" field, index.js is assumed
-
+- first look for an `xyz/package.json` to see if a `main` field exists. The "main" field defines which file should take charge if you require() the directory path.
+- second, if there is no package.json or no "main" field, index.js is assumed
 
 Example 1: if /beep/node_modules/xyz is the first match and /beep/node_modules/xyz/package.json has:
 
@@ -6182,7 +6002,6 @@ var clone = require('dat/lib/clone.js')
 
 The recursive node_modules resolution will find the first dat package up the directory hierarchy, then the `lib/clone.js` file will be resolved from there. This `require('dat/lib/clone.js')` approach will work from any location where you can require('dat').
 
-
 ### What is an export?
 
 A "module" exports objects and functions by adding them to exports, and another module can import it by using require. The semantics are explained well in the official documentation.
@@ -6193,11 +6012,10 @@ To test out which module actually gets loaded by node, you can use the `require.
 
 ### Node.js: Require VS import
 
-* `require` is defined by the node module system
-* `import` ???? the rsvp npm package use it.... but other package no (ex: https://github.com/strongloop/express)   WHY??? WHAT is the DIFFERENCE?
+- `require` is defined by the node module system
+- `import` ???? the rsvp npm package use it.... but other package no (ex: https://github.com/strongloop/express) WHY??? WHAT is the DIFFERENCE?
 
 may be reading this will answer: https://appdividend.com/2019/01/23/javascript-import-statement-tutorial-with-example/
-
 
 https://medium.com/@geekguy/javascript-modues-exports-vs-exports-whats-the-difference-9a61cdb99386
 
@@ -6205,7 +6023,7 @@ https://medium.com/@geekguy/javascript-modues-exports-vs-exports-whats-the-diffe
 
 https://github.com/maxogden/art-of-node/#how-to-write-a-module
 
-* By default node tries to load module/index.js when you require('module'), any other file name won't work unless you set the main field of package.json to point to it.
+- By default node tries to load module/index.js when you require('module'), any other file name won't work unless you set the main field of package.json to point to it.
 
 ### Require package
 
@@ -6227,17 +6045,44 @@ http://browserify.org/#install
 
 Browserify is a tool for compiling node-flavored commonjs modules for the browser:
 
-* Sharing code between Node.js and the browser
-* The module system that browserify uses is the same as node, so packages published to npm that were originally intended for use in node but not browsers will work just fine in the browser too.
-* people are publishing modules to npm which are intentionally designed to work in both node and in the browser using browserify and many packages on npm are intended for use in just the browser. npm is for all javascript, front or backend alike.
+- Sharing code between Node.js and the browser
+- The module system that browserify uses is the same as node, so packages published to npm that were originally intended for use in node but not browsers will work just fine in the browser too.
+- people are publishing modules to npm which are intentionally designed to work in both node and in the browser using browserify and many packages on npm are intended for use in just the browser. npm is for all javascript, front or backend alike.
 
+- Getting started: https://github.com/browserify/browserify-handbook
 
-* Getting started: https://github.com/browserify/browserify-handbook
+- https://blog.codecentric.de/en/2014/02/cross-platform-javascript/
+- introduction to Browserify and Grunt.js and how to leverage Browserify to write code that runs on Node.js and in the browser.
 
-* https://blog.codecentric.de/en/2014/02/cross-platform-javascript/
-* introduction to Browserify and Grunt.js and how to leverage Browserify to write code that runs on Node.js and in the browser.
+Node, of course, provides a require method in its environment that serves to synchronously load dependencies. The client side, however, is an entirely different beast. There is no require available natively in browsers, so Browserify implements it for us and gives us access to it by passing it into these closures.
 
- Node, of course, provides a require method in its environment that serves to synchronously load dependencies. The client side, however, is an entirely different beast. There is no require available natively in browsers, so Browserify implements it for us and gives us access to it by passing it into these closures.
+# Snowpack and Pika.dev
+
+https://www.snowpack.dev/
+
+Goals:
+
+- Snowpack 1.0: was designed for a simple mission: install npm packages to run directly in the browser. Use a bundler because you want to, and not because you need to.
+- Snowpack 2.0: ....
+
+Snowpack isn’t against bundling for production. In fact, we recommend it. File minification, compression, dead-code elimination and network optimizations can all make a bundled site run faster for your users, which is the ultimate goal of any build tool.
+
+Snowpack treats bundling as a final, production-only build optimization. By bundling as the final step, you avoid mixing build logic and bundle logic in the same huge configuration file. Instead, your bundler gets already-built files and can focus solely on what it does best: bundling.
+
+_Snowpack maintains official plugins for both Webpack & Parcel_
+
+If you don’t want to use a bundler, that’s okay too. Snowpack’s default build will give you an unbundled site that also runs just fine. This is what the Snowpack project has been all about from the start: Use a bundler because you want to, and not because you need to.
+
+## Pika.dev CDN
+
+https://www.pika.dev/cdn
+
+- Every npm package can be loaded from Pika CDN as a modern ESM import.
+- smart: Every package is optimized to the environment that requested it. That means that only legacy browsers pay the cost of transpiled/polyfilled code, and modern environments get native code.
+
+If a package wasn't written as ESM, we'll do the work to convert it for you.
+
+##
 
 # Babel
 
@@ -6249,8 +6094,42 @@ Babel is a toolchain that is mainly used to convert ECMAScript 2015+ code into a
 
 Here are the main things Babel can do for you:
 
-* Transform syntax
-* Polyfill features that are missing in your target environment (through @babel/polyfill)
-* Source code transformations (codemods)
-* And more! (check out these videos for inspiration)
+- Transform syntax
+- Polyfill features that are missing in your target environment (through @babel/polyfill)
+- Source code transformations (codemods)
+- And more! (check out these videos for inspiration)
 
+# Child Processes
+
+Ref:
+
+- https://nodejs.org/api/child_process.html
+- https://www.cs.unb.ca/~bremner/teaching/cs2613/books/nodejs-api/child_process/
+
+# MISC: tips and tricks
+
+- Print content of JavaScript object? https://stackoverflow.com/questions/1625208/print-content-of-javascript-object
+
+# NPM packages I used
+
+## Date
+
+This guide https://github.com/you-dont-need/You-Dont-Need-Momentjs
+
+- compares native JS with many date libs, many times you don't need to import an external lib!!!
+-
+
+Moment.js is very huge and mutable, AVOID it
+
+- https://github.com/you-dont-need/You-Dont-Need-Momentjs#eslint-plugin
+
+date-fns
+
+- is immutable, a good alternative to moments
+- support ranges https://date-fns.org/v1.28.5/docs/isWithinRange
+
+# Components
+
+## Widget VS WebComponents
+
+https://selleo.com/blog/how-to-create-embedded-react-widget
