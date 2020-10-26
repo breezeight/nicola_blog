@@ -900,7 +900,7 @@ Object.getOwnPropertyDescriptor(myObject, "a");
 // }
 ```
 
-As you can see, the property descriptor (called a "data descriptor" since it's only for holding a data value) for our normal object property a is much more than just its value of 2. 
+As you can see, the property descriptor (called a "data descriptor" since it's only for holding a data value) for our normal object property a is much more than just its value of 2.
 
 It includes 3 other characteristics:
 
@@ -919,9 +919,9 @@ For example:
 var myObject = {};
 
 Object.defineProperty(myObject, "a", {
-	value: 2,
-	writable: true,
-	configurable: true,
+  value: 2,
+  writable: true,
+  configurable: true,
   enumerable: true,
 });
 
@@ -1379,9 +1379,9 @@ Consider:
 
 ```js
 var myObject = {
-	// define a getter for `a`
-	get a() {
-		return 2;
+  // define a getter for `a`
+  get a() {
+    return 2;
   },
 };
 
@@ -1390,14 +1390,14 @@ Object.defineProperty(
   "b", // property name
   {
     // descriptor
-		// define a getter for `b`
+    // define a getter for `b`
     get: function () {
       return this.a * 2;
     },
 
-		// make sure `b` shows up as an object property
+    // make sure `b` shows up as an object property
     enumerable: true,
-	}
+  }
 );
 
 myObject.a; // 2
@@ -1417,14 +1417,14 @@ To make this scenario more sensible, properties should also be defined with sett
 
 ```js
 var myObject = {
-	// define a getter for `a`
-	get a() {
-		return this._a_;
-	},
+  // define a getter for `a`
+  get a() {
+    return this._a_;
+  },
 
-	// define a setter for `a`
-	set a(val) {
-		this._a_ = val * 2;
+  // define a setter for `a`
+  set a(val) {
+    this._a_ = val * 2;
   },
 };
 
@@ -1470,7 +1470,7 @@ myObject.a; // undefined
 myObject.b; // undefined
 ```
 
-From a value perspective, there is no difference between these two references -- they both result in undefined, you cannot distinguish whether a property exists and holds the explicit value undefined, or whether the property does not exist and undefined was the default return value after [[Get]] failed to return something explicitly. 
+From a value perspective, there is no difference between these two references -- they both result in undefined, you cannot distinguish whether a property exists and holds the explicit value undefined, or whether the property does not exist and undefined was the default return value after [[Get]] failed to return something explicitly.
 
 How you can distinguish these two scenarios?
 
@@ -1530,17 +1530,17 @@ In the example below you'll notice that:
 var myObject = {};
 
 Object.defineProperty(
-	myObject,
-	"a",
-	// make `a` enumerable, as normal
-	{ enumerable: true, value: 2 }
+  myObject,
+  "a",
+  // make `a` enumerable, as normal
+  { enumerable: true, value: 2 }
 );
 
 Object.defineProperty(
-	myObject,
-	"b",
-	// make `b` NON-enumerable
-	{ enumerable: false, value: 3 }
+  myObject,
+  "b",
+  // make `b` NON-enumerable
+  { enumerable: false, value: 3 }
 );
 
 myObject.b; // 3
@@ -1604,7 +1604,7 @@ for (var i = 0; i < myArray.length; i++) {
 // 1 2 3
 ```
 
-#### helpers for arrays: forEach, some, every 
+#### helpers for arrays: forEach, some, every
 
 Each of these helpers accepts a function callback to apply to each element in the array, differing only in how they respectively respond to a return value from the callback:
 
@@ -2027,9 +2027,9 @@ This example taken from SOJS is more advanced:
 
 ```javascript
 var outerValue = "ninja";
-      var later;
+var later;
 
-      function outerFunction() {
+function outerFunction() {
   var innerValue = "samurai";
 
   function innerFunction(paramValue) {
@@ -2038,16 +2038,16 @@ var outerValue = "ninja";
     assert(innerValue, "Inner can see the samurai.");
     assert(paramValue, "Inner can see the wakizashi."); //#2
     assert(tooLate, "Inner can see the ronin,"); // All variables in an outer scope, even those declared after the function declaration, are included.
-        }
+  }
 
-        later = innerFunction;
-      }
+  later = innerFunction;
+}
 
 assert(!tooLate, "Outer can't see the ronin"); //#3
 
 var tooLate = "ronin"; //#4
 
-      outerFunction();
+outerFunction();
 later("wakizashi"); //#5
 ```
 
@@ -2080,15 +2080,15 @@ function setupHelp() {
     { id: "email", help: "Your e-mail address" },
     { id: "name", help: "Your full name" },
     { id: "age", help: "Your age (you must be over 16)" },
-    ];
+  ];
 
   for (var i = 0; i < helpText.length; i++) {
     var item = helpText[i];
     document.getElementById(item.id).onfocus = function () {
       showHelp(item.help);
     };
-    }
   }
+}
 
 setupHelp();
 ```
@@ -2121,7 +2121,7 @@ function setupHelp() {
     { id: "email", help: "Your e-mail address" },
     { id: "name", help: "Your full name" },
     { id: "age", help: "Your age (you must be over 16)" },
-    ];
+  ];
 
   for (var i = 0; i < helpText.length; i++) {
     var item = helpText[i];
@@ -2216,7 +2216,7 @@ function Ninja() {
     //#4
     feints++; //#4
   }; //#4
-      }
+}
 
 var ninja = new Ninja(); //#5
 
@@ -2285,15 +2285,15 @@ SOLUTION: use global Variables
 SOJS ch 5.3:
 
 ```javascript
-  var button = {
-    clicked: false,
+var button = {
+  clicked: false,
   click: function () {
-      this.clicked = true;
+    this.clicked = true;
     assert(button.clicked, "The button has been clicked");
-      //FAILS: the context of the click function is not referring to the button object as we intended.
+    //FAILS: the context of the click function is not referring to the button object as we intended.
   },
-  };
-  var elem = document.getElementById("test");
+};
+var elem = document.getElementById("test");
 elem.addEventListener("click", button.click, false);
 ```
 
@@ -2304,14 +2304,14 @@ To solve:
 function bind(context, name) {
   return function () {
     return context[name].apply(context, arguments);
-    };
+  };
 }
-  var button = {
-    clicked: false,
+var button = {
+  clicked: false,
   click: function () {
-      this.clicked = true;
+    this.clicked = true;
     assert(button.clicked, "The button has been clicked");
-      console.log(this);
+    console.log(this);
   },
 };
 var elem = document.getElementById("test");
@@ -2462,13 +2462,13 @@ alert(x)
 
 - named global functions are property of the window object
 - a function is available throughout the scope it is declared. Also if it
-is declared at the end of the scope it is available also at the
-beginning of the scope.
+  is declared at the end of the scope it is available also at the
+  beginning of the scope.
 - a variable is available only after it is declared to the end of the
-scope (the inner example here file:///devel/SRC/JAVASCRIPT/ninja-code/chapter-3/listing-3.2.html,
-inner is defined after a but it is in scope before the variable a).
+  scope (the inner example here file:///devel/SRC/JAVASCRIPT/ninja-code/chapter-3/listing-3.2.html,
+  inner is defined after a but it is in scope before the variable a).
 - for the purpose of declaration scopes the global context act acts like
-one big function encompassing the code on the page.
+  one big function encompassing the code on the page.
 
 ## Lexical Context (or Scope)
 
@@ -2544,9 +2544,9 @@ TL;DR:
 
 ```js
 var students = [
-    { id: 14, name: "Kyle" },
-    { id: 73, name: "Suzy" },
-    { id: 112, name: "Frank" },
+  { id: 14, name: "Kyle" },
+  { id: 73, name: "Suzy" },
+  { id: 112, name: "Frank" },
   { id: 6, name: "Sarah" },
 ];
 ```
@@ -2642,8 +2642,8 @@ Consider:
 
 ```js
 function getStudentName() {
-    // assignment to an undeclared variable :(
-    nextStudent = "Suzy";
+  // assignment to an undeclared variable :(
+  nextStudent = "Suzy";
 }
 
 getStudentName();
@@ -2665,7 +2665,7 @@ Yuck. This sort of accident (almost certain to lead to bugs eventually) is a gre
 
 Ref: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/ch3.md#lookup-is-mostly-conceptual
 
-lexical scope is partially determined during the initial compilation processing, exeption are: 
+lexical scope is partially determined during the initial compilation processing, exeption are:
 
 - variable that isn't declared in any lexically available scopes in the current file (ex: modules)
 
@@ -2708,7 +2708,7 @@ This example will create a variable in the enclosing scope (in this case, the gl
 
 ```js
 function askQuestion() {
-    // ..
+  // ..
 }
 ```
 
@@ -2716,7 +2716,7 @@ With this function definition you will obtain the same result of the above examp
 
 ```js
 var askQuestion = function () {
-    // ..
+  // ..
 };
 ```
 
@@ -2724,7 +2724,7 @@ A 3rd, not obvious case is:
 
 ```js
 var askQuestion = function ofTheTeacher() {
-    // ..
+  // ..
 };
 askQuestion();
 // function ofTheTeacher()...
@@ -3203,7 +3203,7 @@ Puting it all together — compilation + execution: Hoisting is simply a mental 
 ```
 
 ```
-  /*  
+  /*
       During Compilation
       Notice: Variable declarations have been **hoisted** to the top of the
       containing scope. In this case, the global scope.
@@ -3270,7 +3270,7 @@ assert(typeof fun === "function", "We access the function");
 var fun = 3;
 
 // fun refers to a number.
-assert(typeof fun === "number", "Now we access the number");      
+assert(typeof fun === "number", "Now we access the number");
 
 // A fun function declaration
 function fun(){}
@@ -3290,10 +3290,10 @@ TODO: see [SOJS_2nd] ch 5.6
 see [SOJS] ch 4
 
 - Recursion
-Recursion in named functions The pilfered reference problem The callee property 70
+  Recursion in named functions The pilfered reference problem The callee property 70
 - Fun with function as objects
-Recursion with methods 65 Inline named functions 68
-Storing functions 72 ■ Self-memoizing functions 73 Faking array methods 76
+  Recursion with methods 65 Inline named functions 68
+  Storing functions 72 ■ Self-memoizing functions 73 Faking array methods 76
 - Checking for functions 86
 
 ## Arguments and function parameters
@@ -3393,7 +3393,7 @@ function selectEntries({ start=0, end=-1, step=1 } = {}) { // (A)
     console.log(`start = ${start}, end = ${end}, step = ${step}`)
 }
 
-selectEntries({ start: 10, end: 30, step: 2 });  // start = 10, end = 30, step = 2 
+selectEntries({ start: 10, end: 30, step: 2 });  // start = 10, end = 30, step = 2
 selectEntries({ step: 3 });  // start = 0, end = -1, step = 3
 selectEntries({}); // start = 0, end = -1, step = 1
 selectEntries(); // start = 0, end = -1, step = 1
@@ -3972,9 +3972,9 @@ A generator object is both, iterator and iterable:
 
 ```js
 var aGeneratorObject = (function* () {
-    yield 1;
-    yield 2;
-    yield 3;
+  yield 1;
+  yield 2;
+  yield 3;
 })();
 typeof aGeneratorObject.next;
 // "function", because it has a next method, so it's an iterator
@@ -4013,7 +4013,7 @@ Most constructs that work with iterables ignore the value inside the done object
 
 ```js
 for (const x of genFuncWithReturn()) {
-    console.log(x);
+  console.log(x);
 }
 // Output:
 // a
@@ -4079,7 +4079,7 @@ That means that next() can produce three different “results”:
 Let’s make a simple range iterator that simply counts up from one number to another, like an old-fashioned C for (;;) loop.
 
 ```js
- // This should "ding" three times
+// This should "ding" three times
 for (var value of range(0, 3)) {
   alert("Ding! at floor #" + value);
 }
@@ -4142,21 +4142,21 @@ To Make any object iterable:
 
 ```js
 class Matrix {
-    constructor() {
+  constructor() {
     this.matrix = [
       [1, 2, 9],
-                       [5, 3, 8],
+      [5, 3, 8],
       [4, 6, 7],
     ];
-    }
+  }
 
-    *[Symbol.iterator]() {
-        for (let row of this.matrix) {
-            for (let cell of row) {
-                yield cell;
-            }
-        }
+  *[Symbol.iterator]() {
+    for (let row of this.matrix) {
+      for (let cell of row) {
+        yield cell;
+      }
     }
+  }
 }
 ```
 
@@ -4198,7 +4198,7 @@ function splitIntoRows(icons, rowLength) {
 Generators make this kind of code a bit shorter:
 
 ```js
- function* splitIntoRows(icons, rowLength) {
+function* splitIntoRows(icons, rowLength) {
   for (var i = 0; i < icons.length; i += rowLength) {
     yield icons.slice(i, i + rowLength);
   }
@@ -4222,7 +4222,7 @@ ES6 does not provide an extensive library for filtering, mapping, and generally 
 For example, suppose you need an equivalent of Array.prototype.filter that works on DOM NodeLists, not just Arrays. Piece of cake:
 
 ```js
- function* filter(test, iterable) {
+function* filter(test, iterable) {
   for (var item of iterable) {
     if (test(item)) yield item;
   }
@@ -4250,8 +4250,8 @@ yield is not allowed inside non-generator functions, which is why the previous c
 ```js
 function* genFunc() {
   for (const x of ["a", "b"]) {
-        yield x; // OK
-    }
+    yield x; // OK
+  }
 }
 ```
 
@@ -4284,7 +4284,7 @@ How would you call foo from another generator function bar? The following approa
 ```js
 function* bar() {
   yield "x";
-    foo(); // does nothing!
+  foo(); // does nothing!
   yield "y";
 }
 ```
@@ -4294,13 +4294,13 @@ Calling foo() returns an object, but does not actually execute foo(). That’s w
 ```js
 function* bar() {
   yield "x";
-    yield* foo();
+  yield* foo();
   yield "y";
 }
 
 // Collect all values yielded by bar() in an array
 const arr = [...bar()];
-    // ['x', 'a', 'b', 'y']
+// ['x', 'a', 'b', 'y']
 ```
 
 Internally, `yield*` works roughly as follows:
@@ -4308,9 +4308,9 @@ Internally, `yield*` works roughly as follows:
 ```js
 function* bar() {
   yield "x";
-    for (const value of foo()) {
-        yield value;
-    }
+  for (const value of foo()) {
+    yield value;
+  }
   yield "y";
 }
 ```
@@ -4325,7 +4325,7 @@ function* bla() {
 }
 
 const arr = [...bla()];
-    // ['sequence', 'of', 'yielded', 'values']
+// ['sequence', 'of', 'yielded', 'values']
 ```
 
 ### Communicating with a generator - next(arg)
@@ -4376,8 +4376,8 @@ function* genFuncWithReturn() {
   return "The result";
 }
 function* logReturned(genObj) {
-    const result = yield* genObj; // result has the value of the return statement not the of the next() method
-    console.log(result); // (A)
+  const result = yield* genObj; // result has the value of the return statement not the of the next() method
+  console.log(result); // (A)
 }
 ```
 
@@ -4857,6 +4857,8 @@ IMPORTANT:
 - The prototype property is one of the most confusingly-named parts of JavaScript — you might think that this points to the prototype object of the current object, but it doesn't (that's an internal object that can be accessed by `__proto__`, remember?). prototype instead is a property containing an object on which you define members that you want to be inherited.
 - Ref: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes
 
+### Approximate private variables with closures and Prototype
+
 ### Example and problems with prototype and references
 
 Ref: https://medium.com/better-programming/prototypes-in-javascript-5bba2990e04b
@@ -4972,7 +4974,7 @@ ninja2.pierce(); //true
 
 ![](images/js_redefine_prototype.png)
 
-### Constructor property and instanceof
+### instanceof and Constructor property
 
 REF: [SOJSN2ND] 7.3.2 The instanceof operator
 
