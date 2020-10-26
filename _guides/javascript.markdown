@@ -3942,9 +3942,16 @@ Reflect.ownKeys(myFakeDomElement) // Two unique property are set: [ Symbol(isMov
 
 ## Generators
 
+Refs:
+
+- https://hacks.mozilla.org/2015/05/es6-in-depth-generators/
+- https://hacks.mozilla.org/2015/07/es6-in-depth-generators-continued/
+- [SOJSN2nd]6.2 Working with generator functions
+- [JSINFO](https://javascript.info/generators)
+
 Generator are a new kind of function added to ES6 to simplify code and straighten out the “callback hell”.
 
-```
+```js
 function* quips(name) {
   yield "hello " + name + "!";
   yield "i hope you are enjoying the blog posts";
@@ -3957,7 +3964,7 @@ function* quips(name) {
 
 What happens when you call the `quips()` generator-function?
 
-```
+```js
 > var iter = quips("jorendorff");
   [object Generator]
 > iter.next()
@@ -4004,7 +4011,7 @@ Generators can play three roles:
 
 The basic interface of a generator is:
 
-```
+```js
 interface Iterable {
     [Symbol.iterator]() : Iterator;
 }
@@ -4025,21 +4032,21 @@ There are four kinds of generators:
 
 Generator function declarations:
 
-```
+```js
  function* genFunc() { ··· }
  const genObj = genFunc();
 ```
 
 Generator function expressions:
 
-```
+```js
  const genFunc = function* () { ··· };
  const genObj = genFunc();
 ```
 
 Generator method definitions in object literals:
 
-```
+```js
  const obj = {
      * generatorMethod() {
          ···
@@ -4050,7 +4057,7 @@ Generator method definitions in object literals:
 
 Generator method definitions in class definitions (class declarations or class expressions):
 
-```
+```js
  class MyClass {
      * generatorMethod() {
          ···
@@ -4066,12 +4073,12 @@ Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration
 
 A generator object is both, iterator and iterable:
 
-```
-var aGeneratorObject = function* () {
+```js
+var aGeneratorObject = (function* () {
     yield 1;
     yield 2;
     yield 3;
-}();
+})();
 typeof aGeneratorObject.next;
 // "function", because it has a next method, so it's an iterator
 typeof aGeneratorObject[Symbol.iterator];
@@ -4090,24 +4097,24 @@ An implicit return is equivalent to returning undefined and it will generates `{
 
 An explicit return in a generator iterator will generates `{ value: 'my_result', done: true }`:
 
-```
+```js
 function* genFuncWithReturn() {
-    yield 'a';
-    yield 'b';
-    return 'my_result';
+  yield "a";
+  yield "b";
+  return "my_result";
 }
 
 const genObjWithReturn = genFuncWithReturn();
-genObjWithReturn.next()  // { value: 'a', done: false }
-genObjWithReturn.next()  // { value: 'b', done: false }
-genObjWithReturn.next()  // { value: 'my_result', done: true }
+genObjWithReturn.next(); // { value: 'a', done: false }
+genObjWithReturn.next(); // { value: 'b', done: false }
+genObjWithReturn.next(); // { value: 'my_result', done: true }
 ```
 
 NOTE: you don't need to return from a generator, if you call `next()` on an Generator iterator after the last `yield` it's equivalent to `return`
 
 Most constructs that work with iterables ignore the value inside the done object:
 
-```
+```js
 for (const x of genFuncWithReturn()) {
     console.log(x);
 }
@@ -4129,7 +4136,7 @@ Scenario:
 
 A naive implementation could be:
 
-```
+```js
 function* produceValues() {
   setup();
   try {
@@ -4146,13 +4153,19 @@ for (var value of produceValues()) {
 
 But the `cleanUp` will be performed only if the errror will happens while yielding values.
 
+Calling `myGenerator.return()` causes the generator to run any finally blocks and then exit, just as if the current yield point had been mysteriously transformed into a return statement.
+
+Note that the `.return()` is not called automatically by the language in all contexts, only in cases where the language uses the iteration protocol. So it is possible for a generator to be garbage collected without ever running its finally block.
+
+How would this feature play out on stage? The generator is frozen in the middle of a task that requires some setup, like building a skyscraper. Suddenly someone throws an error! The for loop catches it and sets it aside. She tells the generator to .return(). The generator calmly dismantles all its scaffolding and shuts down. Then the for loop picks the error back up, and normal exception handling continues.
+
 ### Throwing an exception from a generator
 
 If an exception leaves the body of a generator then next() throws it:
 
-```
+```js
 function* genFunc() {
-    throw new Error('Problem!');
+  throw new Error("Problem!");
 }
 const genObj = genFunc();
 genObj.next(); // Error: Problem!
@@ -4168,7 +4181,7 @@ That means that next() can produce three different “results”:
 
 Let’s make a simple range iterator that simply counts up from one number to another, like an old-fashioned C for (;;) loop.
 
-```
+```js
  // This should "ding" three times
 for (var value of range(0, 3)) {
   alert("Ding! at floor #" + value);
@@ -4177,22 +4190,24 @@ for (var value of range(0, 3)) {
 
 Here’s one solution, using an ES6 class:
 
-```
+```js
 class RangeIterator {
   constructor(start, stop) {
     this.value = start;
     this.stop = stop;
   }
 
-  [Symbol.iterator]() { return this; }
+  [Symbol.iterator]() {
+    return this;
+  }
 
   next() {
     var value = this.value;
     if (value < this.stop) {
       this.value++;
-      return {done: false, value: value};
+      return { done: false, value: value };
     } else {
-      return {done: true, value: undefined};
+      return { done: true, value: undefined };
     }
   }
 }
@@ -4203,11 +4218,17 @@ function range(start, stop) {
 }
 ```
 
+[See this code in action](http://codepen.io/anon/pen/NqGgOQ)
+
 A lot of code! We can replace the same code with a 4-line generator:
 
+```js
+function* range(start, stop) {
+  for (var i = start; i < stop; i++) yield i;
+}
 ```
 
-```
+[See this code in action](http://codepen.io/anon/pen/mJewga)
 
 This is possible because generators are iterators:
 
@@ -4222,12 +4243,14 @@ To Make any object iterable:
 - Then install that generator-function as the [Symbol.iterator] method of the object.
 - NOTE: Generators reduce the boilerplate code needed to implement the Iterable protocol
 
-```
+```js
 class Matrix {
     constructor() {
-        this.matrix = [[1, 2, 9],
+    this.matrix = [
+      [1, 2, 9],
                        [5, 3, 8],
-                       [4, 6, 7]];
+      [4, 6, 7],
+    ];
     }
 
     *[Symbol.iterator]() {
@@ -4242,11 +4265,11 @@ class Matrix {
 
 The usage of such a class would be:
 
-```
+```js
 let matrix = new Matrix();
 
 for (let cell of matrix) {
-    console.log(cell)
+  console.log(cell);
 }
 ```
 
@@ -4256,19 +4279,14 @@ Which would output:
 1
 2
 9
-5
-3
-8
-4
-6
-7
+....
 ```
 
 ### Generator Usecase: Simplifying array-building functions.
 
 Suppose you have a function that returns an array of results each time it’s called, like this one:
 
-```
+```js
 // Divide the one-dimensional array 'icons'
 // into arrays of length 'rowLength'.
 function splitIntoRows(icons, rowLength) {
@@ -4282,7 +4300,7 @@ function splitIntoRows(icons, rowLength) {
 
 Generators make this kind of code a bit shorter:
 
-```
+```js
  function* splitIntoRows(icons, rowLength) {
   for (var i = 0; i < icons.length; i += rowLength) {
     yield icons.slice(i, i + rowLength);
@@ -4306,11 +4324,10 @@ ES6 does not provide an extensive library for filtering, mapping, and generally 
 
 For example, suppose you need an equivalent of Array.prototype.filter that works on DOM NodeLists, not just Arrays. Piece of cake:
 
-```
+```js
  function* filter(test, iterable) {
   for (var item of iterable) {
-    if (test(item))
-      yield item;
+    if (test(item)) yield item;
   }
 }
 ```
@@ -4325,7 +4342,7 @@ ref: http://exploringjs.com/es6/ch_generators.html#_you-can-only-yield-in-genera
 
 A significant limitation of generators is that you can only yield while you are (statically) inside a generator function. That is, yielding in callbacks doesn’t work:
 
-```
+```js
 function* genFunc() {
     ['a', 'b'].forEach(x => yield x); // SyntaxError
 }
@@ -4333,9 +4350,9 @@ function* genFunc() {
 
 yield is not allowed inside non-generator functions, which is why the previous code causes a syntax error. In this case, it is easy to rewrite the code so that it doesn’t use callbacks (as shown below). But unfortunately that isn’t always possible.
 
-```
+```js
 function* genFunc() {
-    for (const x of ['a', 'b']) {
+  for (const x of ["a", "b"]) {
         yield x; // OK
     }
 }
@@ -4343,40 +4360,45 @@ function* genFunc() {
 
 The upside of this limitation is explained later: it makes generators easier to implement and compatible with event loops.
 
-### Recursion via yield\*
+### Generator Composition and Recursion via `yield*`
 
-ref: http://exploringjs.com/es6/ch_generators.html#_recursion-via-yield
+ref:
 
-You can only use yield within a generator function. Therefore, if you want to implement a recursive algorithm with generator, you need a way to call one generator from another one. This section shows that that is more complicated than it sounds, which is why ES6 has a special operator, yield*, for this. For now, I only explain how `yield*` works if both generators produce output, I’ll later explain how things work if input is involved.
+- http://exploringjs.com/es6/ch_generators.html#_recursion-via-yield
+- https://javascript.info/generators#generator-composition
+
+You can only use yield within a generator function. Therefore, if you want to implement a recursive algorithm with generator, you need a way to call one generator from another one. This section shows that that is more complicated than it sounds, which is why ES6 has a special operator, `yield*`, for this. For now, I only explain how `yield*` works if both generators produce output, I’ll later explain how things work if input is involved.
+
+The `yield*` directive delegates the execution to another generator. This term means that `yield*` gen iterates over the generator gen and transparently forwards its yields outside. As if the values were yielded by the outer generator.
 
 NOTE: operand of `yield*` can be any **iterable**
 
 How can one generator recursively call another generator? Let’s assume you have written a generator function foo:
 
-```
+```js
 function* foo() {
-    yield 'a';
-    yield 'b';
+  yield "a";
+  yield "b";
 }
 ```
 
 How would you call foo from another generator function bar? The following approach does not work!
 
-```
+```js
 function* bar() {
-    yield 'x';
+  yield "x";
     foo(); // does nothing!
-    yield 'y';
+  yield "y";
 }
 ```
 
 Calling foo() returns an object, but does not actually execute foo(). That’s why ECMAScript 6 has the operator `yield*` for making recursive generator calls:
 
-```
+```js
 function* bar() {
-    yield 'x';
+  yield "x";
     yield* foo();
-    yield 'y';
+  yield "y";
 }
 
 // Collect all values yielded by bar() in an array
@@ -4384,42 +4406,77 @@ const arr = [...bar()];
     // ['x', 'a', 'b', 'y']
 ```
 
-Internally, yield\* works roughly as follows:
+Internally, `yield*` works roughly as follows:
 
-```
+```js
 function* bar() {
-    yield 'x';
+  yield "x";
     for (const value of foo()) {
         yield value;
     }
-    yield 'y';
+  yield "y";
 }
 ```
 
-The operand of yield\* does not have to be a generator object, it can be any iterable:
+The operand of `yield*` does not have to be a generator object, it can be any iterable:
 
-```
+```js
 function* bla() {
-    yield 'sequence';
-    yield* ['of', 'yielded'];
-    yield 'values';
+  yield "sequence";
+  yield* ["of", "yielded"];
+  yield "values";
 }
 
 const arr = [...bla()];
     // ['sequence', 'of', 'yielded', 'values']
 ```
 
-### yield\* considers end-of-iteration values
+### Communicating with a generator - next(arg)
 
-Most constructs that support iterables ignore the value included in the end-of-iteration object (whose property done is true). Generators provide that value via return. The result of yield\* is the end-of-iteration value:
+Ref:
+
+- [JSINFO](https://javascript.info/generators#yield-is-a-two-way-street)
+- [SOTJSN2nd] 6.2.3 Communicating with a generator
+
+Until this moment, generators were similar to iterable objects, with a special syntax to generate values. But in fact they are much more powerful and flexible.
+
+That’s because yield is a two-way street: it not only returns the result to the outside, but also can pass the value inside the generator.
+
+To do so, we should call generator.next(arg), with an argument. That argument becomes the result of yield:
+
+```js
+function* gen() {
+  let ask1 = yield "2 + 2 = ?";
+
+  alert(ask1); // 4
+
+  let ask2 = yield "3 * 3 = ?";
+
+  alert(ask2); // 9
+}
+
+let generator = gen();
+
+alert(generator.next().value); // "2 + 2 = ?"
+
+alert(generator.next(4).value); // "3 * 3 = ?"
+
+alert(generator.next(9).done); // true
+```
+
+![](images/js-generators-next-arg.png)
+
+### `yield*` considers end-of-iteration values
+
+Most constructs that support iterables ignore the value included in the end-of-iteration object (whose property done is true). Generators provide that value via return. The result of `yield*` is the end-of-iteration value:
 
 NOTE: this example not so easy to understand
 
-```
+```js
 function* genFuncWithReturn() {
-    yield 'a';
-    yield 'b';
-    return 'The result';
+  yield "a";
+  yield "b";
+  return "The result";
 }
 function* logReturned(genObj) {
     const result = yield* genObj; // result has the value of the return statement not the of the next() method
@@ -4429,11 +4486,67 @@ function* logReturned(genObj) {
 
 If we want to get to line A, we first must iterate over all values yielded by logReturned():
 
-```
+```js
 > a = [...logReturned(genFuncWithReturn())]
 The result // is the row log at line A
 
 // the value of a is [ 'a', 'b' ]
+```
+
+### Generator Throw
+
+Ref: https://javascript.info/generators#generator-throw
+
+As we observed in the examples above, the outer code may pass a value into the generator, as the result of yield.
+…But it can also initiate (throw) an error there. That’s natural, as an error is a kind of result.
+
+To pass an error into a yield, we should call `generator.throw(err)`. In that case, the err is thrown in the line with that yield.
+
+For instance, here the yield of "2 + 2 = ?" leads to an error:
+
+```js
+function* gen() {
+  try {
+    let result = yield "2 + 2 = ?"; // (1)
+    console.log(
+      "The execution does not reach here, because the exception is thrown above"
+    );
+  } catch (e) {
+    console.log(e); // shows the error
+  }
+}
+
+let generator = gen();
+
+let question = generator.next().value;
+
+let throw_return = generator.throw(
+  new Error("The answer is not found in my database")
+); // (2)
+
+console.log("error is catched");
+```
+
+The error, thrown into the generator at line (2) leads to an exception in line (1) with yield. In the example above, try..catch catches it and shows it.
+If we don’t catch it, then just like any exception, it “falls out” the generator into the calling code.
+The current line of the calling code is the line with generator.throw, labelled as (2).
+
+If we don’t catch the error there, then, as usual, it falls through to the outer calling code (if any) and, if uncaught, kills the script:
+
+```js
+function* generate() {
+  let result = yield "2 + 2 = ?"; // Error in this line
+}
+
+let generator = generate();
+
+let question = generator.next().value;
+
+try {
+  generator.throw(new Error("The answer is not found in my database"));
+} catch (e) {
+  alert(e); // shows the error
+}
 ```
 
 ### Generator example:
