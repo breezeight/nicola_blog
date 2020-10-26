@@ -5313,6 +5313,19 @@ assert(ninja.name === "Yoshi", "That has a name");
 assert(ninja.dance(), "And enjoys dancing");
 ```
 
+# Is JavaScript a pass-by-reference or pass-by-value language?
+
+ref: https://stackoverflow.com/questions/6605640/javascript-by-reference-vs-by-value
+
+- Javascript is always pass by value, but when a variable refers to an object (including arrays), the "value" is a reference to the object.
+- Changing the value of a variable never changes the underlying primitive or object, it just points the variable to a new primitive or object.
+- However, changing a property of an object referenced by a variable does change the underlying object.
+
+Example:
+
+```
+function changeStuff(a, b, c)
+{
   a = a * 10;
   b.item = "changed";
   c = {item: "changed"};
