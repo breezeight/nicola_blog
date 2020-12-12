@@ -7,20 +7,43 @@ categories: ["javascript", "nodejs"]
 ---
 
 # Contents
-{:.no_toc}
 
+
+{:.no_toc}
+- Will be replaced with the ToC, excluding the "Contents" header
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
 # TODO
 
 Build RESTful API using NodeJS, ExpressJS and MongoDB:
-
-* https://medium.com/datadriveninvestor/build-restful-api-using-nodejs-expressjs-and-mongodb-df99e18666f6
+- https://medium.com/datadriveninvestor/build-restful-api-using-nodejs-expressjs-and-mongodb-df99e18666f6
+- https://www.robinwieruch.de/node-express-server-rest-api
 * https://www.robinwieruch.de/node-express-server-rest-api
 
-Deploy an Express.js app to AWS Lambda using the Serverless Framework:
 * https://bitbucket.org/blog/deploy-an-express-js-app-to-aws-lambda-using-the-serverless-framework
+- https://bitbucket.org/blog/deploy-an-express-js-app-to-aws-lambda-using-the-serverless-framework
+
+# Tools
+
+## VSCode
+
+"ExpressJs 4 Snippet" Extension:
+
+- Complete list of snippets: https://marketplace.visualstudio.com/items?itemName=gurayyarar.expressjs-4-snippets
+
+Example, write `e4-app-post` you will get
+
+```js
+app.post("path", (req, res) => {});
+```
+
+## Postman
+
+- `brew cask install postman`
+- https://www.postman.com/
+- Open the app and click "Skip signing in and take me straight to the app"
+
 
 # Intro
 
