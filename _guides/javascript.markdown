@@ -1729,7 +1729,7 @@ var iterator = iterable[Symbol.iterator]();
 iterator.next(); // { value: 'This', done: false }
 iterator.next(); // { value: 'is', done: false }
 iterator.next(); // { value: 'iterable', done: false }
-iterator.next(); //{ value: undefined, done: true }
+iterator.next(); // { value: undefined, done: true }
 ```
 
 This is exactly what happens in `for-of` loop. The for-of loops takes an iterable, and creates its iterator. It keeps on calling the next() until done is true.
@@ -7968,3 +7968,83 @@ date-fns
 ## Widget VS WebComponents
 
 https://selleo.com/blog/how-to-create-embedded-react-widget
+
+# Testing
+
+Refs:
+
+- [The test book club](https://club.ministryoftesting.com/)
+- [TJS Testing Javascript](https://testingjavascript.com/)
+
+## Learning Testing in JS
+
+### TestingJavaScript.com
+
+#### Fundamentals of Testing in JavaScript
+
+Summary: implement a simple JEST clone to understand how testing works
+
+##### Throw an Error with a Simple Test in JavaScript
+
+https://testingjavascript.com/lessons/javascript-throw-an-error-with-a-simple-test-in-javascript
+02-scikit-learn-write-the-simplest-test-in-javascript-B10-8nRlQ.mp4
+
+- Show a first implementation
+
+##### Abstract Test Assertions into a JavaScript Assertion Library
+
+https://testingjavascript.com/lessons/javascript-abstract-test-assertions-into-a-javascript-assertion-library
+03-scikit-learn-build-a-javascript-assertion-library-rkUSQkUZQ.mp4
+
+Objective : "Ecapsulate assertion in an assertion library", refactoring this code:
+
+```js
+expected = 10;
+if (result !== expected) {
+  throw new Error(`${result} is not equal to ${expected}`);
+}
+```
+
+There're all kinds of assertions that we could add to our little assertion library here to make writing our test a little easier: toBe, toBeGreaterThan or toBeLessThan, and then it could take an expected value.
+
+##### Encapsulate and Isolate Tests by building a JavaScript Testing Framework
+
+https://testingjavascript.com/lessons/javascript-encapsulate-and-isolate-tests-by-building-a-javascript-testing-framework
+04-scikit-learn-build-a-javascript-testing-framework-SJLU41U-7.mp4
+
+One of the limitations of the way that this test is written is that as soon as one of these assertions experiences an error, the other tests are not run. It can really help developers identify what the problem is if they can see the results of all of the tests.
+
+At this point we have implemented something really similar to what we have in the JEST tutorial https://jestjs.io/docs/getting-started
+
+##### Support Async Tests with JavaScripts Promises through async await
+
+05-scikit-learn-support-async-tests-with-javascripts-promises-By3WrJI-7.mp4
+https://testingjavascript.com/lessons/javascript-support-async-tests-with-javascripts-promises-through-async-await
+
+If we turn this test into an async function, and then await that callback, if that promise is rejected, then we'll land in our catch block.
+
+##### Provide Testing Helper Functions as Globals in JavaScript
+
+https://testingjavascript.com/lessons/javascript-provide-testing-helper-functions-as-globals-in-javascript
+
+These testing utilities are pretty useful. We want to be able to use them throughout our application in every single one of our test files.
+
+We could put these into a module that we would require an import into every single one of our test files, but many testing frameworks embrace the fact that you're going to be using these in every single one of your test files, and so they just make them available globally
+
+global.test = test, and global.expect = expect.
+
+##### Verify Custom JavaScript Tests with Jest
+
+.... and now simply replace the global with JEST!
+
+https://testingjavascript.com/lessons/jest-verify-custom-javascript-tests-with-jest
+
+#### JavaScript Mocking Fundamentals
+
+##### Intro to JavaScript Mocking Fundamentals
+
+https://testingjavascript.com/lessons/javascript-intro-to-javascript-mocking-fundamentals
+
+Even though what we're doing in node land without Jest is not what Jest is doing at all because Jest is in total control of the module system when it's running your test, it's enlightening to see how this might be working if we were to implement it ourselves.
+
+The idea is that (with the exception of the first test), you look at the jest version first, then see how that would be implemented without a testing framework.
