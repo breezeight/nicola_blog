@@ -71,7 +71,27 @@ https://developer.mozilla.org/en-US/docs/Glossary
 
 typeof -> how does it works?
 
-# VS Code Extensions: best practices
+# VSCode
+
+## VSCode Debugger
+
+- https://strongloop.com/strongblog/interactive-debugging-with-node-js/
+- [VSCode NodeJS Debugger Doc](https://code.visualstudio.com/docs/nodejs/nodejs-debugging)
+
+Call Stack Pane:
+
+- function calls that got you to the current position in the code when execution is paused, and enables you to step back up that stack and examine the application state in earlier “frames.” By clicking the frame below the current frame you can jump to the code that called the current function.
+- `Skipped by skipfiles` are files that usally not usefull to be shown in the stack
+
+```js
+"debug.javascript.terminalOptions": {
+  "skipFiles": [
+    "<node_internals>/**"
+  ]
+},
+```
+
+## VSCode Extensions: best practices
 
 When writing JavaScript with an editor such as Visual Studio Code, there are a number of ways you can ensure your code is syntactically correct and in line with current best practices. You can use a linter to do this. Linters check your code for syntax errors and highlight errors to make sure you can quickly find and fix them. ESLint is a linter that you can integrate into your Visual Studio Code setup in order to ensure code integrity.
 
