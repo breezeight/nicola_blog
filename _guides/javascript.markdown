@@ -8154,7 +8154,10 @@ Often you’ll want to mock the same file throughout all the tests in your codeb
 
 #### Static Analysis Testing JavaScript Applications
 
-https://testingjavascript.com/playlists/static-analysis-testing-javascript-applications-6c9c
+See Also the [Addictive Confluence space](https://pitchtarget.atlassian.net/wiki/spaces/AKB/pages/12943361/Static+Analysis+and+linters)
+
+
+Ref: https://testingjavascript.com/playlists/static-analysis-testing-javascript-applications-6c9c
 
 There are tools like ESLint, TypeScript, Prettier, and more which we can use to satisfy a whole category of testing with a great developer experience: typos and incorrect types.
 
