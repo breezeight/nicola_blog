@@ -71,29 +71,33 @@ Here I want to describe the main concepts and some practical use cases.
 
 ## Main Concepts
 
-**Build**
-: is the core process of Packer. During this process Packer reads the configuration from a
-Template use one or more Builder to create machine, use a provisioner to
-configure the machine and eventually produce one or more Artifact.
+**Commands**
+are sub-commands for the packer program that perform some job. An example command is "build", which is invoked as packer build. Packer ships with a set of commands out of the box in order to define its command-line interface.
+
+**Builds**
+Build is the core process of Packer. During this process Packer reads the configuration from a Template, use one or more Builder to create machine and use a provisioner to configure the machine and eventually produce one or more Artifact. Each build is a single task that eventually produces an image for a single platform. Multiple builds run in parallel.
 
 **Artifact**
-: are the results of a single build, and are usually a set of IDs or files to represent a machine image. Every builder produces a single artifact. As an example, in the case of the Amazon EC2 builder, the artifact is a set of AMI IDs (one per region). For the VMware builder, the artifact is a directory of files comprising the created virtual machine.
+are the results of a single build, and are usually a set of IDs or files to represent a machine image. Every builder produces a single artifact. As an example, in the case of the Amazon EC2 builder, the artifact is a set of AMI IDs (one per region). For the VMware builder, the artifact is a directory of files comprising the created virtual machine.
 
 **Provisioners**
-: are components of Packer that install and configure software within a running machine (shell scripts, Chef, Puppet, etc.)
+are components of Packer that install and configure software within a running machine (shell scripts, Chef, Puppet, etc.),  prior to that machine being turned into a static image. 
 
 **Builders**
-: are components of Packer that are able to create a machine image for a single platform (ex: AWS builder create an AMI creating a new EC2 instance or creating a new one). 
+are components of Packer that are able to create a machine image for a single platform (ex: AWS builder create an AMI creating a new EC2 instance or creating a new one). Builders read in some configuration and use that to run and generate a machine image. A builder is invoked as part of a build in order to create the actual resulting images. Example builders include VirtualBox, VMware, and Amazon EC2.
 
 **Templates**
-: are JSON files which define one or more builds by configuring the various components of Packer. [Documentation](http://www.packer.io/docs/templates/introduction.html)
+are JSON or [HCL](https://www.packer.io/docs/templates/hcl_templates) files which define one or more builds by configuring the various components of Packer. [Documentation](http://www.packer.io/docs/templates/introduction.html)
+
+**Data Sources**
+are components of Packer that fetch data from outside Packer and make it available to use within the template. Example of data sources include Amazon AMI, and Amazon Secrets Manager.
 
 **Post-processors**
-: are components of Packer that take the result of a builder or another post-processor and process that to create a new artifact.
+are components of Packer that take the result of a builder or another post-processor and process that to create a new artifact.
 
 Ref: [Packer terminology documentation](http://www.packer.io/docs/basics/terminology.html)
 
-## Packer Command Line
+## Packer Commands (CLI)
 
 All interaction with Packer is done via the `packer` tool.
 [Documentation](http://www.packer.io/docs/command-line/introduction.html)
@@ -103,6 +107,20 @@ Most common command are:
 * Build a template : `packer build ubuntu_basic.json`
 * Build only a builder : `packer build -only=virtualbox-iso ubuntu_basic.json`
 * Print human readable template description : `packer inspect template.json`
+
+## Packer Templates
+
+https://www.packer.io/docs/templates
+
+A Template consists of a series of declarations and commands for Packer to follow. 
+
+* Packer is transitioning to a new template configuration format that uses HCL2 -- the same configuration language used by Terraform and HashiCorp's other products. From version 1.7.0, HCL2 becomes officially the preferred way to write Packer configuration(s).
+
+[HCL2 Full doc](https://www.packer.io/docs/templates/hcl_templates)
+[HCL2 Quick Intro](https://www.packer.io/guides/hcl)
+
+
+NOTE: Note: that the file can be named anything, since Packer loads all files ending in .pkr.hcl in a directory. If you split your configuration across multiple files, use packer build <command line flags> <source directory> to initiate a build.
 
 ## Use Case: create a Generic Vagrant Box
 Creating a base box is actually **provider-specific**.
@@ -298,7 +316,16 @@ If you have vbox addition the easiest way to mount and share a dir is:
 
 ## Providers
 
-## VirtualBox
+WARNING: You need to use Vagrant boxes compatible with the provider you are using https://app.vagrantup.com/boxes/search?order=desc&page=0&provider=parallels&sort=created
+
+### Parallels
+
+https://parallels.github.io/vagrant-parallels/docs/
+
+WARNING: You need to use Vagrant boxes compatible with the provider you are using https://app.vagrantup.com/boxes/search?order=desc&page=0&provider=parallels&sort=created
+
+
+### VirtualBox
 
 * official doc: http://docs.vagrantup.com/v2/virtualbox/configuration.html
 * tutorial: http://kvz.io/blog/2013/01/16/vagrant-tip-keep-virtualbox-guest-additions-in-sync/
