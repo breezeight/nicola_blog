@@ -19,6 +19,14 @@ vagrant boxes:
 * [Official Ubuntu 14.04](https://cloud-images.ubuntu.com/vagrant/trusty/current/)
 * [Bento Project by OpsCode](https://github.com/opscode/bento): Bento is a project that encapsulates Packer templates for building Vagrant baseboxes, used by Opscode to test Chef. 
 
+# Testing VM performances
+
+brew install iozone
+
+Examples: https://www.thegeekstuff.com/2011/05/iozone-examples/
+
+
+
 
 # Packer VS Vagrant
 
@@ -474,3 +482,80 @@ To debug you can run from the VM the command:
 ~~~bash
 /opt/chef/embedded/bin/ruby /usr/bin/chef-solo  -c /tmp/vagrant-chef-1/solo.rb -j /tmp/vagrant-chef-1/dna.json
 ~~~
+
+
+
+# Multipass - Canonical
+
+* DOC: https://multipass.run/docs/mac-tutorial
+* Discussion: https://discourse.ubuntu.com/c/multipass/21/none
+
+
+## Why Multipass?
+
+* https://discourse.ubuntu.com/t/beta-release-multipass/2696 
+*  is a service that manages virtual machine instances running Ubuntu. It uses images from [cloud-images](http://cloud-images.ubuntu.com/), the same images you will use 
+
+
+## MISC cmds
+
+`multipass find` : Lists available images
+`multipass delete breezy-liger`: delete the instance named breezy-liger
+
+
+## Primary Instance
+
+In Multipass, an instance with the name primary is privileged.  `primary` is a special instance:
+- your host $HOME is mounted automaticcaly into the VM `~/Home/` directory
+- For example, it is the default argument of multipass shell. In two terminal instances, check multipass shell primary and multipass shell. Both commands should give the same result.
+
+
+`multipass launch lts --name ltsInstance --mem 2G --disk 10G --cpus 2`
+
+## Networking | HUGE TOPIC
+
+Con la 1.9 dovrebbero aver risolto: https://discourse.ubuntu.com/t/multipass-on-apple-silicon/27367/4
+
+## Mount | CAN BE SLOW
+
+
+https://discourse.ubuntu.com/t/mount-i-o-slow-how-to-improve-performance/18479/6
+
+
+* Within instance to mounted directory:     37558 KB/s
+  * ex: iozone -a  -s 1024
+
+* On instance filesystem:                   966404 KB/s
+  * ex: multipass exec primary -d "/home/ubuntu" -- iozone -a  -s 1024
+
+* On host filesystem (mounted directory):   3103163 KB/s
+  * ex: multipass exec primary -d "/home/ubuntu/Home" -- iozone -a  -s 1024
+
+## exec
+
+`multipass exec -- cmd --my-option`: execute `cmd` into the instance 
+
+By default it mounts the `pwd` of the host into the 
+
+To override this behaviour use: `-n, --no-map-working-directory`: Do not map the host execution path to a mounted path
+
+
+The -- separator is required if you want to pass options to the command being run. Options to the exec command itself must be specified before --.
+
+it is possible to specify on which instance directory the command must be executed. For that, there are three options. The first one is `-d <dir>`, which tells Multipass that the command must be executed in the folder `<dir>`. For example:
+
+```bash
+$ multipass exec arriving-pipefish --working-directory /home -- ls -a
+.  ..  ubuntu
+```
+
+The ls -la command showed the contents of the /home directory, because it was executed from there.
+
+
+multipass exec primary -n ls
+
+
+
+
+You can pipe standard input and output to/from the command:  `multipass exec primary -- lsb_release -a | grep ^Codename:`
+
