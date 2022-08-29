@@ -71,6 +71,17 @@ https://developer.mozilla.org/en-US/docs/Glossary
 
 typeof -> how does it works?
 
+# Style Guides
+
+Airbnb JavaScript Style Guide: https://github.com/airbnb/javascript
+JS Standard Style Guide: https://github.com/standard/standard
+
+
+* camelCase when naming objects, functions, and instances (and relative files)
+* PascalCase only when naming constructors or classes (and relative files)
+* Acronyms and initialisms should always be all uppercased, or all lowercased. (SMSContainer)
+
+
 # VSCode
 
 ## VSCode Debugger
@@ -6940,22 +6951,33 @@ https://blog.logrocket.com/es-modules-in-node-js-12-from-experimental-to-release
 
 ## ESM ES6/ES2015 Modules: Standard Javascript Modules
 
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 - [javascript.info Modules](https://javascript.info/modules-intro)
-
   - Good intro for beginners
   - Super brief History of modules
   - basic usage of import/export with browser example
   - `<script type="module">` : Always "use strict", Module-level scope, A module code is evaluated only the first time when imported, import.meta, "this" is undefined, Module scripts are deferred, `<script async type="module">` , External scripts, No “bare” modules allowed, Compatibility, “nomodule”,
 
-- [Intro](http://www.wintellect.com/blogs/nstieglitz/5-great-features-in-es6-harmony)
-- [ES6 Draft](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)
-- [Easy Summary](http://www.frontendjournal.com/javascript-es6-learn-important-features-in-a-few-minutes/)
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
+
+
+- [CommonJS vs. ES Modules: Modules and Imports in NodeJS in 2022](https://reflectoring.io/nodejs-modules-imports/)
+
+
+
 - [JSFIP Modules ES2020](https://exploringjs.com/impatient-js/ch_modules.html)
 - [Yeuda draft](https://gist.github.com/wycats/51c96e3adcdb3a68cbc3)
 - http://eviltrout.com/2014/05/03/getting-started-with-es6.html
 
+
+As our application grows bigger, we want to split it into multiple files, so called “modules”. A module may contain a class or a library of functions for a specific purpose.
+
+For a long time, JavaScript existed without a language-level module syntax. That wasn’t a problem, because initially scripts were small and simple, so there was no need. 
+
+But eventually scripts became more and more complex, so the community invented a variety of ways to organize code into modules, special libraries to load modules on demand. UMD, AMD, was 
+
 JavaScript standard from 2015 introduces its own, different module system. It is usually called ES modules (ESM), where ES stands for ECMAScript.
+
+In 2022 modern browsers, NodeJS 14 and typescript support ESM. So if you are starting a new project, use ES Modules ( ref https://reflectoring.io/nodejs-modules-imports/ ).
 
 The full standard of ES modules comprises the following parts:
 
@@ -6963,23 +6985,108 @@ The full standard of ES modules comprises the following parts:
 2. Semantics (how code is executed): How are variable bindings exported? How are imports connected with exports? Etc.
 3. A programmatic loader API for configuring module loading (https://javascript.info/modules-dynamic-imports). Usecase: conditional imports.
 
-Why use ES6 modules?
 
-- it's the first time we've had modules that are actually part of the language.
-- Now that the standard has been formalised, we can look forward to a future in which browsers (and node.js, eventually) natively support ES6 modules. So code written in ES6 modules is future-proof.
+A **module** is simply a file with JavaScript code in it. By default anything you declare in a file in a ES6 project is not available outside that file. You have to use the export keyword to explicitly make it available, defining the **module interface**. An ES module’s interface is not a single value but a set of named bindings. Modules can load each other and use special directives export and import to interchange functionality, call functions of one module from another one.
 
-- A **module** is simply a file with JavaScript code in it.
-- By default anything you declare in a file in a ES6 project is not available outside that file. You have to use the export keyword to explicitly make it available.
-- An ES module’s interface is not a single value but a set of named bindings.
+`export` keyword labels variables and functions that should be accessible from outside the current module.
 
-Modules can load each other and use special directives export and import to interchange functionality, call functions of one module from another one:
+The easiest way to use it is to place it in front of any items you want exported out of the module, for example to export the `name` variable and the `draw` function:
 
-- `export` keyword labels variables and functions that should be accessible from outside the current module.
-- `import` allows the import of functionality from other modules.
+```js
+export const name = 'square';
+
+export function draw(ctx, length, x, y, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x, y, length, length);
+
+  return { length, x, y, color };
+}
+```
+
+`import` allows the import of functionality from other modules:
+
+```js
+import { name, draw, reportArea, reportPerimeter } from './modules/square.js';
+
+draw(...) // here we are using a function defined in the square.js file
+```
+
+
+You can export functions, var, let, const, and — as we'll see later — classes. They need to be top-level items; you can't use export inside a function, for example.
+
+A more convenient way of exporting all the items you want to export is to use a single export statement at the end of your module file, followed by a comma-separated list of the features you want to export wrapped in curly braces. For example:
+
+```js
+export { name, draw, reportArea, reportPerimeter };
+```
 
 WARNING:
 
 - in this paragraph we'll describe the ESM syntax and convention. Many bundlers (ex: Webpack) use a similar syntax but with a slightly different behaviour.
+
+
+### Default exports versus named exports
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#default_exports_versus_named_exports 
+
+default export — this is designed to make it easy to have a default function provided by a module, and also helps JavaScript modules to interoperate with existing CommonJS and AMD module systems (as explained nicely in [ES6 In Depth: Modules by Jason Orendorff](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/); search for "Default exports").
+
+For example it's very handy to create ReactJS components.
+`export default` is used to export a single class, function or primitive from a script file.
+
+The export can also be written as
+
+```js
+export default class HelloWorld extends React.Component {
+  render() {
+    return <p>Hello, world!</p>;
+  }
+}
+```
+
+You could also write this as a function component like
+
+```js
+export default function HelloWorld() {
+  return <p>Hello, world!</p>
+}
+```
+
+This is used to import this function in another script file
+
+```js
+import HelloWorld from './HelloWorld';
+```
+
+You don't necessarily import it as HelloWorld you can give it any name as it's a default export.
+
+Again, note the lack of curly braces. This is because there is only one default export allowed per module, and we know that randomSquare is it. The above line is basically shorthand for:
+
+```js
+import {default as randomSquare} from './modules/square.js';
+```
+
+### Named Import - Avoiding naming conflicts
+
+If we tried to import different functions of the same name into the same top-level module file, we'd end up with conflicts and errors.
+
+Fortunately there are a number of ways to get around this.
+
+Renaming imports and exports : Inside your import and export statement's curly braces, you can use the keyword as along with a new feature name, to change the identifying name you will use for a feature inside the top-level module.
+
+```js
+// inside module.js
+export { function1, function2 };
+
+// inside main.js
+import {
+  function1 as newFunctionName,
+  function2 as anotherNewFunctionName,
+} from './modules/module.js';
+```
+
+See here for more details: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#avoiding_naming_conflicts
+
 
 ### Cheatsheet: syntax of ECMAScript modules
 
@@ -7972,7 +8079,7 @@ https://selleo.com/blog/how-to-create-embedded-react-widget
 # Testing
 
 Refs:
-
+- [Getting Started JEST](https://jestjs.io/docs/getting-started)
 - [The test book club](https://club.ministryoftesting.com/)
 - [TJS Testing Javascript](https://testingjavascript.com/)
 - https://mercedesbernard.com/blog/jest-mocking-strategies elenco di problemi e strategie
