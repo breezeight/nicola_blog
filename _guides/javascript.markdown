@@ -199,6 +199,12 @@ See the elequent JS pdf book for a nice introduction to the topic.
 
 REF: [Statements and declarations by category](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements)
 
+## Explaining Value vs. Reference in Javascript
+
+TODO: prendersi le parti interessanti di questo post:
+https://codeburst.io/explaining-value-vs-reference-in-javascript-647a975e12a0
+fanno vedere visivamente come la memoria si comporta a seconda del tipo di oggetto JS si utilizza.
+
 ## Equality operator === vs ==
 
 Always use === equals unless you have a good reason to use ==.
