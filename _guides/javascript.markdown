@@ -1542,9 +1542,9 @@ Each of these helpers accepts a function callback to apply to each element in th
 
 #### for..of
 
-If you iterate on an object with a for..in loop, you're also only getting at the values indirectly, because it's actually iterating only over the enumerable properties of the object, leaving you to access the properties manually to get the values.
+If you iterate on an object with a `for..in` loop, you're also only getting at the values indirectly, because it's actually iterating only over the enumerable properties of the object, leaving you to access the properties manually to get the values.
 
-if you want to iterate over the values directly instead of the array indices (or object properties), ES6 adds a `for..of` loop syntax for iterating over arrays (and objects, if the object defines its own custom iterator):
+If you want to iterate over the values directly instead of the array indices (or object properties), ES6 adds a `for..of` loop syntax for iterating over arrays (and objects, if the object defines its own custom iterator):
 
 ```js
 var myArray = [1, 2, 3];
@@ -1558,9 +1558,9 @@ for (var v of myArray) {
 // 3
 ```
 
-The for..of loop asks for an iterator object (from a default internal function known as @@iterator in spec-speak) of the thing to be iterated, and the loop then iterates over the successive return values from calling that iterator object's next() method, once for each loop iteration.
+The `for..of` loop asks for an iterator object (from a default internal function known as @@iterator in spec-speak) of the thing to be iterated, and the loop then iterates over the successive return values from calling that iterator object's next() method, once for each loop iteration.
 
-Arrays have a built-in @@iterator, so for..of works easily on them, as shown. But let's manually iterate the array, using the built-in @@iterator, to see how it works:
+Arrays have a built-in `@@iterator`, so `for..of` works easily on them, as shown. But let's manually iterate the array, using the built-in `@@iterator`, to see how it works:
 
 ```js
 var myArray = [1, 2, 3];
@@ -1589,7 +1589,7 @@ Symbols offer names that are unique and cannot clash with other property names. 
 
 The `Iteration Protocol` establishes the relationship between: iterables, iterators, and next.
 
-- An `iterable` is a data structure that wants to make its elements accessible to the public. It does so by implementing a method whose key is Symbol.iterator. That method is a factory for iterators. That is, it will create iterators.
+- An `iterable` is a data structure that wants to make its elements accessible to the public. It does so by implementing a method whose key is `Symbol.iterator`. That method is a factory for iterators. That is, it will create iterators.
 - An `iterator` is a pointer for traversing the elements of a data structure.
 
 The `iteration protocol` is defined here https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol
