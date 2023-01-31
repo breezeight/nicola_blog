@@ -1725,6 +1725,12 @@ Docker compose adds labels to container
 
 ## Volumes lifecycle with compose
 
+HOW to Remove a named volume with docker-compose?
+
+* docker-compose down -v
+* Ref: https://stackoverflow.com/questions/45511956/remove-a-named-volume-with-docker-compose
+
+
 TODO: fare qualche test con la cancellazione e rigenerazione 
 
 https://github.com/docker/compose/issues/2308 :
