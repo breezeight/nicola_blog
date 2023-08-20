@@ -6646,7 +6646,7 @@ To check if a selection contains elements:
 - https://learn.jquery.com/using-jquery-core/selecting-elements/#does-my-selection-contain-any-elements
 - `if ( $( "div.foo" ).length )`
 
-# JavaScript modules, loaders and bundlers.
+# Modules, loaders and bundlers.
 
 Ref:
 
@@ -6874,7 +6874,7 @@ The full standard of ES modules comprises the following parts:
 3. A programmatic loader API for configuring module loading (https://javascript.info/modules-dynamic-imports). Usecase: conditional imports.
 
 
-A **module** is simply a file with JavaScript code in it. By default anything you declare in a file in a ES6 project is not available outside that file. You have to use the export keyword to explicitly make it available, defining the **module interface**. An ES module’s interface is not a single value but a set of named bindings. Modules can load each other and use special directives export and import to interchange functionality, call functions of one module from another one.
+A **module** is simply a file with JavaScript code in it. By default anything you declare in a file in a ES6 project is not available outside that file. You have to use the export keyword to explicitly make it available, defining the **module interface**. An ES module’s interface is not a single value but a set of named bindings. Modules can load each other and use special directives `export` and `import` to interchange functionality, call functions of one module from another one.
 
 `export` keyword labels variables and functions that should be accessible from outside the current module.
 
