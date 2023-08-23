@@ -1911,27 +1911,204 @@ Functions are objects, just with an additional, special capability of **being in
 
 ## Closures
 
-A closure is a special kind of object that combines two things:
+Ref:
+* https://dmitripavlutin.com/simple-explanation-of-javascript-closures/
+* freecodecamp.org/news/lets-learn-javascript-closures-66feb44f6a44/
+
+While being used everywhere, closures are difficult to grasp. Before learning closures, you need to grasp two concept:
+
+* scope 
+* lexical scope
+
+These concepts are crucial to closures, and if you get them well, the idea of closure becomes self-evident. Then, after grasping the basics, you'll need just one step to finally understand closures.
+
+### Scope
+
+- When you define a variable, you want it to exist within some boundaries. E.g. a result variable makes sense to exist within a calculate() function, as an internal detail. Outside of the calculate(), the result variable is useless.
+- The accessibility of variables is managed by scope. You are free to access the variable defined within its scope. But outside of that scope, the variable is inaccessible.
+- In JavaScript, a scope is created by a function or a code block.
+
+Let's see how the scope affects the availability of a variable count. This variable belongs to the scope created by function foo():
+
+```js
+function foo() {
+  // The function scope
+  let count = 0;
+  console.log(count); // logs 0
+}
+foo();
+console.log(count); // ReferenceError: count is not defined
+```
+
+[Demo on JS Fiddle](https://jsfiddle.net/dmitri_pavlutin/81nmhury/)
+
+count is freely accessed within the scope of foo().
+
+However, outside of the foo() scope, count is inaccessible. If you try to access count from outside anyways, JavaScript throws ReferenceError: count is not defined.
+
+If you've defined a variable inside of a function or code block, then you can use this variable only within that function or code block. The above example demonstrates this behavior.
+
+![](images/js_scope-3.svg)
+
+Now, let's see a general formulation: "The scope is a space policy that rules the accessibility of variables".
+
+The scope isolates variables. That's great because different scopes can have variables with the same name. You can reuse common variables names (count, index, current, value, etc) in different scopes without collisions.
+
+`foo()` and `bar()` function scopes have their own, but same named, variables count:
+
+```js
+function foo() {
+  // "foo" function scope
+  let count = 0;
+  console.log(count); // logs 0
+}
+function bar() {
+  // "bar" function scope
+  let count = 1;
+  console.log(count); // logs 1
+}
+foo();
+bar();
+```
+
+[Demo on JS Fiddle](https://jsfiddle.net/dmitri_pavlutin/weyqczga/)
+
+`count` variables from `foo()` and `bar()` function scopes do not collide.
+
+### Nested Scopes
+
+Let's play a bit more with scopes, and nest one scope into another. For example, the function `innerFunc()` is nested inside an outer function `outerFunc()`.
+
+How would the 2 function scopes interact with each other? Can I access the variable outerVar of outerFunc() from within innerFunc() scope?
+
+Let's try that in the example:
+
+```js
+function outerFunc() {
+  // the outer scope
+  let outerVar = 'I am outside!';
+  function innerFunc() {
+    // the inner scope
+    console.log(outerVar); // => logs "I am outside!"
+  }
+  innerFunc();
+}
+outerFunc();
+```
+
+[Try the demo](https://jsfiddle.net/dmitri_pavlutin/x4rzf61c/)
+
+Indeed, `outerVar` variable is accessible inside `innerFunc()` scope. The variables of the outer scope are accessible inside the inner scope.
+
+
+![](images/js_nested-scopes-3.svg)
+
+Now you know 2 interesting things:
+
+- Scopes can be nested
+- The variables of the outer scope are accessible inside the inner scope
+
+### The lexical scope
+
+How does JavaScript understand that outerVar inside innerFunc() corresponds to the variable outerVar of outerFunc()?
+
+JavaScript implements a scoping mechanism named lexical scoping (or static scoping). Lexical scoping means that the accessibility of variables is determined by the position of the variables inside the nested scopes.
+
+Simpler, the lexical scoping means that inside the inner scope you can access variables of outer scopes.
+
+It's called lexical (or static) because the engine determines (at lexing time) the nesting of scopes just by looking at the JavaScript source code, without executing it.
+
+The distilled idea of the lexical scope:
+
+The lexical scope consists of outer scopes determined statically.
+
+For example:
+
+```js
+const myGlobal = 0;
+function func() {
+  const myVar = 1;
+  console.log(myGlobal); // logs "0"
+  function innerOfFunc() {
+    const myInnerVar = 2;
+    console.log(myVar, myGlobal); // logs "1 0"
+    function innerOfInnerOfFunc() {
+      console.log(myInnerVar, myVar, myGlobal); // logs "2 1 0"
+    }
+    innerOfInnerOfFunc();
+  }
+  innerOfFunc();
+}
+func();
+```
+
+[Try the demo](https://jsfiddle.net/dmitri_pavlutin/sga5jhku/)
+
+The lexical scope of `innerOfInnerOfFunc()` consits of scopes of `innerOfFunc()`, `func()` and global scope (the outermost scope). Within `innerOfInnerOfFunc()` you can access the lexical scope variables `myInnerVar`, `myVar` and `myGlobal`.
+
+The lexical scope of `innerFunc()` consists of `func()` and global scope. Within `innerOfFunc()` you can access the lexical scope variables myVar and myGlobal.
+
+Finally, the lexical scope of `func()` consists of only the global scope. Within `func()` you can access the lexical scope variable `myGlobal`.
+
+### Closure Definition
+
+Ok, the lexical scope allows to access the variables statically of the outer scopes. There's just one step until the closure!
+
+A closure is a special kind of feature of JS that combines two things:
 
 - a function
 - the environment in which that function was created.
 
-```javascript
-function makeAdder(x) {
-  return function (y) {
-    // is the inner function, a closure
-    return x + y; // x is the local variable
-  };
+Let's take a look again at the outerFunc() and innerFunc() example:
+
+```js
+function outerFunc() {
+  let outerVar = 'I am outside!';
+  function innerFunc() {
+    console.log(outerVar); // => logs "I am outside!"
+  }
+  innerFunc();
 }
-
-var add5 = makeAdder(5);
-var add10 = makeAdder(10);
-
-console.log(add5(2)); // 7
-console.log(add10(2)); // 12
+outerFunc();
 ```
 
-This is an example of lexical scoping: in JavaScript, the scope of a variable is defined by its location within the source code (it is apparent lexically) and nested functions have access to variables declared in their outer scope.
+Inside the `innerFunc()` scope, the variable `outerVar` is accessed from the lexical scope. That's known already.
+
+Note that `innerFunc()` invocation happens inside its lexical scope (the scope of `outerFunc()`).
+
+Let's make a change: `innerFunc()` to be invoked outside of its lexical scope: in a function `exec()`. Would `innerFunc()` still be able to access outerVar?
+
+Let's make the adjustments to the code snippet:
+
+```js
+function outerFunc() {
+  let outerVar = 'I am outside!';
+  function innerFunc() {
+    console.log(outerVar); // => logs "I am outside!"
+  }
+  return innerFunc;
+}
+function exec() {
+  const myInnerFunc = outerFunc();
+  myInnerFunc();
+}
+exec();
+```
+
+Running this code has exactly the same effect as the previous example of the `outerFunc()` function above. What's different (and interesting) is that the `innerFunc()` inner function is returned from the outer function before being executed and `innerFunc()` still has access to `outerVar` from its lexical scope, even being executed outside of its lexical scope.
+
+In other words, `innerFunc()` closes over (a.k.a. captures, remembers) the variable outerVar from its lexical scope. In other words, `innerFunc()` is a closure because it closes over the variable outerVar from its lexical scope.
+
+![](images/js-closure-6.svg)
+
+
+You've made the final step to understanding what a closure is: The closure is a function that accesses its lexical scope even executed outside of its lexical scope.
+
+Simpler, the closure is a function that remembers the variables from the place where it is defined, regardless of where it is executed later.
+
+A rule of thumb to identify a closure: if inside a function you see an alien variable (not defined inside that function), most likely that function is a closure because the alien variable is captured.
+
+In the previous code snippet, outerVar is an alien variable inside the closure innerFunc() captured from outerFunc() scope.
 
 See a more detailed explanation in the [MDN guide](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Closures)
 
@@ -1939,6 +2116,112 @@ There is a critical difference between a C pointer to a function, and a
 JavaScript reference to a function. In JavaScript, you can think of a
 function reference variable as having both a pointer to a function as
 well as a hidden pointer to a closure. In C, and most other common languages after a function returns, all the local variables are no longer accessible because the stack-frame is destroyed.
+
+
+Conclusion: 
+
+* The scope rules the accessibility of variables. There can be a function or a block scope.
+
+* The lexical scope allows a function scope to access statically the variables from the outer scopes.
+
+* Finally, a closure is a function that captures variables from its lexical scope. In simple words, the closure remembers the variables from the place where it is defined, no matter where it is executed.
+
+* Closures allow event handlers, callbacks to capture variables. They're used in functional programming. Moreover, you could be asked how closures work during a Frontend job interview.
+
+Every JavaScript developer must know how closures work. Deal with it!
+
+### Closure 
+
+freecodecamp.org/news/lets-learn-javascript-closures-66feb44f6a44/
+
+
+### Closure Examples: 7 Interview Questions on JavaScript Closures. Can You Answer Them?
+
+What about a challenge? [7 Interview Questions on JavaScript Closures. Can You Answer Them?](https://dmitripavlutin.com/javascript-closures-interview-questions/)
+
+NIK SOLUTION TO question #4:
+
+```js
+for (var i = 0; i < 3; i++) {
+  let a = i // because i is an integer it's copied by value, then we caputure the variable "a" in the setTimeout function
+  setTimeout(function log() {
+    console.log(a); // We caputure a instead of i
+  }, 1000);
+}
+```
+
+### Closure Example: Event handler
+
+Let's display how many times a button is clicked:
+
+```js
+let countClicked = 0;
+myButton.addEventListener('click', function handleClick() {
+  countClicked++;
+  myText.innerText = `You clicked ${countClicked} times`;
+});
+```
+
+[Open the demo](https://codesandbox.io/s/event-handling-ymvr9) and click the button. The text updates to show the number of clicks.
+
+When the button is clicked, `handleClick()` is executed somewhere inside of the DOM code. The execution happens far from the place of the definition.
+
+But being a closure, `handleClick()` captures `countClicked` from the lexical scope and updates it when a click happens. Even more, `myText` is captured too.
+
+### Closure Example: Callbacks
+
+Capturing variables from the lexical scope is useful in callbacks.
+
+A `setTimeout()` callback:
+
+```js
+const message = 'Hello, World!';
+setTimeout(function callback() {
+  console.log(message); // logs "Hello, World!"
+}, 1000);
+The callback() is a closure because it captures the variable message.
+
+An iterator function for forEach():
+
+let countEven = 0;
+const items = [1, 5, 100, 10];
+items.forEach(function iterator(number) {
+  if (number % 2 === 0) {
+    countEven++;
+  }
+});
+countEven; // => 2
+```
+[Try the demo](https://jsfiddle.net/dmitri_pavlutin/kxpscLzv/1/)
+
+The iterator is a closure because it captures countEven variable.
+
+### Closure Example: Functional programming - Currying
+
+Currying happens when a function returns another function until the arguments are fully supplied.
+
+For example:
+
+```js
+function multiply(a) {
+  return function executeMultiply(b) {
+    return a * b;
+  }
+}
+const double = multiply(2);
+double(3); // => 6
+double(5); // => 10
+const triple = multiply(3);
+triple(4); // => 12
+```
+
+[Try the demo](https://jsfiddle.net/dmitri_pavlutin/fqswk8v0/)
+
+multiply is a curried function that returns another function.
+
+Currying, an important concept of functional programming, is also possible thanks to closures.
+
+executeMultiply(b) is a closure that captures a from its lexical scope. When the closure is invoked, the captured variable a and the parameter b are used to calculate a * b.
 
 ### Closure Example
 
@@ -2018,8 +2301,10 @@ If you try this code out, you'll see that it doesn't work as expected. No matter
 
 The reason for this is that the functions assigned to onfocus are closures; they consist of the function definition and the captured environment from the setupHelp function's scope. Three closures have been created, but each one shares the same single environment.
 
-The `for` statement don't define a new scope, the `vat item` is defined
+The `for` statement don't define a new scope, the `var item` is defined
 only once.
+
+NIK NOTE (TODO): a me sembra che se metto un let al posto di var tutto funziona...
 
 To fix the above example we need to define a new scope for each
 interation in the for loop using a function factory:
@@ -5242,6 +5527,68 @@ https://github.com/getify/You-Dont-Know-JS/blob/9959fc904d584bbf0b02cf41c192f74f
 
 See also the second example here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create#Examples
 
+# Asynchronous JavaScript
+
+Ref:
+* https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous
+* https://javascript.info/async 
+
+## Asynchronicity: intro and callbacks
+
+Asynchronous programming is a technique that enables your program to start a potentially long-running task and still be able to be responsive to other events while that task runs, rather than having to wait until that task has finished. Once that task has finished, your program is presented with the result.
+
+Many functions provided by browsers, especially the most interesting ones, can potentially take a long time, and therefore, are asynchronous. For example:
+
+-  Making HTTP requests using [`fetch()`](https://developer.mozilla.org/en-US/docs/Web/API/fetch "fetch()")
+-  Accessing a user's camera or microphone using [`getUserMedia()`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia "getUserMedia()")
+-  Asking a user to select files using [`showOpenFilePicker()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/showOpenFilePicker "showOpenFilePicker()")
+
+So even though you may not have to *implement* your own asynchronous functions very often, you are very likely to need to *use* them correctly.
+
+Many functions are provided by JavaScript host environments that allow you to schedule asynchronous actions. In other words, actions that we initiate now, but they finish later.
+
+For instance, one such function is the `setTimeout` function:
+
+In the following example, the browser will wait two seconds before executing the anonymous function, then will display the alert message:
+
+```js
+let myGreeting = setTimeout(function () {
+  alert("Hello, Mr. Universe!");
+}, 2000);
+```
+
+The image below show you the stack status when the code snippet in the image is executed. We can think about the stack as a pile of post-it: each time we start the execution of a function we add a post-it with the name of the function to the pile, when the execution is over we remove it. 
+
+![](images/js_event_loop_with_callback.png)
+
+[Ref: JavaScript. Event Loop and Promises](https://medium.com/javascript-in-plain-english/javascript-event-loop-y-promises-951ba6845899)
+
+In the case above, if we were working on a synchronous execution stack, the `setTimeout` function would cause the execution to stop 10 seconds (thus blocking the program) so there would be no way to do anything else while we wait for the counter to finish.
+
+To solve these types of situations, the well-known Event Loop was implemented, which allows the execution of these types of tasks to be performed in a synchronous manner so that:
+
+- execution is not blocked
+- once the asynchronous task has been completed, execute your callback whenever possible (the latter is very important to keep in mind)
+
+Let’s see how it works:
+
+- In step 2, when the setTimeout(callback, 10000) function is put on the stack, this call is passed to the Web API of the browser so it no longer belongs to the Javascript engine, but to an additional feature provided by the browser (or the system where it runs).
+
+- Therefore, in step 3 you can see how it is the Web API who takes responsibility for the callback function to be executed.
+- In step 4 we can see how the other console.log is executed so that in step 5 the stack is already empty.
+- Step 6 takes place once the 10 seconds of the setTimeout found in the Web API have passed (and the JavaScript motorcycle’s execution stack is empty). Since the Web API cannot directly add anything to the stack (it could cause the interruption of code that is currently running), what it does is add the callback to the Callback queue (step 7).
+- It is in step 8 where the Event Loop comes into action. At the moment when the Javascript engine stack is empty, the Event Loop picks up what is in the queue callback and adds it to the execution stack.
+- From there, the callback execution follows the normal execution process (steps 10 to 13) until the stack is empty.
+
+Therefore, although Javascript is not asynchronous, the inclusion of the `WebAPI` together with the `Event Loop` and the `Queue Callback` allow it to provide a certain aspect of asicronicity so that the heavier tasks do not block the thread of execution.
+
+However, there is a “but”. Since the callback of the function is not known at what time it will be executed (since as we have seen it is necessary that the stack is left empty so that the Event Loop can add things to it from the queue callback) it may be necessary Nesting successive calls within the callback of our function, something known as the “hell callback”.
+
+It is to solve this for what promises arose as we will see below.
+
+![](images/js_hell_callback.png)
+
+
 ## Why Async?
 
 Many of the user interface mechanisms of browsers also run in the JavaScript process (as tasks). Therefore, long-running JavaScript code can block the user interface.
@@ -5250,7 +5597,15 @@ https://exploringjs.com/impatient-js/ch_async-js.html#how-to-avoid-blocking-the-
 
 36.4.1 esempio con un while di 5000 ms che blocca un pulsante. Forse sarebbe carino fare un esempio di una chiamata HTTP con relativo processing, è + reale. IDEA: trovare un modo per fare molte chiamate a una API con pagination e renderle sync, oppure trovare un file grosso, oppure si simula tutto con un while .....
 
-## Event Loop
+## Deep dive (Advanced and not required for beginner)
+
+### Event Loop
+
+Ref:
+* https://javascript.info/event-loop 
+* Video with animations VERY USEFULL! https://2014.jsconf.eu/speakers/philip-roberts-what-the-heck-is-the-event-loop-anyway.html
+* Another Video from JSConf https://www.youtube.com/watch?v=cCOL7MC4Pl0 (more recent)
+
 
 By default, JavaScript runs in a single thread – in both web browsers and Node.js. The so-called event loop sequentially executes tasks (pieces of code) inside that thread. The event loop is depicted in the fig below:
 
@@ -5278,7 +5633,7 @@ while (true) {
 
 - Video with animations VERY USEFULL! https://2014.jsconf.eu/speakers/philip-roberts-what-the-heck-is-the-event-loop-anyway.html
 
-## Call Stack
+### Call Stack
 
 https://exploringjs.com/impatient-js/ch_async-js.html#the-call-stack
 
@@ -5321,50 +5676,6 @@ This is a so-called stack trace of where the Error object was created. Note that
 
 After line 3, each of the functions terminates and each time, the top entry is removed from the call stack. After function f is done, we are back in top-level scope and the stack is empty. When the code fragment ends then that is like an implicit return. If we consider the code fragment to be a task that is executed, then returning with an empty call stack ends the task.
 
-## Asynchronicity: intro and callbacks
-
-Many functions are provided by JavaScript host environments that allow you to schedule asynchronous actions. In other words, actions that we initiate now, but they finish later.
-
-For instance, one such function is the setTimeout function:
-
-In the following example, the browser will wait two seconds before executing the anonymous function, then will display the alert message:
-
-```js
-let myGreeting = setTimeout(function () {
-  alert("Hello, Mr. Universe!");
-}, 2000);
-```
-
-[See it live](https://mdn.github.io/learning-area/javascript/asynchronous/loops-and-intervals/simple-settimeout.html)
-
-![](images/js_event_loop_with_callback.png)
-
-[Ref: JavaScript. Event Loop and Promises](https://medium.com/javascript-in-plain-english/javascript-event-loop-y-promises-951ba6845899)
-
-In the case above, if we were working on a synchronous execution stack, the `setTimeout` function would cause the execution to stop 10 seconds (thus blocking the program) so there would be no way to do anything else while we wait for the counter to finish.
-
-To solve these types of situations, the well-known Event Loop was implemented, which allows the execution of these types of tasks to be performed in a synchronous manner so that:
-
-- execution is not blocked
-- once the asynchronous task has been completed, execute your callback whenever possible (the latter is very important to keep in mind)
-
-Let’s see how it works:
-
-- In step 2, when the setTimeout(callback, 10000) function is put on the stack, this call is passed to the Web API of the browser so it no longer belongs to the Javascript engine, but to an additional feature provided by the browser (or the system where it runs).
-
-- Therefore, in step 3 you can see how it is the Web API who takes responsibility for the callback function to be executed.
-- In step 4 we can see how the other console.log is executed so that in step 5 the stack is already empty.
-- Step 6 takes place once the 10 seconds of the setTimeout found in the Web API have passed (and the JavaScript motorcycle’s execution stack is empty). Since the Web API cannot directly add anything to the stack (it could cause the interruption of code that is currently running), what it does is add the callback to the Callback queue (step 7).
-- It is in step 8 where the Event Loop comes into action. At the moment when the Javascript engine stack is empty, the Event Loop picks up what is in the queue callback and adds it to the execution stack.
-- From there, the callback execution follows the normal execution process (steps 10 to 13) until the stack is empty.
-
-Therefore, although Javascript is not asynchronous, the inclusion of the `WebAPI` together with the `Event Loop` and the `Queue Callback` allow it to provide a certain aspect of asicronicity so that the heavier tasks do not block the thread of execution.
-
-However, there is a “but”. Since the callback of the function is not known at what time it will be executed (since as we have seen it is necessary that the stack is left empty so that the Event Loop can add things to it from the queue callback) it may be necessary Nesting successive calls within the callback of our function, something known as the “hell callback”.
-
-It is to solve this for what promises arose as we will see below.
-
-![](images/js_hell_callback.png)
 
 ## Callback in callback
 
