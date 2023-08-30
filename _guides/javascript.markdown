@@ -5597,14 +5597,38 @@ https://exploringjs.com/impatient-js/ch_async-js.html#how-to-avoid-blocking-the-
 
 36.4.1 esempio con un while di 5000 ms che blocca un pulsante. Forse sarebbe carino fare un esempio di una chiamata HTTP con relativo processing, è + reale. IDEA: trovare un modo per fare molte chiamate a una API con pagination e renderle sync, oppure trovare un file grosso, oppure si simula tutto con un while .....
 
-## Deep dive (Advanced and not required for beginner)
+### Other Examples
+
+See here for a detailed explanation https://javascript.info/callbacks
+
+```js
+function loadScript(src, callback) {
+  let script = document.createElement('script');
+  script.src = src;
+
+  script.onload = () => callback(script);
+
+  document.head.append(script);
+}
+```
+
+
+## EventLoop - Deep dive (Advanced and not required for beginner) 
+
+See here https://docs.google.com/document/d/10Nr0ETeagEhPX02y_VXKCXRDFeaAlp85p43rRDHuJ-U/edit
+ for :
+ * EventLoop
+ * Callback stack
 
 ### Event Loop
 
 Ref:
-* https://javascript.info/event-loop 
+* https://javascript.info/event-loop Molto light, si perde molto in esempi.... non mi piace molto perchè non è rigoroso. Forse può andare bene per un beginner ma lascia molti punti oscuri
+
 * Video with animations VERY USEFULL! https://2014.jsconf.eu/speakers/philip-roberts-what-the-heck-is-the-event-loop-anyway.html
+
 * Another Video from JSConf https://www.youtube.com/watch?v=cCOL7MC4Pl0 (more recent)
+
 
 
 By default, JavaScript runs in a single thread – in both web browsers and Node.js. The so-called event loop sequentially executes tasks (pieces of code) inside that thread. The event loop is depicted in the fig below:
@@ -5675,7 +5699,6 @@ at demos/async-js/stack_trace.mjs:11:1
 This is a so-called stack trace of where the Error object was created. Note that it records where calls were made, not return locations. Creating the exception in line 2 is yet another call. That’s why the stack trace includes a location inside h().
 
 After line 3, each of the functions terminates and each time, the top entry is removed from the call stack. After function f is done, we are back in top-level scope and the stack is empty. When the code fragment ends then that is like an implicit return. If we consider the code fragment to be a task that is executed, then returning with an empty call stack ends the task.
-
 
 ## Callback in callback
 
@@ -5843,6 +5866,50 @@ function processError(err) {
 
 Because we don’t know the order in which the data is received, every time we get some data, we have to check whether it’s the last piece of the puzzle that we’re missing. Finally, when all pieces are in place, we can set our plan in motion. Notice that we have to write a lot of boiler- plate code just to do something as common as executing a number of actions in paral- lel. This leads us to the third problem with callbacks: performing a number of steps in parallel is also tricky.
 
+## Pyramid of Doom
+
+see https://javascript.info/callbacks#pyramid-of-doom
+
+At first glance, it looks like a viable approach to asynchronous coding. And indeed it is. For one or maybe two nested calls it looks fine.
+
+But for multiple asynchronous actions that follow one after another, we’ll have code like this:
+
+```js
+loadScript('1.js', function(error, script) {
+
+  if (error) {
+    handleError(error);
+  } else {
+    // ...
+    loadScript('2.js', function(error, script) {
+      if (error) {
+        handleError(error);
+      } else {
+        // ...
+        loadScript('3.js', function(error, script) {
+          if (error) {
+            handleError(error);
+          } else {
+            // ...continue after all scripts are loaded (*)
+          }
+        });
+
+      }
+    });
+  }
+});
+```
+
+In the code above:
+
+1. We load 1.js, then if there’s no error…
+2. We load 2.js, then if there’s no error…
+3. We load 3.js, then if there’s no error – do something else (*).
+
+As calls become more nested, the code becomes deeper and increasingly more difficult to manage, especially if we have real code instead of ... that may include more loops, conditional statements and so on.
+
+That’s sometimes called “callback hell” or “pyramid of doom.”
+
 ## Promises
 
 Refs:
@@ -5869,7 +5936,7 @@ Refs:
 - [JSINFO](https://javascript.info/promise-basics)
 - [IJS Promises](https://exploringjs.com/impatient-js/ch_promises.html)
 
-`promises` are a new, built-in type of object that help you work with asynchronous code, it's a placeholder for a value that we don’t have yet but will at some later point.
+`Promises` are a new, built-in type of object that help you work with asynchronous code, it's a placeholder for a value that we don’t have yet but will at some later point.
 
 In programming we often have:
 
@@ -5919,7 +5986,7 @@ To summarize a Promise can be in three states:
 
 ![](images/js_promises_statuses.png)
 
-To these Promise objects, developers can attach callbacks through the then instruction so that we can execute code once the value resolved by the Promise is available (or the reason why it could not be resolved).
+To these Promise objects, developers can attach callbacks through the `then` instruction so that we can execute code once the value resolved by the Promise is available (or the reason why it could not be resolved).
 
 Later we’ll see how consumers can subscribe to these changes.
 
@@ -6036,7 +6103,26 @@ let promise = new Promise((resolve) => {
 promise.then(alert); // shows "done!" after 1 second
 ```
 
-WARNING: a common mistake is don't
+WARNING: a common mistake is to pass in a non-function parameter to `Promise.then()` without causing an error. For example code below:
+
+```js 
+// 1
+new Promise(resolve => setTimeout(resolve, 2000))
+    .then(() => console.log("after 2 seconds"));
+
+// 2
+new Promise(resolve => setTimeout(resolve, 3000))
+    .then(console.log("before 3 seconds (instantly)"));
+```
+
+Produces the following output:
+```
+before 3 seconds (instantly)
+after 2 seconds
+```
+
+The second Promise should resolve after the first but the opposite is happening, why? Because the parameter to the second `then()` is not a function, the expression `console.log("before 3 seconds (instantly)"))` is evaluated before the function `then()` is invoked (print the output above) and the return value is `undefined`. Passing undefined to .then() is allowed, and since that's what console.log() returns, there's no error raised.
+
 
 REF: https://stackoverflow.com/questions/42094764/why-is-it-possible-to-pass-in-a-non-function-parameter-to-promise-then-without/42094874
 
