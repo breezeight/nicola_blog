@@ -351,15 +351,19 @@ console.dir(req.query.color);
 
 # ExpressJS Internals
 
+WARNING: All the internals of this section are base on version 4.18:
+https://github.com/expressjs/express/tree/4.18
+
 Ref:
 
+- https://medium.com/@viral_shah/express-middlewares-demystified-f0c2c37ea6a1
 - https://www.sohamkamani.com/blog/2018/05/30/understanding-how-expressjs-works/
 - https://dzone.com/articles/design-patterns-in-expressjs
 - THE BEST: https://blog.laputa.io/understanding-expressjs-d5ef4f4646c8
 
-## Creating a new express application
+## Create a new express application and the integration with NodeJS HTTP module
 
-To generate a simple express prooject just run `express myapp` and `cd myapp`. To understand the EspressJS internals the approach I used is to generate a sample source code. Then I can debug through it in vscode, this helped a lot to understand the call stack and reasoning about the structure of the code, especially when going through the `next()` chain function calls. Like below:
+To understand the EspressJS internals the approach I used is to generate a sample source code. To generate a simple express prooject just run `express myapp` and `cd myapp`. Then I can debug through it in vscode, this helped a lot to understand the call stack and reasoning about the structure of the code, especially when going through the `next()` chain function calls. Like below:
 
 ![](images/js_expressjs_next_debugging.png)
 
@@ -372,7 +376,7 @@ const app = express();
 app.get("/", (req, res) => res.send("Hello World!")); /// Add this route
 ```
 
-Here you require expresse and configure the router. The code above sends a “hello world” text response when we hit the GET / route.
+Here you require express and configure the router. The code above sends a “hello world” text response when we hit the GET / route.
 
 The script that initialize the http server is `bin/www`
 
@@ -394,7 +398,7 @@ Broadly speaking, there are four stages that we can analyze:
 - Starting an HTTP server on a given port number
 - Handling a request once it comes in
 
-the line `(A)` requires the `http` nodejs standard module ( small guide here https://www.w3schools.com/nodejs/nodejs_http.asp ). `http.createServer(app);` sets `app` as the handler of the http request, every request to the http server will invoke the `app` function with req and res parameter. At this point the express logic will handle the request as we will see below.
+the line `(A)` requires the `http` nodejs standard module ( small guide here https://www.w3schools.com/nodejs/nodejs_http.asp ). `http.createServer(app);` sets `app` as the handler of the http request, every request to the http server will invoke the `app.handle(req, res)` function with req and res parameter. At this point the express logic will handle the request as we will see below.
 
 Express uses the Factory design pattern, is a creational design pattern allowing us to abstract away object creation implementation details from the outside world. Express does this by only exporting the factory `createApplication()` in [lib/express.js](https://github.com/expressjs/express/blob/4.18/lib/express.js#L37).
 
@@ -435,10 +439,9 @@ const app = express();
 The `app` object returned from `createApplication()` is one that we use in our application code.
 The `app.get` method is added by using the `merge-descriptors` libraries mixin function, which assigns the methods defined in proto. `proto` itself is imported from `lib/application.js`.
 
-## Router and Middlewares
+## Router and Middlewares - APP == Router
 
-Before we start, let’s have a quick review of express’s apis interface.
-Expressjs has mainly two kind of apis:
+Before we start, let’s have a quick review of express’s apis. Expressjs has mainly two kind of apis:
 
 - middleware
 - routing
@@ -460,30 +463,58 @@ app.use("/", routerExample); //handle route '/' + PATH
 // OR app.use("/birds", routerExample); //handle route /birds/PATH'
 ```
 
-When you look at the internals of express you discover that all the above API produce the same result:
+`App == Router` : every Express app at it’s core is a Router. When we create an app using `express()`, we are essentially creating a root level Router. The reverse is true as well. Every Router is like a mini-app in itself. In fact, that is why, the `.use()` method of both Router and App looks so similar.
 
-- for every path a Layer and a Route are instantiated
-- for every additional method of a Route a Layer is instantiated
-- TODO: non sono sicurissimo, sta cosa è da controllare.....
+So then it begs the question, what is really there in this Router? Well a Router mainly consists of a two things:
 
-To make easier to understand how Express works it's useful to understand how many API are mostly syntactic sugar.
+- `handle()` function: It is the function that processes all the requests received by the Router
+- `Layer-stack`: It is a stack of Layers registered on the Router. I will soon get into the details of a Layer, but for now just understand that every Layer has a path and its own handle function. Every time we call the `.use()` method on an Express app or Router, we are basically creating a new Layer in the Router’s stack.
 
-First of all:
-* `app.all()`
-* `app.METHOD()`
-* `app.param()`
-* `app.route()`
-* `app.use()`
+Now we proceed to the second step to simplify our understanding, we can notice that many APIs are mostly syntactic sugar. First of all:
+
+- `app.all()`
+- `app.METHOD()`
+- `app.param()`
+- `app.route()`
+- `app.use()`
 
 are proxies for the default this functions of the default router:
 
-* `router.all()`
-* `router.METHOD()`
-* `router.param()`
-* `router.route()`
-* `router.use()`
+- `router.all()`
+- `router.METHOD()`
+- `router.param()`
+- `router.route()`
+- `router.use()`
 
-Internally the default Router is accessed as `this.lazyrouter();`
+Internally the default Router is accessed with `this._router` and initialized with `this.lazyrouter();`
+In the paragraph below "Deep dive into lib/application.js" we are going to see all the details of this proxy mechanism.
+
+STEP 2: So to simplify we can focus out attention only to the `Router` API.
+
+**TODO spostare sotto**
+
+When you look at the internals of express you discover that all the above API instatiate a Layer:
+
+- All these API: `router.METHOD()`, `router.all()`, `router.route()`, `router.use()` creates a Layer
+- for every additional method of a Route a Layer is instantiated
+- TODO: non sono sicurissimo, sta cosa è da controllare.....
+
+**END TODO**
+
+Now let's look to a simplfied version of the get version of the `router.METHOD` api:
+
+```js
+// Original source code https://github.com/expressjs/express/blob/4.18/lib/router/index.js#L513
+router.get = function (path, handler) {
+  var route = this._router.route(path); // create a new route
+  route.get(handler);
+  return this;
+};
+```
+
+It just stores the route in the applications router using its route method, then passes on the handler to `route.<method>`
+
+STEP 3:
 
 TODO: how does different Router interect with each other?
 
@@ -514,7 +545,6 @@ Long story short:
 
 - Each express app has a `_router`, it is an instance of the Router object, app.use and app.route are just proxied to the same function of \_router
 - app.<method> delegate to the default application Router.
-- It just stores the route in the applications router using its route method, then passes on the handler to route.<method>
 
 The routers route() method is defined in lib/router/index.js:
 https://github.com/expressjs/express/blob/4.18/lib/router/index.js
@@ -591,12 +621,178 @@ NOTE: there are modules like concat-stream and body on npm which can help hide a
 
 The response object is an instance of ServerResponse, which is a WritableStream. It contains many useful methods for sending data back to the client.
 
+## Deep dive into index.js
+
+Every ExpressJS app starts by requiring this file: `var express = require("express");`
+
+It is a very simple entry point that requires `./lib/express/index.js`
+
+```js
+...
+module.exports = require('./lib/express');
+```
+
+It exports `createApplication()`, the ExpressJS application factory and assign:
+
+```js
+exports = module.exports = createApplication;
+
+exports.application = proto;
+exports.request = req;
+exports.response = res;
+
+//Expose
+exports.Route = Route;
+exports.Router = Router;
+
+exports.json = bodyParser.json;
+exports.query = require("./middleware/query");
+exports.static = require("serve-static");
+exports.urlencoded = bodyParser.urlencoded;
+```
+
+Ref: https://github.com/expressjs/express/blob/3ed5090ca91f6a387e66370d57ead94d886275e1/lib/express.js
+
+NOTE: When require is given the path of a folder, it'll look for an index.js file in that folder; if there is one, it uses that, and if there isn't, it fails. https://stackoverflow.com/questions/5364928/node-js-require-all-files-in-a-folder
+
 ## Deep dive into lib/application.js
 
 `app.use`: https://github.com/expressjs/express/blob/4.x/lib/application.js#L187
 
 c'è un po' di logica che non ho capito benissimo.... gestisce il fatto che il primo argomento possa essere una array.
 
+`app.route`: https://github.com/expressjs/express/blob/dc538f6e810bd462c98ee7e6aae24c64d4b1da93/lib/application.js#L254
+
+It's really a simple proxy:
+
+```js
+app.route = function route(path) {
+  this.lazyrouter();
+  return this._router.route(path);
+};
+```
+
+`app.METHOD()` https://github.com/expressjs/express/blob/dc538f6e810bd462c98ee7e6aae24c64d4b1da93/lib/application.js#L472
+
+It allow us to creae a new route. Let’s now take a brief look at the code that creates the app.get method that we use in the example:
+
+```js
+var slice = Array.prototype.slice;
+
+// ...
+/**
+ * Delegate `.VERB(...)` calls to `router.VERB(...)`.
+ */
+
+// `methods` is an array of HTTP methods, (something like ['get','post',...])
+methods.forEach(function (method) {
+  // This would be the app.get method signature
+  app[method] = function (path) {
+    // some initialization code
+
+    // create a route for the path inside the applications router
+    var route = this._router.route(path);
+
+    // call the handler with the second argument provided
+    route[method].apply(route, slice.call(arguments, 1));
+
+    // returns the `app` instance, so that methods can be chained
+    return this;
+  };
+});
+```
+
+It’s interesting to note that besides the semantics, all the HTTP verb methods, like app.get, app.post, app.put, and the like, are essentially the same in terms of functionality. If we were to simplify the above code only for the get method, it would look like this:
+
+```js
+app.get = function (path, handler) {
+  // ...
+  var route = this._router.route(path);
+  route.get(handler);
+  return this;
+};
+```
+
+Although the above function has 2 arguments, it’s similar to the `app[method] = function(path){...}` definition. The second handler argument is obtained by calling `slice.call(arguments, 1)`.
+
+Long story short, `app.<method>` just stores the route in the applications router using its route method, then passes on the handler to `route.<method>`.
+
+## Deep dive into lib/router/index.js
+
+https://stackoverflow.com/questions/5364928/node-js-require-all-files-in-a-folder
+
+## Design Pattern in Express JS
+
+- [Doc](https://dzone.com/articles/design-patterns-in-expressjs)
+
+### Factory Pattern
+
+This is a simple and common design pattern in JavaScript. Factory is a creational design pattern allowing us to abstract away object creation implementation details from the outside world. Express does this by only exporting the factory.
+
+```js​
+exports = module.exports = createApplication;
+​
+function createApplication() {
+  var app = function(req, res, next) {
+    app.handle(req, res, next);
+  };
+  ...
+  return app;
+}
+```
+
+And, using the factory to create an express application is as simple as this:
+
+```js
+import express from "express";
+const app = express();
+```
+
+### Middleware
+
+Doc:
+
+- https://dzone.com/articles/understanding-middleware-pattern-in-expressjs
+
+Middleware is the term popularized by Express.js. In fact, we can consider this design pattern a variant of [Intercepting Filter](https://www.oracle.com/java/technologies/intercepting-filter.html) and [Chain of Responsibility](https://sourcemaking.com/design_patterns/chain_of_responsibility)
+
+Problem:
+
+- There is a potentially variable number of "handler" or "processing element" or "node" objects, and a stream of requests that must be handled.
+- Need to efficiently process the requests without hard-wiring handler relationships and precedence, or request-to-handler mappings.
+
+A middleware function has the following signature:
+
+```js
+function(req, res, next) { ... }
+```
+
+There is a special kind of middleware named error-handling. This kind of middleware is special because it takes four arguments instead of three allowing Express to recognize this middleware as error-handling:
+
+```js
+function(err, req, res, next) {...}
+```
+
+Middleware functions can perform the following tasks:
+
+- Logging requests
+- Authenticating/authorizing requests
+- Parsing the body of requests
+- End a request – response lifecycle
+- Call the next middleware function in the stack.
+
+These tasks are not core concerns (business logic) of an application. Instead, they are cross cutting concerns applicable throughout the application and affecting the entire application.
+
+Request-response lifecycle through a middleware is as follows:
+
+![](images/js_express_middleware.png)
+
+- The first middleware function (A) in the pipeline will be invoked to process the request
+- Each middleware function may end the request by sending response to client
+- or invoke the next middleware function (B) by calling next()
+- or hand over the request to an error-handling middleware by calling next(err) with an error argument
+- Each middleware function receives input as the result of previous middleware function
+- If the request reaches the last middleware in the pipeline, we can assume a 404 error
 
 # Serverless
 

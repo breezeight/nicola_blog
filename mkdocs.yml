@@ -1,0 +1,78 @@
+site_name: MkDocs Poetry Tutorial
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  features:
+    #- navigation.tabs
+    #- navigation.sections
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+    - tags
+
+plugins:
+  - search
+  - macros
+  - tags:
+      tags_file: tags.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/YOUR_GITHUB_USERNAME
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/YOUR_TWITTER_USERNAME
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/YOUR_LINKEDIN_USERNAME
+
+copyright: Copyright &copy; 2023 Your Name
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - meta
+
+nav:
+  - Home: index.md
+  - Explanations:
+    - Diataxis: 'Explanation - Diataxis.md'
+    - General: 'Explanation.md'
+    - SSH Configuration: 'explanation-configure-dedicated-ssh-for-addictive.md'
+  - How-To Guides:
+    - Writing Technical Documentation: 'HOWTO - Writing Technical Documentation.md'
+    - Git Submodules: 'HOWTO Git Submodules.md'
+    - Traefik Python Boilerplate: 'HOWTO-Traefik-Python-BoilerPlate.md'
+    - Developer Onboarding: 'howto-developer-onboarding.md'
+    - SSH Configuration: 'howto-configure-dedicated-ssh-for-addictive.md'
+  - Tutorials:
+    - OpenAI Assistant API: 'Tutorial - OpenAI Assistant API - Create a Function with FastAPI.md'
+    - Cloudflare Tunnel and Traefik: 'Tutorial - Use Cloudflare Tunnel and Traefik to expose multiple Docker Compose Services online.md'
+    - Local Multi-User Git Setup: 'tutorial-create-local-multi-user-git-setup.md'
+    - Git Submodule Basics: 'tutorial-submodule-basics-commit-push-pull-workflow.md'
+  - Reference:
+    - AWS Accounts Overview: 'Reference - AWS Addictive Accounts Overview.md'
+  - GitHub:
+    - General: 'GitHub.md'
+    - Actions MindMap: 'Github Actions MindMap.md'
+  - Best Practices:
+    - Python Ecosystem: 'Python Ecosystem Addictive Best Practices.md'
+  - Custom Tag Clusters:
+    - Python Resources: 'python-resources.md'
+    - Custom Index: 'custom_index.md'
+  - Tags: tags.md

@@ -101,31 +101,60 @@ References:
 * [w3school CSS properties](http://www.w3schools.com/cssref/default.asp)
 * [w3schools CSS selector](http://www.w3schools.com/cssref/css_selectors.asp)
 
-## Cascade
+## How to teach CSS to somebody (Nicola)
 
-http://learn.shayhowe.com/html-css/getting-to-know-css/#cascade
+First read: https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS :
+
+* Simple intro to the basic syntax with some live exercise on codepen and JSFiddle.
+
+
+## Cascade and inheritance
+
+ref:
+
+* https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Cascade_and_inheritance
+* http://learn.shayhowe.com/html-css/getting-to-know-css/#cascade
 
 Within CSS, all styles cascade from the top of a style sheet to the bottom, allowing different styles to be added or overwritten as the style sheet progresses.
 
 ## Selectors
 
-Html example for basic selector types `<p class="key" id="principal">`:
+Examples about how to select this html element using CSS selectors: `<p class="key" id="principal">`:
+
+There are different kind of selectors.
 
 * tag selector `p {}`: select all p elements
 * multi tag selecto `div, p {}` : Selects all div and p elements
 * id selector `#principal {}`
-* pseudo class selector: `selector:pseudo-class`
 * class selector `.key {}`: any element with `key` class
 * `.class1.class2` matches any element with both classes, ex: `<div class="class1 class2">...</div>` 
 * ... 
 
-Attributes selectors:
+Some simple selector: https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Simple_selectors
+
+
+### Pseudo selectors
+
+Ref: https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Pseudo-classes_and_pseudo-elements
+
+* Pseudo class selector: TODO
+* Pseudo element selector: TODO
+
+
+### Attributes selectors
+
+Ref: https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Attribute_selectors
 
 * `[attribute]` Selects all elements with the specified attribute
 * `[attribute=value]` Selects all elements where the specified attribute is equal to value
 * `[attribute*=value]` matches every element whose attribute value containing a specified value.
   * ex: Set a background color on all elements that have a class attribute value containing "test": `[class*="test"] { background: #ffff00; }` 
 * ...
+
+
+### Combinators
+
+Ref: https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Simple_selectors#Combinators
 
 Selector based on relationships:
 
@@ -134,10 +163,10 @@ Selector based on relationships:
 * `A > E` : Any E element that is a child of an A element
 * `E:first-child` : Any E element that is the first child of its parent
 * `A + E` : Any E element that is the next sibling of a A element (that is: the next child of the same parent)
-* ....
+* ...
 
 
-* more selector : http://www.cheetyr.com/css-selectors
+* more selectors : http://www.cheetyr.com/css-selectors
 
 
 relationship rules:
@@ -153,7 +182,9 @@ Spaces Within Selectors:
 * The use, and omission, of spaces makes a large difference in selectors.
 * best practice is to not prefix a class selector with a type selector.
 
-More about selectors:
+An element may be matched by several selectors, therefore several rules may set a given property multiple times. CSS defines which one has precedence over the others and must be applied: this is called the cascade algorithm
+
+### More about selectors
 
 * http://www.cheetyr.com/css-selectors
 * https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_started/Selectors
@@ -209,6 +240,19 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity#The_!important_exce
 * `.container div` Select any div element that is a child of any element with a class name of "container" [exmaple](https://css-tricks.com/whats-the-difference/)
 
 * `div.container` Select any div element that has a class name of "container" [exmaple](https://css-tricks.com/whats-the-difference/)
+
+## CSS Values and units
+ 
+See here: https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Values_and_units
+
+* rem
+* em
+* px
+* ...
+* Unitless line height: acts as a simple multiplying factor `line-height: 1.5;` Here the font-size is 16px; the line height will be 1.5 times this, or 24px.
+* Percentages
+
+NOTE: ems are the most common relative unit you'll use in web development.
 
 
 ## Replaced and non replaced elements 

@@ -84,6 +84,63 @@ int main ()
 * the file description is shared
 
 
+#### fork()
+
+ref: http://www.science.unitn.it/~fiorella/guidac/guidac096.html 
+
+  "int fork()" trasforma un singolo processo in due processi identici, 
+  riconoscibili come processo padre e processo figlio.
+  In caso di successo, fork() ritorna 0 al processo figlio ed il process ID
+  del processo figlio al processo padre; in caso di esito negativo, fork()
+  ritorna -1 al processo padre, settando errno per indicare l'errore 
+  verificatosi, e non viene creato nessun processo figlio.
+
+  NOTA: il processo figlio avra' un suo proprio ed unico PID.
+
+  Il seguente programma illustra un utilizzo semplice di fork(), dove vengono
+  create due copie del processo ed eseguite assieme (multitasking):
+
+     main()
+     { int return_value;
+
+       printf("Forking process\n");
+       fork();
+       printf("The process id is %d and return value is %d \n", 
+              getpid(), return_value);
+       execl("/bin/ls/","ls","-l",0);
+       printf("This line is not printed\n");
+     }
+
+  L'output risultante sara':
+
+     Forking process
+     The process id is 6753 and return value is 0
+     The process id is 6754 and return value is 0
+     "two lists of files in current directory"
+
+  NOTA: i processi hanno ID unici, che risulteranno diversi ad ogni esecuzione.
+
+  E' anche impossibile stabilire in anticipo quale processo utilizzera' il 
+  tempo di CPU (cosi', ogni esecuzione puo' essere diversa dalla successiva).
+
+  Quando vengono generati due processi, possiamo facilmente scoprire (in ogni 
+  processo) quale sia il figlio e quale il padre, poiche' fork ritorna 0 al
+  figlio. Possiamo catturare qualsiasi errore se fork ritorna un -1, cioe':
+
+     int pid; /* process identifier */
+
+     pid=fork();
+     if (pid < 0)
+	{printf("Cannot fork!!\n");
+         exit(1);
+	}
+     if (pid == 0)
+        {/* child process */ ...}
+     else 
+ 	{/* parent process pid is child's pid */ ...}
+
+
+
 ## Exec
 
 The exec functions replace the program running in a process with another program.

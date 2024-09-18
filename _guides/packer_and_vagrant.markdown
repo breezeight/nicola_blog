@@ -483,12 +483,46 @@ To debug you can run from the VM the command:
 /opt/chef/embedded/bin/ruby /usr/bin/chef-solo  -c /tmp/vagrant-chef-1/solo.rb -j /tmp/vagrant-chef-1/dna.json
 ~~~
 
+# UTM
 
+https://getutm.app/
+
+## [JOB] Start from a snapshot
+
+https://github.com/utmapp/UTM/pull/3893
+
+Short demo of the feature options
+
+https://www.youtube.com/watch?v=XdqdCxRbsec&ab_channel=EugeneCheah
+
+
+## [JOB] Setup Ubuntu 22.04 x86 with qemu emulation on apple M1
+
+- Download Ubuntu Server for x86
+- Open UTM
+- Create a new VM => Emulation => ....
+
+
+## [JOB] Setup Ubuntu 22.04 x86 with Rosetta virtualizaion on apple M1
+
+- Download Ubuntu Server for x86
+- Open UTM
+- Create a new VM => Virtualization => check "apple virtualization" => check => Enable Rosetta
+
+NON MI FUNZIONA!!
 
 # Multipass - Canonical
 
 * DOC: https://multipass.run/docs/mac-tutorial
 * Discussion: https://discourse.ubuntu.com/c/multipass/21/none
+
+
+## TODO
+
+* Multipass alias: https://discourse.ubuntu.com/t/how-to-use-instance-command-aliases/24128
+
+* build images with Packer, could it be useful? https://discourse.ubuntu.com/t/how-to-build-multipass-images-with-packer/12361/12
+
 
 
 ## Why Multipass?
@@ -499,8 +533,33 @@ To debug you can run from the VM the command:
 
 ## MISC cmds
 
-`multipass find` : Lists available images
-`multipass delete breezy-liger`: delete the instance named breezy-liger
+multipass commands:
+
+* `find` : Lists available images
+
+* `delete breezy-liger`: delete the instance named breezy-liger
+* `purge`: Purge all deleted instances permanently
+
+* `info <instance>`: display instance's info (State, IPv4, Release, Image hash, Load, Disk usage, Memory usage, Mounts)
+* `info --all`: print all
+* `shell <instance>`: Open a shell on a running instance
+* `start/stop/suspend`: Start instances, Stop running instances, Suspend running instances
+* `transfer`: transfer files between the host and instances
+
+## Which Tecnology does multipass uses?
+
+https://multipass.run/docs/set-up-the-driver 
+
+You can check which driver you are using with `multipass get local.driver`
+
+At the time of writing (2023-03):
+* On MacOS, 
+  * By default, Multipass on macOS uses hyperkit driver for the Intel macOS and the qemu driver for the M1 macOS. However, an alternative option is to use VirtualBox.
+  * https://multipass.run/docs/set-up-the-driver#heading--macos-use-virtualbox
+* Linux: qemu or lxd driver (depending on the architecture). However, if you want more control over your VMs after they are launched, you can also use the experimental libvirt driver. 
+* Windows: By default, Multipass on Windows uses the hyperv driver. However, if you want to (or have to), you can change the hypervisor that Multipass uses to VirtualBox.
+
+
 
 
 ## Primary Instance
@@ -512,14 +571,55 @@ In Multipass, an instance with the name primary is privileged.  `primary` is a s
 
 `multipass launch lts --name ltsInstance --mem 2G --disk 10G --cpus 2`
 
+## Manage Instances (create/modify)
+
+https://multipass.run/docs/create-an-instance
+
+    multipass launch kinetic --name helpful-duck --cpus 1 --disk 5G --mem 4G
+
+
+Custom networking: https://multipass.run/docs/create-an-instance#heading--create-an-instance-with-multiple-network-interfaces
+
+### Add Network Interface
+
+https://multipass.run/docs/additional-networks 
+
+
+## cloud-init + Multipass
+
+Doc:
+* https://ubuntu.com/blog/using-cloud-init-with-multipass
+
+Logs: `sudo cat /var/log/cloud-init*`
+
+
+
+Multipass can also make use of cloud-init to customize an instance during launch.
+
+    multipass launch -n my-test-vm --cloud-init cloud-config.yaml
+
+*  multipass only supports YAML cloud-config files. Multipass will validate the YAML syntax of the cloud-config file before attempting to start the VM! 
+Multipass uses cloud-init to pass in vendor-data to setup the VM for access by the user. If the user overrides any of the required keys (e.g. packages, ssh_authorized_keys, users, etc.) in his or her user-data then multipass will merge its own data so that the end-user will not lose access to the system.
+
+If interested, a user can examine the executed user-data and vendor-data by looking at the files in /var/lib/cloud/instances/.
+
+### Examples
+
+https://aaronmsft.com/posts/multipass/
+
+#### Nix
+
+
+
+
 ## Networking | HUGE TOPIC
 
 Con la 1.9 dovrebbero aver risolto: https://discourse.ubuntu.com/t/multipass-on-apple-silicon/27367/4
 
 ## Mount | CAN BE SLOW
 
-
-https://discourse.ubuntu.com/t/mount-i-o-slow-how-to-improve-performance/18479/6
+* https://discourse.ubuntu.com/t/mount-i-o-slow-how-to-improve-performance/18479/6
+* https://multipass.run/docs/improve-mount-performance
 
 
 * Within instance to mounted directory:     37558 KB/s
@@ -558,4 +658,9 @@ multipass exec primary -n ls
 
 
 You can pipe standard input and output to/from the command:  `multipass exec primary -- lsb_release -a | grep ^Codename:`
+
+
+## Multipass and cloud-init
+
+https://gitlab.com/addictivedev/knowledge/examples-and-wiki/-/wikis/Multipass
 

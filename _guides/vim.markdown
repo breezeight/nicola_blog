@@ -14,7 +14,13 @@ categories: ["vim"]
 
 # References
 
+* https://vimawesome.com/
 
+# Vim Plugin
+
+Usiamo Vundle: https://github.com/VundleVim/Vundle.vim
+
+Update Plugins: `:PluginUpdate`
 
 # Window, Buffer, Tab
 

@@ -1,0 +1,23 @@
+@startuml
+class ALB {
+    +DNS Name
+    +SecurityGroups
+    +Scheme
+}
+
+ALB "1" --* "0..n" Listener
+Listener "1" *-- "1..n" ListenerRule: "Has at least a default rule >"
+ListenerRule *-- Action : < owns
+Action <|-- AuthenticateCognitoAction
+note top: "Use Amazon Cognito to\nauthenticate users"
+Action <|-- AuthenticateOidcAction
+note top: "Use an identity provider \n that is compliant \n with OpenID to authenticate"
+Action <|-- FixedResponseAction
+note top: "note top"
+Action <|-- ForwardAction
+note top: "note top"
+Action <|-- RedirectAction
+note top: "note top"
+ForwardAction o-- TargetGroup
+TargetGroup o-- Target
+@enduml

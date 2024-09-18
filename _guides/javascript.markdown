@@ -2630,6 +2630,17 @@ Ref:
 - [SOJS_2nd] 5.3
 - https://medium.com/@gaurav.pandvia/understanding-javascript-function-executions-tasks-event-loop-call-stack-more-part-1-5683dea1f5ec
 
+
+NOTE: For more details about how JS runtime runs SYNC and ASYNC code see [GUIDE JavaScript runtime environment: EventLoop, Execution Stack, Task, Microtask, rendering steps (ADVANCED)](https://docs.google.com/document/d/10Nr0ETeagEhPX02y_VXKCXRDFeaAlp85p43rRDHuJ-U/edit#heading=h.s0j9kv5n1fti)
+
+When a fragment of JavaScript code runs, it runs inside an execution context. There are three types of code that create a new execution context:
+
+* The global context is the execution context created to run the main body of your code; that is, any code that exists outside of a JavaScript function.
+* Each function is run within its own execution context. This is frequently referred to as a "local context."
+* Using the ill-advised eval() function also creates a new execution context.
+
+Each context is, in essence, a level of scope within your code. As one of these code segments begins execution, a new context is constructed in which to run it; that context is then destroyed when the code exits. 
+
 In JavaScript, the fundamental unit of execution is a function.
 
 Problem: When a function call another function, our program execution has to return to the position from which the function was called.
@@ -6145,7 +6156,7 @@ The call .catch(f) is a complete analog of .then(null, f), it’s just a shortha
 
 Just like there’s a finally clause in a regular `try {...} catch {...}`, there’s finally in promises.
 
-The call `.finally(f)` is similar to `.then(f, f)` in the sense that f always runs when the promise is settled: be it resolve or reject.
+The call `.finally(f)` is similar to `.then(f, f)` in the sense that `f` always runs when the promise is settled: be it resolve or reject.
 
 finally is a good handler for **performing cleanup**, e.g. stopping our loading indicators, as they are not needed anymore, no matter what the outcome is.
 
@@ -6161,7 +6172,7 @@ new Promise((resolve, reject) => {
 .then(result => show result, err => show error)
 ```
 
-That said, finally(f) isn’t exactly an alias of then(f,f) though. There are few subtle differences:
+That said, `finally(f)` isn’t exactly an alias of `then(f,f)` though. There are few subtle differences:
 
 - A finally handler has no arguments. In finally we don’t know whether the promise is successful or not. That’s all right, as our task is usually to perform “general” finalizing procedures.
 - A finally handler passes through results and errors to the next handler.
@@ -6192,9 +6203,9 @@ We’ll talk more about promise chaining and result-passing between handlers in 
 
 ### Can we attach handlers to settled promises?
 
-You can add callbacks with .then before or after the promise has been resolved, and you can even add more than one callback.
+You can add callbacks with `.then()` before or after the promise has been resolved, and you can even add more than one callback.
 
-These callbacks will be called in the order they were added, but always asynchronously, after the current turn of the event loop. So if the promise has already been resolved when you add a .then, your handler will be called immediately, but in the "ascynchronous sense".
+These callbacks will be called in the order they were added, but always asynchronously, after the current turn of the event loop. So if the promise has already been resolved when you add a .then, your handler will be called immediately, but in the "asynchronous sense".
 
 The Promises/A+ spec says:
 
@@ -6214,6 +6225,13 @@ promise.then((result) =>
 console.log(
   "Even if the promise is fulfilled synchronously, this console log is printed before the .then() handler is executed"
 );
+```
+
+The output of the above example is:
+```
+promise fulfilled!
+Even if the promise is fulfilled synchronously, this console log is printed before the .then() handler is executed
+[THEN HANDLER] Promise result: done!
 ```
 
 Example: code_snippet/promises_attach_handler_to_resolved_promise.js
@@ -6639,50 +6657,9 @@ Promisification is a great approach, especially when you use async/await (see th
 
 ### Microtask Queue
 
-Ref: https://javascript.info/microtask-queue
-
-Promise handlers .then/.catch/.finally are always asynchronous.
-Even when a Promise is immediately resolved, the code on the lines below .then/.catch/.finally will still execute before these handlers.
-
-Here’s a demo:
-
-```js
-let promise = Promise.resolve();
-promise.then(() => alert("promise done!"));
-alert("code finished"); // this alert shows first
-```
-
-If you run it, you see code finished first, and then promise done!.
-That’s strange, because the promise is definitely done from the beginning.
-Why did the .then trigger afterwards? What’s going on?
-
-Asynchronous tasks need proper management. For that, the ECMA standard specifies an internal queue PromiseJobs, more often referred to as the “microtask queue” (ES8 term).
-
-As stated in the specification:
-
-- The queue is first-in-first-out: tasks enqueued first are run first.
-- Execution of a task is initiated only when nothing else is running.
-  Or, to say more simply, when a promise is ready, its .then/catch/finally handlers are put into the queue; they are not executed yet. When the JavaScript engine becomes free from the current code, it takes a task from the queue and executes it.
-
-That’s why “code finished” in the example above shows first.
-
-Here you can find an animated diagram: https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/
-
-Promise handlers always go through this internal queue.
-
-If there’s a chain with multiple .then/catch/finally, then every one of them is executed asynchronously. That is, it first gets queued, then executed when the current code is complete and previously queued handlers are finished.
-
-What if the order matters for us? How can we make code finished run after promise done?
-
-Easy, just put it into the queue with .then:
-
-```js
-Promise.resolve()
-  .then(() => alert("promise done!"))
-  .then(() => alert("code finished"));
-```
-
-Now the order is as intended.
+****
+[VEDI QUA per una spigazione dettagliata sull'eventloop e la microtask queue: [GUIDE] JavaScript runtime environment: EventLoop, Execution Stack, Task, Microtask, rendering steps (ADVANCED)](https://docs.google.com/document/d/10Nr0ETeagEhPX02y_VXKCXRDFeaAlp85p43rRDHuJ-U/edit#heading=h.p1j57u4reeei)
+****
 
 #### Unhandled rejection
 
@@ -7004,13 +6981,20 @@ See [this post](http://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at
 
 See the ember guide for the Ember.Mixin.
 
-# Browser Events
+# Browser
 
-# Browser Debugger TIPS
+## Browser runtime, Eventloop, message passing, iframe, memory
+
+See [GUIDE JavaScript runtime environment: EventLoop, Execution Stack, Task, Microtask, rendering steps (ADVANCED)](https://docs.google.com/document/d/10Nr0ETeagEhPX02y_VXKCXRDFeaAlp85p43rRDHuJ-U/edit#heading=h.s0j9kv5n1fti)
+
+
+## Browser Events
+
+## Browser Debugger TIPS
 
 - `alert("my message")`
 
-## DOM breakpoint
+### DOM breakpoint
 
 - `on subtree modification`
 
@@ -7021,6 +7005,11 @@ If you use the ispector there is a tab that list all listeners.
 ## MAPS
 
 TODO: dovrebbe essere possibile fare delle mappe per non avere dei mega file CSS e JS
+
+## Same-Site and Same-Origin
+
+ https://web.dev/same-site-same-origin/ 
+
 
 # JQuery
 
@@ -8370,6 +8359,11 @@ Refs:
 - https://mercedesbernard.com/blog/jest-mocking-strategies elenco di problemi e strategie
 
 ## Learning Testing in JS
+
+### Browser Testing
+
+TODO quando affronteremo meglio l'argomento sarà da controllare questo problema: " User Clicks a Button VS JS code" vedi  
+https://docs.google.com/document/d/10Nr0ETeagEhPX02y_VXKCXRDFeaAlp85p43rRDHuJ-U/edit#heading=h.cxek2j6rx8za
 
 ### TestingJavaScript.com
 

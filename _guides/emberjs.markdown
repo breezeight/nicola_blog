@@ -48,15 +48,64 @@ You may choose to close a pull request without merging it into the upstream bran
 
 https://twitter.com/emberjs
 
-# How to develop and build an Ember.js Project with Ember-Cli
+# Static Website: fastboot and prember
+
+Prember: https://github.com/ef4/prember
+
+* you must configure some URLs that you would like to prerender
+
+
+# Ember-Cli: How to develop and build Ember.js Project
 
 Ember.js is a Javascript framework for web application.
 Ember-cli is command line utility which provides a fast asset pipeline
-for Ember. [Ember-cli Homepage](http://www.ember-cli.com/)
+for Ember.
+
+[Ember-cli Guide](https://cli.emberjs.com/release/)
 
 To be productive with Ember it's really important that you understand
 how it works. See here for more notes: [Ember-cli internal guide]({{site.url}}/guides/ember_cli.html)
 
+Ember Cli will install the `ember` executable
+
+```
+ember --version
+ember-cli: 3.15.1
+node: 12.14.1
+os: darwin x64
+```
+
+Why do we need a CLI?
+The Ember CLI is like a dependency packager, test runner, optimizer, and local server all rolled into one. Since all the features were built to work together, common tasks (such as upgrading the app version or deploying) can be automated with production-ready, open source plugins. The CLI is backwards-compatible with older Ember apps and maintains a six-week release schedule.
+
+## Advanced Pod Layout
+
+https://cli.emberjs.com/release/advanced-use/project-layouts/
+
+
+
+## Ember-cli addons
+
+Ember CLI’s addon system provides a way to create reusable units of code, share components and styling, extend the build tooling, and more — all with minimal configuration.
+
+## Writing Addons
+
+https://cli.emberjs.com/release/writing-addons/#addonfilestructure
+
+
+
+## Ember-cli Generators
+
+`ember generate route scientists` creates :
+
+* A template to be displayed when the user visits /scientists.
+* A Route object that fetches the model used by that template.
+* An entry in the application's router (located in app/router.js).
+* A unit test for this route.
+
+## Ember Try
+
+ember try:ember 2.14.0
 
 # Ember Core Concepts
 
@@ -74,6 +123,249 @@ See: https://www.youtube.com/watch?v=QgycDZjOnIg
 
 * controller are not a bad concept simply it will be easier to map it on a single portion of the UI as a component
 * MIGRATION HINT: refactor every thing as a component
+
+# Components
+
+A component is kind of like your own custom HTML tag:
+
+* You can tell that a tag refers to an Ember component because it starts with a capital letter (<ReceivedMessage>).
+* Built-in HTML tags start with lowercase letters (<div>, <p>, <table>).
+* A component's name is the same as its name on the file system, capitalizing the first letter and every letter following a `-`, and removing the `-` ("pascal case").
+
+## Templates
+
+https://guides.emberjs.com/release/components/
+
+*  Ember's UIs are HTML driven
+
+
+The central template in an Ember application is th Application template:
+
+* app/templates/application.hbs
+* This template is always on screen while the user has your application loaded
+* `{{outlet}}` means that any route will be rendered in that place.
+
+
+Restrictions. There are a handful of restrictions on the HTML that you can put in an Ember template:
+
+* Only valid HTML elements in a <body> tag can be used
+* No <script> tags
+
+## Nesting Components in Folders
+
+https://guides.emberjs.com/release/components/introducing-components/#toc_nesting-components-in-folders
+
+```
+app/
+  components/
+    received-message.hbs
+      received-message/
+        avatar.hbs
+        username.hbs
+```
+
+Use the `::` separator in templates to access components within a folder: `<ReceivedMessage::Username />`
+
+If you prefer to keep all components in subdir, these syntax equivalent:
+
+* app/components/received-message.hbs
+* app/components/received-message/index.hbs
+
+Both allow you to include the components as `<ReceivedMessage />`
+
+## Components Arguments
+
+This component app/components/avatar.hbs: `<div class="avatar" title="{{@title}}">{{@initial}}</div>`
+
+* Have two args: {{@title}} and {{@initial}}
+* To use it: `<Avatar @title="Tomster's avatar" @initial="T" />`
+
+@ Syntax:
+
+* Ember uses the `@` syntax for its components instead of normal HTML attribute syntax
+* The `...attributes` syntax determines where the attributes from a tag should appear in the component's template.
+
+
+NOTE:
+
+* If ...attributes appears after an attribute, it overrides that attribute. If it appears before an attribute, it does not.
+* In addition, the class attribute is special, and will be merged with any existing classes on the element rather than overwriting them. This allows you to progressively add CSS classes to your components, and makes them more flexible overall.
+
+## Conditional content
+
+`#if` https://guides.emberjs.com/release/components/conditional-content/
+
+```
+  {{#if @localTime}}
+    <span class="local-time">their local time is {{@localTime}}</span>
+  {{/if}}
+```
+
+Inline:
+
+* Useful to conditially adding standard attributes
+* <div class="avatar {{if @isActive "is-active"}}" title="{{@title}}">
+
+Falsy in Ember Templates:
+
+* 0, false, null, undefined, and the empty string are falsy (like in JS) 
+* ... and also the `empty array``
+
+example of true:
+
+```
+<Avatar
+  @title="Tomster's avatar"
+  @initial="T"
+  @isActive={{true}}
+/>
+```
+
+NOTE: we have to wrap the values in double curlies (like {{true}}). Values that are not wrapped in curlies are assigned as strings, matching the behavior of HTML attributes.
+
+example of false by omitting:
+
+```
+<Avatar
+  @title="Zoey's avatar"
+  @initial="Z"
+  class="current-user"
+/>
+```
+
+
+## Block Content
+
+
+
+# Router and Routes
+
+[Guide](https://guides.emberjs.com/release/routing/)
+
+Imagine we are writing a web app for managing a blog. At any given time, we should be able to answer questions like What post are they looking at? and Are they editing it?
+
+In Ember.js, the answer to these questions is determined by the URL.
+
+The URL can be set in a few ways:
+
+* The user loads the app for the first time.
+* The user changes the URL manually, such as by clicking the back button or by editing the address bar.
+* The user clicks a link within the app.
+* Some other event in the app causes the URL to change.
+* Regardless of how the URL becomes set, the Ember router then maps the current URL to one or more route handlers.
+
+A route handler can do several things:
+
+* It can render a template.
+* It can load a model that is then available to the template.
+* It can redirect to a new route, such as if the user isn't allowed to visit that part of the app.
+* It can handle actions that involve changing a model or transitioning to a new route.
+
+What is a Route? An object that fetches the model used by that template
+
+When your application starts, the router matches the current URL to the routes that you've defined. The routes (`app/routes/route-name.js`), in turn, are responsible for:
+
+* displaying templates `app/templates/route-name.hbs`
+* loading data,
+* and setting up application state.
+
+The Router config is here: `app/router.js`
+
+```
+Router.map(function() {
+  this.route('about', { path: '/about' });
+  this.route('favorites', { path: '/favs' });
+});
+```
+
+`path` is optional, if omitted it will the same as the route name
+
+To add a link to a route from a template: <LinkTo @route="about">About</LinkTo>
+
+## Defining Routes
+
+### Nested Routes
+
+TODO:
+
+* Use case pratico: https://thoughtbot.com/blog/embracing-ember-routes   ma meglio cercarne altri....
+* When to don't use them https://ilyaradchenko.com/ember's-nested-routes-and-urls-explored/
+* When to use them: https://ilyaradchenko.com/using-nested-routes-in-ember/
+* Leggersi meglio come funziona l' {{outlet}} nella parent route
+
+
+https://guides.emberjs.com/release/routing/defining-your-routes/#toc_nested-routes
+
+```
+Router.map(function() {
+  this.route('posts', function() {
+    this.route('new');
+  });
+});
+```
+
+Assuming you have already generated the posts route, to generate the above nested route you would run: `ember generate route posts/new`
+
+### The Application Route
+
+https://guides.emberjs.com/release/routing/defining-your-routes/#toc_the-application-route
+
+TODO
+
+### Index Routes
+
+https://guides.emberjs.com/release/routing/defining-your-routes/#toc_index-routes
+
+TODO 
+
+### Dynamic Segments
+
+https://guides.emberjs.com/release/routing/defining-your-routes/#toc_dynamic-segments
+
+TODO
+
+`this.route('post', { path: '/post/:post_id' });`
+
+If the user navigates to /post/5, the route will then have the post_id of 5 to use to load the correct post. 
+
+Convention of `:model-name_id`:
+
+* in the example above `Post` will be the Specifyed Route's Model, https://guides.emberjs.com/release/routing/specifying-a-routes-model/
+
+### Wildcard Globbing Routes
+
+https://guides.emberjs.com/release/routing/defining-your-routes/#toc_wildcard--globbing-routes
+
+Usecase: This could be used, for example, if you'd like a catch-all route which is useful when the user enters an incorrect URL not managed by your app.
+
+### Route Handlers
+
+https://guides.emberjs.com/release/routing/defining-your-routes/#toc_route-handlers
+
+### Transitioning Between Routes
+
+https://guides.emberjs.com/release/routing/defining-your-routes/#toc_transitioning-between-routes
+
+Once the routes are defined, how do we go about transitioning between them within our application? It depends on where the transition needs to take place:
+
+* From a template, use <LinkTo /> as mentioned above
+* From a route, use the `transitionTo()` method
+* From a controller, use the `transitionToRoute()` method
+* From anywhere else in your application, such as a component, inject the Router Service and use the `transition()` method
+
+## Linking between routes
+
+https://guides.emberjs.com/release/routing/linking-between-routes/
+
+TODO
+
+## Specifying a Route's Model
+
+https://guides.emberjs.com/release/routing/specifying-a-routes-model/
+
+
+
+# Models
 
 # config/environment.js
 

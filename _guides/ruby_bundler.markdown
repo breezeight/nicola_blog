@@ -12,6 +12,33 @@ categories: ["ruby"]
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
+
+
+
+
+#########################
+#########################
+#########################
+#########################
+MOVED TO GDOC ON 8/12/2018
+#########################
+#########################
+#########################
+#########################
+#########################
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Intro to the Ecosystem: Bundler, RubyGems, RubyTogether, etc
 
 Bundler and RubyGems both helps you to install and manage gems; historically bundler was created after to solve the gem's dependency issue. Nowadays there is an effort to merge both projects together [Ref](https://rubytogether.org/news/2016-09-27-a-year-of-ruby-together)

@@ -22,6 +22,10 @@ categories:
 
 * Short intro e-book for developer with some bash internal, written by a bash author: http://aosabook.org/en/bash.html
 
+Un buon approfondimento per quando le idee di base sono chiare:
+http://www.binaryphile.com/bash/2018/07/26/approach-bash-like-a-developer-part-1-intro.html
+* Non va bene per un'introduzione ma per passare da very beginner a beginner
+* usa i test e il concetto di TDD
 
 
 # Bash History

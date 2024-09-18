@@ -54,7 +54,7 @@ docker rmi -f $(docker images -q)
 
 # History
 
-# Docker Compose 
+# Docker Compose
 
 ## 1.6
 
@@ -66,7 +66,7 @@ https://github.com/docker/compose/releases/tag/1.6.0
 *  depends_on
 *  build args
 *  config
-    
+
 # Docker intro
 
 WHY DOCKER IS USEFUL: Really good intro to docker from an usage point of view: http://www.infoq.com/articles/docker-containers/
@@ -165,9 +165,74 @@ covers:
 http://docs.docker.io/en/latest/terms/layer/
 When Docker mounts the rootfs, it starts read-only, as in a traditional Linux boot, but then, instead of changing the file system to read-write mode, it takes advantage of a union mount to add a read-write file system over the read-only file system. In fact there may be multiple read-only file systems stacked on top of each other. We think of each one of these file systems as a layer.
 
-# Install Docker
+# Install and Tune Docker
 On recent linux Docker is really easy to install but on OS like
 windows and OSX it's a little bit harder and you need to use ONE classical virtual machine to run Linux and Docker.
+
+## AWS
+
+## OSX
+
+### Under the Hood: Demystifying Docker For Mac
+
+ref: https://collabnix.com/how-docker-for-mac-works-under-the-hood/
+7TH MAY 2018
+
+Docker For Mac:
+* It runs on a LinuxKit VM and NOT on VirtualBox or VMware Fusion.
+* LinuxKit is a framework for creating minimal Linux OS images purpose built for containers
+* It embeds a hypervisor (based on xhyve), a Linux distribution which runs on LinuxKit and filesystem & network sharing that is much more Mac native.
+* xhyve, a lightweight OS X virtualization solution https://github.com/machyve/xhyve
+
+### HOWTO get a shell on The LinuxKit VM on OSX
+
+
+https://gist.github.com/BretFisher/5e1a0c7bcca4c735e716abf62afad389
+https://github.com/justincormack/nsenter1
+
+
+`docker run -it --rm --privileged --pid=host justincormack/nsenter1`
+
+
+WHY?
+Here is one simple example: say you want to teach a few people about Docker networking and you want to show them how to inspect the default bridge network after starting two containers using ip addr show; the problem is if you are demonstrating with Docker for Mac, for example, your containers are not running on your host directly, but are running instead inside of a minimal Linux OS virtual machine specially built for running containers, i.e., LinuxKit. But being a lightweight environment, LinuxKit isn't running sshd, so how do you get access to a shell so you can run nsenter to inspect the namespaces for the process running as pid 1?
+
+### Optimize Volumes Mounts
+
+See: https://docs.docker.com/docker-for-mac/osxfs/#performance-issues-solutions-and-roadmap
+
+to test how the volume is mounted you can inspect the container and check the `Mode` property of mounts:
+
+
+```
+"Mounts": [
+    {
+        "Type": "bind",
+        "Source": "/Users/nicolabrisotto/SRC/betania/docker/tmp_builder_volumes/deps",
+        "Destination": "/app/deps",
+        "Mode": "delegated",
+        "RW": true,
+        "Propagation": "rprivate"
+    },
+```
+
+### Cloudformation Template
+
+https://docs.docker.com/docker-for-aws/#quickstart
+
+usa DynamoDB per orchestrare info nel cluster:
+
+```
+get_primary_manager_ip()
+{
+    echo "Get Primary Manager IP"
+    # query dynamodb and get the Ip for the primary manager.
+    MANAGER=$(aws dynamodb get-item --region $REGION --table-name $DYNAMODB_TABLE --key '{"node_type":{"S": "primary_manager"}}')
+    export MANAGER_IP=$(echo $MANAGER | jq -r '.Item.ip.S')
+    echo "MANAGER_IP=$MANAGER_IP"
+}
+```
+
 
 ## Ubuntu 15.04
 
@@ -201,7 +266,7 @@ commands:
 * `docker-machine stop default`
 * `docker-machine inspect default`
 * `docker-machine inspect ip`
-* `docker-machine inspect env` : 
+* `docker-machine inspect env` :
 
 
 
@@ -284,7 +349,7 @@ TODO: read the make file of this project and implements it in FIG: https://githu
 
 Docker-Registry is GO app that holds docker images: https://github.com/docker/docker-registry
 
-A registry is, at its heart, a collection of repositories. In turn, a repository is collection of images. Users interact with the registry by pushing images to or pulling images from the registry. 
+A registry is, at its heart, a collection of repositories. In turn, a repository is collection of images. Users interact with the registry by pushing images to or pulling images from the registry.
 
 You can upload or download images to and from it with `push` and `pull` commands.
 
@@ -302,7 +367,7 @@ The registry has the following characteristics:
 By default docker tools use a public installation of a docker registry hosted at Docker.com
 [Docker Public Index](https://registry.hub.docker.com/). But you can use other registries. See here to create your own private repository: http://blog.docker.io/2013/07/how-to-use-your-own-registry/
 
-NOTE: the docker hub is a separate project that allow to search, share and collaborate with other. 
+NOTE: the docker hub is a separate project that allow to search, share and collaborate with other.
 
 Docker registry [SPEC](https://docs.docker.com/reference/api/hub_registry_spec/)
 
@@ -384,7 +449,7 @@ The [docker-library](https://github.com/docker-library) github organization cont
 
 * [official images library](https://github.com/docker-library/official-images/tree/master/library) is a directory on manifest file, one for each official image.
 * each manifest points to a separate git repository with a set of Dockerfile, most of them are under this organization (ex rails: https://github.com/docker-library/rails)
-* [doc for each image](https://github.com/docker-library/docs) 
+* [doc for each image](https://github.com/docker-library/docs)
 
 
 ### How to find the Dockerfile of an official image
@@ -409,7 +474,7 @@ The format of each line is `<docker-tag>: <git-url>@<git-tag-or-commit-id> <dock
 
 * Generated image will be tagged as `<docker-tag>`
 * Optionally, if `<dockerfile-dir>` is present:
-  * Stackbrew will look for the Dockerfile inside the specified subdirectory instead of at the root 
+  * Stackbrew will look for the Dockerfile inside the specified subdirectory instead of at the root
   * `<dockerfile-dir>` will be used as the "context" for the build).
 
 This mean that to find the postgres:9.4 image Dockerfile you must go here: https://github.com/docker-library/postgres/blob/master/9.4/Dockerfile
@@ -435,7 +500,7 @@ Language stacks are a set of official images designed to make easy:
 
 * to find a particular version following this image tagging convention: tag with the version of the language you will find in the image. ie: `docker pull java:8u40`
 * decouple your code from the stack using [ONBUILD](https://docs.docker.com/reference/builder/#onbuild), which adds to the image a trigger instruction to be executed at a later time, when the image is used as the base for another build.
-* you’ll see that most of the language stacks are based on the buildpack-deps image, a collection of common build dependencies including development header packages. 
+* you’ll see that most of the language stacks are based on the buildpack-deps image, a collection of common build dependencies including development header packages.
 
 For more details see this blog post: [See the announcement on the blog](http://blog.docker.com/2014/09/docker-hub-official-repos-announcing-language-stacks/)
 
@@ -467,14 +532,14 @@ The ruby language stack image is based on this images:
 
 * `ruby:X.Y` : ex: https://github.com/docker-library/ruby/blob/master/2.2/Dockerfile
   * FROM buildpack-deps:jessie
-  * install ruby from source, setup bundler 
+  * install ruby from source, setup bundler
 
 * `ruby:X.Y-onbuild` : ex: https://github.com/docker-library/ruby/blob/master/2.2/onbuild/Dockerfile
   * FROM ruby:2.2
   * it configure bundler for production, copy the application code and run bundle install
   * If your Dockerfile is from this image each time you run `docker build` all the commands tagged `ONBUILD` from the `ruby:2.2.2-onbuild` image will be executed
   * the image copy the Gemfile before the application code, this will cache the bundle install command if the application code is changed but not the Gemfile( [see here for build caching](#docker-build-cache) )
-  
+
 `ruby:2.2.2-onbuild` Dockerfile:
 
 ~~~
@@ -545,30 +610,60 @@ References:
 * [CLI Commands reference](https://docs.docker.com/reference/commandline/cli)
 * list of the [official Docker guides](https://docs.docker.com/userguide/)
 * [list of official Docker articles](https://docs.docker.com/articles/basics/)
-* [Cheatsheet](https://github.com/wsargent/docker-cheat-sheet) 
+* [Cheatsheet](https://github.com/wsargent/docker-cheat-sheet)
 
-## Volumes: Managing Data in Containers 
+## Path Cheatsheet
 
-[Docekr guide: Managing Data in Containers ](https://docs.docker.com/userguide/dockervolumes/)
+Docker-compose:
 
-Nice article about volumes: http://crosbymichael.com/advanced-docker-volumes.html
+* Volume path are reletive to the first docker-compose file
+* Docker file path is relative to the context
 
-What is a volume?
+Dockerfile:
 
-A volume can be a directory that is located outside of the root filesystem of your container. This allows you to import this directory in other containers. You can also use volumes to mount directories from your host machine inside a container.
+* COPY/ADD path are relative to the context
+
+## Manage data in Docker
+
+General intro https://docs.docker.com/storage/
+
+By default all files created inside a container are stored on a writable container layer. Writing into a container’s writable layer requires a storage driver to manage the filesystem. The storage driver provides a union filesystem, using the Linux kernel. This extra abstraction reduces performance as compared to using data volumes, which write directly to the host filesystem.
+
+Docker has other 3 options for containers to store files in the host machine, so that the files are persisted even after the container stops:
+
+* volumes
+* bind mounts
+* tmpfs mount (Linux only)
+
+No matter which type of mount you choose to use, the data looks the same from within the container.
+
+A volume can is a directory that is located outside of the root filesystem of your container. This allows you to import this directory in other containers. You can also use volumes to mount directories from your host machine inside a container.
+
+The main difference among volumes, bind mounts, and tmpfs mounts is: "where the data lives on the Docker host":
+
+* Volumes are stored in a part of the host filesystem which is managed by Docker (/var/lib/docker/volumes/ on Linux). Non-Docker processes should not modify this part of the filesystem. Volumes are the best way to persist data in Docker.
+
+* Bind mounts may be stored anywhere on the host system. They may even be important system files or directories. Non-Docker processes on the Docker host or a Docker container can modify them at any time.
+
+* tmpfs mounts are stored in the host system’s memory only, and are never written to the host system’s filesystem.
 
 
-There are two primary ways you can give access of Docker host storage to a Docker container:
+NOTE: the use of volumes key and the `volume` type can generate confusion, they refer to different concepts.
 
-* Data volumes
-* Data volume containers
+Docker-compose has a short and long syntax to declare volumes, I prefer the long, which is more explicit:
 
-Data volumes is a trick that you can use to make easier the volume management.
+https://docs.docker.com/compose/compose-file/#volumes
+
+You can mount a host path as part of a definition for a single service, and there is no need to define it in the top level volumes key.
+
+But, if you want to reuse a volume across multiple services, then define a named volume in the top-level volumes key.
 
 ### Data volumes
 
+WARNING: this is an outdated trick
+
 When you define a volume a directory of the docker host is mounted into a directory of a docker container.
-When a Docker container is deleted, relaunching the image will start a fresh container without any of the changes made in the previously running container. In order to be able to save (persist) data and share data between containers, Docker came up with the concept of volumes. 
+When a Docker container is deleted, relaunching the image will start a fresh container without any of the changes made in the previously running container. In order to be able to save (persist) data and share data between containers, Docker came up with the concept of volumes.
 
 
 You can define a data volume using:
@@ -584,7 +679,7 @@ WARNING: Docker never automatically delete volumes when you remove a container, 
 * `docker run -v /docker_host_dir:/webapp`: will mount the dockerhost `/docker_host_dir:` directory into the `/webapp` container directory. NOTE: you cannot use `VOLUME` to do this operation. 
 
 
-To inspect an image's volumes: 
+To inspect an image's volumes:
 
 ~~~
 docker inspect postgres | jq .[0].ContainerConfig.Volumes
@@ -593,39 +688,11 @@ docker inspect postgres | jq .[0].ContainerConfig.Volumes
 }
 ~~~
 
-### Data Volume Container
-
-REF: [Docker Doc: data volume containers](https://docs.docker.com/userguide/dockervolumes/#creating-and-mounting-a-data-volume-container)
-
-It’s common practice to use a data-only named container for storing persistent databases, configuration files, data files etc. This container has nothing special but the important thing to note is that it is used only to mount volumes. For example:
-
-~~~
-$ docker run --name dbdata postgres echo "Data-only container for postgres"
-~~~
-
-This command will create a postgres container, including the volume defined in the Dockerfile, run the echo command and exit. 
-
-NOTE: The echo command is useful in so far as it helps us identify the purpose of the image when looking at `docker ps`. 
-
-Using `docker run --volumes-from dbdata` we can mount all volumes of `dbdata` into the new container.
-
-**WHY** is this pattern useful? Because if you use tools like docker-compose you end up doing a lot of `docker-compose run web` command and each time a new container is spawned and new volumes are created (when you use `VOLUME`). Instead if you use the data container pattern, each time you start the `web` container the `dbdata` container previously create and it's volumes are reused.
-
-NOTE: you could use `-v docker_host_dir:docker_container_dir` to solve this issue but has some cons relate to portability:
-
-* it's not portable because `docker_host_dir` depends on the docker_host.
-* you cannot add the configuration into the Dockerfile.
-
-Tips:
-
-* Don’t use a “minimal image” such as busybox or scratch for the data-container.reuses the database or webapp image so that all containers are using layers in common, saving disk space. Using a different image can also causes issues with permission: http://container42.com/2014/11/18/data-only-container-madness/
-
-* Don’t leave the data-container running; it’s a pointless waste of resources
-
 ### Volume Permissions and Ownership
 
-REF: 
+REF:
 
+* https://forums.docker.com/t/volume-not-writable-to-non-root-user-container/36103/2
 * http://container-solutions.com/2014/12/understanding-volumes-docker/
 * http://container42.com/2014/11/18/data-only-container-madness/
 
@@ -694,7 +761,7 @@ To list volumes from other containers: `docker inspect addictiveapi_redis_1 | jq
 * database: we can use the volume as data directory for the database, this will by-pass the COW filesystem and will increase performance.
 
 
-## Working with Containers
+## CONTAINERS
 
 Cheatsheet:
 
@@ -744,7 +811,7 @@ but `docker run` **can** override those default or add new values:
 
 * `CMD` is overridden by `docker run <your cmd>`
 * `ENTRYPOINT` is overridden by  `docker run --entrypoint`
-* `EXPOSE` can be overridden by  `docker run -p` 
+* `EXPOSE` can be overridden by  `docker run -p`
 * `ENV` can overridden by  `docker run -e`
 * `VOLUME` can be overridden by  `docker run -v`
 
@@ -782,7 +849,7 @@ $ sudo docker run --env TEST_FOO="This is a test" --env-file ./env.list busybox 
 TEST_FOO=This is a test
 ~~~
 
-NOTE: 
+NOTE:
 
 * Docker creates several environment variables when you link containers. Docker automatically creates environment variables in the target container based on the `--link` parameters.
 * Warning: It is important to understand that all environment variables originating from Docker within a container are made available to any container that links to it. This could have serious security implications if sensitive data is stored in them.
@@ -790,18 +857,57 @@ NOTE:
 
 TODO: capire bene come funziona questa naming convention delle variabili
 
+#### multiplatform support
 
-#### CMD vs ENTRYPOINT
+Docker : https://stackoverflow.com/questions/67458621/how-to-run-amd64-docker-images-on-arm64-host-platform
+
+
+```bash
+docker run --rm -ti --platform linux/arm/v7 ubuntu:latest uname -m
+# armv7l
+
+docker run --rm -ti --platform linux/amd64 ubuntu:latest uname -m
+# x86_64
+```
+Docker compose: ....
+
+### CMD vs ENTRYPOINT vs RUN
+
 
 http://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile
 
-`sudo docker run [OPTIONS] IMAGE[:TAG] [COMMAND] [ARG...]`
+
+
+https://aboullaite.me/dockerfile-run-vs-cmd-vs-entrypoint/
+
+Short version:
+
+* RUN executes the command(s) that you give in a new layer and creates a new image. This is mainly used for installing a new package.
+* CMD is the default command to be run by the entrypoint. It sets default command and/or parameters, however, we can overwrite those commands or pass in and bypass the default parameters from the command line when docker runs
+* ENTRYPOINT is the program to run the given command. It is used when yo want to run a container as an executable with `docker run` (but you can override it with --entrypoint).
+
+
+Note that [CMD instruction](https://docs.docker.com/engine/reference/builder/#cmd) has three forms:
+
+* `CMD ["executable","param1","param2"]` (exec form, this is the preferred form)
+* `CMD ["param1","param2"]` (as default parameters to ENTRYPOINT)
+* `CMD command param1 param2` (shell form)
+
 
 The command is optional because the person who created the IMAGE may have already provided a default COMMAND using the Dockerfile CMD instruction. As the operator (the person running a container from the image), you can override that CMD instruction just by specifying a new COMMAND.
 
 If the image also specifies an ENTRYPOINT then the CMD or COMMAND get appended as arguments to the ENTRYPOINT.
 
 The ENTRYPOINT of an image is similar to a COMMAND because it specifies what executable to run when the container starts, but it is (purposely) more difficult to override. The ENTRYPOINT gives a container its default nature or behavior, so that when you set an ENTRYPOINT you can run the container as if it were that binary, complete with default options, and you can pass in more options via the COMMAND. But, sometimes an operator may want to run something else inside the container, so you can override the default ENTRYPOINT at runtime by using a string to specify the new ENTRYPOINT.
+
+####  Shell vs. Exec
+
+All three instructions RUN, CMD and ENTRYPOINT support two different forms:
+
+* the shell form: `/bin/sh -c < instruction > < command >`
+* the exec form: ` ` 
+
+You may run into problems with the shell form if you're building a minimal image which doesn't even include a shell binary. When Docker is constructing the command to be run it doesn't check to see if the shell is available inside the container.
 
 #### Starting a long-running worker process
 
@@ -875,7 +981,7 @@ To enter a running container, attach a new shell process to a running container 
 
 To set the user use `docker exec -u user_name`
 
-### Remove stopped containers 
+### Remove stopped containers
 
 REF: http://blog.stefanxo.com/2014/02/clean-up-after-docker/
 
@@ -888,12 +994,13 @@ REF: http://blog.stefanxo.com/2014/02/clean-up-after-docker/
 
 `docker rmi $(docker images | grep "^<none>" | awk '{print $3}')`
 
-## Networking
+## NETWORKING
 
 refs:
 
-* [Docker neworking Official Doc](https://docs.docker.com/engine/userguide/networking/)
+* [Docker neworking Official Doc](https://docs.docker.com/network/)
 * [Linking Container Together](http://docs.docker.com/userguide/dockerlinks/)
+* [Docker Networking Explained](https://codability.in/docker-networking-explained/)
 
 When Docker starts with the default configuration:
 
@@ -909,7 +1016,31 @@ $$ mount
 /dev/disk/by-uuid/1fec...ebdf on /etc/hosts type ext4 ...
 /dev/disk/by-uuid/1fec...ebdf on /etc/resolv.conf type ext4 ...
 ...
-~~~ 
+~~~
+
+### Primer on Linux Networking: Linux Network Namespaces, Virtual Ethernet Devices, Linux Bridges, NAT and IPtables
+
+#### Linux Network Namespaces
+Any installation of Linux has a single set of network interfaces and routing table entries. You can modify the routing table entries add or delete policies using iptables, but that doesn’t fundamentally change the fact that the set of network interfaces and routing tables/entries are shared across the entire OS. With network namespaces, you can have different and separate instances of network interfaces and routing tables that operate independent of each other.
+
+* create a network namespace `ip netns add <new namespace>`
+* list all the available name spaces: `ip netns list`
+
+To make use of these namespaces, we need to connect it to physical network devices and interfaces.
+
+Assign a physical interface to a network namespace: `ip link set dev <device> netns <namespace>`
+
+OR.... [TODO] connect a network namespace to the physical network, we can simply use a bridge. (More on that later)
+
+NOTE: These commands mentioned above are just for your understanding, and to create and manage robust namespaces is an extremely difficult task, but this entire configuration becomes almost transparent when working with docker.
+
+Each Docker container has its own network stack, using the Linux network namespace, where a new network namespace for each container is instantiated and cannot be seen from outside the container or from other containers.
+
+#### Virtual Ethernet Devices
+
+A virtual ethernet device or veth is a Linux networking interface that acts as a connecting wire between two network namespaces. A veth is a full duplex link that has a single interface in each namespace. Traffic in one interface is directed out the other interface. Docker network drivers utilize veths to provide explicit connections between namespaces when Docker networks are created. When a container is attached to a Docker network, one end of the veth is placed inside the container (usually seen as the ethX interface) while the other is attached to the Docker network.
+
+#### Linux Bridges
 
 
 
@@ -929,7 +1060,7 @@ As of Docker 1.10, the docker daemon implements an embedded DNS server which pro
 
 `-P` or `--publish-all=true` flag:
 
-* When that container is created with the -P flag it automatically maps any network ports mentioned in the `EXPOSE` line to a random high port from the range 49153 to 65535 on the Docker host. 
+* When that container is created with the -P flag it automatically maps any network ports mentioned in the `EXPOSE` line to a random high port from the range 49153 to 65535 on the Docker host.
 
 `sudo docker run -d -P training/webapp python app.py` :
 
@@ -943,7 +1074,7 @@ bc533791f3f5  training/webapp:latest  python app.py 5 seconds ago  Up 2 seconds 
 
 * When you use the `-p flag` you can specify which interface/port map from the host to a container port
 
-* `sudo docker run -d -p 5000:5000 training/webapp python app.py` :  bind a container's ports to a specific docker host port 
+* `sudo docker run -d -p 5000:5000 training/webapp python app.py` :  bind a container's ports to a specific docker host port
 * you can also specify a binding to a specific interface, for example only to the localhost: `sudo docker run -d -p 127.0.0.1:5000:5000 training/webapp python app.py`
 * to bind port 5000 of the container to a dynamic port but only on the localhost: `sudo docker run -d -p 127.0.0.1::5000 training/webapp python app.py`
 * You can also bind UDP ports by adding a trailing /udp : `sudo docker run -d -p 127.0.0.1:5000:5000/udp training/webapp python app.py`
@@ -989,7 +1120,7 @@ CPU A few things to remember:
 * On an idle host a container with low shares will still be able to use 100% of the CPU
 * You can pin a container to specific core, if you want
 
-## Working with images
+## IMAGES
 
 Ref:
 
@@ -1016,6 +1147,10 @@ Images are just [templates for docker containers](https://docs.docker.com/introd
 * [`docker insert`](http://docs.docker.io/reference/commandline/cli/#insert) inserts a file from URL into image. (kind of odd, you'd think images would be immutable after create)
 * [`docker load`](http://docs.docker.io/reference/commandline/cli/#load) loads an image from a tar archive as STDIN, including images and tags (as of 0.7).
 * [`docker save`](http://docs.docker.io/reference/commandline/cli/#save) saves an image to a tar archive stream to STDOUT with all parent layers, tags & versions (as of 0.7).
+
+### Build multi-arch images with BuildX
+
+https://docs.docker.com/desktop/multi-arch/#build-multi-arch-images-with-buildx
 
 ### Info
 
@@ -1066,11 +1201,11 @@ component.
 ### SEARCH images on the Docker Hub registry
 
 * search online on [Docker Hub](https://hub.docker.com/)
-* `docker search TERM` Search the Docker Hub index for images 
+* `docker search TERM` Search the Docker Hub index for images
 
 ### Image ID and Image tags
 
-A lot of command accept tags. You can group your images together using a basic name and tags. 
+A lot of command accept tags. You can group your images together using a basic name and tags.
 
 For example postgres uses:
 
@@ -1114,7 +1249,7 @@ A group of special, trusted images such as the ubuntu base image can be retrieve
 * `docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]` creates image from a container.
 * http://docs.docker.io/reference/commandline/cli/#commit
 
-With Docker, the process of saving the state is called committing. Commit basically saves the difference between the old image and the new state. The result is a new image. 
+With Docker, the process of saving the state is called committing. Commit basically saves the difference between the old image and the new state. The result is a new image.
 
 Docker has an unusual mechanism for specifying which registry to push to. You have to tag an image with the private registry's location in order to push to it. Let's tag our image to our private registry:
 
@@ -1152,7 +1287,7 @@ Docker creates a commit for each line of instruction in Dockerfile. All these co
 
 When does the cache is invalidated ?:
 
-* changing any instruction in a RUN 
+* changing any instruction in a RUN
 * changing any file of a COPY/ADD instruction
 *  If you cause cache invalidation at one instruction, subsequent instructions doesn’t use cache. This is inevitable because Dockerfile uses the image built by the previous instruction as a parent image to execute next instruction
 
@@ -1204,7 +1339,7 @@ TODO
 
 * `docker info` 
 * `docker version`
-* https://docs.docker.com/articles/runmetrics/ 
+* https://docs.docker.com/articles/runmetrics/
 
 
 # Advanced Guides
@@ -1261,13 +1396,13 @@ Anche questa è una buona lettura che riassume il workflow con rails e compose: 
 dovrei mettere `prepare_docker_build.sh` preso da rails-docker in uno step precedente la build dell'immagine
 
 TODO: docker-compose for development and for production
-TODO production: 
+TODO production:
 
 * update to rails 4.2 and active jobs
 * update to active jobs
 * docker-compose:
   * postgres
-  * come passare le variabili d'ambiente?? Come usare `/etc/hosts` ? 
+  * come passare le variabili d'ambiente?? Come usare `/etc/hosts` ?
 
 Draft:
 
@@ -1331,7 +1466,7 @@ TODO: capire perchè non si poteva usare semplicemente un template di Rails
 
 ## Create Images with BuildRoot
 
-TODO 
+TODO
 
 * http://slides.com/aukewillem/minimal-docker#/
 
@@ -1353,7 +1488,7 @@ Pro
 * hub.docker.com/r/advancedclimatesystems/python/
 * buildroot.uclibc.org/downloads/manual/manual.html
 
-## 
+##
 
 * Example: http://michaelcoyote.github.io/2015/08/02/lean-container-tricks/
 
@@ -1420,7 +1555,7 @@ build_ruby22:
 
 Basically the `image/install.sh` script is entry point that make all the work and runs a sequence of scripts. 
 
-`image/enable_repos.sh` : 
+`image/enable_repos.sh` :
 
 * add brightbox ppa for ruby
 * add other ppa for redis, openJDK, etc
@@ -1430,7 +1565,7 @@ Basically the `image/install.sh` script is entry point that make all the work an
 
 `image/utilities.sh`:  install build-essential and git
 
-`image/rubyX.Y.sh` (note: you can enable the installation of other sw redis, memcache, etc): 
+`image/rubyX.Y.sh` (note: you can enable the installation of other sw redis, memcache, etc):
 
 * install ruby from brigtbox
 * use ubuntu `update-alternatives` to set the default ruby, rake, gems, etc
@@ -1452,7 +1587,7 @@ Basically the `image/install.sh` script is entry point that make all the work an
 
 `image/finalize.sh` : cleanup apt-get cache and remove build scripts
 
-### Running scripts at startup 
+### Running scripts at startup
 
 https://github.com/phusion/baseimage-docker#running-scripts-during-container-startup
 
@@ -1506,11 +1641,11 @@ NOTE: This image solves the problem of using private git repository for gems bec
 
 
 
-# My images
+# Common images and workflows
 
 ## Pitchtarget
 
-The postgres image will use the default image volume, this means that it will bypass the COW filesystem and will store it in the 
+The postgres image will use the default image volume, this means that it will bypass the COW filesystem and will store it in the
 
 ## Mongodb
 
@@ -1534,7 +1669,7 @@ volumes:
   mongo-data:
 ```
 
-We create a named volume "mongo-data" to persist 
+We create a named volume "mongo-data" to persist
 
 
 `docker-compose -f docker-compose.dev.yml run --rm mongo  mongorestore -h mongo -d storage_padova_push /data/seed/storage_padova_push`
@@ -1642,11 +1777,11 @@ This is still an open issue: https://github.com/docker/machine/issues/23
 
 [Docker Machine on Azure]({{ site.url }}/guides/azure.html#azure-and-docker-machine)
 
-# Docker Compose 
+# Docker-Compose
 
 ## Changelog
 
-[1.9.0](https://github.com/docker/compose/releases/tag/1.9.0) : 
+[1.9.0](https://github.com/docker/compose/releases/tag/1.9.0) :
 
 * setting volume labels and network labels in docker-compose.yml
 * `isolation` parameter in service definitions.
@@ -1676,25 +1811,43 @@ Compose is great for:
 
 * development environments
 * staging servers
-* CI server. 
+* CI server.
 
 We don't recommend that you use it in production yet (april the 18th 2015).
 
-TODO: 
+TODO:
 
 * http://docs.docker.com/compose/install/
 * http://blog.docker.com/2015/02/announcing-docker-compose/
 * http://blog.carbonfive.com/2015/03/17/docker-rails-docker-compose-together-in-your-development-workflow/
 
-cheatsheet:
+## cheatsheet:
 
 * `docker-compose up`
 * `docker-compose stop`
-* `docker-compose logs` : watch the logs of all our containers 
+* `docker-compose logs` : watch the logs of all our containers
 * `service` : the main stanzas in th docker-compose.yml file (ex: web, db, redis)
-* `docker-compose down` 
+* `docker-compose down`
 
-Naming convention:
+A single service (“container”) out of a docker-compose.yaml file is rebuilt and restarted like this:
+
+```
+docker-compose build
+docker-compose up -d  # runs containers, but returns immediately
+# Oops, something needs to be changed
+docker-compose stop web
+# Make changes
+docker-compose build web
+docker-compose up -d --no-deps web
+```
+NOTE:  `--no-deps` don't restart services on which the service depends on
+
+TODO: capire meglio quando server rifare una build: Quando cambiano i file di cui facciamo COPY/ADD ? Quando cambiamo ENV o file ENV ?
+TODO: capire come forzare il pull delle immagini se usiamo latest tag
+
+
+
+## Naming convention:
 
 * the directory containing the docker-compose.yml file is used in the give a prefix to services and images
   * `-`, `_`, spaces, etc are removed (ex: addctive-api becomes addictiveapi)
@@ -1703,7 +1856,7 @@ Naming convention:
 * name of the containers: `<containingDIR>_<service_name>_<incremental_number>`
 
 ex: `addctive-api/docker-compose.yml` produce:
-  
+
 * web service image name: addictiveapi_web
 
 
@@ -1715,7 +1868,7 @@ Container lifecycle: when you use `docker-compose stop` and then `up`, docker co
 
 Labels in compose 1.5: ref: https://github.com/docker/compose/pull/1356/files
 
-Docker compose adds labels to container 
+Docker compose adds labels to container
 
 * LABEL_CONTAINER_NUMBER = 'com.docker.compose.container-number'
 * LABEL_ONE_OFF = 'com.docker.compose.oneoff'
@@ -1731,7 +1884,7 @@ HOW to Remove a named volume with docker-compose?
 * Ref: https://stackoverflow.com/questions/45511956/remove-a-named-volume-with-docker-compose
 
 
-TODO: fare qualche test con la cancellazione e rigenerazione 
+TODO: fare qualche test con la cancellazione e rigenerazione
 
 https://github.com/docker/compose/issues/2308 :
 https://github.com/docker/compose/issues/1882 :
@@ -1792,6 +1945,19 @@ If you `docker-compose rm` and `docker-compose up` the existing container is rem
     ],
 ~~~
 
+## Networking in Compose and Service discovery
+
+https://docs.docker.com/compose/networking/
+
+By default Compose sets up a single network for your app:
+
+* Each container for a service joins the default network
+* is reachable by other containers on that network,
+* and discoverable by them at a hostname identical to the container name.
+
+Note: Your app’s network is given a name based on the “project name”, which is based on the name of the directory it lives in.
+
+NORE: links are required only if you want to create an alias https://docs.docker.com/compose/networking/#links
 
 ## docker-compose file reference
 
@@ -1800,7 +1966,6 @@ V2: https://docs.docker.com/compose/compose-file/compose-file-v2/
 Volumes:
 
 * For version 2 files, named volumes need to be specified with the top-level volumes key. When using version 1, the Docker Engine will create the named volume automatically if it doesn’t exist.
-* 
 
 ### Volumes
 
@@ -1817,22 +1982,20 @@ It's very similar to the docker commandline option `-p`
 
 ### LINKS
 
-WARNING: 
+WARNING:
 
 * The --link flag is a deprecated legacy feature of Docker. We recommend that you use user-defined networks and the embedded DNS server [ref](https://docs.docker.com/engine/userguide/networking/default_network/dockerlinks/)
+ One feature that user-defined networks do not support that you can do with --link is sharing environmental variables between containers. However, you can use other mechanisms such as volumes to share environment variables between containers in a more controlled way.
 
-
-`links` 
+`links`
 
 [Docker compose doc](https://docs.docker.com/compose/yml/#links)
-
-
 
 ## Open Issues
 
 ### 2 docker-compose.yml, same directory name - causes 'mixing' of services
 
-Ref: 
+Ref:
 
 * GITHUB ISSUE 2 docker-compose.yml, same directory name - causes 'mixing' of services: https://github.com/docker/compose/issues/2120
 * COMPOSE_PROJECT_NAME env variable: https://docs.docker.com/compose/reference/overview/#compose-project-name
@@ -1869,7 +2032,7 @@ services:
     - "80:2368"
 ```
 
-This would be the equivalent of running the following `docker run` commands: 
+This would be the equivalent of running the following `docker run` commands:
 
 ```
 $ docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ghost -e MYSQL_PASSWORD=password -e MYSQL_USER=ghost -p 3306 mysql
@@ -1917,4 +2080,3 @@ support for clean-up. May be chef-metal can manage something for you.
 
 ## Google Kubernetes
 * kubernetes: https://github.com/GoogleCloudPlatform/kubernetes
-
