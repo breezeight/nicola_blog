@@ -1,4 +1,5 @@
 site_name: MkDocs Poetry Tutorial
+docs_dir: _guides
 
 theme:
   name: material
@@ -26,8 +27,8 @@ theme:
 plugins:
   - search
   - macros
-  - tags:
-      tags_file: tags.md
+  # - tags:
+  #     tags_file: tags.md
 
 extra:
   social:
@@ -48,31 +49,8 @@ markdown_extensions:
   - pymdownx.superfences
   - meta
 
+# Define only part of the navigation manually
 nav:
   - Home: index.md
-  - Explanations:
-    - Diataxis: 'Explanation - Diataxis.md'
-    - General: 'Explanation.md'
-    - SSH Configuration: 'explanation-configure-dedicated-ssh-for-addictive.md'
-  - How-To Guides:
-    - Writing Technical Documentation: 'HOWTO - Writing Technical Documentation.md'
-    - Git Submodules: 'HOWTO Git Submodules.md'
-    - Traefik Python Boilerplate: 'HOWTO-Traefik-Python-BoilerPlate.md'
-    - Developer Onboarding: 'howto-developer-onboarding.md'
-    - SSH Configuration: 'howto-configure-dedicated-ssh-for-addictive.md'
-  - Tutorials:
-    - OpenAI Assistant API: 'Tutorial - OpenAI Assistant API - Create a Function with FastAPI.md'
-    - Cloudflare Tunnel and Traefik: 'Tutorial - Use Cloudflare Tunnel and Traefik to expose multiple Docker Compose Services online.md'
-    - Local Multi-User Git Setup: 'tutorial-create-local-multi-user-git-setup.md'
-    - Git Submodule Basics: 'tutorial-submodule-basics-commit-push-pull-workflow.md'
-  - Reference:
-    - AWS Accounts Overview: 'Reference - AWS Addictive Accounts Overview.md'
-  - GitHub:
-    - General: 'GitHub.md'
-    - Actions MindMap: 'Github Actions MindMap.md'
-  - Best Practices:
-    - Python Ecosystem: 'Python Ecosystem Addictive Best Practices.md'
-  - Custom Tag Clusters:
-    - Python Resources: 'python-resources.md'
-    - Custom Index: 'custom_index.md'
-  - Tags: tags.md
+  # - Guides:  # You can define a folder manually
+  #     - Getting Started: guides/getting-started.md
