@@ -10,14 +10,17 @@ In this tutorial, we will learn how to create a Google Apps Script that generate
 ## Step 1: Setting Up Your Script
 Let’s begin by creating a new Google Apps Script project.
 
-1. Open Google Drive.
-2. Click on **New** > **More** > **Google Apps Script**.
-3. Name your project something like `FileSystemHierarchyToJSON`.
-
-### Code Overview
-In this tutorial, we’ll use Google Apps Script to traverse the folder structure of your Google Drive and output it as a JSON object.
-
-Copy the following code into your Google Apps Script editor:
+1. Open **Google Drive**.
+2. Create a new folder for testing purposes:
+   - Click on **New** > **Folder**.
+   - Name the folder `tmp` (or any name you prefer).
+3. Inside the `tmp` folder, create a few test files:
+   - Click on **New** > **Google Docs** or **Google Sheets**, create a couple of files, and name them appropriately. For example, create files such as "Untitled document 1," "Untitled document 2," and "dati per test" (a spreadsheet).
+4. Go back to the `tmp` folder.
+5. Create a new Apps Script project:
+   - Click on **New** > **More** > **Google Apps Script**.
+   - Name your project something like `google-app-script-file-system-json-tutorial`.
+6. Copy the following code into your Google Apps Script editor:
 
 ```javascript
 function getFileSystemAsJSONInCurrentDirectory() {
@@ -77,7 +80,7 @@ function generateSlug(name) {
 ## Step 2: Understanding the Code
 Now, let’s walk through the key parts of the script.
 
-- **`getFileSystemAsJSON()`**: This is the main function that starts the process by selecting the root folder and calling another function to build the JSON structure.
+- **`getFileSystemAsJSONInCurrentDirectory()`**: This is the main function that starts the process by selecting the current folder and calling another function to build the JSON structure.
 - **`getFolderContents(folder)`**: This function takes a folder as input, gathers its contents (files and subfolders), and recursively does the same for all subfolders.
 
 ## Step 3: Running the Script
@@ -129,7 +132,3 @@ The output will be a structured JSON object similar to the example below:
 
 ## Conclusion
 By following this tutorial, you’ve learned how to build a script that traverses the folder structure of your Google Drive and outputs a JSON object representing the hierarchy. You can now extend this to fit your specific needs or further explore Google Apps Script capabilities!
-
----
-
-This tutorial aligns with Diátaxis principles by providing a **step-by-step learning experience**, guiding the user toward a tangible result while minimizing explanation【35†source】【36†source】.

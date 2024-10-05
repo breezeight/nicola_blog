@@ -56,11 +56,10 @@ Learn more: [Standalone Scripts Official Documentation](https://developers.googl
 11. **Scheduling Tasks via Google Tasks API** – Automate task creation in Google Tasks based on project management workflows.
 12. **Data Synchronization Between Google Services** – Sync data between different Google services like Sheets, Drive, and Calendar.
 
-#### Tutorial list all files in your Google Drive
-
+#### Google Apps Script: List all files in your Google Drive
+See ==> [tutorial](google-app-script-file-system-json-tutorial.md)
 
 #### How to create a standalone script
-
 
 The easiest way to create a standalone script is to visit script.google.com
 
@@ -71,27 +70,22 @@ Google Cloud Platform Console:
 
 https://console.cloud.google.com
 
-Google AddOns
 
-Another way to create a reusable apps script is to publish it as a private add-on in the marketplace and ask the admin to install it in domain wide. Now everyone will get it in the Add-ons menu of any sheets.
+### Libraries: Sharing and Reusing Code Across Projects
 
-Here is a guideline for setting up a private add-on. Note you will get advantage of publish a private add-on without being reviewed by Google as well as maintaining the code in one place. You could deploy it in a few hours. 
+If you want to share your Apps Script code between multiple documents or projects, avoid copying and pasting code. Instead, create a **Library**. A library allows you to encapsulate your reusable code and reference it in other projects using the script ID.
 
-https://developers.google.com/gsuite/add-ons/how-tos/publishing-editor-addons
+- **How to Create a Library**:
+  - Save your useful code in a script project.
+  - Go to `File > Manage Versions` to save a version of your script.
+  - In the new project where you want to use the library, navigate to `Resources > Libraries…` and add the library by entering its **Script ID** (note: project keys are deprecated).
 
-
-
-https://developers.google.com/apps-script/add-ons/
-
-Add-ons can be restricted to a specific domanin: https://stackoverflow.com/questions/28990006/google-apps-script-publishing-addon-for-internal-use
-
-https://developers.google.com/apps-script/guides/sheets/functions#using_a_custom_function
-
-### Add-ons
+- Additional Reference: [Creating Libraries in Google Apps Script](https://developers.google.com/apps-script/guides/libraries).
+  
+For more insights, you can also refer to this tutorial: [DriveBunny: Create a Library](http://www.mousewhisperer.co.uk/drivebunny/create-a-library-in-google-apps-script/).
 
 
-
-### Libraries
+######
 
 Ref:
 
@@ -132,6 +126,25 @@ https://github.com/googlesamples/apps-script-oauth2
 The token is stored for each user using PropertiesService.getUserProperties()
 
 - https://developers.google.com/apps-script/guides/properties
+
+
+
+### Add-ons
+
+Another way to create a reusable apps script is to publish it as a private add-on in the marketplace and ask the admin to install it in domain wide. Now everyone will get it in the Add-ons menu of any sheets.
+
+Here is a guideline for setting up a private add-on. Note you will get advantage of publish a private add-on without being reviewed by Google as well as maintaining the code in one place. You could deploy it in a few hours. 
+
+https://developers.google.com/gsuite/add-ons/how-tos/publishing-editor-addons
+
+
+
+https://developers.google.com/apps-script/add-ons/
+
+Add-ons can be restricted to a specific domanin: https://stackoverflow.com/questions/28990006/google-apps-script-publishing-addon-for-internal-use
+
+https://developers.google.com/apps-script/guides/sheets/functions#using_a_custom_function
+
 
 ## Logging
 

@@ -6,13 +6,6 @@ comments: true
 categories: ["Management"]
 ---
 
-# Contents
-{:.no_toc}
-
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
-
-
 # References:
 
 * For any technical issues, please [visit our support center](https://www.atlassian.com/company/contact?_ga=1.188973099.1485114379.1460647216)

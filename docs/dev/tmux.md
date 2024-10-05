@@ -29,7 +29,7 @@ categories: ["devops"]
 * kill session: `tmux kill-session -t myname`
 * Kill all the tmux sessions: `tmux ls | grep : | cut -d. -f1 | awk '{print substr($1, 0, length($1)-1)}' | xargs kill`
 
-# TMux Guide
+## TMux Guide
 
 [https://leanpub.com/the-tao-of-tmux/read](https://leanpub.com/the-tao-of-tmux/read)
 
@@ -60,7 +60,46 @@ tmux attach \-t database
 
 C-b ? to see a list of all available commands and start experimenting.
 
-Some of the commands that I’m using myself quite often are:
+Some of the commands that I'm using myself quite often are:
+
+## OpenAI iTerm2 Integration for OSX
+
+To enable OpenAI iTerm2 integration for OSX, follow these steps:
+
+1. **Install iTerm2**: Ensure you have the latest version of iTerm2 installed on your system.
+2. **Enable tmux Integration**: 
+   - Open iTerm2 and go to `Preferences` > `Profiles` > `General`.
+   - Check the box for `Enable tmux integration`.
+3. **Start tmux with Control Mode**: 
+   - Launch tmux with the command: 
+     ```bash
+     tmux -CC
+     ```
+4. **Connect iTerm2 to tmux**: 
+   - Open a new terminal window and run:
+     ```bash
+     tmux attach
+     ```
+
+Now, you can use iTerm2 features alongside tmux seamlessly.
+
+## iterm2 tmux integration for OSX
+
+
+To learn more about iterm2 integration [https://www.iterm2.com/documentation-tmux-integration.html](https://www.iterm2.com/documentation-tmux-integration.html)
+
+
+TL;DR: You should be able to use tmux as always. Just add the -CC argument to its invocation. In practice, this means running one of these commands:
+```bash
+tmux -CC
+tmux -CC attach
+```
+
+Settings > General > tmux for configuration settings. 
+
+`-C` Start in control mode (see the CONTROL MODE section).
+`-CC` Given twice disables echo.
+
 
 ## Pane title and color
 
@@ -206,13 +245,6 @@ In the configuration file add the following line:
 set \-g **history-limit** 5000  
 Log out and log in again, start a new tmux windows and your limit is 5000 now.
 
-## Tmux iterm2 integration
-
-[https://www.iterm2.com/documentation-tmux-integration.html](https://www.iterm2.com/documentation-tmux-integration.html)
-
-\-C Start in control mode (see the CONTROL MODE section).
-
-\-CC Given twice disables echo.
 
 ## Tmate
 

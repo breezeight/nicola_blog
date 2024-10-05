@@ -10,8 +10,13 @@ python = "^3.12"
 mkdocs-material = "^9.5.34"
 jinja2 = "^3.1.4"
 mkdocs-macros-plugin = "^1.0.5"
+typer = "^0.4.0"  # Typer for command-line interface
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+move_and_update = "scripts.mv:main"  # Entry point for the command
