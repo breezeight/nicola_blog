@@ -75,6 +75,11 @@ https://console.cloud.google.com
 
 If you want to share your Apps Script code between multiple documents or projects, avoid copying and pasting code. Instead, create a **Library**. A library allows you to encapsulate your reusable code and reference it in other projects using the script ID.
 
+
+> **Warning:** A script that uses a library doesn't run as quickly as it would if all the code were contained within a single script project. Although libraries can make development and maintenance more convenient, use them sparingly in projects where speed is critical. Because of this issue, library use should be limited in add-ons.
+
+https://developers.google.com/apps-script/guides/libraries
+
 - **How to Create a Library**:
   - Save your useful code in a script project.
   - Go to `File > Manage Versions` to save a version of your script.
