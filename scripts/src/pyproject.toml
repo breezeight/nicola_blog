@@ -9,7 +9,7 @@ license = "Apache-2.0"  # Ensure this matches the LICENSE file
 python = "^3.8"  # Specify your Python version
 
 [tool.poetry.scripts]
-gdoc2md = "google_docs_to_md_converter.docx2md:main"
+md-utils = "scripts.src.md_utils.cli:app"
 
 [tool.poetry.group.dev.dependencies]
 requests = "^2.25.1"

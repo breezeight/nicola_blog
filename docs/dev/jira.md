@@ -20,14 +20,17 @@ categories: ["Management"]
 # Project and Board configuration
 
 * https://answers.atlassian.com/questions/259012/best-practices-for-projects-vs-epics
-* 
+
 
 # JIRA Service Desk
 
 * http://blogs.atlassian.com/2016/10/extend-jira-service-desk-customer-support-new-capabilities/
 * http://blogs.atlassian.com/2016/09/5-ways-small-business-use-help-desk/
 * http://blogs.atlassian.com/2016/09/4-ways-boost-customer-service-technology/
-* 
+
+![alt text](../images/docs/dev/jira/jira1.png)
+
+
 # Add ON
 
 ## JIRA Automation

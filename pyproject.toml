@@ -11,6 +11,8 @@ mkdocs-material = "^9.5.34"
 jinja2 = "^3.1.4"
 mkdocs-macros-plugin = "^1.0.5"
 typer = "^0.4.0"  # Typer for command-line interface
+markdown-analysis = "^0.0.5"
+mistune = "^3.0.2"
 
 [build-system]
 requires = ["poetry-core"]
