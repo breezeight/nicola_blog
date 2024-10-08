@@ -7,7 +7,7 @@ description = ""
 optional = false
 python-versions = "^3.12"
 files = []
-develop = false
+develop = true
 
 [package.dependencies]
 mistune = "^3.0.2"
@@ -954,4 +954,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "6810077374b3fa6627eb29d0db2412b40332064c714dd069bdca0bd30cb12f11"
+content-hash = "54c5a0dc7b61213a2350a2ca5de0f46ce97753ef684628d461f9d5c599cfa0dc"
