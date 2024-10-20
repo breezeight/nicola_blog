@@ -10,6 +10,7 @@ python = "^3.12"
 mkdocs-material = "^9.5.34"
 jinja2 = "^3.1.4"
 mkdocs-macros-plugin = "^1.0.5"
+ad-docs = {path = "../ADDICTIVE/ad-internal-docs-cli", develop = true}
 
 
 [build-system]
@@ -20,4 +21,4 @@ build-backend = "poetry.core.masonry.api"
 move_and_update = "scripts.mv:main"  # Entry point for the command
 
 [tool.poetry.dev-dependencies]
-ad-docs = { path = "../ADDICTIVE/ad-internal-docs-cli" }
+ad-docs = { path = "../ADDICTIVE/ad-internal-docs-cli", develop = true }

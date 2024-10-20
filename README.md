@@ -7,6 +7,7 @@ Preview your site:
 ```bash
 poetry install
 poetry run mkdocs serve
+poetry run mkdocs serve --dev-addr=0.0.0.0:8001
 ```
 
 Open `http://localhost:8000` in your browser

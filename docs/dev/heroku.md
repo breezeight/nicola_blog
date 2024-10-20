@@ -33,3 +33,5 @@ NOTE: passenger5 on Heroku is much less memory hungry than Puma, less perfomance
 * Passenger status on Heroku: https://blog.phusion.nl/2015/05/26/introducing-the-passenger-status-service-for-heroku/
 * passenger demo app on Heroku: https://github.com/phusion/passenger-ruby-heroku-demo
 * Optimize: https://www.phusionpassenger.com/library/config/standalone/optimization/#minimizing-process-spawning
+
+

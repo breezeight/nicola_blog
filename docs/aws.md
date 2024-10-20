@@ -1,16 +1,16 @@
 # AWS
 
-[Home](Home)
+[Home](../../../docs/Home)
 
-[Aws-New-Customer-Account-Bootstrap-SOP](Aws/Aws-New-Customer-Account-Bootstrap-SOP)
+[Aws-New-Customer-Account-Bootstrap-SOP](../../../docs/Aws/Aws-New-Customer-Account-Bootstrap-SOP)
 
-[Aws-ECR](Aws/Aws-ECR)
+[Aws-ECR](../../../docs/Aws/Aws-ECR)
 
-[Aws-EC2](Aws/Aws-EC2)
+[Aws-EC2](../../../docs/Aws/Aws-EC2)
 
-[Aws-IAM](Aws/Aws-IAM)
+[Aws-IAM](../../../docs/Aws/Aws-IAM)
 
-[Aws-CDK](Aws/Aws-CDK)
+[Aws-CDK](../../../docs/Aws/Aws-CDK)
 
 # Testing AWS Services
 

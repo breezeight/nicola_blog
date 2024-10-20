@@ -1,3 +1,4 @@
-[AWS Guides](./aws.markdown)
-[Heroku](heroku.markdown)
-[Tmux](tmux.markdown)
+[AWS Guides](aws.md)
+[Heroku](heroku.md)
+[Tmux](tmux.md)
+[Alpine](alpine.md)

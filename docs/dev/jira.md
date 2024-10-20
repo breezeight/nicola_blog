@@ -22,14 +22,9 @@ categories: ["Management"]
 * https://answers.atlassian.com/questions/259012/best-practices-for-projects-vs-epics
 
 
-# JIRA Service Desk
+# JIRA Service Management
 
-* http://blogs.atlassian.com/2016/10/extend-jira-service-desk-customer-support-new-capabilities/
-* http://blogs.atlassian.com/2016/09/5-ways-small-business-use-help-desk/
-* http://blogs.atlassian.com/2016/09/4-ways-boost-customer-service-technology/
-
-![alt text](../images/docs/dev/jira/jira1.png)
-
+SEE [jira-service-management.md](jira-service-management.md)
 
 # Add ON
 

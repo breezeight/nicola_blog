@@ -54,6 +54,7 @@ markdown_extensions:
 # Define only part of the navigation manually
 nav:
   - Home: index.md
+  - AWS: aws.md
   - Test:
     - a: dev/alpine.markdown    
     - b: dev/druid.markdown
