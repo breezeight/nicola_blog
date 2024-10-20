@@ -383,7 +383,7 @@ check the frontend machine security group is closed from outside
 setup VPN to the VPC network
 
 **TODO** SSL cert and Load Balancer
-[Here]( http://docs.aws.amazon.com/opsworks/latest/userguide/workingsecurity-ssl.html#d0e9702
+[Here](http://docs.aws.amazon.com/opsworks/latest/userguide/workingsecurity-ssl.html#d0e9702
 ) to add SSL to instance's webserver, but we usually don't need this
 feature because we add the certificate to the ELB and we use port 80
 from ELB to instances.

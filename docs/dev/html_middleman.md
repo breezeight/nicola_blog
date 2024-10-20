@@ -48,19 +48,13 @@ Use case:
 
 * blog.default_extension = ".markdown.erb"   to use haml block into the markdown engine
 * put  `activate :directory_indexes` after all `activate blog`, it doen't work otherwise https://coderwall.com/p/qgnwzw/directory-indexes-with-middleman-blog
-* Use `![Amazing picture](<%= current_page.url %>some-image.png)` in markdown, see the warning [here](https://middlemanapp.com/advanced/pretty_urls/)
+* Use Amazing picture in markdown, see the warning [here](https://middlemanapp.com/advanced/pretty_urls/)
 * You are using `directory_indexes` you could easly add each post images into `<blog_dir>/<post_dir>/image.png`
 
 
 # Debug
 
 To debug a page compilation you can use `pry-byebug`. For example this is a markdown.erb blog entry:
-
-~~~
-![The Purchase Funnel](<%= current_page.url
-binding.pry
-%> purchase_funnel.jpg)
-~~~
 
 # Use LESS with custom bootstrap theme
 
@@ -167,7 +161,7 @@ https://middlemanapp.com/advanced/sitemap/
 
 # Calendar
 
-[Doc]("https://middlemanapp.com/basics/blogging/#sts=Calendar Pages")
+[Doc](https://middlemanapp.com/basics/blogging/)
 
 
 # Pretty URLs (Directory Indexes)

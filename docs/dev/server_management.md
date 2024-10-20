@@ -52,11 +52,11 @@ What should an init system do? [Here](https://felipec.wordpress.com/2013/11/04/i
 
 ## Monit
 
-* [Monit guide]({{ site.url }}/guides/monit.html)
+* [Monit guide](monit.md)
 
 ## Upstart
 
-* [Upstar guide]({{ site.url }}/guides/upstart.html)
+* [Upstar guide](upstart.md)
 
 
 # Sidekiq Management

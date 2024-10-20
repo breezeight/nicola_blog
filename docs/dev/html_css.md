@@ -283,7 +283,7 @@ Note that some replaced elements, but not all, have intrinsic dimensions or a de
 Ref:
 
 * [W3C CSS 2.1](http://www.w3.org/TR/2011/REC-CSS2-20110607/visuren.html)
-* [W3C CSS 3](CSS level 3) **TODO** rileggerlo bene 
+* W3C CSS 3 **TODO** rileggerlo bene 
   * This module describes the basic types of boxes, with their padding and margin, and the normal “flow” (i.e., the sequence of blocks of text with margins in-between).
   * It also defines “floating” boxes, but other kinds of layout, such as tables, absolute positioning, ruby annotations, grid layouts, columns and numbered pages, are described by other modules.
   * Also, the layout of text inside each line (including the handling of left-to-right and right-to-left scripts) is defined elsewhere.
@@ -330,7 +330,7 @@ The `type of the box` generated depends of the value of the `display` CSS proper
 
 Example:
 
-![box-model.png]({{ site.url }}/guides/images/html_box_model.jpg)
+![box-model.png](../images/html_box_model.jpg)
 
 Using the formulas, we can find the total height and width of our example code.
 
@@ -398,7 +398,7 @@ a `Block container box`:
 </DIV>
 ~~~
 
-![html_block_boxes.png]({{ site.url }}/guides/images/html_block_boxes.png)
+![html_block_boxes.png](../images/html_block_boxes.png)
 
 This diagram illustrates how anonymous block boxes may spring into existence around anonymous content.
 
@@ -811,7 +811,7 @@ The grid is made of rows and columns classes.
 
 
 There are four family of classes, each defines a Grid Systems.
-The width of the viewport is the parameter that trigger the switch from a grid to another ( it uses media queries, see [internals]({{site.url}}/guides/html_css.html#internals)).
+The width of the viewport is the parameter that trigger the switch from a grid to another ( it uses media queries, see [internals](html_css.md#internals)).
 
 The default widths that set the frontiers between one grid and another are the follows:
 

@@ -47,7 +47,7 @@ RubyTogether is a grassroots initiative committed to supporting the critical Rub
 
 * https://rubytogether.org/news/2016-09-27-a-year-of-ruby-together
 * https://rubytogether.org/news
-* [Ref]( https://rubytogether.org/)
+* [Ref](https://rubytogether.org/)
 
 # Bundler
 

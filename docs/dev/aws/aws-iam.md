@@ -1,9 +1,5 @@
 # AWS IAM #
 
-[Aws](.)
-
-[Home](Home)
-
 # WIP
 
 # What is IAM?

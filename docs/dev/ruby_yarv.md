@@ -65,7 +65,7 @@ your `Ruby call stack`.
 YARV use `CFP (Control Frame Pointer)` to maintain a reference to the
 top of the ruby stack.
 
-![yarv_stack_of_rb_control_frames]({{ site.url }}/guides/images/yarv_stack_of_rb_control_frames.jpg)
+![yarv_stack_of_rb_control_frames](../images/yarv_stack_of_rb_control_frames.jpg)
 
 {% github_sample_ref /ruby/ruby/blob/v2_2_0_preview2/vm_core.h %}
 {% highlight c %}
@@ -93,7 +93,7 @@ of the `2+2` ruby code:
 * remove those two elements from the stack
 * push the resul on the top of the stack
 
-![yarv_double_stack]({{ site.url }}/guides/images/yarv_double_stack.jpg)
+![yarv_double_stack](../images/yarv_double_stack.jpg)
 
 CH3 of Ruby undere a microscope go though the compilation and execution
 of this two ruby codes (step by step evolution of the two stacks):
@@ -179,7 +179,7 @@ Each entry in the local table has a type:
 * `<Opt=i>` A parameter defined with a default value. The integer value i is an index into a table that stores the actual default value. This table is stored along with the YARV snippet but not in the local table itself.
 * if no type is spefified its a local variable
 
-![ruby_yarv_local_table.jpg]({{ site.url }}/guides/images/ruby_yarv_local_table.jpg)
+![ruby_yarv_local_table.jpg](../images/ruby_yarv_local_table.jpg)
 
 The local table only describe which local variable a YARV snippet needs.
 The next paragraph describe where the interprester stores thos
@@ -232,12 +232,12 @@ When ruby call the `times` method and detect that it has a block argument:
 
 * it saves a pointer to a new `rb_block_t` structure as the special value in the new stack frame.
 
-![ruby_special_method_with_block_arg.jpg]({{ site.url }}/guides/images/ruby_special_method_with_block_arg.jpg)
+![ruby_special_method_with_block_arg.jpg](../images/ruby_special_method_with_block_arg.jpg)
 
 Instead when ruby invoke the block it will copy the previous value of the
 EP pointer into the `special variable` of the new stack frame.
 
-![ruby_special_call_block.jpg]({{ site.url }}/guides/images/ruby_special_call_block.jpg)
+![ruby_special_call_block.jpg](../images/ruby_special_call_block.jpg)
 
 This will give access to parent local variables. The `setlocal` and
 `getlocal` instruction accept a second parameter that represent the
@@ -283,7 +283,7 @@ Value of $& in the top-level scope: dog
 Ruby has overwritten the value of $& in the top scope with the matching word dog from the search I performed inside the block!
 This is similar to how dynamic variable access works; we expect variables inside the block to have the same values as those in the parent scope.
 
-![ruby_cref_for_blocks.jpg]({{ site.url }}/guides/images/ruby_cref_for_blocks.jpg)
+![ruby_cref_for_blocks.jpg](../images/ruby_cref_for_blocks.jpg)
 
 Inside the block scope (because there is no need for a separate copy of
 the special variables), Ruby takes advantage of the EP-1 open slot and

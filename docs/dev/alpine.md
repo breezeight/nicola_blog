@@ -12,7 +12,7 @@ categories: ["linux"]
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-![alt text](images/docs/alpine/manifestoevento.jpg)
+![alt text](../images/docs/dev/alpine/manifestoevento.jpg)
 
 
 Alpine instructions are for creating a new repository for custom packages:

@@ -423,7 +423,7 @@ Api syntax:
 * you can use both `node.default["apache"]["dir"] = "/etc/apache2"` and `default["apache"]["dir"] = "/etc/apache2"`
 
 
-Attributes definition can have different level of priority, based on the type. [See here for a full list of types]( https://docs.chef.io/attributes.html#attribute-types):
+Attributes definition can have different level of priority, based on the type. [See here for a full list of types](https://docs.chef.io/attributes.html#attribute-types):
 
 * `default`
 * `normal`

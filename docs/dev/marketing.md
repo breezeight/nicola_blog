@@ -19,7 +19,7 @@ You can find interest of people that like a competitor page :
 
 `favorite interests of people who like adespresso`
 
-see this pdf from AdEspresso: [The-DOs-and-DONTs-of-Facebook-Ads]({{ site.url }}/guides/downloads/The-DOs-and-DONTs-of-Facebook-Ads.pdf)
+see this pdf from AdEspresso: [The-DOs-and-DONTs-of-Facebook-Ads](../downloads/The-DOs-and-DONTs-of-Facebook-Ads.pdf)
 
 ## Facebook Storytelling
 

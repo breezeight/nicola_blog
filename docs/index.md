@@ -1,4 +1,4 @@
-[AWS Guides](aws.md)
-[Heroku](heroku.md)
-[Tmux](tmux.md)
-[Alpine](alpine.md)
+[AWS Guides](dev/aws.md)
+[Heroku](dev/heroku.md)
+[Tmux](dev/tmux.md)
+[Alpine](dev/alpine.md)

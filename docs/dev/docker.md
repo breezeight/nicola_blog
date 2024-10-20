@@ -25,8 +25,6 @@ categories: ["docker"]
   * Proposal: Host management https://github.com/docker/docker/issues/8681
   * Proposal: Container groups https://github.com/docker/docker/issues/8637
   * as of Nov 22 2014 you need this docker branch to test docker host https://github.com/nathanleclaire/docker
-* make a guide for panamax, see here a
-    [draft]({{site.url}}/guides/panamax.html)
 
 # Management
 
@@ -1775,7 +1773,7 @@ This is still an open issue: https://github.com/docker/machine/issues/23
 
 ## Docker Machine on Azure
 
-[Docker Machine on Azure]({{ site.url }}/guides/azure.html#azure-and-docker-machine)
+[Docker Machine on Azure](azure.md#azure-and-docker-machine)
 
 # Docker-Compose
 

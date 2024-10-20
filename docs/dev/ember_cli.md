@@ -30,13 +30,13 @@ Ember-cli Responsability:
   * [ES6 Module Transpiler Homepage](https://github.com/esnext/es6-module-transpiler)
   * [Internals](http://eviltrout.com/2014/05/03/getting-started-with-es6.html)
 * Asset compilation: is based on [Broccoli.js]
-  * [Nicola Broccoli Guide]({{site.url}}/guides/broccoli.html)
+  * [Nicola Broccoli Guide](broccoli.md)
 * Testing:
   * [QUnit](http://qunitjs.com/)
   * [Ember Testing package](http://emberjs.com/guides/testing/integration/)
   * [Ember QUnit](https://github.com/rpflorence/ember-qunit)
 * Manage front-end dependencies with bower ( bower.json )
-  * [Nicola Bower Guide]({{site.url}}/guides/bower.html)
+  * [Nicola Bower Guide](bower.md)
 * Manage server/workstation side dependencies using NPM and addons ( package.json )
 
 See deeper intro http://www.ember-cli.com
@@ -105,7 +105,7 @@ TODO: Understand if ember-cli is still using `es6-module-transpiler`. It looks t
 * http://discuss.emberjs.com/t/working-with-docker-ember-cli-in-development/7658
 
 
-See [Javascript Traspiler]({{ site.url }}/guides/javascript.html#traspiler) for more details about how different transpilers work.
+See [Javascript Traspiler](../dev/javascript.md#traspiler) for more details about how different transpilers work.
 
 ## Resolver
 

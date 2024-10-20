@@ -78,5 +78,5 @@ it parses response into classes
 
 # Test
 
-See [my guide]({{site.url}}/guides/ruby_testing_webservices.html)
+See [my guide](ruby_testing_webservices.md)
 

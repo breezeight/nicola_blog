@@ -365,7 +365,7 @@ Ref:
 
 To understand the EspressJS internals the approach I used is to generate a sample source code. To generate a simple express prooject just run `express myapp` and `cd myapp`. Then I can debug through it in vscode, this helped a lot to understand the call stack and reasoning about the structure of the code, especially when going through the `next()` chain function calls. Like below:
 
-![](images/js_expressjs_next_debugging.png)
+![](../images/js_expressjs_next_debugging.png)
 
 In a simple app created with the `express` command the main file is `app.js`:
 
@@ -785,7 +785,7 @@ These tasks are not core concerns (business logic) of an application. Instead, t
 
 Request-response lifecycle through a middleware is as follows:
 
-![](images/js_express_middleware.png)
+![](../images/js_express_middleware.png)
 
 - The first middleware function (A) in the pipeline will be invoked to process the request
 - Each middleware function may end the request by sending response to client

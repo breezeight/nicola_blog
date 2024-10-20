@@ -160,14 +160,14 @@ https://hackernoon.com/npx-npm-package-runner-7f6683e4304a
 
 List all installed package of a project :
 
-- [https://yarnpkg.com/lang/en/docs/cli/list/](doc)
+- [doc](https://yarnpkg.com/lang/en/docs/cli/list/)
 - all `yarn list --depth=0`
 - all and their dependencies `yarn list`
 - `yarn list --depth=0 --pattern react-native-localization`
 
 Perform a vulnerability audit against the installed packages:
 
-- [https://yarnpkg.com/en/docs/cli/audit](doc)
+- [https://yarnpkg.com/en/docs/cli/audit](https://yarnpkg.com/en/docs/cli/audit)
 - `yarn audit`
 
 # Standard Built-in objects
@@ -1244,7 +1244,7 @@ console.log(Object.getOwnPropertyDescriptor(obj, "p"));
 
 #### Summary
 
-![summary](images/js_immutability_summary.png)
+![summary](../images/js_immutability_summary.png)
 
 Note that isExt is short for isExtensible. reassign is whether or not a property can be assigned another value. del is whether or not properties can be deleted. add is whether or not a new property can be added.
 
@@ -1948,7 +1948,7 @@ However, outside of the foo() scope, count is inaccessible. If you try to access
 
 If you've defined a variable inside of a function or code block, then you can use this variable only within that function or code block. The above example demonstrates this behavior.
 
-![](images/js_scope-3.svg)
+![](../images/js_scope-3.svg)
 
 Now, let's see a general formulation: "The scope is a space policy that rules the accessibility of variables".
 
@@ -2001,7 +2001,7 @@ outerFunc();
 Indeed, `outerVar` variable is accessible inside `innerFunc()` scope. The variables of the outer scope are accessible inside the inner scope.
 
 
-![](images/js_nested-scopes-3.svg)
+![](../images/js_nested-scopes-3.svg)
 
 Now you know 2 interesting things:
 
@@ -2099,7 +2099,7 @@ Running this code has exactly the same effect as the previous example of the `ou
 
 In other words, `innerFunc()` closes over (a.k.a. captures, remembers) the variable outerVar from its lexical scope. In other words, `innerFunc()` is a closure because it closes over the variable outerVar from its lexical scope.
 
-![](images/js-closure-6.svg)
+![](../images/js-closure-6.svg)
 
 
 You've made the final step to understanding what a closure is: The closure is a function that accesses its lexical scope even executed outside of its lexical scope.
@@ -2735,7 +2735,7 @@ If an identifier can’t be found in the current environment, the outer environm
 - the matching variable is found,
 - or with a reference error if we’ve reached the global environment and there’s no sign of the searched-for identifier.
 
-![image](https://raw.githubusercontent.com/getify/You-Dont-Know-JS/2nd-ed/scope-closures/images/fig2.png)
+![image](https://raw.githubusercontent.com/getify/You-Dont-Know-JS/2nd-ed/scope-closures/../images/fig2.png)
 
 Ref: See [SOJS_2nd] figure 5.9
 
@@ -4576,7 +4576,7 @@ alert(generator.next(4).value); // "3 * 3 = ?"
 alert(generator.next(9).done); // true
 ```
 
-![](images/js-generators-next-arg.png)
+![](../images/js-generators-next-arg.png)
 
 ### `yield*` considers end-of-iteration values
 
@@ -4854,7 +4854,7 @@ what happens is:
 - So the js engine checks to see if the longEar's prototype object has a walk() method available on it.
 - It doesn't, then the browser checks rabbit's prototype object's prototype object, and it has. So the method is called, and all is good!
 
-![](images/js_prototype_long_chain.png)
+![](../images/js_prototype_long_chain.png)
 
 There are only two limitations:
 
@@ -4864,7 +4864,7 @@ There are only two limitations:
 
 Given that a prototype object can have a prototype itself, we get a chain of objects – the so-called `prototype chain`.
 
-![](images/js_prototype_chain.svg)
+![](../images/js_prototype_chain.svg)
 
 Prototypes are JavaScript’s only inheritance mechanism: each object has a prototype that is either null or an object.
 
@@ -5065,7 +5065,7 @@ When we call the function via the new operator, invoking it as a constructor, an
 
 Notice that all objects created with the Ninja constructor will have access to the swingSword method. Now that’s code reuse!
 
-![](images/js_prototype_ninja.png)
+![](../images/js_prototype_ninja.png)
 
 IMPORTANT:
 
@@ -5154,7 +5154,7 @@ console.log(person2.friends); //Output: "Jadeja, Vijay"
 Here as we have wanted each object to have their own name, age, and friends property. Hence, we have defined these properties inside the constructor using this. However, as sayName is defined on the prototype object, it will be shared among all the objects.
 In the above example, the friend’s property of person2 did not change on changing the friends' property of person1.
 
-![](images/js_prototype_example1.png)
+![](../images/js_prototype_example1.png)
 
 ### Example: Problem when you replace a prototype
 
@@ -5187,7 +5187,7 @@ ninja1.pierce(); // Uncaught TypeError: ninja1.pierce is not a function
 ninja2.pierce(); //true
 ```
 
-![](images/js_redefine_prototype.png)
+![](../images/js_redefine_prototype.png)
 
 ### instanceof and Constructor property
 
@@ -5203,7 +5203,7 @@ admin = new Admin();
 admin instanceof Person; // true
 ```
 
-![](images/js_instance_of_example.png)
+![](../images/js_instance_of_example.png)
 
 ```js
 > [] instanceof Array
@@ -5570,7 +5570,7 @@ let myGreeting = setTimeout(function () {
 
 The image below show you the stack status when the code snippet in the image is executed. We can think about the stack as a pile of post-it: each time we start the execution of a function we add a post-it with the name of the function to the pile, when the execution is over we remove it. 
 
-![](images/js_event_loop_with_callback.png)
+![](../images/js_event_loop_with_callback.png)
 
 [Ref: JavaScript. Event Loop and Promises](https://medium.com/javascript-in-plain-english/javascript-event-loop-y-promises-951ba6845899)
 
@@ -5597,7 +5597,7 @@ However, there is a “but”. Since the callback of the function is not known a
 
 It is to solve this for what promises arose as we will see below.
 
-![](images/js_hell_callback.png)
+![](../images/js_hell_callback.png)
 
 
 ## Why Async?
@@ -5644,7 +5644,7 @@ Ref:
 
 By default, JavaScript runs in a single thread – in both web browsers and Node.js. The so-called event loop sequentially executes tasks (pieces of code) inside that thread. The event loop is depicted in the fig below:
 
-![](images/js_event_loop.svg)
+![](../images/js_event_loop.svg)
 
 - Browser event loop processing is single thread (events processed in FIFO order) but the mechanism that manage events before their handlers are executed are not on the same thread.
 - The event loop sequentially executes tasks (pieces of code) inside that thread.
@@ -5995,7 +5995,7 @@ To summarize a Promise can be in three states:
 - fulfilled
 - rejected
 
-![](images/js_promises_statuses.png)
+![](../images/js_promises_statuses.png)
 
 To these Promise objects, developers can attach callbacks through the `then` instruction so that we can execute code once the value resolved by the Promise is available (or the reason why it could not be resolved).
 
@@ -6020,7 +6020,7 @@ The executor is called automatically and immediately (by new Promise).
 - The executor receives two arguments: resolve and reject. These functions are pre-defined by the JavaScript engine, so we don’t need to create them. We should only call one of them when ready.
 - After one second of “processing” the executor calls resolve("done") to produce the result. This changes the state of the promise object:
 
-![](images/js_promise_resolve.png)
+![](../images/js_promise_resolve.png)
 
 That was an example of a successful job completion, a “fulfilled promise”.
 
@@ -6035,7 +6035,7 @@ let promise = new Promise(function (resolve, reject) {
 
 The call to `reject(...)` moves the promise object to "rejected" state:
 
-![](images/js_promise_reject.png)
+![](../images/js_promise_reject.png)
 
 A promise that is either resolved or rejected is called “settled”, as opposed to an initially “pending” promise.
 
@@ -6276,7 +6276,7 @@ Here the flow is:
 - The value that it returns is passed to the next .then handler (\*\*\*)
 - …and so on.
 
-![](images/js_promise_chain.png)
+![](../images/js_promise_chain.png)
 
 As the result is passed along the chain of handlers, we can see a sequence of alert calls: 1 → 2 → 4.
 
@@ -6309,7 +6309,7 @@ promise.then(function (result) {
 });
 ```
 
-![](images/js_promise_chain_common_error.png)
+![](../images/js_promise_chain_common_error.png)
 
 Then always return a promise [ref](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then)
 
@@ -8187,7 +8187,7 @@ unpkg.com/react/umd/react.production.min.js
 
 https://www.youtube.com/watch?v=MpGLUVbqoYQ&t=0s
 
-The Webpack core goal is: it takes a bunch of different assets, different files of different types (javascript, images, like SVG P&G JPEGs, CSS stylesheets or less or sass), all sorts of different files and it combines them down, it bundles them, into smaller group of files.
+The Webpack core goal is: it takes a bunch of different assets, different files of different types (javascript, ../images, like SVG P&G JPEGs, CSS stylesheets or less or sass), all sorts of different files and it combines them down, it bundles them, into smaller group of files.
 
 A standard setup is:
 

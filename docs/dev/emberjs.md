@@ -64,7 +64,7 @@ for Ember.
 [Ember-cli Guide](https://cli.emberjs.com/release/)
 
 To be productive with Ember it's really important that you understand
-how it works. See here for more notes: [Ember-cli internal guide]({{site.url}}/guides/ember_cli.html)
+how it works. See here for more notes: [Ember-cli internal guide](ember_cli.md)
 
 Ember Cli will install the `ember` executable
 

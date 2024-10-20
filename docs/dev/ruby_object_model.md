@@ -157,7 +157,7 @@ A ruby Module is a **Ruby object** very similar to Class. You can create a modul
 REF: Ruby Under a Microscope pag 149: "The Actual RClass Structure"
 
 
-![ruby_class_conceptual_view]({{ site.url }}/guides/images/ruby_class_conceptual_view.jpg)
+![ruby_class_conceptual_view](../images/ruby_class_conceptual_view.jpg)
 
 RClass is the structure that represent a ruby Class and Modules:
 
@@ -166,7 +166,7 @@ RClass is the structure that represent a ruby Class and Modules:
 
 The picture below is a simplified diagram of an RClass:
 
-![ruby_rclass_implementation]({{ site.url }}/guides/images/ruby_rclass_struct.jpg)
+![ruby_rclass_implementation](../images/ruby_rclass_struct.jpg)
 
 [Here the source code](https://github.com/ruby/ruby/blob/v2_2_0_preview2/include/ruby/ruby.h#L815)
 
@@ -368,7 +368,7 @@ Dog.superclass.superclass.superclass #=> BasicObject
 Dog.superclass.superclass.superclass.superclass #=> nil
 ~~~
 
-![RubyObjectModelBase]({{ site.url }}/guides/images/ruby_object_model_graphviz.jpg)
+![RubyObjectModelBase](../images/ruby_object_model_graphviz.jpg)
 
 When you write code that calls a method ruby will use these graph to find the method definition.
 
@@ -465,7 +465,7 @@ We understood that a class method is only a method of a class object.
 
 [Object.singleton_class ruby doc](http://ruby-doc.org/core-2.1.0/Object.html#method-i-singleton_class)
 
-![ruby_object_class_metaclass]({{ site.url }}/guides/images/ruby_object_class_metaclass.jpg)
+![ruby_object_class_metaclass](../images/ruby_object_class_metaclass.jpg)
 
 NOTE: some old post call singleton_class with other names: `metaclass`, `eigenclass`, ....
 
@@ -490,7 +490,7 @@ Singleton classes:
 D.a_class_method # => "C.a_class_method()"
 ~~~
 
-![RubyObjectModelBase]({{ site.url }}/guides/images/ruby_object_model_singleton.jpg)
+![RubyObjectModelBase](../images/ruby_object_model_singleton.jpg)
 
 ### The complete model: how ruby include a Module in a class
 
@@ -511,7 +511,7 @@ class Mathematician < Person
 end
 ~~~
 
-![ruby_object_class_metaclass]({{ site.url }}/guides/images/ruby_include_module.jpg)
+![ruby_object_class_metaclass](../images/ruby_include_module.jpg)
 
 #### Including two modules into a class
 
@@ -524,7 +524,7 @@ end
 
 Because Employee appears above Professor in the superclass chain, as shown along the left side of Figure 6-11, methods from Employee override methods from Professor, which in turn override methods from Person, the actual superclass.
 
-![Including_two_modules_into_a_class]({{ site.url }}/guides/images/Including_two_modules_into_a_class.jpg)
+![Including_two_modules_into_a_class](../images/Including_two_modules_into_a_class.jpg)
 
 #### Including One Module into Another
 
@@ -543,7 +543,7 @@ Implementation: Modules can’t have a superclass in your code, but they can ins
 When we include Professor into Mathematician, Ruby iterates over the two
 modules and inserts them both as superclasses of Mathematician.
 
-![ruby_including_two_modules_into_a_class_at_the_same_time]({{ site.url }}/guides/images/ruby_including_two_modules_into_a_class_at_the_same_time.jpg)
+![ruby_including_two_modules_into_a_class_at_the_same_time](../images/ruby_including_two_modules_into_a_class_at_the_same_time.jpg)
 
 #### Classes See Methods Added to a Module Later
 
@@ -577,7 +577,7 @@ This happens because ruby make a copy of the class module but the included class
 
 Ruby doesn’t copy the method table for Professor. Instead, it simply sets `m_tbl` in the new copy of Professor, the “included class,” to point to the same method table.
 
-![ruby_module_class_copy_shares_method_table]({{ site.url }}/guides/images/ruby_module_class_copy_shares_method_table.jpg)
+![ruby_module_class_copy_shares_method_table](../images/ruby_module_class_copy_shares_method_table.jpg)
 
 #### Classes Don’t See Submodules Included Later
 
@@ -643,7 +643,7 @@ p poincaré.name
 => "Henri Poincaré"
 ~~~
 
-![ruby_include_module]({{ site.url }}/guides/images/ruby_include_module.jpg)
+![ruby_include_module](../images/ruby_include_module.jpg)
 
 
 The solution is to use `prepend`. When you prepend a module:
@@ -652,7 +652,7 @@ The solution is to use `prepend`. When you prepend a module:
 * sets `origin class` as the superclass of the prepended module
 * moves all of the methods from the original class to the origin class, which means that those methods may now be overridden by methods with the same name in the prepended module.
 
-![ruby_prepend_module]({{ site.url }}/guides/images/ruby_prepend_module.jpg)
+![ruby_prepend_module](../images/ruby_prepend_module.jpg)
 
 
 
@@ -849,7 +849,7 @@ NoMethodError: private method 'confident?' called for #<Speaker:0x007fbcc484f430
 
 * [tender love post about protected methods](http://tenderlovemaking.com/2012/09/07/protected-methods-and-ruby-2-0.html)
 
-[Method Visiblity Example]({{site.url}}/guides/ruby_examples/visibility.rb)
+[Method Visiblity Example](../ruby_examples/visibility.rb)
 
 ### Syntax
 
@@ -966,7 +966,7 @@ You could capture my_var in a closure and pass that closure to the method: see m
 ### Lexical Scope and Costant Lookup
 
 Note: See
-[Here]({{site.url}}/guides/languages_analogies_and_differences.html#scope-and-binding)
+[Here](languages_analogies_and_differences.md#scope-and-binding)
 for the definition of lexical scope
 
 Ruby use `Lexical scope`.
@@ -1051,7 +1051,7 @@ class MyClass
 end
 ~~~
 
-![ruby_lexical_scope_nd_next_nd_clss]({{ site.url }}/guides/images/ruby_lexical_scope_nd_next_nd_clss.jpg)
+![ruby_lexical_scope_nd_next_nd_clss](../images/ruby_lexical_scope_nd_next_nd_clss.jpg)
 
 
 Summary:
@@ -1761,15 +1761,9 @@ Lines to IP: 1: 0..13, 5: 14..27
 
 
 ### YARV: Code Compilation and Execution
-
-See the [YARV Guide]({{site.url}}/guides/ruby_yarv.html)
-
-
-
-
+See the [YARV Guide](ruby_yarv.md)
 
 ### VM Internals
-
 When YARV execute the  `class`, `module` and `def` keyword, it uses this
 API to define classes, modules and methods:
 
@@ -1779,9 +1773,6 @@ API to define classes, modules and methods:
 * `rb_define_module_under()`
 * `rb_define_method()`
 * `rb_define_singleton_method()`
-
-
-
 
 ## Closures
 
@@ -1828,7 +1819,7 @@ When you call a method with a block argument:
 
 
 Thanks to this ruby can dynamically access variables from blocks, see:
-[Local and Dynamic Access of Ruby Variables]({{ site.url }}/guides/ruby_yarv.html#local-and-dynamic-access-of-ruby-variables)
+[Local and Dynamic Access of Ruby Variables](ruby_yarv.md#local-and-dynamic-access-of-ruby-variables)
 
 ### Lambda and Proc
 
@@ -1860,7 +1851,7 @@ When you create a Proc with lamba ruby:
 
 Think of a proc as a kind of Ruby object that wraps up a block.
 
-![ruby_create_lambda]({{ site.url }}/guides/images/ruby_create_lambda.jpg)
+![ruby_create_lambda](../images/ruby_create_lambda.jpg)
 
 
 #### How ruby call a Proc

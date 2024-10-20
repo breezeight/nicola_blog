@@ -48,7 +48,7 @@ Ruby:
 
 # Ruby Object model
 
-See [Here]({{site.url}}/guides/ruby_object_model.html) for:
+See [Here](ruby_object_model.md) for:
 
 * Classes
 * Objects
@@ -268,7 +268,7 @@ TODO, see here : http://ruby-doc.org/core-2.1.3/doc/syntax/calling_methods_rdoc.
 
 # Ruby Closure: Block, Proc, Lambda
 
-See the [Ruby Object model]({{site.url}}/guides/ruby_object_model.html)
+See the [Ruby Object model](ruby_object_model.md)
 for a deep analisys.
 
 ## Block

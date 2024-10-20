@@ -9,7 +9,8 @@ categories: ["google"]
 
 ## Apps Script
 
-See [Google Apps Script](google-apps-script.md)
+See [Google Apps Script](google-app-script.md)
+
 
 ## Spreadsheet
 

@@ -46,7 +46,7 @@ Each stack can include AWS resources either directly or as constructs. A constru
 
 OK, so you start writing a CDK application. You add a couple of stacks to it. The stacks consist of various AWS resources such as SQS queues, Lambdas, S3 buckets, DynamoDB tables etc. You add those resources using the corresponding CDK libraries such as @aws-cdk/aws-ec2. And then you use the CDK tool to deploy your application. The tool executes your code, finds the stacks, generates a CloudFormation template for each of them and deploys these templates producing a CloudFormation stack for each of them:
 
-![how-aws-cdk-works](how-aws-cdk-works.png "how-aws-cdk-works")
+![how-aws-cdk-works](how-aws-cdk-works.png)
 
 ## Why use the AWS CDK?
 

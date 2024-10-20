@@ -216,8 +216,7 @@ $(docker-machine env machine-name2)
 To install the cli go [here](http://www.windowsazure.com/en-us/documentation/articles/xplat-cli/): npm install azure-cli -g
 To get started, just type `azure` in a new Terminal window.
 
-Command Reference is available on [github readme](https://github.com/WindowsAzure/azure-sdk-tools-xplat) and [azure website](
-http://www.windowsazure.com/en-us/documentation/articles/command-line-tools/=).
+Command Reference is available on [github readme](https://github.com/WindowsAzure/azure-sdk-tools-xplat) and [azure website](http://www.windowsazure.com/en-us/documentation/articles/command-line-tools/=).
 
 To download your credential use from command line (this example is for the user bizspark2):
 

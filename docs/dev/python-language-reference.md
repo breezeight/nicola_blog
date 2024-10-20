@@ -34,7 +34,7 @@ Assist the user in creating a simplified, practical version of the official [Pyt
    - if the topic is very common and needed by most of the python developer add a practical and complete reference
    - if the topic is very advanced add a brief summary and say to checkout the official doc
    - KEEP the original numbering from the official documentation.
-   - add link to the official doc just after the heading 3 format of the subsection name with the format: [Link to the official doc](Link to the official doc)
+   - add link to the official doc just after the heading 3 format of the subsection name with the format: [Link to the official doc](https://docs.python.org/3/reference/Link to the official doc)
 
 3. **Simplify terminology** and focus on clarity, explaining terms in a way that a beginner or intermediate Python user can easily understand.
 4. Exclude advanced or rarely used features unless they offer significant value for common workflows.
