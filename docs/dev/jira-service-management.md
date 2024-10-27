@@ -12,3 +12,9 @@
 
 See [Glossary](https://www.atlassian.com/software/jira/service-management/product-guide/overview#key-terms)
 
+
+## Main Functionality I've used
+
+* campi che vuoi rendere visibili al cliente
+
+

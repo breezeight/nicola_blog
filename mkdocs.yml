@@ -16,7 +16,6 @@ theme:
   features:
     #- navigation.tabs
     #- navigation.sections
-    - toc.integrate
     
     - toc.follow #https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#anchor-following
     - search.suggest
@@ -53,13 +52,19 @@ markdown_extensions:
 
 # Define only part of the navigation manually
 nav:
-  - Home: index.md
+  - Index: index.md
   - AWS: aws.md
-  - Test:
-    - a: dev/alpine.markdown    
-    - b: dev/druid.markdown
-    - c: "dev/docker-*.md"
-    - d: dev/google-app-script-file-system-json-tutorial.md
+  - Python Reference:
+    - Index: dev/python-language-reference-nicola.md
+    - Variables, Constants, and Naming: dev/python-language-reference-nicola/variables-constants-and-naming.md
+    - Data Types and Literals: dev/python-language-reference-nicola/data-types-and-literals.md
+    - Functions and Functional Programming: dev/python-language-reference-nicola/functions-and-functional-programming.md
+    - Expressions and Operators: dev/python-language-reference-nicola/expressions-and-operators.md
+    - Control Flow: dev/python-language-reference-nicola/control-flow.md
+    - Classes and Objects: dev/python-language-reference-nicola/classes-and-objects.md
+    - Built-in Exceptions: dev/python-language-reference-nicola/builtin-exceptions.md
+    - Modules: dev/python-language-reference-nicola/modules.md
+    - Packages: dev/python-language-reference-nicola/packages.md
 
 #- ... | docker-*.md
 

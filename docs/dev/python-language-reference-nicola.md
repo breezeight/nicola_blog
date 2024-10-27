@@ -2,12 +2,10 @@
 
 > NOTE: at the end of the page there is a [list of prompts](python-language-reference-nicola.md#prompts) that I used to make AI summarize the python language reference and create this page.
 
-# Python Language Reference
-
 ## Introduction
-   - Overview of the Python Language
-   - Scope and Purpose of this Reference
-   - Conventions Used in the Documentation
+- Overview of the Python Language
+- Scope and Purpose of this Reference
+- Conventions Used in the Documentation
 
 ## Lexical Structure
    - Keywords
@@ -18,53 +16,42 @@
    - Comments and Docstrings
 
 ## Data Types
-   - Built-in Types Overview
-   - Numeric Types: int, float, complex
-   - Sequence Types: list, tuple, range
-   - Text Sequence Type: str
-   - Binary Sequence Types: bytes, bytearray, memoryview
-   - Set Types: set, frozenset
-   - Mapping Type: dict
-   - None Type
-   - Type Checking and Casting
+See [python-language-reference-nicola/data-types-and-literals.md](python-language-reference-nicola/data-types-and-literals.md) for more details on:
+
+- Built-in Types Overview
+- Numeric Types: int, float, complex
+- Sequence Types: list, tuple, range
+- Text Sequence Type: str
+- Binary Sequence Types: bytes, bytearray, memoryview
+- Set Types: set, frozenset
+- Mapping Type: dict
+- None Type
+- Type Checking and Casting
 
 ## Variables, Constants, and Naming
+See [python-language-reference-nicola/variables-constants-and-naming.md](python-language-reference-nicola/variables-constants-and-naming.md) for more details on:
+
 - Variable Assignment
 - Mutable vs Immutable Types
 - Variable Naming Rules
 - Constants
 
 ## Expressions and Operators
-   - Arithmetic Operators
-   - Comparison Operators
-   - Logical Operators
-   - Bitwise Operators
-   - Assignment Operators
-   - Membership Operators
-   - Identity Operators
-   - Operator Precedence and Associativity
+- Arithmetic Operators
+- Comparison Operators
+- Logical Operators
+- Bitwise Operators
+- Assignment Operators
+- Membership Operators
+- Identity Operators
+- Operator Precedence and Associativity
 
 ## Control Flow
-   - `if` Statements
-   - Loops: `for`,  `while` and Comprehensions
-   - Control Flow Modifiers: `break`, `continue`, `pass`
-   - Exception Handling: `try`, `except`, `finally`, `raise`
-   - Context Managers and the `with` Statement
-
-## Functions and Functional Programming
-   - Defining Functions
-   - Function Arguments: Positional, Keyword, Default, `*args`, `**kwargs`
-   - Anonymous Functions (`lambda`)
-   - Function Annotations
-   - Decorators
-   - Generators and Iterators
-   - Higher-Order Functions (e.g., `map`, `filter`, `reduce`)
-
-## Modules and Packages
-   - Importing Modules: `import`, `from ... import`, `import ... as`
-   - The Python Module Search Path
-   - Creating Modules and Packages
-   - The `__main__` Module
+- `if` Statements
+- Loops: `for`,  `while` and Comprehensions
+- Control Flow Modifiers: `break`, `continue`, `pass`
+- Exception Handling: `try`, `except`, `finally`, `raise`
+- Context Managers and the `with` Statement
 
 ## Error Handling and Debugging
 - Debugging Techniques
@@ -72,13 +59,36 @@
 - Assertions
 - Tracebacks
 
+
+## Functions and Functional Programming
+
+See [python-language-reference-nicola/functions-and-functional-programming.md](python-language-reference-nicola/functions-and-functional-programming.md) for more details on:
+
+- Defining Functions
+- Function Arguments: Positional, Keyword, Default, `*args`, `**kwargs`
+- Anonymous Functions (`lambda`)
+- Function Annotations
+- Decorators
+- Generators and Iterators
+- Higher-Order Functions (e.g., `map`, `filter`, `reduce`)
+
+
+> NOTE: Under "Functions and Functional Programming", you have "Function Arguments: Positional, Keyword, Default, *args, **kwargs" and "Anonymous Functions (lambda)".
+> Some details around functions (like positional arguments, keyword arguments, default arguments) may also come up when discussing method definitions in "Classes and Objects". Consider cross-referencing instead of duplicating these concepts.
+
+## Modules and Packages
+   - Importing Modules: `import`, `from ... import`, `import ... as`
+   - The Python Module Search Path
+   - Creating Modules and Packages
+   - The `__main__` Module
+
+
 ## Classes and Objects: Object-Oriented Programming
    - Defining Classes
    - Instance and Class Attributes
    - Methods: Instance, Class, and Static
    - Inheritance
-   - Special Methods (Dunder Methods)
-   - Special Methods (`__init__`, `__str__`, etc.)
+   - Special Methods (Dunder Methods): `__init__`, `__str__`, etc.
    - Abstract Base Classes
    - Data Classes
    - Properties and Descriptors
@@ -91,6 +101,9 @@
    - Working with Binary Data
    - Handling File Exceptions
 
+NOTE: The sections "Input and Output" and "Networking and Internet Data Handling" both mention serialization.
+"Input and Output" contains "Serialization: pickle, json". "Networking and Internet Data Handling" has "Data Serialization (json, pickle)". To avoid redundancy, you could centralize the explanation of serialization under "Input and Output" and reference it in "Networking" for context.
+
 ## Python Runtime Services, Memory Management and Garbage Collection
    - Dynamic Typing
    - Introspection
@@ -101,6 +114,7 @@
    - Environment Variables 
    - Python Virtual Machine Details
    - Extending Python with C/C++
+
 
 ## Python Development Tools
    - The Python Interactive Interpreter
@@ -114,6 +128,8 @@
 - Multiprocessing (`multiprocessing` Module)
 - Async Programming (`asyncio`)
 
+NOTE: In "Python Runtime Services, Memory Management and Garbage Collection", the topics about memory management and reference counting are somewhat related to how concurrency manages shared resources.
+Consider adding cross-references between these sections to help the reader navigate the related content.
 
 ## The Standard Library
    - Overview of Commonly Used Modules
@@ -135,7 +151,6 @@
   - User-Defined Classes
 - Collections Module
   - `namedtuple`, `deque`, `Counter`, `OrderedDict`, etc.
-- Context Managers and `with` Statement
 
 
 ## The Python C API (if applicable)
