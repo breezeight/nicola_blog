@@ -7,3 +7,8 @@
 [Tmux](dev/tmux.md)
 
 [Alpine](dev/alpine.md)
+
+
+## Security and cryptography
+
+[Cryptography, passwords, hashing, salting, encryption](dev/cryptography-passwords-hashing-salting-encryption.md)
