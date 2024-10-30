@@ -11,4 +11,6 @@
 
 ## Security and cryptography
 
-[Cryptography, passwords, hashing, salting, encryption](dev/cryptography-passwords-hashing-salting-encryption.md)
+Explanations:
+* [Cryptography, passwords, hashing, salting, encryption](dev/cryptography-passwords-hashing-salting-encryption.md)
+* [PGP GPG](dev/cryptography-pgp-gpg.md)

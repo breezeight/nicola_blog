@@ -1,3 +1,5 @@
+# Cryptography, passwords, hashing, salting, encryption
+
 ## Introduction
 
 In this section, we will explore some of the foundational concepts in cryptography that are essential for developers to understand. Hash functions and salting are critical techniques used in securing sensitive data, such as passwords. By gaining a solid understanding of these concepts, developers can build more secure systems and defend against common attacks, such as rainbow table attacks.
