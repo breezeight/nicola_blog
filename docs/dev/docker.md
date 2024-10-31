@@ -13,25 +13,20 @@ categories: ["docker"]
 {:toc}
 
 
-# References:
+# Related Documentation
 
 * [Cheatsheet](https://github.com/wsargent/docker-cheat-sheet)
+* [Docker Compose](dev/docker-compose.md)
+* [Docker and Docker Compose arguments and environment variables](dev/docker-and-docker-compose-arg-env.md)
 
-# TODO
+# HOWTO Docker Management
 
-* make a guide for TLS
-* make a guide for docker host
-  * app for aws:reinvent demo by Nathan Le Claire https://github.com/nathanleclaire/awsapp
-  * Proposal: Host management https://github.com/docker/docker/issues/8681
-  * Proposal: Container groups https://github.com/docker/docker/issues/8637
-  * as of Nov 22 2014 you need this docker branch to test docker host https://github.com/nathanleclaire/docker
-
-# Management
+> [!NOTE]
+> This section should be moved to a dedicated page.
 
 ## Garbage collection
 
 https://github.com/zzrotdesign/docker-clean
-
 
 https://github.com/rancher/sherdock
 
@@ -48,22 +43,6 @@ docker rm -f $(docker ps -qa)
 docker rmi -f $(docker images -q)
 ```
 * restart docker
-
-
-# History
-
-# Docker Compose
-
-## 1.6
-
-https://blog.docker.com/2016/02/compose-1-6/
-https://github.com/docker/compose/releases/tag/1.6.0
-
-* networks and volumes top-level objects in Compose files
-*  Everything that used to be in a Compose file is now under a new services key.
-*  depends_on
-*  build args
-*  config
 
 # Docker intro
 
@@ -117,6 +96,9 @@ See the [official doc](https://docs.docker.com/introduction/understanding-docker
 
 These technologies composes the building blocks of docker containers and
 images.
+
+[Docker Internals: Networking](https://docs.google.com/document/d/1Q5LOZ2fm6nWgbaVBhjqjSZKrtwps91d34Jvmf7ui28o/edit?tab=t.0)
+
 
 ## Container
 
@@ -266,81 +248,6 @@ commands:
 * `docker-machine inspect ip`
 * `docker-machine inspect env` :
 
-
-
-## OSX boot2docker [DEPRECATED]
-
-
-Now you can use docker machine to run docker on OSX. See http://docs.docker.com/installation/mac/#migrate-from-boot2docker
-
-You must install the Docker Toolbox: https://www.docker.com/toolbox
-
-Read here installation instruction: http://docs.docker.com/installation/mac/
-
-You can upgrade your existing Boot2Docker VM without data loss by running: `boot2docker upgrade`
-This will delete your persistent data, but will also ensure that you have the latest VirtualBox configuration.
-
-If you run a container with an exposed port: `docker run --rm -i -t -p 80:80 nginx`
-then you should be able to access that Nginx server using the IP address reported by: `$ boot2docker ip`
-
-### Filesystem resize
-
-https://docs.docker.com/articles/b2d_volume_resize/
-
-### Mount Volumes issues on OSX
-
-Boot2docker 1.3 supports volumes mounting but with some limitation:
-
-* limited to boot2docker’s virtualbox configuration
-* cannot be managed dynamically, and only works for directories in **/Users**
-* Expect this area to improve drastically in the next few releases.
-
-`docker run -v /Users/bob/myapp/src:/src [...]` Will mount the directory /Users/bob/myapp/src from your Mac into the container.
-
-~~~bash
-$ ls /Users/nicolabrisotto/fig_django_test
-django-12factor-docker
-$ docker run -v /Users/nicolabrisotto/fig_django_test/:/pippo ubuntu:trusty  ls pippo
-django-12factor-docker
-~~~
-
-
-This mount problem is caused by the limited capabilities of the current
-version of docker (1.3). It support only [data volumes](https://docs.docker.com/userguide/dockervolumes/) mounted from the host running the docker deamon.
-
-But Boot2docker execute the docker client on OSX and the docker deamon in VirtualBox.
-
-Boot2Docker 1.3 solve this problem with a trick:
-
-* Share the directory between OSX and VBox
-  * [VBox shared folders](https://www.virtualbox.org/manual/ch04.html#sharedfolders)
-`sharedfolder  add <uuid|vmname> --name <name> --hostpath <hostpath> [--transient] [--readonly] [--automount]`
-* Share the same directory from the VBox vm and the docker container
-* Follow a naming convention to mount the OSX `/Users` directory in the
-    same path on the VBox virtual machine
-
-A temporary solution will be pushed upstream with boot2docker 1.3:
-
-* see [here](https://github.com/boot2docker/boot2docker/pull/534) the
-discussion
-* [boot2docker 1.3 doc about vbox shares](https://github.com/boot2docker/boot2docker#virtualbox-guest-additions)
-
-Docker is working on a new proposal that could solve the issue allowing
-docker to mount [remote shared volumes](https://github.com/docker/docker/issues/7249)
-
-### FIG issues
-Fig relies heavly on volumes and variables. I need to understand how to
-manage these issues on OSX.
-
-With the current boot2docker 1.2 we need to map dirs in our home (ex:
-~/figtest), but what does "." means in a fig.yml file??? This solution
-is a trick that maps the Vbox host /Users dir the same VM dir, this way
-you obtain a mirror of the /User dir.
-
-* how could we write a 12 factor app that works with fig and AWS
-Beanstalk???
-
-TODO: read the make file of this project and implements it in FIG: https://github.com/ricardokirkner/django-12factor-docker
 
 # Docker components and Services
 ## Docker Registry
@@ -679,12 +586,12 @@ WARNING: Docker never automatically delete volumes when you remove a container, 
 
 To inspect an image's volumes:
 
-~~~
+```
 docker inspect postgres | jq .[0].ContainerConfig.Volumes
 {
   "/var/lib/postgresql/data": {}
 }
-~~~
+```
 
 ### Volume Permissions and Ownership
 
@@ -696,23 +603,23 @@ REF:
 
 Often you will need to set the permissions and ownership on a volume or initialise the volume with some default data or configuration files. The key point to be aware of here is that anything after the VOLUME instruction in a Dockerfile will not be able to make changes to that volume e.g:
 
-~~~
+```
 FROM debian:wheezy
 RUN useradd foo
 VOLUME /data
 RUN touch /data/x
 RUN chown -R foo:foo /data
-~~~
+```
 
 Will not work as expected. We want the touch command to run in the image’s filesystem but it is actually running in the volume of a temporary container. The following will work:
 
-~~~
+```
 FROM debian:wheezy
 RUN useradd foo
 RUN mkdir /data && touch /data/x
 RUN chown -R foo:foo /data
 VOLUME /data
-~~~
+```
 
 Docker is clever enough to copy any files that exist in the image under the volume mount into the volume and set the ownership correctly. This won’t happen if you specify a host directory for the volume (so that host files aren’t accidentally overwritten).
 
@@ -721,23 +628,23 @@ If you can’t set permissions and ownership in a RUN command, you will have to 
 ### How to clean up volumes
 
 * https://github.com/chadoe/docker-cleanup-volumes
-* docker run -v $(which docker):/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -v $(readlink -f /var/lib/docker):/var/lib/docker --rm martin/docker-cleanup-volumes --dry-run
+* `docker run -v $(which docker):/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -v $(readlink -f /var/lib/docker):/var/lib/docker --rm martin/docker-cleanup-volumes --dry-run`
 
 ### Inspect Volumes of images and containers
 
 * To list volumes of an image (ex: redis:2.8.20): `docker inspect redis:2.8.20 | jq '.[0].Config.Volumes'`
 
-~~~
+```
 {
   "/data": {}
 }
-~~~
+```
 
 redis:2.8.20 Dockerfile with `VOLUME /data` command: https://github.com/docker-library/redis/blob/7d9f53256f8e13aa4dff2112145c69c22f8ce394/2.8/Dockerfile
 
 * To list volumes mounted by a container:  `docker inspect addictiveapi_redis_1 | jq '.[0].Mounts'`
 
-~~~
+```
 [
   {
     "Source": "/mnt/sda1/var/lib/docker/volumes/515a65e7fc61c330622025a5de1602145164841de31cdc2f705eaf2fdbc76b66/_data",
@@ -746,7 +653,7 @@ redis:2.8.20 Dockerfile with `VOLUME /data` command: https://github.com/docker-l
     "RW": true
   }
 ]
-~~~
+```
 
 Source is the directory in the host, destination the directory in the container.
 
@@ -1774,270 +1681,6 @@ This is still an open issue: https://github.com/docker/machine/issues/23
 ## Docker Machine on Azure
 
 [Docker Machine on Azure](azure.md#azure-and-docker-machine)
-
-# Docker-Compose
-
-## Changelog
-
-[1.9.0](https://github.com/docker/compose/releases/tag/1.9.0) :
-
-* setting volume labels and network labels in docker-compose.yml
-* `isolation` parameter in service definitions.
-* link-local IPs in the service networks definitions
-* shell-style inline defaults in variable interpolation. The supported forms are ${FOO-default} (fall back if FOO is unset) and ${FOO:-default} (fall back if FOO is unset or empty).
-*  support for the group_add and oom_score_adj parameters in service definitions.
-* support for the internal and enable_ipv6 parameters in network definitions
-
-## Install
-
-OSX: use the Docker App
-
-## Intro
-
-Docker Compose acts as a wrapper around Docker – it links your containers together and provides syntactic sugar around some complex container linking commands.
-It can coordinate and spin up your entire application and dependencies with one command.
-
-With Compose, you use a Compose file to configure your application’s services. Then, using a single command, you create and start all the services from your configuration.
-
-A service definition contains configuration which will be applied to each container started for that service, much like passing command-line parameters to:
-
-* `docker run`.
-* `docker network create`
-* `docker volume create`
-
-Compose is great for:
-
-* development environments
-* staging servers
-* CI server.
-
-We don't recommend that you use it in production yet (april the 18th 2015).
-
-TODO:
-
-* http://docs.docker.com/compose/install/
-* http://blog.docker.com/2015/02/announcing-docker-compose/
-* http://blog.carbonfive.com/2015/03/17/docker-rails-docker-compose-together-in-your-development-workflow/
-
-## cheatsheet:
-
-* `docker-compose up`
-* `docker-compose stop`
-* `docker-compose logs` : watch the logs of all our containers
-* `service` : the main stanzas in th docker-compose.yml file (ex: web, db, redis)
-* `docker-compose down`
-
-A single service (“container”) out of a docker-compose.yaml file is rebuilt and restarted like this:
-
-```
-docker-compose build
-docker-compose up -d  # runs containers, but returns immediately
-# Oops, something needs to be changed
-docker-compose stop web
-# Make changes
-docker-compose build web
-docker-compose up -d --no-deps web
-```
-NOTE:  `--no-deps` don't restart services on which the service depends on
-
-TODO: capire meglio quando server rifare una build: Quando cambiano i file di cui facciamo COPY/ADD ? Quando cambiamo ENV o file ENV ?
-TODO: capire come forzare il pull delle immagini se usiamo latest tag
-
-
-
-## Naming convention:
-
-* the directory containing the docker-compose.yml file is used in the give a prefix to services and images
-  * `-`, `_`, spaces, etc are removed (ex: addctive-api becomes addictiveapi)
-  * you can ovverride this default behavior with the `-p` option
-* name of the images that are built is: `<containingDIR>_<service_name>`
-* name of the containers: `<containingDIR>_<service_name>_<incremental_number>`
-
-ex: `addctive-api/docker-compose.yml` produce:
-
-* web service image name: addictiveapi_web
-
-
-## Containers and Images lifecycle with compose
-
-Images: http://stackoverflow.com/questions/32612650/how-to-get-docker-compose-to-always-start-fresh-images
-
-Container lifecycle: when you use `docker-compose stop` and then `up`, docker compose will not recreate container but will use `docker start`. It uses docker labels to find the proper container
-
-Labels in compose 1.5: ref: https://github.com/docker/compose/pull/1356/files
-
-Docker compose adds labels to container
-
-* LABEL_CONTAINER_NUMBER = 'com.docker.compose.container-number'
-* LABEL_ONE_OFF = 'com.docker.compose.oneoff'
-* LABEL_PROJECT = 'com.docker.compose.project'
-* LABEL_SERVICE = 'com.docker.compose.service'
-* LABEL_VERSION = 'com.docker.compose.version'
-
-## Volumes lifecycle with compose
-
-HOW to Remove a named volume with docker-compose?
-
-* docker-compose down -v
-* Ref: https://stackoverflow.com/questions/45511956/remove-a-named-volume-with-docker-compose
-
-
-TODO: fare qualche test con la cancellazione e rigenerazione
-
-https://github.com/docker/compose/issues/2308 :
-https://github.com/docker/compose/issues/1882 :
-
-* using an image that defines a volume
-* in a docker-compose.yml that overrides that volume with a host volume
-* after that project-folder is moved and re-upped
-* the overridden volume's host path will still point to the previous path in the host fs
-* while host-volumes that are only defined in docker-compose.yml are bound to the new project-folder
-
-
-To see this behaviour start from this image that define `VOLUME /data`:
-
-~~~
-redis:
-  image: redis:2.8.20
-~~~
-
-The container will be mounted:
-
-~~~
-    "Mounts": [
-        {
-            "Source": "/mnt/sda1/var/lib/docker/volumes/0b058454c02a4c75bc00e6ed72dedc375ed7be045d580c026d55a19df3007062/_data",
-            "Destination": "/data",
-            "Mode": "rw",
-            "RW": true
-        }
-    ],
-~~~
-
-If you add a volume to the docker-compose file and then `docker-compose stop` and `docker-compose up`
-
-~~~
-redis:
-  image: redis:2.8.20
-  volumes:
-    - .:/data
-~~~
-
-
-Now when you run docker-compose up you will get a warning:
-
-WARNING: Service "redis" is using volume "/data" from the previous container. Host mapping "/private/tmp/prova_compose" has no effect. Remove the existing containers (with `docker-compose rm redis`) to use the host volume mapping.
-
-That's why docker-compose is consevative and don't try to remove an existing volume from an existing container.
-
-If you `docker-compose rm` and `docker-compose up` the existing container is removed and compose will create a new one which respect the configuration:
-
-~~~
-    "Mounts": [
-        {
-            "Source": "/private/tmp/prova_compose",
-            "Destination": "/data",
-            "Mode": "rw",
-            "RW": true
-        }
-    ],
-~~~
-
-## Networking in Compose and Service discovery
-
-https://docs.docker.com/compose/networking/
-
-By default Compose sets up a single network for your app:
-
-* Each container for a service joins the default network
-* is reachable by other containers on that network,
-* and discoverable by them at a hostname identical to the container name.
-
-Note: Your app’s network is given a name based on the “project name”, which is based on the name of the directory it lives in.
-
-NORE: links are required only if you want to create an alias https://docs.docker.com/compose/networking/#links
-
-## docker-compose file reference
-
-V2: https://docs.docker.com/compose/compose-file/compose-file-v2/
-
-Volumes:
-
-* For version 2 files, named volumes need to be specified with the top-level volumes key. When using version 1, the Docker Engine will create the named volume automatically if it doesn’t exist.
-
-### Volumes
-
-https://docs.docker.com/compose/compose-file/compose-file-v2/#/volume-configuration-reference
-
-While it is possible to declare volumes on the fly as part of the service declaration, this section allows you to create named volumes that can be reused across multiple services (without relying on volumes_from), and are easily retrieved and inspected using the docker command line or API. See the [docker volume](https://docs.docker.com/engine/reference/commandline/volume_create/) subcommand documentation for more information.
-
-
-### PORTS
-
-* `ports` to expose ports to the host container
-
-It's very similar to the docker commandline option `-p`
-
-### LINKS
-
-WARNING:
-
-* The --link flag is a deprecated legacy feature of Docker. We recommend that you use user-defined networks and the embedded DNS server [ref](https://docs.docker.com/engine/userguide/networking/default_network/dockerlinks/)
- One feature that user-defined networks do not support that you can do with --link is sharing environmental variables between containers. However, you can use other mechanisms such as volumes to share environment variables between containers in a more controlled way.
-
-`links`
-
-[Docker compose doc](https://docs.docker.com/compose/yml/#links)
-
-## Open Issues
-
-### 2 docker-compose.yml, same directory name - causes 'mixing' of services
-
-Ref:
-
-* GITHUB ISSUE 2 docker-compose.yml, same directory name - causes 'mixing' of services: https://github.com/docker/compose/issues/2120
-* COMPOSE_PROJECT_NAME env variable: https://docs.docker.com/compose/reference/overview/#compose-project-name
-* Proposal: make project-name persistent. https://github.com/docker/compose/issues/745
-
-
-## FAQ
-
-* every time you do a docker-compose run, Compose is spinning up entirely new containers for your code but only if the containers are not up already, in which case they are linked to that (running) container.This means that it’s possible that you’ve spun up multiple instances of your app without thinking about it – for example, you may have a web and db container already up from a docker-compose up command, and then in a separate terminal window you run a docker-compose run web rails c. That spins up another web container to execute the command, but then links that container with the pre-launched db container.
-
-## Example
-
-Ref V2 file, docker 1.12: https://www.linux.com/learn/introduction-docker-compose-tool-multi-container-applications
-
-```
-version: '2'
-services:
- mysql:  
-  image: mysql
-  container_name: mysql
-  ports:
-   - "3306"
-  environment:
-   - MYSQL_ROOT_PASSWORD=root
-   - MYSQL_DATABASE=ghost
-   - MYSQL_USER=ghost
-   - MYSQL_PASSWORD=password
- ghost:  
-  build: ./ghost
-  container_name: ghost
-  depends_on:
-    - mysql
-  ports:
-    - "80:2368"
-```
-
-This would be the equivalent of running the following `docker run` commands:
-
-```
-$ docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ghost -e MYSQL_PASSWORD=password -e MYSQL_USER=ghost -p 3306 mysql
-$ docker build -t myghost .
-$ docker run -d --name ghost -p 80:2368 myghost
-```
-
 
 # Deployment solutions
 
