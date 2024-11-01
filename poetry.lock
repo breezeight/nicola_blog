@@ -415,6 +415,24 @@ platformdirs = ">=2.2.0"
 pyyaml = ">=5.1"
 
 [[package]]
+name = "mkdocs-github-admonitions-plugin"
+version = "0.0.3"
+description = "Convert GitHub admonitions to mkdocs syntax when building docs."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "mkdocs_github_admonitions_plugin-0.0.3-py3-none-any.whl", hash = "sha256:cb06f56e5b51e5d7b22fcbb4ab632079e3082b7f37bdbeb20cc9fd8a7c5e1657"},
+    {file = "mkdocs_github_admonitions_plugin-0.0.3.tar.gz", hash = "sha256:4fd3ca88157c18c5f0cc4420c1a7f73ed1ed3f1886f41d6ce869932e90f38c48"},
+]
+
+[package.dependencies]
+mkdocs = "*"
+
+[package.extras]
+dev = ["pytest"]
+docs = ["mkdocs-material"]
+
+[[package]]
 name = "mkdocs-macros-plugin"
 version = "1.2.0"
 description = "Unleash the power of MkDocs with macros and variables"
@@ -954,4 +972,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "54c5a0dc7b61213a2350a2ca5de0f46ce97753ef684628d461f9d5c599cfa0dc"
+content-hash = "faf30ecdccd10b2364a02f7d8a48c83e1fd20c6f1edf5a03a092449916d85231"

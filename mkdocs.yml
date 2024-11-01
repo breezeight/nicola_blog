@@ -25,9 +25,14 @@ theme:
     - content.code.copy
     - tags
 
+
+# gh-admonitions allow you to use the gh syntax for callouts:  `> [!TIP]`. `poetry add mkdocs-github-admonitions-plugin`. The ammonition markdown_extensions is required.
+
+
 plugins:
   - search
   - macros
+  - gh-admonitions
   # - tags:
   #     tags_file: tags.md
 
@@ -49,6 +54,7 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences
   - meta
+  - admonition
 
 # Define only part of the navigation manually
 nav:
