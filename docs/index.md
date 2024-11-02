@@ -16,6 +16,22 @@
 
 [Docker and Docker Compose arguments and environment variables](dev/docker-and-docker-compose-arg-env.md)
 
+## Nix
+
+[Nix](dev/nix/nix.md)
+
+Breezeight NixOS Config on OSX:
+* [Breezeight Nix Config](dev/nix/nix-breezeight-config-osx-and-linux-overview.md)
+* [Nix Darwin Overview](dev/nix/nix-darwin-overview.md)
+
+
+* [Nix Linux Remote Builder VM](dev/nix/nix-linux-remote-builder-vm-on-osx-howto.md)
+
+
+Bootstrap a Nixos system:
+
+* [Nix Bootstrap NixOS](dev/nix/nix-bootstrap-nixos-howto.md)
+* [Nix Bootstrap NixOS Explanation](dev/nix/nix-bootstrap-nixos-explanation.md)
 
 ## Security and cryptography
 
