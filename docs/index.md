@@ -36,8 +36,47 @@ Home Manager Day by Day Usage:
 Home Manager Explanations and introductions:
 
 * [Home Manager Overview](dev/nix/nix-homemanager-overview-explanation.md): good to explain the big picture and to undestand the usage context, good for new users.
-* [Home Manager Installation with Flakes Explanation](dev/nix/nix-homemanager-installation-explanation.md): explain the rationale of the installation method, good for new users and give an overview of the installation process.
-
+* [GOOGLE DOC : Home Manager Configuration Overview and Options](https://docs.google.com/document/d/1UN77X-g7uTlgCRNU03Tnw4ao74hmc1oUxqYR-4kH6SA/edit?tab=t.0): 
+    * Document Overview
+    * Installation
+    * General overview of Home-Manager
+    * Home-Manager internals
+    * Home-manager modules notes
+    * Frequent Jobs
+    * [JOB]
+    * Home-Manager for Darwin
+    * darwin-rebuild
+    * Install OSX in UTM
+    * Connect via ssh
+    * mac configuration
+    * nix-darwin config
+    * Understanding nix-darwin and Home Manager
+    * [Darwin] Homebrew Module
+    * [Darwin] system.defaults
+    * Home-manager config
+    * Home Manager Modules
+    * nixos-hardware
+    * Direnv
+    * Home Module
+    * Packages vs modules
+    * home.stateVersion
+    * Module to install DEVENV using flake
+    * Upgrading Home-Manager
+    * Impermanence and Home-Manager
+    * Home Manager Standalone Internals
+    * Profiles
+    * The Flake Structure and how it’s used
+    * The Breezeight Parent module
+    * Global Module
+    * Session Settings
+    * Persistence Configuration
+    * Features Modules
+    * Features Modules - CLI - Overview
+    * Features Modules - CLI - git.nix
+    * Features Modules - CLI - gpg.nix
+    * Features Modules - CLI - ssh.nix
+    * Tooling and applications
+    * Misterio77’s Configurations
 
 
 
