@@ -16,6 +16,6 @@ Aim for the future:
 
 See the README.md file in the [breezeight-nix-darwin-config](https://github.com/breezeight/breezeight-nix-darwin-config) repo for more details on how to set up the darwin configuration.
 
-
+See the [nix-homemanager-installation-explanation.md](nix-homemanager-installation-explanation.md) file for more details on how the homemanager configuration is set up.
 
 

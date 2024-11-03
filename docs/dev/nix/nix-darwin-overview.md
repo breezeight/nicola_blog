@@ -20,6 +20,14 @@ To use a metaphor, nix-darwin is the closest equivalent to NixOS that we can hav
 
 See the README.md file in the [breezeight-nix-darwin-config](https://github.com/breezeight/breezeight-nix-darwin-config) repo for my personal configuration .
 
+WARNING I've found that you need to explicitly set the username and home directory in the nix-darwin configuration expecially if you are using home-manager:
+```nix
+      # Add these lines to explicitly set your username and system
+      users.users.nicolabrisotto = {
+        name = "nicolabrisotto";
+        home = "/Users/nicolabrisotto";
+      };
+```
 
 If you to start with a minimal configuration, you can use the [nixcademy.com](https://nixcademy.com/posts/nix-on-macos/) configuration as a base.
 
