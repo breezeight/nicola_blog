@@ -17,11 +17,97 @@ Independently of the installation mode you use (standalone, NixOS module, or nix
 ```bash
 └── home
     ├── home.nix          # Main entrypoint
+    │                     # Contains basic settings like:
+    │                     # - Username and home directory
+    │                     # - State version
+    │                     # - Imports of other modules
+    │                     # - Session variables
+    │
     ├── programs          # Directory for program-specific configs
-    │   ├── git.nix
-    │   ├── neovim.nix
-    │   └── zsh.nix
+    │   ├── git.nix      # Git configuration (user, aliases, signing)
+    │   ├── neovim.nix   # Neovim setup (plugins, keymaps, options)
+    │   └── zsh.nix      # Shell configuration (aliases, plugins, prompt)
+    │
     └── packages.nix      # Package installations
+                         # List of packages to install in home environment
+```
+
+### Example Contents
+
+#### home.nix
+```nix
+{ config, pkgs, ... }:
+
+{
+  imports = [
+    ./programs/git.nix
+    ./programs/neovim.nix
+    ./programs/zsh.nix
+    ./packages.nix
+  ];
+
+  home = {
+    username = "yourusername";
+    homeDirectory = "/home/yourusername";
+    stateVersion = "23.11";
+    
+    sessionVariables = {
+      EDITOR = "nvim";
+      TERMINAL = "alacritty";
+    };
+  };
+
+  programs.home-manager.enable = true;
+}
+```
+
+#### programs/git.nix
+```nix
+{ config, pkgs, ... }:
+
+{
+  programs.git = {
+    enable = true;
+    userName = "Your Name";
+    userEmail = "your.email@example.com";
+    aliases = {
+      st = "status";
+      co = "checkout";
+    };
+  };
+}
+```
+
+#### programs/zsh.nix
+```nix
+{ config, pkgs, ... }:
+
+{
+  programs.zsh = {
+    enable = true;
+    enableAutosuggestions = true;
+    enableSyntaxHighlighting = true;
+    shellAliases = {
+      ll = "ls -l";
+      update = "sudo nixos-rebuild switch";
+    };
+  };
+}
+```
+
+#### packages.nix
+```nix
+{ config, pkgs, ... }:
+
+{
+  home.packages = with pkgs; [
+    ripgrep
+    fd
+    htop
+    tree
+    jq
+  ];
+}
 ```
 
 ## TUTORIAL: Adding a file to your home directory
