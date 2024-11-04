@@ -26,6 +26,7 @@ echo "source /Users/nicolabrisotto/.config/op/plugins.sh" >> ~/.zshrc && source 
 ```
 
 ## Explanation
+
 Why Use 1Password for AWS Credentials?
 
 The standard practice of storing AWS credentials in `~/.aws/credentials` presents a security risk:
@@ -43,8 +44,27 @@ This howto demonstrates how to use 1Password as a more secure alternative for ma
 
 https://developer.1password.com/docs/cli/shell-plugins/aws
 
+### does the aws 1password plugin integrate also with the AWS VScode extension?
+- [ ] TODO: check if this is true https://www.perplexity.ai/search/what-are-1password-plugins-SghHvYnoSPS1sGorcr.XVw
 
+### How does the plugin know which vault and item to use?
 
-## does the aws 1password plugin integrate also with the AWS VScode extension?
+As you can see in the file `op` created an local config file that maps to a specific vault and item in 1Password: `~/SRC/CUSTOMER_DIR/.op/plugins/aws.json`:
 
-https://www.perplexity.ai/search/what-are-1password-plugins-SghHvYnoSPS1sGorcr.XVw
+```json
+{
+	"account_id": "PQE4CI62WZC7DBNEXR66UWHO3U",
+	"entrypoint": [
+		"aws"
+	],
+	"credentials": [
+		{
+			"plugin": "aws",
+			"credential_type": "access_key",
+			"usage_id": "access_key",
+			"vault_id": "abyevombrivlqkczbbmgf3hene",
+			"item_id": "w66npczfzitjfrxautx4zv7c6a"
+		}
+	]
+}
+```
