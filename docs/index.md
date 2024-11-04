@@ -10,11 +10,15 @@
 
 [AWS](dev/aws.md)
 
-HOWTOS:
+### HOWTOS
+
+Credentials:
 
 * [AWS IAM Credentials 1Password](dev/aws/aws-howto-iam-credentials-1password.md): How to Use 1Password to Securely Store Your AWS credentials
 
+S3:
 
+* [AWS S3](dev/aws/aws-howto-s3-download-upload-files.md)
 
 
 ## Python
