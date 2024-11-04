@@ -1,11 +1,21 @@
 
-[AWS Guides](dev/aws.md)
 
 [Heroku](dev/heroku.md)
 
 [Tmux](dev/tmux.md)
 
 [Alpine](dev/alpine.md)
+
+## AWS
+
+[AWS](dev/aws.md)
+
+HOWTOS:
+
+* [AWS IAM Credentials 1Password](dev/aws/aws-howto-iam-credentials-1password.md): How to Use 1Password to Securely Store Your AWS credentials
+
+
+
 
 ## Python
 
