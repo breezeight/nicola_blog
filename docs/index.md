@@ -6,6 +6,14 @@
 
 [Alpine](dev/alpine.md)
 
+
+## Development Best Practices
+
+Very important ⭐⭐⭐:
+
+* [DevOps And DevSecOps Culture Explanation](dev/development_best_practices/devops_and_devsecops_culture_explanation.md)
+
+
 ## AWS
 
 [AWS](dev/aws.md)
@@ -31,7 +39,7 @@ S3:
 
 [Docker Compose](dev/docker-compose.md)
 
-[Docker and Docker Compose arguments and environment variables](dev/docker-and-docker-compose-arg-env.md)
+[Docker and Docker Compose arguments and environment variables management in complex projects](dev/docker-and-docker-compose-arg-env-management-in-complex-project.md)
 
 ## Nix
 
