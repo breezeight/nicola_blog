@@ -14,6 +14,11 @@ Very important ⭐⭐⭐:
 * [DevOps And DevSecOps Culture Explanation](dev/development_best_practices/devops_and_devsecops_culture_explanation.md)
 
 
+## Authentication and Authorization
+
+* [OAuth 2 Explanation](dev/authetication_and_authorization/oauth2-explanation.md)
+* [OIDC Explanation](dev/authetication_and_authorization/oidc-protocol-explanation.md)
+
 ## AWS
 
 [AWS](dev/aws.md)
