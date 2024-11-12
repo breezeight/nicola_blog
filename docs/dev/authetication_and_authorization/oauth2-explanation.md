@@ -30,6 +30,52 @@ In summary, OAuth 2.0 focuses on granting access to resources securely without e
 Refs: [Ory](https://www.ory.sh/docs/oauth2-oidc/overview/oauth2-concepts), [DigitalOcean](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2), [Postman](https://blog.postman.com/what-is-oauth-2-0/).
 
 
+## Understanding Claims in OAuth 2.0
+
+In OAuth 2.0, **claims** are used to provide additional context within tokens, though they are not a core part of the original specification. OAuth 2.0 primarily focuses on **authorization** rather than **authentication**, so claims are implemented in a flexible, often implementation-specific way.
+
+In the context of identity and access management (like OAuth 2.0 and OpenID Connect), a **claim** is a statement about an entity (usually the user or token holder), typically expressed as a **key-value pair**. Claims are **embedded within tokens** (e.g., JSON Web Tokens) and provide structured information that can be used by applications and APIs to make authorization and authentication decisions.
+
+### Claims in OAuth 2.0 Access Tokens
+
+Access tokens in OAuth 2.0 **may contain claims**, particularly when they are formatted as **JSON Web Tokens (JWTs)**. Claims within these tokens provide structured information that allows APIs to make authorization decisions about users or systems. Typically you get access tokens with a response in the following format:
+
+```json
+{
+  "access_token":"ya29a0AeDClZCPG8d_0nbikLgl08fbbAYGi_7yhrc3BmX74lrw-Su7XCK1-AWPF4t8xxJ_8K4nYyLvZ3jpMjgUaDXHOtlGM0s259S9GSn5BqLfDt0EAFUeNOzygv3ZNNleONqRFjLqVmyLxxKsY8dA39p3D0wNWuV14CYFQNKEpqLmaCgYKAQ0SARESFQHGX2Mi31dp1pdg2fcOwhxrBMfVSw0175", 
+  "scope":"https://www.googleapis.com/auth/youtubepartner https://www.googleapis.com/auth/sitemaps", 
+  "token_type":"Bearer", 
+  "expires_in":3599, 
+  "refresh_token": "1//04XqEBsQXBrydCgYIARAAGAQSNwF-L9Ir5p1jAE6jSfKf3zqUADFY4R6ben3hcF-RxijRSz1YmMlVpqJNUDl_3XASLY9p53ljDwk"
+}
+```
+
+In the case above the `access_token` is NOT a JWT access token. But if it was, it would contain claims like the following:
+
+- **Standard Claims in JWT Access Tokens**: JWT access tokens often include common claims like:
+  - `sub` (subject): The unique identifier for the user or entity the token represents.
+  - `iss` (issuer): The entity that issued the token.
+  - `exp` (expiration): The token’s expiration time, after which it becomes invalid.
+  - `aud` (audience): The intended audience of the token, often an API or service.
+  - `scope`: The permissions granted, often represented as a list of authorized actions.
+
+These claims help the API receiving the token to verify its validity and understand the context around the access request.
+
+### Custom Claims in OAuth 2.0
+
+OAuth 2.0 allows for **custom claims** to be included in JWT access tokens. These custom claims can be tailored to the needs of the specific application or API being accessed. For example, an access token for an API dealing with user data could include a `role` claim to specify the user’s authorization level within the application.
+
+- **Adding Custom Claims**: Custom claims are flexible but should be designed thoughtfully to avoid conflicts with standard claims. Using a namespaced format for custom claims can help prevent such collisions, especially when tokens may be used across multiple systems.
+
+### Purpose of Claims in OAuth 2.0
+
+In OAuth 2.0, claims support **authorization decisions** by conveying essential information about the token holder and token validity. While claims are not required by the OAuth 2.0 protocol itself, they are widely used when access tokens are structured as JWTs, providing a convenient and secure way to pass metadata within the token.
+
+### Summary
+
+In summary, while OAuth 2.0 does not explicitly define claims, they are a useful tool for enhancing the context within access tokens, particularly when JWTs are used. Claims enable APIs to make informed decisions on access control, supporting flexible, granular authorization.
+
+
 ## The OAuth 2.0 Protocol Flow
 
 Refs: [DigitalOcean](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2#application-registration)
@@ -145,6 +191,10 @@ sequenceDiagram
     Client->>API: Accesses protected resource with Access Token
     API->>Client: Returns requested resource
 ```
+
+> [!TIP] 🌟⏩
+> Experiment with Google's OAuth 2.0 playground to see how the flow works in practice: [OAuth 2.0 Playground](https://developers.google.com/oauthplayground).
+
 
 ##### Step 1: Authorization Code Link
 
