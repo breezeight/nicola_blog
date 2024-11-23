@@ -1,7 +1,5 @@
 ## Data Types and Literals
 
-
-
 ### Built-in Types Overview
 Python provides a rich set of built-in data types to accommodate various data-handling needs. The main categories include:
 - **Numeric Types**: For representing numbers (integers, floating-point, complex).
@@ -26,6 +24,126 @@ Represents a null or "no value" state. Commonly used as a default parameter valu
 result = None
 if result is None:
     print("No result available")
+```
+#### Strings (`str`)
+Strings in Python are immutable sequences of characters. They can be created using single quotes (`'`), double quotes (`"`), or triple quotes (`'''` or `"""`) for multi-line strings.
+
+##### Creating Strings
+```python
+# Single or double quotes
+single = 'This is a string'
+double = "This is also a string"
+
+# Multi-line strings using triple quotes
+multi_line = """This is a string that
+spans multiple lines
+and preserves formatting"""
+
+# Raw strings (ignore escape characters)
+raw_string = r"This\nwill\not\escape"
+```
+
+##### String Operations
+Strings support concatenation and repetition:
+
+```python
+# Concatenation using + operator
+greeting = "Hello " + "world!"  # => "Hello world!"
+
+# Adjacent string literals are automatically concatenated
+message = "Hello " "world!"     # => "Hello world!"
+
+# String repetition using *
+repeated = "ha" * 3            # => "hahaha"
+```
+
+##### String Indexing and Slicing
+Strings can be accessed like arrays of characters:
+
+```python
+text = "Hello world!"
+first = text[0]      # => 'H'
+last = text[-1]      # => '!'
+
+# Slicing [start:end:step]
+slice1 = text[0:5]   # => "Hello"
+slice2 = text[6:]    # => "world!"
+reverse = text[::-1] # => "!dlrow olleH"
+```
+
+##### String Methods
+Python provides many built-in string methods:
+
+```python
+text = "Hello, World!"
+
+# Case modifications
+text.upper()      # => "HELLO, WORLD!"
+text.lower()      # => "hello, world!"
+text.title()      # => "Hello, World!"
+
+# Finding and replacing
+text.find("World")    # => 7
+text.replace("World", "Python")  # => "Hello, Python!"
+
+# Splitting and joining
+words = text.split(",")  # => ["Hello", " World!"]
+",".join(["a", "b", "c"])  # => "a,b,c"
+
+# Whitespace handling
+"  text  ".strip()    # => "text"
+"  text  ".lstrip()   # => "text  "
+"  text  ".rstrip()   # => "  text"
+```
+
+##### String Formatting
+Python offers multiple ways to format strings:
+
+```python
+name = "Alice"
+age = 25
+
+# f-strings (Python 3.6+)
+f"Name: {name}, Age: {age}"  # => "Name: Alice, Age: 25"
+
+# format() method
+"Name: {}, Age: {}".format(name, age)
+"Name: {n}, Age: {a}".format(n=name, a=age)
+
+# % operator (older style)
+"Name: %s, Age: %d" % (name, age)
+
+# Format specifiers in f-strings
+price = 49.95
+f"Price: ${price:.2f}"  # => "Price: $49.95"
+```
+
+##### String Testing Methods
+Strings provide methods to test their contents:
+
+```python
+# Content tests
+"hello123".isalnum()   # => True
+"hello".isalpha()      # => True
+"123".isdigit()        # => True
+"HELLO".isupper()      # => True
+"hello".islower()      # => True
+"  ".isspace()         # => True
+
+# Prefix/suffix tests
+"Hello".startswith("He")  # => True
+"Hello".endswith("lo")    # => True
+```
+
+##### Escape Characters
+Special characters can be represented using escape sequences:
+
+```python
+# Common escape sequences
+print("Line 1\nLine 2")     # Newline
+print("Tab\tspaced")        # Tab
+print("\"Quoted\"")         # Quotes
+print("Path\\to\\file")     # Backslash
 ```
 
 #### Integers (`int`)
@@ -53,6 +171,110 @@ Contains a real and an imaginary part, denoted as `a + bj`. Useful in scientific
 z = 2 + 3j
 w = complex(5, -1)
 ```
+
+### Numeric Operations and Comparisons
+
+#### Basic Arithmetic Operations
+Python supports all standard arithmetic operations with intuitive syntax:
+
+```python
+# Basic arithmetic
+x = 1 + 1   # Addition (2)
+y = 8 - 1   # Subtraction (7)
+z = 10 * 2  # Multiplication (20)
+w = 35 / 5  # Division (7.0)
+
+# Division always returns a float
+result = 10.0 / 3  # => 3.3333333333333335
+```
+
+#### Floor Division and Modulo
+- Floor division (`//`) rounds towards negative infinity
+- Modulo (`%`) returns the remainder, with the same sign as the divisor
+
+```python
+# Floor division examples
+5 // 3       # => 1
+-5 // 3      # => -2
+5.0 // 3.0   # => 1.0
+-5.0 // 3.0  # => -2.0
+
+# Modulo operation
+7 % 3    # => 1
+-7 % 3   # => 2  # Note: Result has same sign as divisor
+```
+
+#### Expression Precedence
+Use parentheses to control operation order:
+
+```python
+# Default precedence
+1 + 3 * 2    # => 7  (multiplication before addition)
+
+# Modified precedence
+(1 + 3) * 2  # => 8  (addition before multiplication)
+```
+
+#### Boolean Operations and Comparisons
+Booleans can be used in arithmetic and comparisons:
+
+```python
+# Boolean arithmetic
+True + True   # => 2 (True is treated as 1)
+True * 8      # => 8
+False - 5     # => -5 (False is treated as 0)
+
+# None, 0, and empty strings/lists/dicts/tuples/sets all evaluate to False.
+# All other values are True
+bool(0)      # => False
+bool("")     # => False
+bool([])     # => False
+bool({})     # => False
+bool(())     # => False
+bool(set())  # => False
+bool(4)      # => True
+bool(-6)     # => True
+
+0 and 2       # => 0 (returns the actual value, not boolean)
+-5 or 0       # => -5 (returns the first truthy value)
+
+# Comparison operators
+1 == 1        # => True (equality)
+2 != 1        # => True (inequality)
+1 < 10        # => True (less than)
+1 > 10        # => False (greater than)
+2 <= 2        # => True (less than or equal)
+2 >= 2        # => True (greater than or equal)
+```
+
+#### Chained Comparisons
+Python supports elegant chained comparisons:
+
+```python
+# Traditional way
+1 < 2 and 2 < 3   # => True
+2 < 3 and 3 < 2   # => False
+
+# Chained comparison (more readable)
+1 < 2 < 3         # => True
+2 < 3 < 2         # => False
+```
+
+#### Identity vs Equality
+The `is` operator checks identity (same object), while `==` checks value equality:
+
+```python
+# Identity vs equality
+a = [1, 2, 3, 4]
+b = a             # b references the same object as a
+b is a           # => True (same object)
+b == a           # => True (equal values)
+
+b = [1, 2, 3, 4] # b now references a new list
+b is a           # => False (different objects)
+b == a           # => True (equal values)
+```
+
 
 ### Sequence Types
 
@@ -567,8 +789,6 @@ dict1 |= dict2  # dict1 is now {"a": 1, "b": 3, "c": 4}
 ```
 
 ### Set Types
-
-Sets in Python are unordered collections of unique elements, designed for fast membership testing and eliminating duplicate entries. Python provides two types of sets: mutable (`set`) and immutable (`frozenset`).
 
 #### `set`
 A `set` is a mutable, unordered collection that supports adding and removing elements. The elements must be hashable (immutable types like numbers, strings, tuples), but the set itself is mutable.
