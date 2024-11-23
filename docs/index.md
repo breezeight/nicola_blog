@@ -16,6 +16,13 @@ Very important ⭐⭐⭐:
 
 ## Authentication and Authorization
 
+Services:
+
+* [Keycloak](dev/authetication_and_authorization/keycloak-explanation.md)
+* [OAuth2 Proxy](dev/authetication_and_authorization/oauth2-proxy.md)
+
+Protocols:
+
 * [OAuth 2 Explanation](dev/authetication_and_authorization/oauth2-explanation.md)
 * [OIDC Explanation](dev/authetication_and_authorization/oidc-protocol-explanation.md)
 
@@ -37,6 +44,13 @@ S3:
 ## Python
 
 [Python Language Reference Nicola](dev/python-language-reference-nicola.md)
+
+### Python Type Hints
+
+* [Python Type Hints Explanation](dev/python-language-reference-nicola/stdlib-devtools-typing-explanation.md): this is a high level explanation of type hints, a good starting point to understand the big picture.
+* [Python Type Hints HOWTO](dev/python-language-reference-nicola/stdlib-devtools-typing-howto.md): how to use type hints in practice.
+* [Python Type Hints Reference](dev/python-language-reference-nicola/stdlib-devtools-typing-reference.md): reference of all type hints.
+* [Python Type Hints Tutorial](dev/python-language-reference-nicola/stdlib-devtools-typing-tutorial.md): tutorial to learn type hints.
 
 ## Virtualization and Containers
 

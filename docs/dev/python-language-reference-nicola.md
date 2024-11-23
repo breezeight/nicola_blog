@@ -15,6 +15,14 @@
    - Line Structure and Indentation
    - Comments and Docstrings
 
+## Variables, Constants, and Naming
+See [python-language-reference-nicola/variables-constants-and-naming.md](python-language-reference-nicola/variables-constants-and-naming.md) for more details on:
+
+- Variable Assignment
+- Mutable vs Immutable Types
+- Variable Naming Rules
+- Constants
+
 ## Data Types
 See [python-language-reference-nicola/data-types-and-literals.md](python-language-reference-nicola/data-types-and-literals.md) for more details on:
 
@@ -27,14 +35,6 @@ See [python-language-reference-nicola/data-types-and-literals.md](python-languag
 - Mapping Type: dict
 - None Type
 - Type Checking and Casting
-
-## Variables, Constants, and Naming
-See [python-language-reference-nicola/variables-constants-and-naming.md](python-language-reference-nicola/variables-constants-and-naming.md) for more details on:
-
-- Variable Assignment
-- Mutable vs Immutable Types
-- Variable Naming Rules
-- Constants
 
 ## Expressions and Operators
 - Arithmetic Operators
