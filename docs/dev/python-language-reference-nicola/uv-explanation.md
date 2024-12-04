@@ -8,6 +8,40 @@ Additional notes:
 - `uv python list`: shows available Python versions installed in the system also by other tools like pyenv or asdf.
 - `uv python list --all-versions`: shows all available and installable Python versions.
 
+
+## Project configuration Best practices
+
+
+* `.python-version`: The `.python-version` file contains the project's default Python version. This file tells uv which Python version to use when creating the project's virtual environment.
+
+https://docs.astral.sh/uv/guides/projects/#python-version
+
+## HOWTO Getting started with uv
+
+```bash
+# install the Python version 3.12 if not already installed
+uv python install 3.12
+
+# list the Python versions available
+uv python list
+
+# create the virtual environment for the current project
+uv venv
+
+uv add flask
+
+# sync the dependencies in the virtual environment
+uv sync
+
+# run the Flask application
+uv run -- flask run -p 3000
+
+# OR ALTERNATIVELY activate the virtual environment
+source .venv/bin/activate
+flask run -p 3000
+```
+
+
 ## HOWTO optional dependencies
 
 `uv` respect the `pyproject.toml standard configuration file` used in Python packaging. This standard is described in the [Pyproject standard explanation](pyproject-stardard-explanation.md), the relevant part to better understand how `uv` manage optional dependencies are:
@@ -19,10 +53,35 @@ Additional notes:
 
 ### dependency-groups
 
+Add a dependency to a specific group:
+
+```bash
+uv add --group docs mkdocs
+uv add --group dev black
+```
+
+> [!NOTE] `uv add --dev black` is a shortcut for `uv add --group dev black`
+
+Install the dependencies in specific groups:
+
 ```bash
 uv sync --group testing --group linting
 ```
 
+> [!WARNING] If you want to skip the installation of dev dependencies you must use `uv sync --no-group dev` (see the next section to understand why)
+
+#### Default groups
+
+TL;DR: you can be confused by the default groups. Let's clarify this.
+
+It's important to understand that:
+* Every project has default groups: https://docs.astral.sh/uv/reference/settings/#default-groups
+* The default value of `default-groups` is `[dev]`
+
+So by default the `uv sync` command installs the dependencies in the `dev` group.
+Basically the default behavior of `uv` is to execute `uv sync --group dev`
+
+So if you want to 
 
 ### project.optional-dependencies
 
