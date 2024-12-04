@@ -43,7 +43,25 @@ S3:
 
 ## Python
 
-[Python Language Reference Nicola](dev/python-language-reference-nicola.md)
+### Learning Python
+
+
+[Free Python Books](https://github.com/pamoroso/free-python-books):
+
+### Language and Standard Library References
+
+* [Python Language Reference Nicola](dev/python-language-reference-nicola.md): my personal reference for the python language.
+
+* [python-official-language-reference-with-ai](python-official-language-reference-with-ai.md): this is tentative of make AI summarize the python language reference. THE PROBLEM is that the original text is meant to be read by developers of the core of language, so it **is too technical**.
+
+### Python Packaging and dependencies management
+
+General explanation:
+* [Python Packaging Explanation](dev/python-packaging-explanation.md)
+
+Specific tools:
+
+* [uv explanation](dev/python-language-reference-nicola/uv-explanation.md)
 
 ### Python Type Hints
 

@@ -46,6 +46,127 @@ See [python-language-reference-nicola/data-types-and-literals.md](python-languag
 - Identity Operators
 - Operator Precedence and Associativity
 
+### The Walrus Operator  `:=`
+
+The **Walrus Operator** (`:=`) was introduced in Python 3.8 as part of [PEP 572](https://peps.python.org/pep-0572/). It allows assignment expressions, enabling you to assign values to variables as part of an expression. This can lead to more concise and potentially more readable code by reducing the need for separate assignment statements.
+
+Benefits
+
+1. **Conciseness**: Reduces the number of lines by combining assignments and expressions.
+2. **Efficiency**: Avoids redundant computations or function calls by storing results in variables.
+3. **Readability**: When used appropriately, it can make the code more readable by clarifying the intent.
+
+Use Cases
+
+- **Loop Conditions**: Assigning loop variables within the loop condition.
+- **Comprehensions**: Assigning intermediate values within list, set, or dictionary comprehensions.
+- **Regular Expressions**: Capturing match objects within `if` statements.
+
+
+#### Example 1: Assigning Within a While Loop
+
+**Without Walrus Operator:**
+
+```python
+# Without Walrus Operator
+line = input("Enter something: ")
+while line != "quit":
+    print(f"You entered: {line}")
+    line = input("Enter something: ")
+```
+
+**With Walrus Operator:**
+
+```python
+# With Walrus Operator
+while (line := input("Enter something: ")) != "quit":
+    print(f"You entered: {line}")
+```
+
+In this example, the assignment of `line` occurs within the `while` loop condition, eliminating the need for a separate assignment before the loop and inside the loop.
+
+#### Example 2: Using in List Comprehensions
+
+**Without Walrus Operator:**
+
+```python
+# Without Walrus Operator
+results = []
+for n in range(10):
+    square = n * n
+    if square > 20:
+        results.append(square)
+```
+
+**With Walrus Operator:**
+
+```python
+# With Walrus Operator
+results = [square for n in range(10) if (square := n * n) > 20]
+```
+
+Here, `square` is assigned within the list comprehension, making the code more concise.
+
+
+#### Example 3: Regular Expressions
+
+**Without Walrus Operator:**
+
+```python
+import re
+
+pattern = re.compile(r'\d+')
+text = "There are 123 apples"
+match = pattern.search(text)
+if match:
+    number = match.group()
+    print(f"Found number: {number}")
+```
+
+**With Walrus Operator:**
+
+```python
+import re
+
+pattern = re.compile(r'\d+')
+text = "There are 123 apples"
+if (match := pattern.search(text)):
+    print(f"Found number: {match.group()}")
+```
+
+In this case, `match` is assigned within the `if` statement, streamlining the code.
+
+## Cautions
+
+While the Walrus Operator can make code more concise, it should be used judiciously to maintain readability. Overusing it or using it in complex expressions can make the code harder to understand.
+
+### Example: Overuse Leading to Reduced Readability
+
+**Less Readable:**
+
+```python
+# Overusing Walrus Operator
+if (n := len(a := some_function())) > 10:
+    print(f"Length of a ({n}) is greater than 10")
+```
+
+**More Readable:**
+
+```python
+# Improved readability
+a = some_function()
+n = len(a)
+if n > 10:
+    print(f"Length of a ({n}) is greater than 10")
+```
+
+In this example, separating the assignments enhances clarity.
+
+#### Conclusion
+
+The Walrus Operator is a powerful addition to Python that allows for more concise and efficient code by enabling assignment expressions. When used appropriately, it can enhance readability and reduce redundancy. However, it should be used thoughtfully to avoid compromising code clarity.
+
+
 ## Control Flow
 - `if` Statements
 - Loops: `for`,  `while` and Comprehensions
@@ -193,6 +314,71 @@ When you create the `point` instance by calling the class constructor, `Point
 
 #### Creating Objects With .__new__()
 The default implementation of .__new__() is enough for most practical use cases. So, you probably won’t need to write a custom implementation of .__new__() in most cases. However, you’ll find that this method is useful in some advanced use cases: [learn more](https://realpython.com/python-magic-methods/#creating-objects-with-__new__)
+
+
+### Managing Attribute Access in Python: Special Methods vs. Decorators
+
+In Python, controlling how attributes are accessed, assigned, and deleted within a class is crucial for maintaining data integrity and encapsulation. Two primary mechanisms facilitate this control: special methods (`__getattr__`, `__setattr__`, `__delattr__`) and decorators (notably `@property`). Understanding their differences and appropriate use cases is essential for effective class design.
+
+#### Special Methods: `__getattr__`, `__setattr__`, and `__delattr__`
+
+These dunder (double underscore) methods allow developers to customize attribute behavior dynamically:
+
+- `__getattr__(self, name)`: Invoked when an attribute is accessed that doesn’t exist in the instance’s `__dict__`. It’s useful for defining dynamic attributes or handling missing attributes gracefully.
+- `__setattr__(self, name, value)`: Called whenever an attribute assignment is attempted. This method can be overridden to enforce validation, type checking, or to implement computed properties.
+- `__delattr__(self, name)`: Triggered when an attempt is made to delete an attribute. Overriding this method allows for custom behavior during attribute deletion.
+
+#### Example: Implementing a Read-Only Attribute
+
+```python
+class ReadOnly:
+    def __init__(self, value):
+        self._value = value
+
+    def __setattr__(self, name, value):
+        if name == '_value' and hasattr(self, '_value'):
+            raise AttributeError(f"{name} is read-only")
+        super().__setattr__(name, value)
+
+    def __getattr__(self, name):
+        if name == 'value':
+            return self._value
+        raise AttributeError(f"{name} not found")
+```
+
+In this example, attempting to reassign `_value` after its initial set raises an `AttributeError`, effectively making it read-only.
+
+#### Decorators: The `@property` Approach
+
+Decorators provide a more declarative way to manage attribute access, especially when dealing with individual attributes. The `@property` decorator allows a method to be accessed like an attribute, enabling controlled access and mutation.
+
+#### Example: Using `@property` for Attribute Validation
+
+```python
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius
+
+    @property
+    def radius(self):
+        return self._radius
+
+    @radius.setter
+    def radius(self, value):
+        if value < 0:
+            raise ValueError("Radius cannot be negative")
+        self._radius = value
+```
+
+Here, accessing `circle.radius` retrieves the value, while setting `circle.radius = value` invokes the setter, allowing for validation.
+
+#### Choosing Between Special Methods and Decorators
+
+- **Use Special Methods** when you need to manage attribute access, assignment, or deletion dynamically across many attributes, especially when the attributes are not known in advance.
+- **Use Decorators like `@property`** when you want to control access to a specific attribute, providing a clear and concise way to define managed attributes with optional validation or computation.
+
+In summary, both approaches offer mechanisms to control attribute behavior in Python. The choice between them depends on the specific requirements of your class design and the level of control needed over attribute management.
+
 
 
 ## Input and Output
