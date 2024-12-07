@@ -81,7 +81,7 @@ It's important to understand that:
 So by default the `uv sync` command installs the dependencies in the `dev` group.
 Basically the default behavior of `uv` is to execute `uv sync --group dev`
 
-So if you want to 
+
 
 ### project.optional-dependencies
 

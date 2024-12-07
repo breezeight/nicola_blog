@@ -43,16 +43,41 @@ S3:
 
 ## Python
 
+[NICOLA's LEGACY GOOGLE docs](https://drive.google.com/drive/u/1/folders/1E5SPSk__OBUlzkI0crqYYpp00ZtX702W):
+
+- [\[GUIDE\] Python Libraries for AI and Data Science](https://drive.google.com/open?id=1g21eheWYwJ5cmx7aBnUP1tb8273QiWuau8l5B4Mcm5A&usp=drive_copy)
+- [\[GUIDE\] Python Optimization and Profilers](https://drive.google.com/open?id=1vYvuQ0ysCib_QUqEnqSNxvc8jwOMKseMQFsbRua3rQQ&usp=drive_copy)
+- [Python Ecosystem Addictive Best Practices.md](https://drive.google.com/open?id=10hcTGoiNRBIGbrFAThwi2SP2LCexFjlr&usp=drive_copy)
+- [\[GUIDE\] Django](https://drive.google.com/open?id=1lKWZD3xmjfkkxQRjPl1jw_D4cWT65T9jEtE-alYozHo&usp=drive_copy)
+- [\[GUIDE\] Python - DevOps](https://drive.google.com/open?id=1ieHAj7gzka9vSHhiSwOkyuyq_4UpAheN9QjJKQTiQ_8&usp=drive_copy)
+- [\[GUIDE\] FastAPI: rest and grapql](https://drive.google.com/open?id=1d3F_p_xT-88ybr0DuZfgM6QwyezfcSK3F1F-90wOH7o&usp=drive_copy)
+- [\[GUIDE\] Python Learning Path](https://drive.google.com/open?id=1EHLEXq6bvdgOrvUPGygXsUeAf4azMKYuHaaZWxbDeNw&usp=drive_copy)
+- [Django Learning Materials](https://drive.google.com/open?id=1aAuy55LzI5xI1RF8Fv67TBJOc1ArRFGm&usp=drive_copy)
+
 ### Learning Python
 
+[See here](dev/python-language-reference-nicola/python-learning.md)
 
-[Free Python Books](https://github.com/pamoroso/free-python-books):
 
 ### Language and Standard Library References
 
 * [Python Language Reference Nicola](dev/python-language-reference-nicola.md): my personal reference for the python language.
 
 * [python-official-language-reference-with-ai](python-official-language-reference-with-ai.md): this is tentative of make AI summarize the python language reference. THE PROBLEM is that the original text is meant to be read by developers of the core of language, so it **is too technical**.
+
+### Pythons Devops
+
+* [Python Devops](https://docs.google.com/document/d/1ieHAj7gzka9vSHhiSwOkyuyq_4UpAheN9QjJKQTiQ_8/edit?tab=t.0#heading=h.v1qbc2g302w8)
+
+### Django
+
+* [Django](dev/django/django-settings-best-practices-explanation.md)
+* [Django Celery](dev/python/celery-explanation.md)
+
+### Distributed Systems
+
+* [Django Celery](dev/python/celery-explanation.md)
+
 
 ### Python Packaging and dependencies management
 

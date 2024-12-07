@@ -227,3 +227,35 @@ graph TB
 ### Summary
 
 By following these guidelines and conventions, you can write Python code that is clear, maintainable, and easy to understand for both yourself and others. This reference serves as a quick guide to help you remember the key aspects of variables and constants in Python.
+
+
+### Unpacking
+
+
+example of unpacking:
+```python
+# Unpacking a tuple into variables
+my_tuple = (1, 2, 3)
+
+a, b, c = my_tuple
+
+# Unpacking with the * operator
+my_list = [1, 2, 3, 4, 5]
+
+first, *middle, last = my_list
+
+print(first)   # Outputs: 1
+print(middle)  # Outputs: [2, 3, 4]
+print(last)    # Outputs: 5
+
+# Unpacking with the ** operator
+dict1 = {'a': 1, 'b': 2}
+dict2 = {'c': 3, 'd': 4}
+
+merged_dict = {**dict1, **dict2}
+
+print(merged_dict)  # Outputs: {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+
+```
+
+See [functions.md](./functions.md#unpacking) for more details about unpacking.
