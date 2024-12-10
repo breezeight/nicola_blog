@@ -52,8 +52,19 @@ These elements form the foundation of Python programming, emphasizing readabilit
 - **Using Variables in Computations**: Variables simplify computations and are useful in scripts and programs.
 - **Local vs Global Variables**: Local variables are defined within a function and cannot be accessed outside the function. Global variables are defined outside a function and accessible inside any function.
 - **Constants**: Python uses naming conventions (all caps, e.g., PI\_VALUE) to indicate constants. Note: Python's typing system allows you to specify constant types using type hints, but it does not enforce immutability.
+
+#### Expressions and Operators
+- Arithmetic Operators
+- Comparison Operators
+- Logical Operators
+- Bitwise Operators
+- Assignment Operators
+- Membership Operators
+- Identity Operators
+- Operator Precedence and Associativity
 - **Identity Operator** `is`: Checks if two variables refer to the same object.
 
+Nicola's notes: [Expressions and Operators](expressions-and-operators.md)
 
 #### Data Types and Literals
 
@@ -118,6 +129,10 @@ Package managers allow you to manage the dependencies (external code written by 
 * [UV](uv-explanation.md)
 
 
+### Object Oriented Programming
+
+* Nicola's notes: [Classes and Objects](classes-and-objects.md)
+
 ### Decorators
 
 * Nicola's notes: [Decorators](decorators.md)
@@ -127,4 +142,7 @@ Package managers allow you to manage the dependencies (external code written by 
 
 TODO see https://roadmap.sh/python
 
+### Context Managers
+
+* Nicola's notes: [Context Managers](context-managers.md)
 

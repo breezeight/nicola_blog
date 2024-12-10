@@ -637,6 +637,8 @@ with FileOpener('test.txt') as f:
     content = f.read()
 ```
 
+For more details, see [Context Managers in Python](../python-language-reference-nicola/context-managers.md).
+
 #### 3.3.9 Special Method Lookup
 [Link to the official doc](https://docs.python.org/3/reference/datamodel.html#special-method-lookup)
 

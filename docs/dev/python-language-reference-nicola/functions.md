@@ -17,6 +17,90 @@ add(5, 6)  # => prints out "x is 5 and y is 6" and returns 11
 add(y=6, x=5)  # Keyword arguments can arrive in any order.
 ```
 
+## Keyword and Positional Argument in Python
+
+In Python, functions can accept arguments in various forms, providing flexibility in how you call them. Understanding the distinctions between positional and keyword arguments, as well as how to combine them, is crucial for writing clear and efficient code.
+
+### Positional Arguments
+
+Positional arguments are assigned to function parameters based on their position in the function call. The first argument corresponds to the first parameter, the second to the second parameter, and so on.
+
+```python
+def describe_pet(animal, name):
+    print(f"{name} is a {animal}.")
+
+describe_pet('dog', 'Buddy')  # Buddy is a dog.
+```
+
+In this example, 'dog' is assigned to animal, and 'Buddy' is assigned to name. The order of arguments is essential; swapping them would change the output.
+
+
+### Keyword Arguments
+
+Keyword arguments are assigned to function parameters based on the parameter name. You specify the parameter name in the function call, which makes the code more readable and allows for easier modification of the order of arguments.
+
+```python
+# same function as above
+def describe_pet(animal, name):
+    print(f"{name} is a {animal}.")
+
+# HERE we can call it with keyword arguments
+describe_pet(animal='dog', name='Buddy')  # Buddy is a dog.
+
+# HERE we can call it with keyword arguments in any order, the result is the same
+describe_pet(name='Buddy', animal='dog')  # Buddy is a dog.
+```
+
+### Mixing Positional and Keyword Arguments
+
+You can mix positional and keyword arguments in a function call, but you must ensure that all positional arguments are provided before any keyword arguments.
+
+```python
+def describe_pet(animal, name):
+    print(f"{name} is a {animal}.")
+
+describe_pet('dog', name='Buddy')  # This is OK, name is the second argument
+describe_pet(animal='dog', 'Buddy')  # Invalid: SyntaxError: positional argument follows keyword argument
+```
+In the valid call, 'dog' is a positional argument, and name='Buddy' is a keyword argument. The invalid call places a positional argument after a keyword argument, which is not allowed.
+
+### Positional-Only and Keyword-Only Arguments
+Python 3.8 introduced syntax to specify positional-only and keyword-only parameters explicitly.
+
+#### Positional-Only Parameters
+
+Use a forward slash (/) in the function definition to indicate that certain parameters must be specified positionally.
+
+```python
+def func(pos1, pos2, /, kw1, kw2):
+    pass
+```
+
+In this function, pos1 and pos2 are positional-only; kw1 and kw2 can be specified as positional or keyword arguments.
+
+#### Keyword-Only Parameters
+
+Use an asterisk (*) to indicate that all following parameters must be specified as keyword arguments.
+
+```python
+def func(pos1, pos2, *, kw1, kw2):
+    pass
+```
+
+Here, `kw1` and `kw2` are keyword-only arguments.
+
+#### Combining both
+
+```python
+def func(pos1, pos2, /, pos_or_kw, *, kw1, kw2):
+    pass
+```
+
+In this function:
+- `pos1` and `pos2` are positional-only;
+- `pos_or_kw` can be specified as positional or keyword arguments;
+- `kw1` and `kw2` are keyword-only.
+
 ## Manage a variable number of arguments
 
 * `args`: positional arguments

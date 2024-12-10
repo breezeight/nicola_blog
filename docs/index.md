@@ -54,16 +54,14 @@ S3:
 - [\[GUIDE\] Python Learning Path](https://drive.google.com/open?id=1EHLEXq6bvdgOrvUPGygXsUeAf4azMKYuHaaZWxbDeNw&usp=drive_copy)
 - [Django Learning Materials](https://drive.google.com/open?id=1aAuy55LzI5xI1RF8Fv67TBJOc1ArRFGm&usp=drive_copy)
 
-### Learning Python
+### Learning Python Language and Standard Library
 
-[See here](dev/python-language-reference-nicola/python-learning.md)
+[🌟 SEE NICOLA'S NOTES about python language and standard library 🌟](dev/python-language-reference-nicola/python-learning.md)
+- This is my personal notes about python language and standard library. The one that I use to learn python and to understand the big picture.
 
 
-### Language and Standard Library References
-
-* [Python Language Reference Nicola](dev/python-language-reference-nicola.md): my personal reference for the python language.
-
-* [python-official-language-reference-with-ai](python-official-language-reference-with-ai.md): this is tentative of make AI summarize the python language reference. THE PROBLEM is that the original text is meant to be read by developers of the core of language, so it **is too technical**.
+These links are tentative of make AI summarize the python language reference. THE PROBLEM is that the original text is meant to be read by developers of the core of language, so it **is too technical**:
+- [python-official-language-reference-with-ai](python-official-language-reference-with-ai.md): this is tentative of make AI summarize the python language reference. THE PROBLEM is that the original text is meant to be read by developers of the core of language, so it **is too technical**.
 
 ### Pythons Devops
 
