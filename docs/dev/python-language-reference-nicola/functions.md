@@ -301,6 +301,7 @@ list(filter(lambda x: x > 5, [3, 4, 5, 6, 7]))  # => [6, 7]
 Python provides built-in higher-order functions like map(), filter(), and reduce() that can take lambda functions as arguments to process iterables in a concise way.
 	•	map(function, iterable, ...): Applies the given function to all items in the provided iterable(s) and returns a map object (which can be converted into a list, set, etc.).
 
+```python
 # Using map to add 10 to each element in the list
 print(list(map(lambda x: x + 10, [1, 2, 3])))  # Outputs: [11, 12, 13]
 
@@ -334,6 +335,7 @@ print({x for x in "abcddeef" if x not in "abc"})  # Outputs: {'d', 'e', 'f'}
 
 # Dictionary comprehension to map numbers to their squares
 print({x: x**2 for x in range(5)})  # Outputs: {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+```
 
 Key Points:
 	•	Lambda Functions: Useful for creating small, unnamed functions on the fly.
@@ -345,7 +347,9 @@ By combining lambda functions with higher-order functions and comprehensions, Py
 
 
 
-## Variable Scope in Python
+## How scopes and namespaces apply to functions
+
+As we have seen in Nicola's notes [scopes and namespaces](scopes-and-namespaces.md), Python has a concept of **scopes** and **namespaces**:
 
 - **Global Scope**: Variables defined outside of any function are in the global scope. They can be accessed from any part of the code, including within functions.
 - **Local Scope**: Variables defined within a function are in the local scope of that function. They can only be accessed within that function and are not visible outside of it.

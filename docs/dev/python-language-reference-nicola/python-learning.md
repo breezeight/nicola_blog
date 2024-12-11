@@ -128,6 +128,14 @@ Package managers allow you to manage the dependencies (external code written by 
 
 * [UV](uv-explanation.md)
 
+### Namespaces and Scopes
+
+This topic is very important to understand how Python works, and it's a good idea to understand it before going deeper into the language.
+
+* Nicola's notes: [Scopes and Namespaces](scopes-and-namespaces.md): this is a good overview of the topic.
+* the same topic is also covered in more detail in the following sections:
+  - [classes](classes-and-objects.md#how-scopes-and-namespaces-apply-to-classes)
+  - [functions](functions.md#how-scopes-and-namespaces-apply-to-functions)
 
 ### Object Oriented Programming
 
@@ -146,3 +154,83 @@ TODO see https://roadmap.sh/python
 
 * Nicola's notes: [Context Managers](context-managers.md)
 
+
+
+
+
+
+
+## Python Runtime Services, Memory Management and Garbage Collection
+   - Dynamic Typing
+   - Introspection
+   - Memory Management
+   - Reference Counting
+   - The `gc` Module
+   - Interpreter Command Line Options
+   - Environment Variables 
+   - Python Virtual Machine Details
+   - Extending Python with C/C++
+
+
+## Python Development Tools
+   - The Python Interactive Interpreter
+   - Debugging with `pdb`
+   - Profiling and Benchmarking
+   - Unit Testing (`unittest`, `pytest`)
+   - Code Style Guide (PEP 8)
+
+## Concurrency and Parallelism
+- Multithreading (`threading` Module)
+- Multiprocessing (`multiprocessing` Module)
+- Async Programming (`asyncio`)
+
+NOTE: In "Python Runtime Services, Memory Management and Garbage Collection", the topics about memory management and reference counting are somewhat related to how concurrency manages shared resources.
+Consider adding cross-references between these sections to help the reader navigate the related content.
+
+## The Standard Library
+   - Overview of Commonly Used Modules
+   - `math` and `cmath`
+   - `datetime`
+   - `collections`
+   - `os` and `sys`
+   - `re` (Regular Expressions)
+   - `itertools`
+   - `functools`
+
+## Networking and Internet Data Handling
+- `socket` Module
+- HTTP Requests (`urllib`, `requests`)
+- Data Serialization (`json`, `pickle`)
+
+## Advanced Data Structures
+- Custom Data Structures
+  - User-Defined Classes
+- Collections Module
+  - `namedtuple`, `deque`, `Counter`, `OrderedDict`, etc.
+
+
+## The Python C API (if applicable)
+   - Interfacing with C Code
+   - Writing C Extensions
+   - Using `ctypes` and `cffi`
+
+
+## Prompts
+
+
+### Solution 1: start from the Diataxis Custom GTP
+
+
+#### Context
+
+We are going to create a complete language reference to the python language, you are an expert python teacher and developer that will help me defining the content of the full reference. For this reason, please don't be afraid to use technical terms and to be very specific.
+
+#### Initial Prompt: build the outline
+
+create a language reference from this, give me the initial outline in markdown. To find the initial list of topics look at this webpages: https://docs.python.org/3/tutorial/index.html and  https://learnxinyminutes.com/docs/python/
+
+
+
+#### 
+
+I want to build a page that summarizes the python language reference. I want to use the outline that I already have, but I want to add more details to each point.
