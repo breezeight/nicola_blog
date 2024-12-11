@@ -881,9 +881,62 @@ REF: https://realpython.com/python-classes/#class-methods-with-classmethod
 
 ## Static Methods
 
-TODO
+In Python, methods defined within a class are instance methods by default, meaning they operate on instances of the class and require an instance (self) as their first parameter.
+To define a method that doesn’t operate on an instance or the class itself, you use the `@staticmethod` decorator.
+This decorator indicates that the method doesn’t receive an implicit first argument (self or cls) and can be called on the class or its instances without requiring instantiation.
+
+So, they’re regular functions defined within a class. You could’ve also defined them outside the class as stand-alone function.
+Typycally you define a static method instead of a regular function outside the class when that function is closely related to your class, and you want to bundle it together for convenience or for consistency with your code’s API. 
 
 REF: https://realpython.com/python-classes/#static-methods-with-staticmethod
+
+### Defining a Method WITHOUT the `@staticmethod` Decorator
+
+If you define a method within a class without the `@staticmethod` decorator and omit the `self` parameter, it will not function as intended. 
+Attempting to call such a method on an instance will result in a `TypeError` because Python automatically passes the instance as the first argument to instance methods.
+
+```python
+class MyClass:
+    def regular_method():
+        print("This is a regular method.")
+
+# Calling the method on the class works as expected
+MyClass.regular_method()  # Output: This is a regular method.
+
+obj = MyClass()
+obj.regular_method()
+# Raises TypeError: regular_method() takes 0 positional arguments but 1 was given
+```
+In this example, `regular_method` is defined without the `self` parameter. 
+When `obj.regular_method()` is called, Python tries to pass `obj` as the first argument, leading to a `TypeError` because `regular_method` doesn’t accept any arguments.
+
+
+Explanation:
+- When `MyClass.regular_method()` is called, it works as expected because no instance is involved, and the method doesn’t expect any parameters.
+- When `obj.regular_method()` is called, Python implicitly passes the instance `self` as the first argument. Since `regular_method` doesn’t accept any arguments, this results in a `TypeError`.
+
+Key Points:
+- Defining a method without self and without the `@staticmethod` decorator allows it to be called directly on the class but not on its instances.
+- To define a method that can be called on both the class and its instances, you must use the `@staticmethod` decorator (see belows).
+
+### Defining a Method WITH the `@staticmethod` Decorator
+
+By using the `@staticmethod` decorator, you define a method that doesn’t operate on an instance or the class itself. 
+Such methods don’t receive an implicit first argument and can be called on the class or its instances. Basically it "disables" the standard instance method behavior.
+
+```python
+class MyClass:
+    @staticmethod
+    def static_method():
+        print("This is a static method.")
+
+# Calling the static method on the class
+MyClass.static_method()  # Output: This is a static method.
+
+# Calling the static method on an instance
+obj = MyClass()
+obj.static_method()  # Output: This is a static method.
+```
 
 ## Naming Conventions
 
