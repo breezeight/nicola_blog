@@ -1,10 +1,12 @@
 
+## Nicola's Day by Day Usage ⭐⭐⭐
 
-[Heroku](dev/heroku.md)
+
+[Personal NixOS Config](https://github.com/breezeight/breezeight-nix-darwin-config/blob/main/README.md): 
+  - `cd ~/breezeight-nix-darwin-config && nix run nix-darwin -- switch --flake .`
 
 [Tmux](dev/tmux.md)
 
-[Alpine](dev/alpine.md)
 
 
 ## Development Best Practices
@@ -63,9 +65,20 @@ S3:
 These links are tentative of make AI summarize the python language reference. THE PROBLEM is that the original text is meant to be read by developers of the core of language, so it **is too technical**:
 - [python-official-language-reference-with-ai](python-official-language-reference-with-ai.md): this is tentative of make AI summarize the python language reference. THE PROBLEM is that the original text is meant to be read by developers of the core of language, so it **is too technical**.
 
-### Pythons Devops
+### Pythons Devops - Packaging - Dependencies management
 
 * [Python Devops](https://docs.google.com/document/d/1ieHAj7gzka9vSHhiSwOkyuyq_4UpAheN9QjJKQTiQ_8/edit?tab=t.0#heading=h.v1qbc2g302w8)
+
+General explanation:
+* [Python Packaging Explanation](dev/python-language-reference-nicola/python-packaging-explanation.md)
+
+Specific tools:
+
+* [uv explanation](dev/python-language-reference-nicola/uv-explanation.md)
+
+### Python Webserver
+
+* [Python Webserver Explanation](dev/python-language-reference-nicola/python-webserver-explanation.md)
 
 ### Django
 
@@ -76,15 +89,6 @@ These links are tentative of make AI summarize the python language reference. TH
 
 * [Django Celery](dev/python/celery-explanation.md)
 
-
-### Python Packaging and dependencies management
-
-General explanation:
-* [Python Packaging Explanation](dev/python-packaging-explanation.md)
-
-Specific tools:
-
-* [uv explanation](dev/python-language-reference-nicola/uv-explanation.md)
 
 ### Python Type Hints
 
@@ -177,8 +181,18 @@ Bootstrap a Nixos system:
 Explanations:
 
 * [Cryptography, passwords, hashing, salting, encryption](dev/cryptography-passwords-hashing-salting-encryption.md)
+
 * [PGP GPG](dev/cryptography-pgp-gpg.md)
-* [SSH](dev/cryptography-ssh.md)
+
+* [SSH](dev/cryptography-ssh.md): 
+  
+    - Main Topics: SSH Protocol and SSH Keys concepts, Public-key cryptography explanation, SSH host keys, Best practices for SSH keys, SSH Agent overview and usage
+    - HOWTOs **SSH Keys**: How to get SSH Key Fingerprint, How to use a specific private key to SSH into a remote server, How to generate Ed25519 Key, How to organize SSH keys and config in subfolder `~/.ssh/my_project`
+    - HOWTOs **SSH Agent**: How to configure the ssh-agent, How to add a key to your ssh-agent, How to use SSH Agent with AWS SSM (marked as TODO)
+    - **Security Best Practices**: How to keep private keys private, How to use 1Password to protect private keys, How to use passphrases and add keys to ssh-agent, How to keep track of actively used SSH keys, How to rotate SSH keys
+    - Additional Topics: SSH host key verification, SSH Agent Forwarding, Git SSH configuration, Specific SSH Agents (1Password Agent), SSH agent on OSX, Tailscale SSH key generation (marked as WIP)
+
+* [SSH Tunneling - SSH port forwarding](dev/cryptography-ssh-tunneling-ssh-port-forwarding.md)
 
 
 
