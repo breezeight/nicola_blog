@@ -6,30 +6,28 @@ comments: true
 categories: ["javascript"]
 ---
 
-# Contents
 
-{:.no_toc}
-
-- Will be replaced with the ToC, excluding the "Contents" header
-  {:toc}
 
 # References:
+
+Refresh and reference:
+- [Learn X in Y minutes - Javascript](https://learnxinyminutes.com/docs/javascript/)
 
 Books to start programming from scretch with Javascript:
 
 - [YDKJSY](https://github.com/getify/You-Dont-Know-JS)
-- It's not just for someone picking up the language for the first time (though it's for them, too); it's for all software craftspeople who want to master their tools, who want to understand the ins and outs of their trade, and who want to select the proper methods for solving problems.
-- [EJS]Eloquent_JavaScript(https://eloquentjavascript.net/) 3rd edition
+    - It's not just for someone picking up the language for the first time (though it's for them, too); it's for all software craftspeople who want to master their tools, who want to understand the ins and outs of their trade, and who want to select the proper methods for solving problems.
+- [EJS - Eloquent_JavaScript](https://eloquentjavascript.net/) 3rd edition
 
 Books:
 
-- [YDKJSY](https://github.com/getify/You-Dont-Know-JS)
-- [EJS]Eloquent_JavaScript(https://eloquentjavascript.net/) 3rd edition
-- All code in this book may also be considered licensed under an MIT license.
-- [GITHUB](https://github.com/marijnh/Eloquent-JavaScript)
-- License "CC BY-NC 3.0"
-- [SOTJSN2nd](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Secrets_of_the_JavaS.pdf) http://www.manning.com/resig/
-- [FJS](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Functional_JavaScript.pdf)
+- [YDKJSY - You Don't Know JS Yet](https://github.com/getify/You-Dont-Know-JS)
+- [EJS - Eloquent_JavaScript](https://eloquentjavascript.net/) 3rd edition
+    - All code in this book may also be considered licensed under an MIT license.
+    - [GITHUB](https://github.com/marijnh/Eloquent-JavaScript)
+    - License "CC BY-NC 3.0"
+- SOTJSN2nd - Secrets of a Javascript Ninja [ebook](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Secrets_of_the_JavaS.pdf), [website](http://www.manning.com/resig/)
+- [FJS - Functional_JavaScript](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Functional_JavaScript.pdf)
 - [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
   Mozilla Developer Network - Javascript
 - [FLJS](https://github.com/getify/Functional-Light-JS) Functional-Light JavaScript
@@ -181,7 +179,7 @@ Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Ob
 
 TL;DR: better to use only undefined
 
-In addition to strings, numbers, and booleans, two other primitive values in JS programs are null and undefined. While there are differences between them (some historic and some contemporary), for the most part both values serve the purpose of indicating emptiness (or absence) of a value.
+In addition to strings, numbers, and booleans, two other primitive values in JS programs are `null` and `undefined`. While there are differences between them (some historic and some contemporary), for the most part both values serve the purpose of indicating emptiness (or absence) of a value.
 
 Many developers prefer to treat them both consistently in this fashion, which is to say that the values are assumed to be indistinguishable. If care is taken, this is often possible. However, it's safest and best to use only undefined as the single empty value, even though null seems attractive in that it's shorter to type!
 
@@ -207,7 +205,7 @@ fanno vedere visivamente come la memoria si comporta a seconda del tipo di ogget
 
 ## Equality operator === vs ==
 
-Always use === equals unless you have a good reason to use ==.
+Always use `===` equals unless you have a good reason to use `==`.
 
 Fatto molto bene: https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md#comparisons
 
@@ -217,7 +215,7 @@ http://stackoverflow.com/questions/359494/does-it-matter-which-equals-operator-v
 
 ## Logical AND (&&)
 
-Ref:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND
+Ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND
 
 The AND && operator does the following:
 
@@ -290,11 +288,10 @@ Flow:
 
 The catch block specifies an identifier (catchID in the preceding syntax) that holds the value specified by the throw statement:
 
-```
+```js
 try {
   throw 'myException'; // generates an exception and create the 'myException' string object
-}
-catch (e) {
+} catch (e) {
   // statements to handle any exceptions
   console.log(e); // e is the 'myException' string object. It logs 'myException'
   console.log(typeof e); // string
@@ -312,7 +309,7 @@ The finally block executes whether or not an exception is thrown. If an exceptio
 
 You can use the finally block to make your script fail gracefully when an exception occurs; for example, you may need to release a resource that your script has tied up. The following example opens a file and then executes statements that use the file (server-side JavaScript allows you to access files). If an exception is thrown while the file is open, the finally block closes the file before the script fails.
 
-```
+```js
 openMyFile();
 try {
   writeMyFile(theData); //This may throw an error
@@ -321,12 +318,11 @@ try {
 } finally {
   closeMyFile(); // always close the resource
 }
-If
 ```
 
 If the finally block returns a value, this value becomes the return value of the entire try-catch-finally production, regardless of any return statements in the try and catch blocks:
 
-```
+```js
 function f() {
   try {
     console.log(0);
@@ -349,7 +345,7 @@ f(); // console 0, 1, 3; returns false
 
 Overwriting of return values by the finally block also applies to exceptions thrown or re-thrown inside of the catch block:
 
-```
+```js
 function f() {
   try {
     throw 'bogus';
