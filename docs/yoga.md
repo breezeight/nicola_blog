@@ -1,55 +1,52 @@
-:encoding: UTF-8
-:lang: en
-:doctype: book
-:toc: left
-//:imagesdir: images_yoga
+---
+encoding: UTF-8
+lang: en
+toc: left
+# imagesdir: images_yoga
+---
 
+# Resources
 
-= Resources
+**Books:**
 
+- Yoga mat companion series by Ray Long of BandhaYoga:
+  - https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Dstripbooks&field-keywords=%22Yoga+Mat+Companion%22
+  - http://www.bandhayoga.com/MC3_inside.html?page=12
 
-Books:
+"Anatomy for Arm Balances and Inversions: Yoga Mat Companion 4" l'ho comprato su Amazon in formato Kindle → **VEDI RIASSUNTO a fine degli appunti**
 
-* Yoga mat companion series by Ray Long of BandhaYoga:
-** https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Dstripbooks&field-keywords=%22Yoga+Mat+Companion%22
-** http://www.bandhayoga.com/MC3_inside.html?page=12
+**My Notes (Hugo)**
 
-"Anatomy for Arm Balances and Inversions: Yoga Mat Companion 4" l'ho comprato su Amazon in formato Kindle -> VEDI RIASSUNTO a fine degli appunti
+- A LOT of Ecta Sequences: ~/SRC/nicola_yoga_hugo/content/sequences
+- ~/SRC/nicola_yoga_hugo/content/asanas
 
-My Notes (Hugo)
+# Yoga intro
 
-* A LOT of Ecta Sequences: ~/SRC/nicola_yoga_hugo/content/sequences
-* ~/SRC/nicola_yoga_hugo/content/asanas
+## Asana
 
-= Yoga intro
+> “The third limb of yoga is asana or posture. Asana brings steadiness, health and lightness of limb. A steady and pleasant posture produces mental equilibrium and prevents fickleness of mind. Asanas are not merely gymnastic exercises; they are postures … By practicing them one develops agility, balance, endurance and great vitality.
+>
+> Asanas have evolved over the centuries so as to exercise every muscle, nerve and gland in the body. They secure a fine physique, which is strong and elastic without being muscle bound and they keep the body free from disease. They reduce fatigue and soothe the nerves. But their real importance lies in the way they train and discipline the mind… The yogi frees himself from physical disabilities and mental distractions by practicing Asana…. The yogi conquers the body by the practice of asanas and makes it a fit vehicle for the spirit.”
+>
+> (B.K.S Iyengar, Light On Yoga, 1965, pg 42)
 
-== Asana
-
-“The third limb of yoga is asana or posture. Asana brings steadiness, health and lightness of limb. A steady and pleasent posture produces mental equilibrium and prevents fickleness of mind. Asanas are not merely gymnastic exercises; they are postures … By practicing them one develops agility, balance, endurance and great vitality.
-
-Asanas have evolved over the centuries so as to exercise every muscle, nerve and gland in the body. They secure a fine physique, which is strong and elastic without being muscle bound and they keep the body free from disease. They reduce fatigue and soothe the nerves. But their real importance lies in the way they train and discipline the mind… The yogi frees himself from physical disabilities and mental distractions by practicing Asana…. The yogi conquers the body by the practice of asanas and makes it a fit vehicle for the spirit.”
-
-(B.K.S Iyengar, Light On Yoga, 1965, pg 42)
-
-= Mula Bandha
+# Mula Bandha
 
 https://www.youtube.com/watch?v=psnEVmQN2tc
 
+# Scientific Keys
 
-= Scientific Keys
-
-== Reciprocal Inhibition
+## Reciprocal Inhibition
 
 http://www.bandhayoga.com/keys_recip.html
 
-there are a number of physiological feedback loops that balance the flow of energy in the body. One of these is the primitive spinal cord reflex known as reciprocal inhibition.  This reflex causes the antagonist muscle to relax when the synergist contracts.
+There are a number of physiological feedback loops that balance the flow of energy in the body. One of these is the primitive spinal cord reflex known as reciprocal inhibition. This reflex causes the antagonist muscle to relax when the synergist contracts.
 
+# Styles Intro
 
-= Styles Intro
+## Hatha Yoga
 
-== Hatha Yoga
-
-=== Iyengar Yoga
+### Iyengar Yoga
 
 Iyengar yoga is still Hata
 
@@ -57,81 +54,73 @@ http://bksiyengar.com
 
 Yogacharya BKS Iyengar (Guruji)
 
-== Vinyasa Yoga
+## Vinyasa Yoga
 
+# Vocabulary and anatomy
 
-= Vocabulary and anatomy
+- forearm = avambraccio
+- groin = inguine
+- tailbone = coccige
+- shinbone = tibia (stinco)
+- waist = girovita
+- diaphragm = diaframma
+- Move the flesh of each buttock = carne di ciascun gluteo
+- sag = cedere
+- Hamstring muscles = 3 muscoli del retro della coscia
+- Calf Muscles = muscoli del polpaccio
+- Quadriceps
+- kneecap = rotula
 
-* forearm = avambraccio
-* groin = inguine
-* tailbone = coccige
-* shinbone = tibia (stinco)
-* waist = girovita
-* diaphragm = diaframma
-* Move the flesh of each buttock = carne di ciascun gluteo
-* sag = cedere
-* Hamstring muscles = 3 muscoli del retro della coscia
-* Calf Muscles = muscoli del polpaccio
-* Quadriceps
-* kneecap = rotula
+## Sacroiliac joint
 
-== Sacroiliac joint
-
-Nice images:
+Nice images:  
 https://www.slideshare.net/venus88/biomechanics-of-si-joint-33235656
 
-== Hamstring
+## Hamstring
 
 ref: https://en.wikipedia.org/wiki/Hamstring
 
 A hamstring is one of the three posterior thigh muscles in between the hip and the knee (from medial to lateral: semimembranosus, semitendinosus and biceps femoris).
-They
 
-They are unique in the body because they *cross two joints*, the hip and the knee. Muscles that cross more than one joint have the privilege of improved leverage and can be very powerful.
+They are unique in the body because they **cross two joints**, the hip and the knee. Muscles that cross more than one joint have the privilege of improved leverage and can be very powerful.
 
 NOTE: all major joints of the body - the shoulders, elbows, hips, knees, and ankles - are governed by at least one TJM
 
-image::images/yoga_hamstring.jpg[]
+![Hamstring](images/yoga_hamstring.jpg)
 
-== Quadriceps
+## Quadriceps
 
 Muscles that are in the front of your thigh.
 
-== Calf Muscles
+## Calf Muscles
 
 https://en.wikipedia.org/wiki/Calf_(leg)
 
 The calf (Latin: sura) is the back portion of the lower leg in human anatomy. The muscles within the calf correspond to the posterior compartment of the leg. The two largest muscles within this compartment are known together as the calf muscle and attach to the heel via the Achilles tendon. Several other, smaller muscles attach to the knee, the ankle, and via long tendons to the toes.
 
-== Two Joint Muscles
+## Two Joint Muscles
 
 https://breakingmuscle.com/fitness/two-jointed-muscles-of-the-lower-body-what-they-are-and-how-to-train
 
-Here are three *lower-body two-jointed muscles*, the joints they function at, and their actions:
+Here are three **lower-body two-jointed muscles**, the joints they function at, and their actions:
 
-* Muscle: Semitendinosus, semimembranosus, and biceps femoris (long head)
-** Joints: Hip and knee
-**  Action: Hip extension and knee flexion
+- Muscle: Semitendinosus, semimembranosus, and biceps femoris (long head)
+  - Joints: Hip and knee
+  - Action: Hip extension and knee flexion
 
+- Muscle: Rectus femoris (one of the quadriceps)
+  - Joints: Hip and knee
+  - Action: Hip flexion and knee extension
 
-* Muscle: Rectus femoris (one of the quadriceps)
-** Joints: Hip and knee
-** Action: Hip flexion and knee extension
-
-
-* Muscle: Gastrocnemius (calf)
-** Joints: Knee and ankle
-** Action: Knee flexion and ankle plantar flexion
-
+- Muscle: Gastrocnemius (calf)
+  - Joints: Knee and ankle
+  - Action: Knee flexion and ankle plantar flexion
 
 TODO: finire con le altre parti del corpo https://breakingmuscle.com/fitness/two-jointed-muscles-of-the-lower-body-what-they-are-and-how-to-train
 
-
-== Groins
+## Groins
 
 https://www.yogajournal.com/practice/locating-the-groin-muscles
-
-
 
 *Medically*, the groin is the junction between the abdomen and thigh. When you lift your thigh toward your chest, a crease forms at this junction. Technically, the groin runs along the entire length of the crease, and it's still the groin after the thigh descends and the crease goes away.
 
@@ -139,31 +128,27 @@ When a teacher talks about moving the groin, they often mean to move the very up
 
 However, when some teachers say "groin," they are referring only to the part of the groin nearest the inner thigh. Other teachers call this area the "inner groin" and its counterpart near the outer end of the hip crease the "outer groin." In this case, they sometime use the plural "groins" to refer to the inner and outer parts of the groin of the same leg, as in, "lift the inner and outer groins equally."
 
- *B.K.S. Iyengar* definition
- * of *groin* : the whole junction of the thigh and pelvis, around the entire circumference of the thigh.
- * *back groin* the crease below the buttock where it joins the back of the thigh.
- * *inner back groin* and the *outer back groin*. It's enough to make you groan!
+**B.K.S. Iyengar** definition
+- of **groin**: the whole junction of the thigh and pelvis, around the entire circumference of the thigh.
+- **back groin** the crease below the buttock where it joins the back of the thigh.
+- **inner back groin** and the **outer back groin**. It's enough to make you groan!
 
 But, in fact, when you understand what the teacher is saying, and you learn to make the various parts of the groin move as directed, it can really enhance your asana practice. As you can see, different teachers use the word "groins" differently. It's good teaching practice to define a confusing word like this to the class before using it, so you might consider asking your yoga teacher to do so for your class next time the term is used.
 
-=== The 3 arches of the foot
+### The 3 arches of the foot
 
 https://www.ekhartyoga.com/articles/practice/safe-knees-and-feet-in-yoga
 
+### Groins 30 november Ashish
 
-=== Groins 30 november Ashish
-
-* 1 Block
-* 1 Strap
+- 1 Block
+- 1 Strap
 
 Make a Loop
 
+# Mantra
 
-
-
-= Mantra
-
-== Invocation to Sage Patanjali by Iyengar (Ashish class)
+## Invocation to Sage Patanjali by Iyengar (Ashish class)
 
 Text: http://bksiyengar.com/modules/IYoga/sage.htm
 Audio: http://bksiyengar.com/audio/invocation.mp3
@@ -181,29 +166,27 @@ Audio: http://bksiyengar.com/audio/invocation.mp3
 Sage Patanjali has penned the ancient Indian heritage of Yoga through his treatise the Yoga Sutras of Patanjali, which is an encompassing study of the subject which consists of just 196 sutras (aphorisms).
 In the present century, Yogacharya B.K.S. Iyengar has made it possible for ordinary human beings to experience the wisdom of these sutras in the midst of living a life.
 
-
 Click here to know about Sage Patanjali Temple at Bellur.
 
-= Poses naming tricks
+# Poses naming tricks
 
 Adho = downward
 
-== Salamba
+## Salamba
 
-Salamba is a Sanskrit word meaning “to support.” Its opposite is niralamba, which means “unsupported” or “without support.”
+Salamba is a Sanskrit word meaning "to support." Its opposite is niralamba, which means "unsupported" or "without support."
 
 Salamba describes a pose in which the yogi uses the hands, arms or other type of support for balance or to otherwise aid in exercise of the posture.
 
 NOTE: Salamba yoga poses should be mastered before the yogi attempts the more challenging niralamba versions. Some common salamba poses include:
 
-* Salamba kapotasana (supported pigeon) - a half split with the hands placed on the ground for support
-* Salamba sarvangasana (supported shoulder stand) - the upper arms rest on the ground and the hands rest on the lower back
-* Salamba bhujangasana (supported cobra, or sphinx) - the forearms provide support for the backbend
-* Salamba sirsasana (supported headstand) - the forearms and interlocked hands form a sort of basket to support the head and provide balance
-* Salamba balasana (supported child's pose) - the torso and head rest on a prop, typically a rolled-up blanket or several blankets
+- Salamba kapotasana (supported pigeon) - a half split with the hands placed on the ground for support
+- Salamba sarvangasana (supported shoulder stand) - the upper arms rest on the ground and the hands rest on the lower back
+- Salamba bhujangasana (supported cobra, or sphinx) - the forearms provide support for the backbend
+- Salamba sirsasana (supported headstand) - the forearms and interlocked hands form a sort of basket to support the head and provide balance
+- Salamba balasana (supported child's pose) - the torso and head rest on a prop, typically a rolled-up blanket or several blankets
 
-
-= Poses
+# Poses
 include::yoga_poses/ardha_matsyendrasana.adoc[]
 
 include::yoga_poses/ardha_matsyendrasana.adoc[]
@@ -246,19 +229,16 @@ include::yoga_poses/virasana.adoc[]
 
 TODO:
 
-* Viparita Karani or Legs-Up-The-Wall Pose https://www.yogajournal.com/poses/legs-up-the-wall-pose
+- Viparita Karani or Legs-Up-The-Wall Pose https://www.yogajournal.com/poses/legs-up-the-wall-pose
 
-== Trikonasana
+## Trikonasana
 
 Trikon means triangolo
 
-
-
-== Sukhasana - Easy pose
+## Sukhasana - Easy pose
 https://yoga.com/pose/easy-pose
 
-
-== Pavanamuktasana
+## Pavanamuktasana
 
 https://yoga.com/pose/knee-press-both-legs
 Note: usare i polsi per tenere unite le ginocchia
@@ -266,65 +246,61 @@ Pavanamuktasana left/right  https://yoga.com/pose/left-leg-wind-freeing-pose
 Note: tenere allineato il ginocchio a centro (si tende ad andare a dx o sx)
 In tutte le versioni quando si afferra il ginocchio inspirare e toccare la gamba con la pancia gonfia, quando si espira portare al petto le gambe
 
-== Salamba Prasarita Padasana
+## Salamba Prasarita Padasana
  https://yoga.com/pose/upward-extended-feet-pose-with-support
 Upward extended feet pose with support
 
-== Purvottanasana - Upward plank pose
+## Purvottanasana - Upward plank pose
 
 https://yoga.com/pose/upward-plank-pose
 
-== Dhanurasana - Bow pose
+## Dhanurasana - Bow pose
 https://yoga.com/pose/bow-pose
 
-== Purvottanasana
+## Purvottanasana
  https://yoga.com/pose/upward-plank-pose
 
-== Gomukhasana
+## Gomukhasana
  https://yoga.com/pose/cow-face-pose-left-leg-and-right-arm-up
 Cow face pose, left leg and right arm up
 
-== Shashankasana
+## Shashankasana
 
 https://yoga.com/pose/hare-pose
 
-== Hare pose
+## Hare pose
 Ardha Matsyendrasana right
 Sitting right twist
 https://yoga.com/pose/sitting-right-twist
 
-== Mayurasana
+## Mayurasana
 https://www.youtube.com/watch?v=qZszBHRSaKo
 https://www.youtube.com/watch?v=8Gfjj8FMORo
 
-== Posizione Distesa su un fianco (Parsva Uttanasana)
+## Posizione Distesa su un fianco (Parsva Uttanasana)
 http://www.yogajournal.it/posizione-distesa-su-un-fianco-parsva-uttanasana/
 
-== Supta virasana
+## Supta virasana
 Eroe coricato http://www.yogajournal.it/leroe-silente/
 
-
-== Anantasana
+## Anantasana
 http://www.yogaweb.it/asana/anantasana/
 
-
-== Salambhasana - Locust pose
+## Salambhasana - Locust pose
 https://yoga.com/pose/locust-pose
 
+# Sequences
 
-= Sequences
+## YEHUDA
 
-== YEHUDA
-
-=== 2021-03-02 monday beginner
+### 2021-03-02 monday beginner
 
 - 8 min padmasana or svastikasana
 - svastikasana hands up, inhale exale and turn right, hook the left hand. For each exhalation turn more (1 min per side)
 - adho mukha svastikasansa (1 min)
 - svastikasana and turn (1 min per side)
 
-
-=== 2021-03-02 tuesday 
+### 2021-03-02 tuesday 
 
 - 8 min padmasana or svastikasana
 - 2 min adho mukha padmasana or svastikasana. Each vertebra into the body and for that you have to understand the abdomen (front body) and the spine (back body). 
@@ -332,10 +308,9 @@ https://yoga.com/pose/locust-pose
 - 1 min adho mukha padmasana or svastikasana. At the end press the buttock and with straight arms come up.
 - (at min 5) brick setubanda with straight legs. Keep the heel open (outer ankle inline with the hips), or, only if it's easy for you, feet together. 
 
-
 Utthita Parsvakonasana
 
-=== 2021-02-22 sunday beginner
+### 2021-02-22 sunday beginner
 
 * 3 min - sit in svastikasana
 * 1 min Virasana 
@@ -386,21 +361,15 @@ NO FAST
 
 sciscasana
 
-
-
-
-
 NOTE: at min 54 mostra bene chaturanga dandasana 
 NOTE: at min 1:00 mostra bene gomucasana 
-
 
 *Pashi namarkar*
 
 parsva uttanasana video (niente di che solo per reference, non mi convince il piede)
 https://youtu.be/7qJDoHOqoMk?t=21
 
-
-=== 2021-01-06 - Intro to Virabhadrasana 3
+### 2021-01-06 - Intro to Virabhadrasana 3
 
 * 5 min - sit in svastikasana
 * 1 min Virasana 
@@ -428,7 +397,7 @@ NOTE: at min 44:20 Yehuda fa vedere VB3
 * 10min (at min 50:00) various tentative to do Urdhva Dhanurasana (if intermidiate do 2/3 time 30 sec each)
 * Urdhva Dhanurasana with 2 bricks at min 55:00. 1 brick between you heel and one between your knees.
 
-image::images/yoga_urdhva_dhanurasana_feet_brick.png[]
+![yoga_urdhva_dhanurasana_feet_brick.png](images/yoga_urdhva_dhanurasana_feet_brick.png)
 
 * svastikasana hands up, inhale exale and turn right, hook the left hand. For each exhalation turn more (1 min per side)
 * adho mukha svastikasansa (1 min)
@@ -438,15 +407,14 @@ image::images/yoga_urdhva_dhanurasana_feet_brick.png[]
 NOTE: at min 8 fa vedere bene come aprire la *pianta dei piedi* in tadasana, anche al min 24:00
 NOTE: at min 20:30 fa vedere bene *Pashi namarkar*
 
-
-=== 2020-12-28 - Intro to Virasana
+### 2020-12-28 - Intro to Virasana
 
 TODO Mettere il link al video di yehuda 
 
 * Virasana (3 min):
   * 1 Kneel on the floor (use a folded blanket or bolster to wedge between your calves and thighs if necessary), with your thighs perpendicular to the floor, and touch your inner knees together. Slide your feet apart, slightly wider than your hips, with the tops of the feet flat on the floor. Angle your big toes slightly in toward each other and press the top of each foot evenly on the floor.  See that you are sitting on both the buttock evenly.
   * 2 Exhale and sit back halfway, with your torso leaning slightly forward. Wedge your thumbs into the backs of your knees and draw the skin and flesh of the calf muscles toward the heels. Then sit down between your feet.
-  * 3 If your buttocks don’t comfortably rest on the floor, raise them on a block or thick book placed between the feet. Make sure both sitting bones are evenly supported. Allow a thumb’s-width space between the inner heels and the outer hips. Turn your thighs inward and press the heads of the thigh bones into the floor with the bases of your palms. Then lay your hands in your lap, one on the other, palms up, or on your thighs, palms down.
+  * 3 If your buttocks don't comfortably rest on the floor, raise them on a block or thick book placed between the feet. Make sure both sitting bones are evenly supported. Allow a thumb's-width space between the inner heels and the outer hips. Turn your thighs inward and press the heads of the thigh bones into the floor with the bases of your palms. Then lay your hands in your lap, one on the other, palms up, or on your thighs, palms down.
   * 4 Firm your shoulder blades against the back ribs and lift the top of your sternum like a proud warrior. Widen the collarbones and release the shoulder blades away from the ears. Lengthen the tailbone into the floor to anchor the back torso.
   * 5 At first stay in this pose from 30 seconds to 1 minute. Gradually extend your stay up to 5 minutes. To come out, press your hands against the floor and lift your buttocks up, slightly higher than the heels. Cross your ankles underneath your buttocks, sit back over the feet and onto the floor, then stretch your legs out in front of you. It may feel good to bounce your knees up and down a few times on the floor.
   * NOTA: nel video di Yehuda spiega al min 13:00
@@ -458,11 +426,9 @@ TODO Mettere il link al video di yehuda
 
 Gomukhasana
 
-
 Virasana - Hero Pose:  https://www.yogajournal.com/poses/hero-pose/
 
-
-=== 2020-12-10
+### 2020-12-10
 
 https://drive.google.com/file/d/1DHlgRvHY5DiHI9la5RxY_d3yaJR2CMWo/view?usp=sharing
 
@@ -487,16 +453,14 @@ https://drive.google.com/file/d/1DHlgRvHY5DiHI9la5RxY_d3yaJR2CMWo/view?usp=shari
 * sarvangasana
 * NOTE: SARVANGASANA with the CHAIR at min 01:14:36
 
-
 Viraba
 
-
-=== 2020-12-08
+### 2020-12-08
 
 In meditation, it's not important just to sit. Meditation is not separate from life, from living, we have to be very humble, without direction, without motive, humble, not wanting, not seeking, not demanding. To be very humble, with no motive. Be so humble, without the past, so you can see something new. If we are seeking, demanding, it means that we already know what we are going to find and there is a motive to find that. 
 The beginning of meditation is to make order, which means not wanting, not seeking, not demanding, trying to fulfill, trying to escape. Be so humble, so empty, so that we can discover something that is new. You discover something that is new if you don't have the motive to discover something new. Motive is effort... can we live in this world without motive, without effort, so that we can live free, simple, honest.
 
-=== 2020-09-06 Begginer Leg Class - baddhanguliyasana - Ardha Chandrasana 
+### 2020-09-06 Begginer Leg Class - baddhanguliyasana - Ardha Chandrasana 
 
 Recording: https://drive.google.com/file/d/12njHl6OEmYLgxmRyUgku1oSs3OAT2QPu/view?usp=sharing
 
@@ -536,11 +500,9 @@ https://www.yogajournal.com/poses/half-moon-pose
 NOTES:
 * at 48:34 Ardha Chandrasana yehuda correcting me in ardha chandrasana  and warking wiht the wall
 
+## Ecta
 
-
-== Ecta
-
-=== 2018-12-15 shirshasana
+### 2018-12-15 shirshasana
 
 HUGO DONE
 
@@ -585,13 +547,11 @@ Shirshasana with one blanket on next to the wall
 
 Nicola's note: for me is very hard to bring the pelvis in line over the head, for other is easier. When I straight the leg it's not perpendicular to the floor and make really hard to go up. What to do ?!?
 
-
 NOTE: menstruation girl cannot do it. Sit in subtha batakonasana.
 
 NOTE: you can slowly move a little bit away from the wall
 
 NOTE: no chaturanga dandasana for menstruation, only adho mukha
-
 
 Shishasana to the wall, pull your head up
 
@@ -600,16 +560,15 @@ Shishasana to the wall, pull your head up
 * interlock finger strongly, we are going to get strenght for your elbow, your arms. Go up with both legs, heel on the wall, feet 90°.
 * Lift your self up pushing on the elbow and for arms
 
-
-=== Luisa
+### Luisa
 
 Rolled Blancket in between your legs (similar to Ashish with)
 
-=== 2018-12-11 virabhadrasana 1 and chaturanga connection
+### 2018-12-11 virabhadrasana 1 and chaturanga connection
 
 HUGO
 
-image::images/yoga_2018-12-10_Ecta_chaturanga_with_blocks.png[]
+![yoga_2018-12-10_Ecta_chaturanga_with_blocks.png](images/yoga_2018-12-10_Ecta_chaturanga_with_blocks.png)
 
 Adho mucka svanasana errors:
 
@@ -626,7 +585,6 @@ virabhadranasa 1 for beginner:
 
 * keep the back feet alligned with the front one ()
 
-
 virabhadrasana 1 and chaturanga connection
 
 cycle between virabhadrasana and half moon pose and feel
@@ -636,22 +594,16 @@ half moon pose:
 *
 * Go
 
-
 Personal practice today experiments:
 
 * back feet in virabhadrasana
-
 
 Halasana
 
 2 blankets folded once for the shoulder
 1 bolster for the elbow
 
-
-
-
-
-=== 2018-12-10 Trikonasana intro and chaturanga
+### 2018-12-10 Trikonasana intro and chaturanga
 
 HUGO
 
@@ -660,7 +612,7 @@ HUGO
 ** press your palm down and you forearm
 * Adho mukha svanasana
 
-=== 2018-12-08 Full power up and resting class
+### 2018-12-08 Full power up and resting class
 
 HUGO
 
@@ -673,7 +625,6 @@ HUGO
 * than rest 3-4 min in batakonasana
 * repeat handstand with the other leg
 
-
 * Chair....  (??? name of the pose ??? )
 ** 1 bolster
 ** 2 blanket
@@ -684,21 +635,16 @@ HUGO
 ** tune the position of the bolster put it under your buttock
 ** keep the calf muscles on the chair; stay 5 minutes.
 
-image::images/yoga_2018-12-08_Ecta_resting_class_0.jpg[]
+![yoga_2018-12-08_Ecta_resting_class_0.jpg](images/yoga_2018-12-08_Ecta_resting_class_0.jpg)
 
-image::images/yoga_2018-12-08_Ecta_resting_class_1.jpg[]
-
+![yoga_2018-12-08_Ecta_resting_class_1.jpg](images/yoga_2018-12-08_Ecta_resting_class_1.jpg)
 
 Rest on the chest vs rest on the head
 
-
-
-
-=== 2018-12-07 Working on the shoulders and handstand
+### 2018-12-07 Working on the shoulders and handstand
 HUGO
 
 Before hand stand
-
 
 L-Shape:
 
@@ -709,9 +655,7 @@ buttok
 
 Hand stand
 
-
-
-=== 2018-12-06 Working on the shoulders and legs
+### 2018-12-06 Working on the shoulders and legs
 HUGO
 
 00:00 - 0:05: Start with one block and chanting
@@ -736,7 +680,6 @@ NOTE: when you cannot manage the pose make a step back. Use the wall, the
 * Then try to bring the sacrum-in
 * Then try to open the chest
 
-
 00:20 - 0:25 Jump from Adho mukha svanasana with blocks under the hands to Uttanasana and viceversa. Do some cycle:
 * Beginner: bended knees
 * Practitioner: straight legs
@@ -744,11 +687,8 @@ NOTE: when you cannot manage the pose make a step back. Use the wall, the
 00:25 - 0:35:
 Jump from Adho mukha svanasana with blocks under the hands to Navasana and viceversa.
 
-
-
 Purvottanasana - Upward Plank Pose https://www.yogajournal.com/poses/upward-plank-pose
 Variations
-
 
 Cycle: Urdhva Mukha Svanasana - Upward Facing Dog
 
@@ -756,7 +696,7 @@ Cycle:
 
 * Alasana -
 
-=== 2018-12-05 Working on the shoulders
+### 2018-12-05 Working on the shoulders
 
 HUGO
 
@@ -766,21 +706,14 @@ Plank pose with the wall
 
 See notes on paper
 
-
-== Ashish
-
-
-
-
-
-
+## Ashish
 
 Camel pose
 https://www.yogajournal.com/poses/camel-pose
 ustra = camel
 Ustrasana
 
-=== 2018-11-30
+### 2018-11-30
 
 HUGO
 
@@ -802,76 +735,61 @@ Uttanasana with block and strap (5 min):
 
 SARA suggerisce: lavora tanto sulle gambe; dice che ho la tailbone tanto indietro per via della mia postura. dovrei sollegare le upper thigh, almeno visualizzarlo.... Esistono Upper, central and bottom frontal thigh
 
-
-
 Nicola: ho osservato che premere il little toes ha un effetto prima sull'interno del calf muscles e poi sugli sugli inner groins.
-
 
 From Uttanasana with block and strap to
 
-
-== Sequenza iniziale Lorena
+## Sequenza iniziale Lorena
 
 Si può fare in due varianti, da seduti o da in piedi
 
 . Rotazione delle spalle in avanti
 . Rotazione delle spalle indietro
-. Braccia distese lungo i fianchi, sollevarle facendo un semicerchio laterale e inspirando, allungare verso l’alto e con uno scatto espirare e incrociarle al petto.
+. Braccia distese lungo i fianchi, sollevarle facendo un semicerchio laterale e inspirando, allungare verso l'alto e con uno scatto espirare e incrociarle al petto.
 https://photos.google.com/photo/AF1QipOF2SaBRCt7a8eNBi6NtqnT8ooFU974B4oEpMcf   minuto 1:00
 . Braccia distese lungo i fianchi, sollevare solo la DX facendo un semicerchio laterale inspirando, prendere la guancia SX, tirare leggermente a lato espirando.
 https://photos.google.com/photo/AF1QipOF2SaBRCt7a8eNBi6NtqnT8ooFU974B4oEpMcf    minuto 3:00
-. Braccia distese e sollevate all’altezza delle spalle; rotazioni con 2 espiri e 2 inspiri veloci
+. Braccia distese e sollevate all'altezza delle spalle; rotazioni con 2 espiri e 2 inspiri veloci
 https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e minuto 5:00
 Se a terra mi allungo in avanti con le braccia
 . Braccia distese e sollevate 30 gradi più su delle spalle; rotazioni con 2 espiri e 2 inspiri veloci
 Se a terra mi allungo in avanti con le braccia
-. Clap clap con le mani continuo.  Mentre lo faccio le braccia sono distese lungo i fianchi, le sollevo fino all’altezza delle spalle, le porto in avanti, le porto in alto sopra le spalle.Rilasso le mani.
+. Clap clap con le mani continuo.  Mentre lo faccio le braccia sono distese lungo i fianchi, le sollevo fino all'altezza delle spalle, le porto in avanti, le porto in alto sopra le spalle.Rilasso le mani.
 https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e  minuto 7:40
 . Pugnetti sulle spalle e sulle braccia
 https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e  minuto 8:43
 . Massaggio testa, fossette dietro la nuca
 https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e  minuto 10:00
-. Gambe incrociate, mano DX sul ginocchio SX, mano SX dientro il gluteo SX; inspiro allungo la schiena e ruoto il dorso a SX; espiro e rilasso la testa in avanti. Dall’altra parte.
+. Gambe incrociate, mano DX sul ginocchio SX, mano SX dientro il gluteo SX; inspiro allungo la schiena e ruoto il dorso a SX; espiro e rilasso la testa in avanti. Dall'altra parte.
 https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e minuto 11:44
 TODO
 NOTA: Respiro solo dal naso.
 https://photos.google.com/photo/AF1QipM8wCLUMg6557_QJG_3uYxlurnkpN6v220UtT8e  minuto 14:00
 
-== Sequenza 2 Farm
+## Sequenza 2 Farm
 
 . <<Janu Sirsasana left - Bend to left leg, Janu Sirsasana left - Bend to left leg>>
 . <<Janu Sirsasana left - Bend to right leg>>
 . <<Paschimottanasana - Seated forward bend>>
 . <<Purvottanasana - Upward plank pose>>
 
-
 Ardha Matsyendrasana right - Sitting right twist
-
-
-
 
 Salambhasana - Locust pose Right
 Salambhasana - Locust pose Left
 Salambhasana - Locust pose
 
-
-
-
-== Sequenza 25 giugno con Sara
+## Sequenza 25 giugno con Sara
 
 Posizioni in piedi:
 
 * Swastikasana seduti sul blocco con le tibie (shin bones) incrociate
 
+## BOOK Yoga Mat Companion
 
+### Book - Anatomy for Arm Balances and Inversions: Yoga Mat Companion 4 
 
-
-
-= BOOK Yoga Mat Companion
-
-== Book - Anatomy for Arm Balances and Inversions: Yoga Mat Companion 4 
-
-=== Intro
+#### Intro
 
 In our bipedal form, the hips and lower extremities are the weight-bearing construct. The more mobile shoulders and upper extremities allow us to interact with the world.
 
@@ -887,6 +805,6 @@ From an energetic perspective:
 
 === Every
 
-Let’s deconstruct the story of Downward Facing Dog: contracting the psoas and its synergists flexes the hips and trunk.
+Let's deconstruct the story of Downward Facing Dog: contracting the psoas and its synergists flexes the hips and trunk.
 
 Long MD FRCSC, Ray. Anatomy for Arm Balances and Inversions: Yoga Mat Companion 4 . BookBaby. Kindle Edition. 
