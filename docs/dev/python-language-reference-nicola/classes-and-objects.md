@@ -907,9 +907,9 @@ obj = MyClass()
 obj.regular_method()
 # Raises TypeError: regular_method() takes 0 positional arguments but 1 was given
 ```
+
 In this example, `regular_method` is defined without the `self` parameter. 
 When `obj.regular_method()` is called, Python tries to pass `obj` as the first argument, leading to a `TypeError` because `regular_method` doesn’t accept any arguments.
-
 
 Explanation:
 - When `MyClass.regular_method()` is called, it works as expected because no instance is involved, and the method doesn’t expect any parameters.

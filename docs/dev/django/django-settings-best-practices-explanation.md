@@ -57,6 +57,8 @@ NOTE:
 
 ## django-appconf
 
+> [!WIP] on 02/12/2024 with Daniele we decided to not use this library at this moment. It is not well maintained and it is not clear how to it integrate with the Django Settings Mechanism. For now we will use the standard Django Settings Mechanism in the simple cases and we will use this library only if we find a clear and maintainable use case.
+
 TEST: ~/tmp/myproject 
 
 Questa sembra interessante per fare un po' di ordine nelle settings.
@@ -331,6 +333,7 @@ There are some guidelines that we can follow to achieve this goal.
 ### Guidelines for the main settings.py file
 
 TODO
+* ok all'usare gli IF per evitare di ripetere le configurazioni di default
 
 ### Guidelines for the settings.MODE.py
 

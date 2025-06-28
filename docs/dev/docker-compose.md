@@ -244,32 +244,90 @@ $ docker build -t myghost .
 $ docker run -d --name ghost -p 80:2368 myghost
 ```
 
-## Variable substitution
+## Variable interpolation
 
-[https://docs.docker.com/compose/compose-file/compose-file-v3/\#variable-substitution](https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution)
+Official HOWTO: [Set, use, and manage variables in a Compose file with interpolation](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/)
 
-Your configuration options can contain environment variables. Compose uses the variable values from the shell environment in which `docker compose` is run. For example, suppose the shell contains `POSTGRES_VERSION=9.3` and you supply this configuration:
 
-```yaml
-db:
- image: "postgres:${POSTGRES_VERSION}"
+Values in a Compose file can be set by variables and interpolated at runtime. Compose files use a Bash-like syntax `${VARIABLE}`. Both `$VARIABLE` and `${VARIABLE}` syntax is supported.
+
+A Compose file can use variables to offer more flexibility:
+
+- If you want to quickly switch between image tags to test multiple versions, 
+- or want to adjust a volume source to your local environment, 
+
+you don't need to edit the Compose file each time, you can just set variables that insert values into your Compose file at run time.
+
+There are 4 types of variable interpolation:
+
+- Direct substitution `${VARIABLE}`
+- Default value `${VARIABLE:-default}`
+- Required value `${VARIABLE:?err}`
+- Alternative value: `${VARIABLE+'VAR is set'}`
+
+
+> [!NOTE]
+> I've never used this. In practice it's useful when you want to provide an alternative value whenever a variable is set, irrespective of its content. Alternative value example:
+
+```bash
+# Scenario 1: VAR is unset
+echo "${VAR+'VAR is set'}"  # Output: (empty string)
+
+# Scenario 2: VAR is set but empty
+VAR=""
+echo "${VAR+'VAR is set'}"  # Output: VAR is set
+
+# Scenario 3: VAR is set and non-empty
+VAR="Hello"
+echo "${VAR+'VAR is set'}"  # Output: VAR is set
 ```
 
-When you run `docker compose up` with this configuration, Compose looks for the `POSTGRES_VERSION` environment variable in the shell and substitutes its value in. For this example, Compose resolves the `image` to `postgres:9.3` before running the configuration if the shell has the `POSTGRES_VERSION` environment variable set to `9.3`.
+See the official reference for more details: [https://docs.docker.com/reference/compose-file/interpolation/](https://docs.docker.com/reference/compose-file/interpolation/) about the syntax.
 
-If an environment variable is not set, Compose substitutes with an empty string. In the example above, if `POSTGRES_VERSION` is not set, the value for the `image` option is `postgres:`.
+> [!WARNING]
+> Interpolation applies only to YAML values, not to keys.
 
-To fully understand how variable substitution can be applied in real cases, see [Docker Compose Environment Variables](https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution) for a deep dive into how env and arg variables work and can be used to achieve more complex configurations.
 
-Both `$VARIABLE` and `${VARIABLE}` syntax are supported. Additionally when using the [2.1 file format](https://docs.docker.com/compose/compose-file/compose-versioning/#version-21), it is possible to provide inline default values using typical shell syntax:
+Below is a simple example:
 
-* `${VARIABLE:-default}` evaluates to `default` if `VARIABLE` is **unset** or **empty** in the environment.  
-* `${VARIABLE-default}` evaluates to `default` only if `VARIABLE` is **unset** in the environment.
 
-Similarly, the following syntax allows you to specify **mandatory variables**:
+```bash
+cat .env
+TAG=v1.5
+```
 
-* `${VARIABLE:?err}` exits with an error message containing `err` if `VARIABLE` is unset or empty in the environment.  
-* `${VARIABLE?err}` exits with an error message containing `err` if `VARIABLE` is unset in the environment.
+```yaml
+services:
+  web:
+    image: "webapp:${TAG}"
+```
+
+When you run docker compose up, the web service defined in the Compose file interpolates in the image webapp:v1.5 which was set in the .env file. You can verify this with the config command, which prints your resolved application config to the terminal:
+
+```bash
+docker compose config
+#Output:
+#
+#services:
+#  web:
+#    image: 'webapp:v1.5'
+```
+In the case above, if `TAG` is not set, Compose substitutes with an empty string and print a warning.
+
+### Ways to set variables with interpolation
+
+The official HOWTO is well written and explains the different ways to set variables with interpolation: [Ways to set variables with interpolation](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/#ways-to-set-variables-with-interpolation)
+
+Here we just try to summarize and extend the official HOWTO with some example I've encountered.
+
+Docker Compose can interpolate variables into your Compose file from multiple sources. Note that when the same variable is declared by multiple sources, precedence applies:
+
+- Variables from your shell environment
+- If `--env-file` is not set, variables set by an `.env` file in local working directory (PWD)
+- Variables from a file set by `--env-file` or an `.env` file in project directory
+
+> [!TIP]
+> You can check variables and values used by Compose to interpolate the Compose model by running `docker compose config --environment`.
 
 ## Config subcommand: Verify Override and Anchor extension
 

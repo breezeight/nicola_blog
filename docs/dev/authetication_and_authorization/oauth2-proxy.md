@@ -33,7 +33,46 @@ flowchart LR
 ```
 
 
-## Get Started
+## Getting Started
 
 
 OAuth2-Proxy's [Installation Docs](https://oauth2-proxy.github.io/oauth2-proxy/installation) cover how to install and configure your setup. Additionally you can take a further look at the [example setup files](https://github.com/oauth2-proxy/oauth2-proxy/tree/master/contrib/local-environment).
+
+Use the docker image
+
+## HOWTOs
+
+### Debug 
+
+Set `OAUTH2_PROXY_SHOW_DEBUG_ON_ERROR=true` to get more details in case of error: it shows detailed error information on error pages (WARNING: this may contain sensitive information - do not use in production)
+
+ref: https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview?_highlight=debug#page-template-options
+
+## OAuth2 Proxy Environment Variable Cheat Sheet
+Ref [Environment Variables Official Docs](https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview?_highlight=log#environment-variables) for a list of available environment variables.
+
+### Environment Variable Naming Convention
+- **Prefix**: Start each environment variable with `OAUTH2_PROXY_`.
+- **Capitalization**: Capitalize the argument name.
+- **Hyphens to Underscores**: Replace hyphens (`-`) with underscores (`_`).
+- **Pluralization**: If the argument can be specified multiple times, use the plural form (add an `S` at the end).
+
+### Examples
+| Command-Line Argument      | Environment Variable             |
+|----------------------------|----------------------------------|
+| `--cookie-secret`          | `OAUTH2_PROXY_COOKIE_SECRET`     |
+| `--email-domain`           | `OAUTH2_PROXY_EMAIL_DOMAINS`     |
+
+### String | List Arguments
+- For options that accept lists (e.g., `--email-domain`, `--skip-auth-route`), use a plural form environment variable.
+- **Separate multiple values with commas**. Example:
+
+```bash
+OAUTH2_PROXY_EMAIL_DOMAINS="example.com,anotherdomain.com"
+OAUTH2_PROXY_SKIP_AUTH_ROUTES="GET=^/api/status,POST=^/api/saved_objects/_import"
+```
+
+
+
+
+

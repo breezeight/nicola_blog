@@ -1,0 +1,28 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {},
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Run MkDocs",
+        "type": "shell",
+        "command": "poetry run mkdocs serve -a localhost:8005",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "shared",
+          "focus": true
+        },
+        "problemMatcher": []
+      }
+    ]
+  }
+}

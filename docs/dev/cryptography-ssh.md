@@ -1,11 +1,17 @@
 # SSH
 
+## Main Topics
+- Configuring SSH
+- SSH Key Fingerprint
+- Using Specific Private Key
+- SSH-Agent
+- Using SSH-Agent with AWS SSM
 
 ## Related Documents {#related-documents}
 
 [GPG - PGP](cryptography-pgp-gpg.md)  
 
-[\[GUIDE\] Sops - editor of encrypted files](https://docs.google.com/document/d/1Z7hGLmjbeMN-k3_hfFATVr1Z9E3sLojerbKH6GObpW0/edit)
+[GUIDE Sops - editor of encrypted files](https://docs.google.com/document/d/1Z7hGLmjbeMN-k3_hfFATVr1Z9E3sLojerbKH6GObpW0/edit)
 
 [HOWTO: basic usage of SSH](cryptography-ssh-basic-howto.md)
 
@@ -21,7 +27,7 @@ SSH, also known as Secure Shell, is a popular protocol used to securely access c
 
 - **SSH Keys**: The keys are the cryptographic keys used for encrypting and decrypting messages exchanged between the two parties. Each key pair consists of a public key and a private key. Every user has a pair of keys.
 
-### How do SSH keys work?
+### How does ssh keys are used
 
 Public-key cryptography, also known as asymmetric cryptography, employs the use of a pair of keys. Each pair consists of a *public key* and a *private key*. The private key should be secured and known only to the user who generates the keys. The public key is safe to be shared publicly and will be shared with the SSH server the user wants to connect to.
 
@@ -344,49 +350,83 @@ Host awesome
 
 Once it’s saved, later you can SSH to your target host like this: `ssh awesome`
 
-## SSH-Agent
+## SSH Agent Overview
 
 > [!WARNING]
 > These part about the ssh-agent are not yet completed. It could be moved to a separate page.
 
-
-### HOWTO Add a key to your ssh-agent
-
-
-You can find your private key at `~/.ssh`  (ie  `~/.ssh/id_ed25519` ). Always remember that your public key is the one that you copy to the target host for authentication.
-
-Before adding your new private key to the SSH agent, make sure that the SSH agent is running by executing the following command:
-
-`eval "$(ssh-agent -s)"`
-
-Then run the following command to add your newly generated Ed25519 key to SSH agent:
-
-`ssh-add ~/.ssh/id_ed25519`
-
-Or if you want to add all of the available keys under the default `.ssh` directory, simply run:
-
-`ssh-add`
-
 ### What is an SSH-Agent? {#what-is-an-ssh-agent?}
 
-Scenario:
+An ssh-agent is a program that holds your private keys used by ssh for public key authentication. It holds your keys and certificates in memory, unencrypted, and ready for use by `ssh`. It saves you from typing a passphrase every time you connect to a server by caching the key for you and you only need to enter the password when the agent wants to decrypt it.
 
-* As a security measure, people protect their private keys with a passphrase, so any authentication attempt would require you to enter this passphrase.  
-* This can be undesirable, so the ssh-agent caches the key for you and you only need to enter the password once, when the agent wants to decrypt it.  
-* The benefit to ssh-agent is that **you only need to enter your passphrase once**. If your private RSA key is not encrypted with a passphrase, then ssh-agent is not necessary. The ssh command would be an example of a client.
+> [!WARNING]
+> If your private RSA key is not encrypted with a passphrase, then ssh-agent is not necessary. BUT you should never use a private key without a passphrase!.
 
-ssh-agent is a program to hold private keys used for public key authentication (RSA, DSA). 
+**Why should you use an ssh-agent?**
 
-**Security**: ssh-agent creates a **socket** and then checks the connections from ssh. Everyone who is able to connect to this socket also has access to the ssh-agent. The permissions are set as in a usual Linux or Unix system. When the agent starts, it creates a new directory in /tmp with restrictive permissions. The socket is located in the folder.
+- When you connect to an SSH deamon with your ssh client, the verification to the server is based on **challenge-response authentication**, where message are signed with your private key (see [How does ssh keys work](#how-does-ssh-keys-are-used)).
+- As a security measure, people protect their private keys with a passphrase, so any authentication attempt would require you to enter this passphrase.  
+- Having to enter the passphrase every time you connect to a server can be undesirable, so the ssh-agent caches the key for you and you only need to enter the password once, when the agent wants to decrypt it.  
+- The benefit of using an ssh-agent is that **you only need to enter your passphrase once per session**, with the session duration defined by the agent's configuration. If the session ends (e.g., due to a reboot or a timeout configured in the agent), you'll need to re-enter your passphrase to reload your key.
 
-When you connect to an SSH deamon, the verification to the server is based on **challenge-response authentication**.
 
-* ssh connects to the server with a user name and the request for a key.   
-* The ssh daemon gets the request and sends back a challenge based on the public key stored in the authentication file.  
-* ssh uses the private key to construct a key response, and sends it to the waiting sshd on the other end of the connection. It does not send the private key itself.   
-* The ssh daemon validates the key response, and if valid, grants access to the system.  
-* ssh-agent simplifies this by creating a socket that listens for SSH connections. The user simply starts ssh-agent, telling it how to find their keys (if they are not in the default location), enters the passphrase for each key to be used, on a one-time basis, and then ssh-agent handles the rest every time the user connects to a remote server.  
-* The SSH agent never hands the private keys to client programs, but merely presents a socket over which clients can send it data and over which it responds with data signed with the private keys ( A side benefit of this is that you can use your private key even with programs you don't fully trust).
+**Why is ssh-agent more secure?**:
+
+- Usually the `ssh client` doesn't provide a solid way to manage the private keys securely, it just expect to access them.
+- Instead, an ssh-agent focuses on a secure way to manage the private keys, usually by integrating with a local keychain or a password manager.
+- ssh-agent also have a way to make your private key available when you are connecting to a remote server, avoiding to have to copy the key to the remote server (that would be a security risk).
+- Private keys stored in the agent can only be used for one purpose: signing a message. The ssh-agent never hands the private keys to client programs but only expose an interface to sign a message with a specific private key (via socket, see below).
+
+### HOW ssh based tools interact with an SSH agent
+
+Before moving on, let's see the tools ecosystem around the ssh tools and clarify the role of each tool.
+
+
+Usually on a development machine you choose to use a single SSH agent to manage all your private keys. But nothing prevent you to run multiple SSH agents on the same machine. Some examples of common agents:
+
+- `ssh-agent`: the default agent on most linux box.
+- `1Password Agent`: the agent used by 1Password.
+- `GNOME Keyring`: the agent used by GNOME.
+- `KDE Wallet`: the agent used by KDE.
+
+Basically all the other CLI tools use will use the `SSH_AUTH_SOCK` environment variable to connect to the appropriate SSH agent for authentication (SSH Client (ssh), ssh-add, Git, SCP/SFTP, Ansible, rsync, Terraform, kubectl). All these tools can use your choosen agent.
+
+Usually you have a single agent running but nothing prevent you to run multiple `ssh-agent` on your machine.
+
+#### Scenario: Using a multiple ssh agents
+
+Scenario: Your organization prioritizes security and efficient key management. To mitigate risks associated with locally stored SSH keys and to maintain centralized control, the company mandates the use of the 1Password SSH agent for all SSH-related activities.
+
+In this case you can adopt the following strategy:
+
+- use the `~/.ssh/config` file to specify the `IdentityFile` for each host. This configuration file is used by the ssh client and other tools that rely on SSH for remote operations. This solution is very flexible but may not apply to all the tools you use. This is a partial list of tools that use the `~/.ssh/config` file: ssh, scp, sftp, rsync, Git, Ansible.
+
+- Override the `SSH_AUTH_SOCK` environment variable to specify the path to the 1Password SSH agent. This solution is very flexible but may not apply to all the tools you use. In this case you can use the tool like `direnv` to inject the environment variable in the current shell session automatically.
+
+### The agent protocol: how ssh-agent works
+
+SSH uses a Unix domain socket to talk to the agent via the [SSH agent protocol](https://tools.ietf.org/html/draft-miller-ssh-agent-04). Most people use the `ssh-agent` that comes with OpenSSH, but there's a variety of open-source alternatives.
+
+The ssh-agent creates a **socket** and then checks the connections from `ssh client`. Everyone who is able to connect to this socket also has access to the `ssh-agent`. The permissions are set as in a usual Linux or Unix system. 
+ 
+When the `ssh client` connects to the `ssh-agent` asking to sign a message with a specific private key. The `ssh-agent` will check if the private key is already **decrypted**, otherwise it will ask the user for the passphrase and then decrypt the private key.
+
+> [!NOTE] The SSH agent never hands the private keys to client programs, but merely presents a socket over which clients can send it data and over which it responds with data signed with the private keys (A side benefit of this is that you can use your private key even with programs you don't fully trust).
+
+The agent protocol is so simple that one could write a basic SSH agent in a day or two. It only has a few primary operations:
+
+- Add a regular key pair (public and decrypted private keys)
+- Add a constrained key pair (public and decrypted private keys)
+- Add a key (regular or constrained) from a smart card (public key only)
+- Remove a key
+- List keys stored in the agent
+- Sign a message with a key stored in the agent
+- Lock or unlock the entire agent with a passphrase
+
+> [!DEFINITION]🤔 What's a constrained key? It's usually a key that either has a limited lifetime or one that demands explicit user confirmation when it is used. 
+
+The `ssh-add` command is your gateway to the SSH agent. It performs all of these operations except for signing.
+
 
 ### SSH-Agent and multiple keys {#ssh-agent-and-multiple-keys}
 
@@ -406,11 +446,56 @@ SSH agent can be forwarded over SSH. So when you ssh to host A, while forwarding
 [Using SSH agent forwarding \- GitHub Docs](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/using-ssh-agent-forwarding)  
 [An Illustrated Guide to SSH Agent Forwarding](http://www.unixwiz.net/techtips/ssh-agent-forwarding.html) 
 
-## Use SSH-Agent with AWS SSM {#use-ssh-agent-with-aws-ssm}
+### Use SSH-Agent with AWS SSM {#use-ssh-agent-with-aws-ssm}
 
 [https://alestic.com/2018/12/aws-ssm-parameter-store-git-key/](https://alestic.com/2018/12/aws-ssm-parameter-store-git-key/)
 
 TODO: how can we inject AWS credential in a git build?
+
+## Specific SSH Agents information
+
+### 1Password Agent
+
+Documentation: [1Password Agent](https://developer.1password.com/docs/ssh/agent)
+
+### ssh-agent
+
+#### HOWTO configure the ssh-agent
+
+Before adding your new private key to the SSH agent, make sure that the SSH agent is running by executing the `ssh-agent -s` command that will also print the agent configuration. Example output:
+
+```bash
+SSH_AUTH_SOCK=/var/folders/r1/bqjgbnfs77s397xqp6rkbbjm0000gn/T//ssh-QmF4F1RouuTJ/agent.65710; export SSH_AUTH_SOCK;
+SSH_AGENT_PID=65711; export SSH_AGENT_PID;
+echo Agent pid 65711;
+```
+#### HOWTO Add a key to your ssh-agent
+
+If you are not using a password manager like 1Password, typically you can find your private key at `~/.ssh`  (ie  `~/.ssh/id_ed25519`).
+
+Then run the following command to add your newly generated Ed25519 key to SSH agent:
+
+`ssh-add ~/.ssh/id_ed25519`
+
+Or if you want to add all of the available keys under the default `.ssh` directory, simply run:
+
+`ssh-add`
+
+When you run `ssh-add` without any parameters, it will scan your home directory for some standard keys and add them to your agent. By default, it looks for:
+
+- `~/.ssh/id_rsa`
+- `~/.ssh/id_ed25519`
+- `~/.ssh/id_dsa`
+- `~/.ssh/id_ecdsa`
+
+
+
+#### ssh-agent on OSX
+
+Tips for OSX:
+
+- [How to save your SSH key passphrase to your Apple Keychain on macOS](https://medium.com/hyperion360/how-to-save-your-ssh-key-passphrase-to-your-apple-keychain-on-macos-63cf7cf02dab): this document explain how to save your SSH key passphrase to your Apple Keychain on macOS. This way you can backup your private key and passphrase in a secure way using the standard OSX backup tools.
+
 
 # GIT
 

@@ -1,121 +1,155 @@
 # ANSIBLE
 
-[AWS and Ansible](#aws-and-ansible)
+## Table of Contents
 
-[**Cose da vedere**](#heading=h.ghqalyl7pcby)
+### Getting Started
+- [Install](#install)
+  - [Using Devenv.sh and Nix](#using-devenvsh-and-nix)
+- [Tutorial](#tutorial)
+  - [AWS and Ansible](#aws-and-ansible)
 
-[**Link and Tutorials, Roles and Collections**](#link-and-tutorials,-roles-and-collections)
+### Resources and References
+- [Link and Tutorials, Roles and Collections](#link-and-tutorials-roles-and-collections)
+- [Tech Station Tutorials](#tech-station-tutorials)
+- [ASDF Role](#asdf-role)
 
-[Tech Station Tutorials](#heading=h.t0oec0qehzc)
+### Core Concepts
+- [Configuration VS Orchestration and Terraform VS Ansible](#configuration-vs-orchestration-and-terraform-vs-ansible)
+- [Intro](#intro)
+- [Ansible concepts](#ansible-concepts)
+  - [Nodes: Control nodes, Managed Nodes (or Hosts)](#nodes-control-nodes-managed-nodes-or-hosts)
+  - [Playbooks, Plays, Tasks, Modules, Roles](#playbooks-plays-tasks-modules-roles)
+  - [Remote Connection](#remote-connection)
+  - [Play Configuration](#play-configuration)
+  - [Inventories](#inventories)
+  - [Variables](#variables)
+  - [Modules (basic unit of execution of Ansible)](#modules-basic-unit-of-execution-of-ansible)
 
-[ASDF Role](#asdf-role)
+### Practical Guides
+- [CheatSheet for Local workstation](#cheatsheet-for-local-workstation)
+- [Docker Setup on EC2 (Pulumi + Ansible)](#docker-setup-on-ec2-pulumi--ansible)
 
-[**Configuration VS Orchestration and Terraform VS Ansible**](#configuration-vs-orchestration-and-terraform-vs-ansible)
+### Best Practices
+- [DRAFT BEST PRACTICES](#draft-best-practices)
 
-[**CheatSheet for Local workstation**](#cheatsheet-for-local-workstation)
+### Hands-on Tasks
+- [Execute a Module within a Task](#execute-a-module-within-a-task)
+- [Run a system command with the "command" module](#run-a-system-command-with-the-command-module)
+- [Access Module documentation from command line](#access-module-documentation-from-command-line)
+- [Install Packages](#install-packages)
+- [Execute modules without having a playbook](#execute-modules-without-having-a-playbook)
+- [Running playbooks](#running-playbooks)
+- [Run a single task in an ansible playbook](#run-a-single-task-in-an-ansible-playbook)
+- [Running Modules from command line on specific hosts](#running-modules-from-command-line-on-specific-hosts)
 
-[Docker Setup on EC2 (Pulumi \+ Ansible)](#docker-setup-on-ec2-\(pulumi-+-ansible\))
+### Advanced Topics
+- [Re-using Ansible artifacts](#re-using-ansible-artifacts)
+- [What's the difference between include_* and import_*?](#whats-the-difference-between-include_-and-import_)
+- [Roles (Reusable Playbooks)](#roles-reusable-playbooks)
+  - [Role LookUp Rules](#role-lookup-rules)
+  - [Role example: Redis](#role-example-redis)
+- [Handlers and notify](#handlers-and-notify)
+- [Ansible Pull -> Git](#ansible-pull--git)
+- [Playbook Roles: Creating Reusable Playbooks](#playbook-roles-creating-reusable-playbooks)
 
-[**Getting started**](#getting-started)
+### Working with Playbooks [ADVANCED]
+- [Host and Users](#host-and-users)
+- [Task List](#task-list)
+- [Handlers](#handlers)
+- [Listen to Topics](#listen-to-topics)
+- [Using variables](#using-variables)
+  - [Defining Variables in Inventory](#defining-variables-in-inventory)
+  - [Variables discovered from systems: Facts](#variables-discovered-from-systems-facts)
+  - [Registering Variables from modules return values](#registering-variables-from-modules-return-values)
+  - [Special Variables](#special-variables)
+  - [Variables in files](#variables-in-files)
+  - [Variables via command line](#variables-via-command-line)
+  - [Variable Precedence: where should I put a variable?](#variable-precedence-where-should-i-put-a-variable)
 
-[**Intro**](#intro)
+### Testing and Development
+- [Testing Playbook and Roles](#testing-playbook-and-roles)
+- [Testing with Molecule and Docker](#testing-with-molecule-and-docker)
+- [Docker](#docker)
 
-[Ansible concepts](#ansible-concepts)
+### Additional Resources
+- [Create and share a role](#create-and-share-a-role)
+- [Automatically install Ansible Galaxy roles from galaxy](#automatically-install-ansible-galaxy-roles-from-galaxy)
+- [Debug info](#debug-info)
+- [Privilege Escalation](#privilege-escalation)
 
-[Nodes: Control nodes, Managed Nodes (or Hosts)](#nodes:-control-nodes,-managed-nodes-\(or-hosts\))
+---
 
-[Playbooks, Plays, Tasks, Modules, Roles](#playbooks,-plays,-tasks,-modules,-roles)
+## Install
 
-[Remote Connection](#remote-connection)
+### Using Devenv.sh and Nix
 
-[Play Configuration](#play-configuration)
+This the `devenv.nix` to install Ansible 2.17
 
-[Inventories](#inventories)
+```nix
+{ pkgs, ... }:
 
-[Variables](#variables)
+{
+  # ──────────────────────────────────────────────────────────────────────────────
+  # Overlay to patch Python 3.12's `mocket` package
+  #
+  # Context:
+  # - We're using devenv with Python 3.12 and Ansible (`ansible_2_17`).
+  # - `ansible_2_17` depends on Python packages, some of which require `mocket`.
+  # - The `mocket` package includes a flaky test:
+  #     - `test_httprettish_httpx_session`
+  #     - It fails due to `httpx.ConnectTimeout` during the build phase.
+  #
+  # Problem:
+  # - Since tests are run during package build, the whole `nix` evaluation fails.
+  #
+  # Solution:
+  # - Use an overlay to override `mocket` by disabling just that one test via `disabledTests`.
+  # - Keeps the rest of the tests intact, avoids `doCheck = false`.
+  #
+  # Why overlays?
+  # - Clean and localized fix
+  # - Recommended by https://devenv.sh/overlays/
+  # ──────────────────────────────────────────────────────────────────────────────
 
-[Modules (basic unit of execution of Ansible)](#modules-\(basic-unit-of-execution-of-ansible\))
+  overlays = [
+    (final: prev: {
+      python312 = prev.python312.override {
+        packageOverrides = pyFinal: pyPrev: {
+          mocket = pyPrev.mocket.overridePythonAttrs (oldAttrs: {
+            disabledTests = (oldAttrs.disabledTests or []) ++ [
+              "test_httprettish_httpx_session"
+            ];
+          });
+        };
+      };
+      python312Packages = final.python312.pkgs;
+    })
+  ];
 
-[DRAFT BEST PRACTICES](#draft-best-practices)
+  # ─────────────────────────────────────────────
+  # Shell environment definition
+  # ─────────────────────────────────────────────
 
-[\[JOB\] Execute a Module within a Task](#[job]-execute-a-module-within-a-task)
+  packages = [
+    pkgs.python312Packages.mocket        # Explicitly include patched mocket
+    pkgs.python312                       # Patched interpreter
+    pkgs.ansible_2_17                    # Required version of Ansible
+  ];
 
-[\[JOB\] Run a system command with the "command" module](#[job]-run-a-system-command-with-the-"command"-module)
+  languages.python.enable = true;
 
-[\[JOB\] Access Module documentation from command line](#[job]-access-module-documentation-from-command-line)
+  # Optional: additional config (env, scripts, etc.)
+  # env.MY_VAR = "value";
+  # scripts.my-task.exec = "ansible-playbook site.yml";
+}
 
-[\[JOB\] Install Packages](#[job]-install-packages)
+```
 
-[\[JOB\] execute modules without having a playbook](#[job]-execute-modules-without-having-a-playbook)
+## Tutorials
 
-[Re-using Ansible artifacts](#re-using-ansible-artifacts)
-
-[What's the difference between include\_\* and import\_\*?](#what's-the-difference-between-include_*-and-import_*?)
-
-[Roles (Reusable Playbooks)](#roles-\(reusable-playbooks\))
-
-[Role LookUp Rules](#role-lookup-rules)
-
-[Role example: Redis](#role-example:-redis)
-
-[\[JOB\] Running playbooks](#[job]-running-playbooks)
-
-[\[JOB\] Run a single task in an ansible playbook](#[job]-run-a-single-task-in-an-ansible-playbook)
-
-[\[JOB\] Running Modules from command line on specific hosts](#[job]-running-modules-from-command-line-on-specific-hosts)
-
-[Handlers and notify](#handlers-and-notify)
-
-[Ansible Pull \-\> Git](#ansible-pull--\>-git)
-
-[Playbook Roles: Creating Reusable Playbooks](#playbook-roles:-creating-reusable-playbooks)
-
-[**Working with Playbooks \[ADVANCED\]**](#working-with-playbooks-[advanced])
-
-[Host and Users](#host-and-users)
-
-[Task List](#task-list)
-
-[Handlers](#handlers)
-
-[Listen to Topics](#listen-to-topics)
-
-[Using variables](#using-variables)
-
-[Defining Variables in Inventory](#defining-variables-in-inventory)
-
-[Variables discovered from systems: Facts](#variables-discovered-from-systems:-facts)
-
-[Registering Variables from modules return values](#registering-variables-from-modules-return-values)
-
-[Special Variables](#special-variables)
-
-[Variables in files](#variables-in-files)
-
-[Variables via command line](#variables-via-command-line)
-
-[Variable Precedence: where should I put a variable?](#variable-precedence:-where-should-i-put-a-variable?)
-
-[**Testing Playbook and Roles**](#testing-playbook-and-roles)
-
-[Testing with Molecule and Docker](#testing-with-molecule-and-docker)
-
-[Docker](#docker)
-
-[**JOBS**](#jobs)
-
-[Create and share a role](#create-and-share-a-role)
-
-[Automatically install Ansible Galaxy roles from galaxy](#automatically-install-ansible-galaxy-roles-from-galaxy)
-
-[Debug info](#debug-info)
-
-[Privilege Escalation](#privilege-escalation)
-
-# AWS and Ansible {#aws-and-ansible}
-
-Use AWS Systems Manager to execute complex Ansible playbooks:  
-[https://aws.amazon.com/about-aws/whats-new/2019/09/now-use-aws-systems-manager-to-execute-complex-ansible-playbooks/](https://aws.amazon.com/about-aws/whats-new/2019/09/now-use-aws-systems-manager-to-execute-complex-ansible-playbooks/) 
+- [Ansible Tutorials](ansible_tutorials.md)
+  - [Use Ansible Agentless to Get Uptime from Remote Machines](ansible_tutorials.md#use-ansible-agentless-to-get-uptime-from-remote-machines) - Learn how to use Ansible in agentless mode to connect to remote machines and retrieve system information
+  - [AWS and Ansible](ansible_tutorials.md#aws-and-ansible) - Use AWS Systems Manager to execute complex Ansible playbooks
 
 # Link and Tutorials, Roles and Collections {#link-and-tutorials,-roles-and-collections}
 
@@ -209,10 +243,27 @@ Exempio semplice di playbook per desktop: [https://github.com/siyelo/laptop/blob
  
 
 [http://docs.ansible.com/ansible/playbooks.html](http://docs.ansible.com/ansible/playbooks.html)   
-Playbooks are Ansible’s configuration, deployment, and orchestration language.  
-![][image1]
+Playbooks are Ansible's configuration, deployment, and orchestration language.  
 
-Each **playbook** is yaml document, its root element is a list composed of ‘plays’.
+```mermaid
+graph TD
+    A[Playbook] --> B[Play: install and start apache]
+    B --> C1[Task: install httpd]
+    B --> C2[Task: start httpd]
+
+    C1 --> D1[yum: name=httpd<br>state=latest]
+    C2 --> D2[service: name=httpd<br>state=running]
+
+    %% Struttura schematica secondaria (generica)
+    A --> E[Play ]
+    E --> F1[Task]
+    E --> F2[Task ]
+
+    F1 --> G1[yum: ...]
+    F2 --> G2[service: ...]
+```
+
+Each **playbook** is yaml document, its root element is a list composed of 'plays'.
 
 A "play" maps a group of hosts to some well defined roles, represented by things ansible calls tasks. It's yaml map with this keys:
 
@@ -310,21 +361,21 @@ Also as result of a task
 
 #### \[JOB\] Execute a Module within a Task {#[job]-execute-a-module-within-a-task}
 
-“name”, is more of a description than a name. You can call this whatever you would like.
+"name", is more of a description than a name. You can call this whatever you would like.
 
 | \--- \- hosts: droplets   tasks:     \- name: Installs nginx web server       apt: pkg=nginx state=installed update\_cache=true       notify:         \- start nginx |
 | :---- |
 
-The next key is “apt”. This is a reference to an Ansible module, just like when we use the ansible command and type something like:
+The next key is "apt". This is a reference to an Ansible module, just like when we use the ansible command and type something like:
 
 ansible \-m apt \-a 'whatever' all
 
-Format: “module: options”
+Format: "module: options"
 
 | \- name: Ensure python-ryu is installed  yum:      name: python-ryu      state: present |
 | :---- |
 
-In the above example we use yum module to install a package named ‘python-ryu’. The state is the action we are using on this package. so ‘present’ tells Ansible to make sure python-ryu installed in the system. There are additional states, as ‘latest’ which means ‘make sure latest package is installed’, so if you have python-ryu-1.0 installed in your system, but there is python-ryu-2.0 available, it will be updated. This is not the case for ‘state: present’, which simply cares on whether the package is installed or not.
+In the above example we use yum module to install a package named 'python-ryu'. The state is the action we are using on this package. so 'present' tells Ansible to make sure python-ryu installed in the system. There are additional states, as 'latest' which means 'make sure latest package is installed', so if you have python-ryu-1.0 installed in your system, but there is python-ryu-2.0 available, it will be updated. This is not the case for 'state: present', which simply cares on whether the package is installed or not.
 
 TIP: to see what states and other options available for yum module, use this command: **ansible-doc yum**
 
@@ -487,17 +538,17 @@ The command for running playbooks is pretty straightforward: ansible-playbook \<
 
 ansible-playbook first\_playbook.yml
 
-Now we need to add the hosts you would like to manage and configure to ‘/etc/ansible/hosts’.  
-Let’s say you have two nodes, named hostA and hostB. You can  simply add these two lines to ‘/etc/ansible/hosts’:  
+Now we need to add the hosts you would like to manage and configure to '/etc/ansible/hosts'.  
+Let's say you have two nodes, named hostA and hostB. You can  simply add these two lines to '/etc/ansible/hosts':  
 hostA  
 hostB
 
-but to easily refer the two nodes in one word, you should use ‘group’ name for both of them:  
+but to easily refer the two nodes in one word, you should use 'group' name for both of them:  
 \[my\_hosts\]  
 hostA  
 hostB
 
-This way, to run tasks on both nodes, you can simply use ‘my\_hosts’ group name.
+This way, to run tasks on both nodes, you can simply use 'my\_hosts' group name.
 
 ### \[JOB\] Run a single task in an ansible playbook {#[job]-run-a-single-task-in-an-ansible-playbook}
 
@@ -533,7 +584,7 @@ Handlers are lists of tasks, not really any different from regular tasks, that a
 
 If nothing notifies a handler, it will not run. Regardless of how many tasks notify a handler, it will run only once, after all of the tasks complete in a particular play.
 
-As of Ansible 2.2, handlers can also “listen” to generic topics, and tasks can notify those topics as follows:
+As of Ansible 2.2, handlers can also "listen" to generic topics, and tasks can notify those topics as follows:
 
 ## Ansible Pull \-\> Git {#ansible-pull-->-git}
 
@@ -583,7 +634,7 @@ To reuse ansible configuration and start to organize things there are three ways
 
 tasks/main.yml file list all the task that are executed by default when you use the role.
 
-Roles are just automation around ‘include’ directives as described above, and really don’t contain much additional magic beyond some improvements to search path handling for referenced files. 
+Roles are just automation around 'include' directives as described above, and really don't contain much additional magic beyond some improvements to search path handling for referenced files. 
 
 Roles can be installed from file:
 
@@ -591,7 +642,7 @@ Roles can be installed from file:
 * From Galaxy:   
   ansible-galaxy install \-r requirements.yml
 
-# Working with Playbooks \[ADVANCED\] {#working-with-playbooks-[advanced]}
+# Working with Playbooks [ADVANCED] {#working-with-playbooks-[advanced]}
 
 [https://docs.ansible.com/ansible/latest/user\_guide/playbooks.html](https://docs.ansible.com/ansible/latest/user_guide/playbooks.html)
 
@@ -603,7 +654,7 @@ playbooks can:
   * they can sequence multi-tier rollouts involving rolling updates, and can delegate actions to other hosts,  
   * interacting with monitoring servers and load balancers along the way.
 
-NOTE:  there’s no need to learn everything at once. You can start small and pick up more features over time as you need them.
+NOTE:  there's no need to learn everything at once. You can start small and pick up more features over time as you need them.
 
 ## Host and Users {#host-and-users}
 
@@ -618,8 +669,8 @@ Task: how to invoke a module
 * module: options format.   
   * options is usually a map  
   * some module accept a string  
-    * command**:** /sbin/setenforce 1  
-    * shell**:** /usr/bin/somecommand || /bin/true  
+    * command:**:** /sbin/setenforce 1  
+    * shell:**:** /usr/bin/somecommand || /bin/true  
     *   
 *  legacy action: module options format  
   * DO NOT USE
@@ -633,42 +684,42 @@ Playbooks have a basic event system based on "notify actions" and "handlers":
 * module are idempotent  
 * ONLY when they have made a change on the remote system they will trigger a "notify action"
 
-These ‘notify’ actions are **DEBOUNCED**:
+These 'notify' actions are **DEBOUNCED**:
 
 * are triggered at the end of each block of tasks in a play,   
 * and will only be triggered once even if notified by multiple different tasks.
 
-Here’s an example of restarting two services when the contents of a file change, but only if the file changes:
+Here's an example of restarting two services when the contents of a file change, but only if the file changes:
 
-**\-** name**:** template configuration file  
-  template**:**  
-    src**:** template.j2  
-    dest**:** /etc/foo.conf  
-  notify**:**  
+**\-** name:**:** template configuration file  
+  template:**:**  
+    src:**:** template.j2  
+    dest:**:** /etc/foo.conf  
+  notify:**:**  
      **\-** restart memcached
 
      **\-** restart apache
 
 ### Listen to Topics {#listen-to-topics}
 
-As of Ansible 2.2, handlers can also “listen” to generic topics, and tasks can notify those topics as follows:
+As of Ansible 2.2, handlers can also "listen" to generic topics, and tasks can notify those topics as follows:
 
-handlers**:**  
-    **\-** name**:** restart memcached  
-      service**:**  
-        name**:** memcached  
-        state**:** restarted  
-      **listen:** "restart web services"  
-    **\-** name**:** restart apache  
-      service**:**  
-        name**:** apache  
-        state**:** restarted  
-      listen**:** "restart web services"
+handlers:**:**  
+    **\-** name:**:** restart memcached  
+      service:**:**  
+        name:**:** memcached  
+        state:**:** restarted  
+      **listen:**:** "restart web services"  
+    **\-** name:**:** restart apache  
+      service:**:**  
+        name:**:** apache  
+        state:**:** restarted  
+      listen:**:** "restart web services"
 
-tasks**:**  
-    **\-** name**:** restart everything  
-      command**:** echo "this task will restart the web services"  
-      notify**:** "restart web services"
+tasks:**:**  
+    **\-** name:**:** restart everything  
+      command:**:** echo "this task will restart the web services"  
+      notify:**:** "restart web services"
 
 This use makes it much easier to trigger multiple handlers. It also decouples handlers from their names, making it easier to share handlers among playbooks and roles (especially when using 3rd party roles from a shared source like Galaxy).
 
@@ -688,32 +739,32 @@ In a playbook you can use the Jinja2 templating system
 
 For example:
 
-template**:** src=foo.cfg.j2 dest={{ **remote\_install\_path** }}/foo.cfg
+template:**:** src=foo.cfg.j2 dest={{ **remote\_install\_path** }}/foo.cfg
 
 Here the variable defines the location of a file, which can vary from one system to another.
 
-WARNING: YAML syntax requires that if you start a value with {{ foo }} you quote the whole line, since it wants to be sure you aren’t trying to start a YAML dictionary.
+WARNING: YAML syntax requires that if you start a value with {{ foo }} you quote the whole line, since it wants to be sure you aren't trying to start a YAML dictionary.
 
-This won’t work:
+This won't work:
 
-**\-** hosts**:** app\_servers  
-  vars**:**  
-      app\_path**:** {{ **base\_path** }}/22
+**\-** hosts:**:** app\_servers  
+  vars:**:**  
+      app\_path:**:** {{ **base\_path** }}/22
 
-Do it like this and you’ll be fine:
+Do it like this and you'll be fine:
 
-**\-** hosts**:** app\_servers  
-  vars**:**
+**\-** hosts:**:** app\_servers  
+  vars:**:**
 
-       app\_path**:** "{{ **base\_path** }}/22"
+       app\_path:**:** "{{ **base\_path** }}/22"
 
 Variable names should be letters, numbers, and underscores. 
 
 YAML also supports dictionaries which map keys to values. For instance:
 
-foo**:**  
-  field1**:** one  
-  field2**:** two
+foo:**:**  
+  field1:**:** one  
+  field2:**:** two
 
 You can then reference a specific field in the dictionary using either bracket notation foo\['field1'\]
 
@@ -732,14 +783,14 @@ host1 http\_port=80 maxRequestsPerChild=808
 host2 http\_port=303 maxRequestsPerChild=909
 
 In YAML:  
-atlanta**:**  
-  host1**:**  
-    http\_port**:** 80  
-    maxRequestsPerChild**:** 808  
-  host2**:**  
-    http\_port**:** 303
+atlanta:**:**  
+  host1:**:**  
+    http\_port:**:** 80  
+    maxRequestsPerChild:**:** 808  
+  host2:**:**  
+    http\_port:**:** 303
 
-    maxRequestsPerChild**:** 909
+    maxRequestsPerChild:**:** 909
 
  or group of hosts:
 
@@ -753,16 +804,16 @@ ntp\_server=ntp.atlanta.example.com
 proxy=proxy.atlanta.example.com
 
 In YAML:  
-atlanta**:**  
-  hosts**:**  
-    host1**:**  
-    host2**:**  
-  vars**:**  
-    ntp\_server**:** ntp.atlanta.example.com
+atlanta:**:**  
+  hosts:**:**  
+    host1:**:**  
+    host2:**:**  
+  vars:**:**  
+    ntp\_server:**:** ntp.atlanta.example.com
 
-    proxy**:** proxy.atlanta.example.com
+    proxy:**:** proxy.atlanta.example.com
 
-### Variables discovered from systems: Facts {#variables-discovered-from-systems:-facts}
+### Variables discovered from systems: Facts {#variables-discovered-from-systems-facts}
 
 [https://docs.ansible.com/ansible/latest/user\_guide/playbooks\_variables.html\#variables-discovered-from-systems-facts](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variables-discovered-from-systems-facts)
 
@@ -774,18 +825,18 @@ When you execute a task and save the return value in a variable for use in later
 
 For example:
 
-**\-** hosts**:** web\_servers
+**\-** hosts:**:** web\_servers
 
-  tasks**:**
+  tasks:**:**
 
-     **\-** shell**:** /usr/bin/foo  
-       register**:** foo\_result  
-       ignore\_errors**:** True
+     **\-** shell:**:** /usr/bin/foo  
+       register:**:** foo\_result  
+       ignore\_errors:**:** True
 
-     **\-** shell**:** /usr/bin/bar  
-       when**:** foo\_result.rc \== 5
+     **\-** shell:**:** /usr/bin/bar  
+       when:**:** foo\_result.rc \== 5
 
-Results will vary from module to module. Each module’s documentation includes a RETURN section describing that module’s return values. To see the values for a particular task, run your playbook with \-v.
+Results will vary from module to module. Each module's documentation includes a RETURN section describing that module's return values. To see the values for a particular task, run your playbook with \-v.
 
 ### Special Variables {#special-variables}
 
@@ -799,13 +850,13 @@ Results will vary from module to module. Each module’s documentation includes 
 
 [https://docs.ansible.com/ansible/latest/user\_guide/playbooks\_variables.html\#passing-variables-on-the-command-line](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#passing-variables-on-the-command-line)
 
-### Variable Precedence: where should I put a variable? {#variable-precedence:-where-should-i-put-a-variable?}
+### Variable Precedence: where should I put a variable? {#variable-precedence-where-should-i-put-a-variable}
 
 [https://docs.ansible.com/ansible/latest/user\_guide/playbooks\_variables.html\#variable-precedence-where-should-i-put-a-variable](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable)
 
 Here is the order of precedence from least to greatest (the last listed variables winning prioritization):
 
-1. command line values (eg “-u user”) or \-e   
+1. command line values (eg "-u user") or \-e   
 2. role defaults [\[1\]](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#id15)  
 3. inventory file or script group vars [\[2\]](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#id16)  
 4. inventory group\_vars/all [\[3\]](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#id17)  
@@ -891,7 +942,7 @@ Then install them:
 
 ## Debug info {#debug-info}
 
-Increase the debug level with \-vvv… :  
+Increase the debug level with \-vvv... :  
 ansible-playbook \--ask-sudo-pass developer-setup.yml \-vvvv
 
 Add a task to display all variables:
@@ -914,4 +965,4 @@ Add a task to display all variables:
 Feature very cool:
 
 * You can do volume mounts during build.  
-* if an image build fails, it's committed and named with a suffix \-\[TIMESTAMP\]-failed (so you can take a look inside and resolve the issue).
+* if an image build fails, it's committed and named with a suffix \[TIMESTAMP\]-failed (so you can take a look inside and resolve the issue).

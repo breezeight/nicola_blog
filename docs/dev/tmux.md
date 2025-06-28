@@ -112,31 +112,33 @@ See here for the below example [https://docs.google.com/document/d/1UNb7OPMHhYYC
 
 * gives a name to every pane
 
-session\_name: red\_blue\_namespaces  
+```yml
+session_name: red_blue_namespaces  
 windows:  
-  \- window\_name: dev window  
+  - window_name: dev window  
     layout: tiled  
-    \#shell\_command\_before:  
-    \#  \- cd \~/ \# run as a first command in all panes  
+    #shell_command_before:  
+    #  - cd ~/ # run as a first command in all panes  
     panes:  
-      \- shell\_command: \# pane TCPDUMP RED   
-          \- tmux select-pane \-T "TCPDUMP veth-red"  
-          \- sudo ip netns exec red bash  
-          \- tcpdump \-ni veth-red \-v  \-l \-e  
-      \- shell\_command: \# pane TCPDUMP RED BR  
-          \- tmux select-pane \-T "TCPDUMP veth-red-br"  
-          \- sudo tcpdump \-ni veth-red-br \-v  \-l \-e  
-      \- shell\_command: \# pane TCPDUMP BLUE  
-          \- tmux select-pane \-T "TCPDUMP veth-blue"  
-          \- sudo ip netns exec blue bash  
-          \- tcpdump \-ni veth-blue \-v  \-l \-e  
-      \- shell\_command: \# pane TCPDUMP BLUE  
-          \- tmux select-pane \-T "TCPDUMP veth-blue-br"  
-          \- sudo tcpdump \-ni veth-blue-br \-v  \-l \-e  
-      \- shell\_command: \# pane PING  
-          \- tmux select-pane \-T "PING from blue to red"  
-          \- sudo ip netns exec blue bash  
-          \- ping 192.168.15.1
+      - shell_command: # pane TCPDUMP RED   
+          - tmux select-pane -T "TCPDUMP veth-red"  
+          - sudo ip netns exec red bash  
+          - tcpdump -ni veth-red -v  -l -e  
+      - shell_command: # pane TCPDUMP RED BR  
+          - tmux select-pane -T "TCPDUMP veth-red-br"  
+          - sudo tcpdump -ni veth-red-br -v  -l -e  
+      - shell_command: # pane TCPDUMP BLUE  
+          - tmux select-pane -T "TCPDUMP veth-blue"  
+          - sudo ip netns exec blue bash  
+          - tcpdump -ni veth-blue -v  -l -e  
+      - shell_command: # pane TCPDUMP BLUE  
+          - tmux select-pane -T "TCPDUMP veth-blue-br"  
+          - sudo tcpdump -ni veth-blue-br -v  -l -e  
+      - shell_command: # pane PING  
+          - tmux select-pane -T "PING from blue to red"  
+          - sudo ip netns exec blue bash  
+          - ping 192.168.15.1
+```
 
 ### Intro
 

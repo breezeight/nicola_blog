@@ -6,12 +6,6 @@ comments: true
 categories: ["javascript"]
 ---
 
-# Contents
-{:.no_toc}
-
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
-
-# React Native
+See https://docs.google.com/document/d/1rD9Q_yYlYh52zsk6uxhgQoVK7TJZnkvxSLBydA3CFOU/edit?tab=t.0
 
 
