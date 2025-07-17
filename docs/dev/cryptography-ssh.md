@@ -1,6 +1,7 @@
 # SSH
 
 ## Main Topics
+
 - Configuring SSH
 - SSH Key Fingerprint
 - Using Specific Private Key
@@ -9,7 +10,7 @@
 
 ## Related Documents {#related-documents}
 
-[GPG - PGP](cryptography-pgp-gpg.md)  
+[GPG - PGP](cryptography-pgp-gpg.md)
 
 [GUIDE Sops - editor of encrypted files](https://docs.google.com/document/d/1Z7hGLmjbeMN-k3_hfFATVr1Z9E3sLojerbKH6GObpW0/edit)
 
@@ -22,6 +23,7 @@ SSH, also known as Secure Shell, is a popular protocol used to securely access c
 **SSH Protocol** and **SSH Keys** are two distinct concepts, though they are closely related and often used together in secure communications:
 
 - **SSH Protocol**: The protocol is the set of rules that governs how the two parties (client and server) communicate with each other. It defines the handshake, the encryption and decryption of messages, and the authentication process. It works based on two concepts:
+
   - [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography)
   - [challenge-response authentication](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication)
 
@@ -63,16 +65,14 @@ This explanation helps illustrate how public and private keys work together and 
 
 The SSH protocol is commonly used via the [OpenSSH](https://www.openssh.com/) implementation, which supports and uses a large number of cryptography systems. There are two broad classifications of the systems in use, based on their mathematical properties:
 
-* [Integer factorization](https://en.wikipedia.org/wiki/Integer_factorization), such as [Rivest, Shamir, and Adleman (RSA)](https://en.wikipedia.org/wiki/RSA_\(cryptosystem\)) and [Digital Signature Algorithm (DSA)](https://en.wikipedia.org/wiki/Digital_Signature_Algorithm), relies on the fact that it’s easy to multiply two very large prime numbers but practically difficult to factorize the result back to recover the primes. 3072-bit RSA is the default key type and size produced by ssh-keygen.  
-* [Elliptic curve cryptography](https://en.wikipedia.org/wiki/Elliptic-curve_cryptography), such as [Elliptic Curve Digital Signature Algorithm (ECDSA)](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) and [Ed25519](https://en.wikipedia.org/wiki/EdDSA), relies on certain [elliptic curves](https://en.wikipedia.org/wiki/Elliptic_curve) and their [discrete logarithm problem](https://www.doc.ic.ac.uk/~mrh/330tutor/ch06s02.html) being hard. Where supported, elliptic curve keys often provide improved performance and simpler usage than integer factorization keys. [Many modern configurations](https://infosec.mozilla.org/guidelines/openssh#modern) standardize on Ed25519 keys.
-
+- [Integer factorization](https://en.wikipedia.org/wiki/Integer_factorization), such as [Rivest, Shamir, and Adleman (RSA)](https://en.wikipedia.org/wiki/RSA_\(cryptosystem\)) and [Digital Signature Algorithm (DSA)](https://en.wikipedia.org/wiki/Digital_Signature_Algorithm), relies on the fact that it’s easy to multiply two very large prime numbers but practically difficult to factorize the result back to recover the primes. 3072-bit RSA is the default key type and size produced by ssh-keygen.
+- [Elliptic curve cryptography](https://en.wikipedia.org/wiki/Elliptic-curve_cryptography), such as [Elliptic Curve Digital Signature Algorithm (ECDSA)](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) and [Ed25519](https://en.wikipedia.org/wiki/EdDSA), relies on certain [elliptic curves](https://en.wikipedia.org/wiki/Elliptic_curve) and their [discrete logarithm problem](https://www.doc.ic.ac.uk/~mrh/330tutor/ch06s02.html) being hard. Where supported, elliptic curve keys often provide improved performance and simpler usage than integer factorization keys. [Many modern configurations](https://infosec.mozilla.org/guidelines/openssh#modern) standardize on Ed25519 keys.
 
 ### The SSH protocol: How SSH keys are used
 
-Imagine you need to securely connect to a remote server over the internet, perhaps to manage files or run commands. The SSH (Secure Shell) protocol is designed to do just that, using a system of keys to verify the identity of both parties. 
+Imagine you need to securely connect to a remote server over the internet, perhaps to manage files or run commands. The SSH (Secure Shell) protocol is designed to do just that, using a system of keys to verify the identity of both parties.
 
 When a developer requests access to a server, the system administrator typically asks for the developer's public key or retrieves it from a company database and places it on the server:
-
 
 ```mermaid
 sequenceDiagram
@@ -111,14 +111,13 @@ sequenceDiagram
     note over Client, Server: Connection is established if hashes match
 ```
 
-
 ### Impersonation Prevention
 
 - **Identity Verification**: Because only the legitimate user possesses the private key, the server can be confident that the response came from the actual user and not an imposter. If someone were to attempt to impersonate the user without having access to the private key, they would be unable to correctly decrypt the challenge or generate a valid response.
 - **Unique Challenge for Each Session**: By using a unique challenge for each connection attempt, the SSH protocol further enhances security. Even if an attacker were to intercept a previous response, they could not reuse it because the challenge would be different for each session.
 
-
 ### Shared secret: optimizing the connection
+
 Once the server is verified, both parties use algorithms like [Diffie-Hellman key exchange](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange) and [elliptic-curve Diffie-Hellman key exchange](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman) to create a **shared secret** that is used to encrypt subsequent communication.
 
 ### A real-world example
@@ -130,25 +129,23 @@ $ ssh pi@192.168.0.4
 The authenticity of host '192.168.0.4 (192.168.0.4)' can't be established.  
 ED25519 key fingerprint is SHA256:5lkC61T+vQ7mR4INcwBktQaolmAswQx9bws/cT+A/Kc.  
 This key is not known by any other names  
-Are you sure you want to continue connecting (yes/no/\[fingerprint\])? 
+Are you sure you want to continue connecting (yes/no/[fingerprint])? 
 ```
 
 The message `The authenticity of host '192.168.0.4 (192.168.0.4)' can't be established` typically appears when you attempt to connect to an SSH server for the first time. This warning indicates that the SSH client does not recognize the host’s public key, which is a security feature to prevent man-in-the-middle attacks. Here’s a breakdown of what this means and how to handle it:
 
-1. First Connection: When you connect to an SSH server for the first time, your SSH client checks its list of known hosts (stored in ~/.ssh/known_hosts) to see if it recognizes the server’s public key. If the key is not found, it cannot verify the authenticity of the server.
+1. First Connection: When you connect to an SSH server for the first time, your SSH client checks its list of known hosts (stored in \~/.ssh/known_hosts) to see if it recognizes the server’s public key. If the key is not found, it cannot verify the authenticity of the server.
 2. Potential Risks: This warning is important because it protects you from connecting to a potentially malicious server that could be impersonating the legitimate one. An attacker could be trying to intercept your connection.
 3. Accept the Host Key:
-	* If you are confident that you are connecting to the correct server and the key is legitimate, you can proceed to accept the key. This is usually done by typing “yes” when prompted.
-	* Once you accept the key, it will be stored in your ~/.ssh/known_hosts file, and you won’t receive the warning again for that server.
+   - If you are confident that you are connecting to the correct server and the key is legitimate, you can proceed to accept the key. This is usually done by typing “yes” when prompted.
+   - Once you accept the key, it will be stored in your \~/.ssh/known_hosts file, and you won’t receive the warning again for that server.
 4. If Unsure, Cancel the Connection:
-	* If you are not sure about the authenticity of the server or its public key, it’s best to cancel the connection to avoid potential security risks.
+   - If you are not sure about the authenticity of the server or its public key, it’s best to cancel the connection to avoid potential security risks.
 
-* `ED25519 key fingerprint is SHA256:5lkC61T+vQ7mR4INcwBktQaolmAswQx9bws/cT+A/Kc.` : The fingerprint of the server’s public host key.
-* `This key is not known by any other names` : The server’s public host key is not known by any other names.
+- `ED25519 key fingerprint is SHA256:5lkC61T+vQ7mR4INcwBktQaolmAswQx9bws/cT+A/Kc.` : The fingerprint of the server’s public host key.
+- `This key is not known by any other names` : The server’s public host key is not known by any other names.
 
-
-Once the client verifies and accepts the fingerprint, it is stored in the \~/.ssh/known\_hosts file and will be automatically verified when used again.
-
+Once the client verifies and accepts the fingerprint, it is stored in the \~/.ssh/known_hosts file and will be automatically verified when used again.
 
 ## SSH host keys
 
@@ -158,36 +155,34 @@ Host keys are also generated as public and private key pairs and are automatical
 
 Each server can have a host key for every supported algorithm, and these keys are usually stored in:
 
-* `/etc/ssh/ssh_host_dsa_key`
-* `/etc/ssh/ssh_host_ecdsa_key`
-* `/etc/ssh/ssh_host_ed25519_key`
-* `/etc/ssh/ssh_host_rsa_key`
-
+- `/etc/ssh/ssh_host_dsa_key`
+- `/etc/ssh/ssh_host_ecdsa_key`
+- `/etc/ssh/ssh_host_ed25519_key`
+- `/etc/ssh/ssh_host_rsa_key`
 
 ### Algorithms
 
-ref: [https://medium.com/risan/upgrade-your-ssh-key-to-ed25519-c6e8d60d3c54](https://medium.com/risan/upgrade-your-ssh-key-to-ed25519-c6e8d60d3c54)	
+ref: <https://medium.com/risan/upgrade-your-ssh-key-to-ed25519-c6e8d60d3c54>
 
 The most common algorithms used in 2023:
 
-* 🚨 DSA: It’s unsafe and even no longer supported since OpenSSH version 7, you need to upgrade it\!  
-* ⚠️ RSA: It depends on key size. If it has 3072 or 4096-bit length, then you’re good. Less than that, you probably want to upgrade it. The 1024-bit length is even considered unsafe.  
-* 👀 ECDSA: It depends on how well your machine can generate a random number that will be used to create a signature. There’s also a [trustworthiness concern](https://www.hyperelliptic.org/tanja/vortraege/20130531.pdf) on the NIST curves that being used by ECDSA.  
-* ✅ Ed25519: It’s the most recommended public-key algorithm available today\!
+- 🚨 DSA: It’s unsafe and even no longer supported since OpenSSH version 7, you need to upgrade it!
+- ⚠️ RSA: It depends on key size. If it has 3072 or 4096-bit length, then you’re good. Less than that, you probably want to upgrade it. The 1024-bit length is even considered unsafe.
+- 👀 ECDSA: It depends on how well your machine can generate a random number that will be used to create a signature. There’s also a [trustworthiness concern](https://www.hyperelliptic.org/tanja/vortraege/20130531.pdf) on the NIST curves that being used by ECDSA.
+- ✅ Ed25519: It’s the most recommended public-key algorithm available today!
 
 #### Ed25519
 
 By default the keypair name is:
 
-* **id_ed25519**  
-* **id_ed25519.pub**
+- **id_ed25519**
+- **id_ed25519.pub**
 
 Benefits:
 
-* The Ed25519 was introduced on OpenSSH version 6.5. It’s the EdDSA implementation using the Twisted Edwards curve. It’s using elliptic curve cryptography that offers a better security with faster performance compared to DSA or ECDSA.  
-* Today, the RSA is the most widely used public-key algorithm for SSH key. But compared to Ed25519, it’s slower and even considered not safe if it’s generated with the key smaller than 2048-bit length.  
-* **The Ed25519 public-key is compact.** It only contains 68 characters, compared to RSA 3072 that has 544 characters. Generating the key is also almost as fast as the signing process. It’s also fast to perform batch signature verification with Ed25519. It’s built to be collision resilence. Hash-function collision won’t break the system.
-
+- The Ed25519 was introduced on OpenSSH version 6.5. It’s the EdDSA implementation using the Twisted Edwards curve. It’s using elliptic curve cryptography that offers a better security with faster performance compared to DSA or ECDSA.
+- Today, the RSA is the most widely used public-key algorithm for SSH key. But compared to Ed25519, it’s slower and even considered not safe if it’s generated with the key smaller than 2048-bit length.
+- **The Ed25519 public-key is compact.** It only contains 68 characters, compared to RSA 3072 that has 544 characters. Generating the key is also almost as fast as the signing process. It’s also fast to perform batch signature verification with Ed25519. It’s built to be collision resilence. Hash-function collision won’t break the system.
 
 ## Best practices for SSH keys {#best-practices-for-ssh-keys}
 
@@ -199,59 +194,62 @@ Keeping private keys secure is crucial, yet private SSH keys are often leaked on
 
 Tips to Protect Your Private Keys:
 
-* **Use an SSH agent**: An SSH agent can manage your keys and allow you to use them without exposing the private key directly. This keeps the key secure in memory while you work.
-* **Always set a passphrase**: This adds an extra layer of security, preventing unauthorized access even if the key is stolen.
-* **Use a password manager**: Tools like 1Password can securely store your SSH keys and passphrases, making it easier to manage them safely.
-* **Set proper file permissions**: Ensure your private key has permissions of 600 (readable and writable only by the owner) or 400 (readable only). Use the command: `chmod 600 ~/.ssh/id_rsa`
-* **Keep keys out of public repositories**: Use `.gitignore` or similar methods to prevent accidental commits.
+- **Use an SSH agent**: An SSH agent can manage your keys and allow you to use them without exposing the private key directly. This keeps the key secure in memory while you work.
+- **Always set a passphrase**: This adds an extra layer of security, preventing unauthorized access even if the key is stolen.
+- **Use a password manager**: Tools like 1Password can securely store your SSH keys and passphrases, making it easier to manage them safely.
+- **Set proper file permissions**: Ensure your private key has permissions of 600 (readable and writable only by the owner) or 400 (readable only). Use the command: `chmod 600 ~/.ssh/id_rsa`
+- **Keep keys out of public repositories**: Use `.gitignore` or similar methods to prevent accidental commits.
 
 SSH will refuse to run if permissions are too open, displaying an error like: `Permissions 0644 for 'id_rsa' are too open.`
 
 By following these practices, including using an SSH agent and a password manager, you can significantly enhance the security of your private keys.
 
-
 #### Use 1Password to protect your private key
 
 Using 1Password to manage your SSH keys can greatly enhance your security and streamline your workflow. Here are some steps to help you get started:
 
-1. **Store your private key in 1Password**: 
+1. **Store your private key in 1Password**:
+
    - Open 1Password and navigate to the vault where you want to store your SSH key.
    - Click on the "+" button to add a new item and select "Secure Note".
    - Paste your private key into the secure note and save it.
 
 2. **Access your private key from 1Password**:
+
    - When you need to use your private key, open 1Password and navigate to the secure note containing your key.
    - Copy the private key to your clipboard.
 
 3. **Add the private key to your SSH agent**:
+
    - Open your terminal.
    - Use the `ssh-add` command to add the private key to your SSH agent. For example:
+
      ```sh
      ssh-add - <<< "$(pbpaste)"
      ```
+
      This command assumes you are using macOS and have copied the private key to your clipboard using 1Password. For other operating systems, you may need to adjust the command accordingly.
    - See more about the ssh agent [here](#ssh-agent).
 
 4. **Automate the process**:
+
    - To make this process even more seamless, you can create a script that retrieves the private key from 1Password and adds it to your SSH agent automatically. This can be done using the 1Password command-line tool (`op`).
 
 By following these steps, you can ensure that your private key is securely stored and easily accessible whenever you need it.
 
-
 #### Use a passphrase and add the key to your ssh-agent
 
-Then add it to your ssh-agent ⇒ [\[JOB\] Add a key to your ssh-agent](https://docs.google.com/document/d/1gYceTgjYjYrVqRJZ-uHItOifQKCfACuyJmvNLtOWwHM/edit#heading=h.ot1b1xtl5uap)
+Then add it to your ssh-agent ⇒ [[JOB] Add a key to your ssh-agent](https://docs.google.com/document/d/1gYceTgjYjYrVqRJZ-uHItOifQKCfACuyJmvNLtOWwHM/edit#heading=h.ot1b1xtl5uap)
 
-**🔥⚠️⚠️usa a PASSPHRASE \!\!,  use the strong one \!\!\!🔥⚠️⚠️**
+**🔥⚠️⚠️usa a PASSPHRASE !!, use the strong one !!!🔥⚠️⚠️**
 
 You can also use the same passphrase like any of your old SSH keys.
 
-* `-o` : Save the private-key using the new OpenSSH format rather than the PEM format. Actually, this option is implied when you specify the key type as `ed25519`.  
-* `-a`: It’s the numbers of KDF (Key Derivation Function) rounds. Higher numbers result in slower passphrase verification, increasing the resistance to brute-force password cracking should the private-key be stolen.  
-* `-t`: Specifies the type of key to create, in our case the Ed25519.  
-* `-f`: Specify the filename of the generated key file. If you want it to be discovered automatically by the SSH agent, it must be stored in the default \`.ssh\` directory within your home directory.  
-* `-C`: An option to specify a comment. It’s purely informational and can be anything. But it’s usually filled with `<login>@<hostname>` who generated the key.
-
+- `-o` : Save the private-key using the new OpenSSH format rather than the PEM format. Actually, this option is implied when you specify the key type as `ed25519`.
+- `-a`: It’s the numbers of KDF (Key Derivation Function) rounds. Higher numbers result in slower passphrase verification, increasing the resistance to brute-force password cracking should the private-key be stolen.
+- `-t`: Specifies the type of key to create, in our case the Ed25519.
+- `-f`: Specify the filename of the generated key file. If you want it to be discovered automatically by the SSH agent, it must be stored in the default \`.ssh\` directory within your home directory.
+- `-C`: An option to specify a comment. It’s purely informational and can be anything. But it’s usually filled with `<login>@<hostname>` who generated the key.
 
 ### Keep track of actively used SSH keys
 
@@ -269,7 +267,8 @@ While there are [ways to make this process easier](https://www.linuxjournal.com/
 
 As mentioned before, you are prompted to verify the server’s fingerprint when connecting to a server for the first time. If the fingerprint doesn’t match, that could mean the server is malicious, the public key is outdated, or you’re falling victim to a [man-in-the-middle attack](https://www.ssh.com/academy/attack/man-in-the-middle). If you’re a user, you should get the correct fingerprint from the SSH server administrator and must verify the host key fingerprint before connecting to the server. If you’re an administrator, you can generate the [fingerprint from the host key](https://docs.bmc.com/docs/display/itda27/About+the+SSH+host+key+fingerprint).
 
-If the server’s host key has changed, you’ll be greeted with an error when you try to SSH to the server:  
+If the server’s host key has changed, you’ll be greeted with an error when you try to SSH to the server:
+
 ```
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  
 @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED\!     @  
@@ -288,14 +287,12 @@ Host key verification failed.
 
 If you can verify that the host key change is legitimate, you can remove the offending entry from the `known_hosts` file with `ssh-keygen -R <hostname_of_the_server>`, or you can remove it manually.
 
-
-
 ### Generating Ed25519 Key
 
 You can have multiple SSH keys on your machine. So you can keep your old SSH keys and generate a new one that uses Ed25519. This way you can still log in to any of your remote servers. Then slowly replace the authorized key on your remote servers one by one with the newly generated Ed25519 public-key.
 
-| ssh-keygen \-o \-a 100 \-t ed25519 \-f \~/.ssh/id\_ed25519 \-C "john@example.com" |
-| :---- |
+| ssh-keygen -o -a 100 -t ed25519 -f \~/.ssh/id_ed25519 -C "[john@example.com](mailto:john@example.com)" |
+| --- |
 
 ### Organize a ssh keys and config in subfolder `~/.ssh/my_project`
 
@@ -303,31 +300,32 @@ Keeping your SSH keys and configuration files organized by project is a practica
 
 Directory Structure:
 
-* create a Project-Specific folder in your .ssh directory. For example, .ssh/my\_project/.  
-* Inside each project-specific directory, store the relevant SSH keys and a config file.
+- create a Project-Specific folder in your .ssh directory. For example, .ssh/my_project/.
+- Inside each project-specific directory, store the relevant SSH keys and a config file.
 
 Configuring SSH:
 
-* SSH Config File: In each project-specific directory, create a **.ssh/my\_project/`config`** file. This file can specify Host, User, IdentityFile, and other SSH options specific to that project.  
+- SSH Config File: In each project-specific directory, create a **.ssh/my_project/**`config` file. This file can specify Host, User, IdentityFile, and other SSH options specific to that project.\
   Example:
 
-| Host myprojecthost    HostName example.com    User myusername    IdentityFile \~/.ssh/my\_project/id\_rsa    IdentitiesOnly yes |
-| :---- |
+| Host myprojecthost HostName [example.com](http://example.com) User myusername IdentityFile \~/.ssh/my_project/id_rsa IdentitiesOnly yes |
+| --- |
 
-* Global SSH Config: In your main `.ssh/config` file, you can include the project-specific config files using the `Include` directive:
+- Global SSH Config: In your main `.ssh/config` file, you can include the project-specific config files using the `Include` directive:
 
-| Include \~/.ssh/my\_project/config |
-| :---- |
+| Include \~/.ssh/my_project/config |
+| --- |
 
-OR IN ALTERNATIVE SSH allows you to specify a different configuration file than the default \~/.ssh/config. You can use the \-F option followed by the path to your custom configuration file when executing SSH commands. This can be particularly useful when you're managing project-specific SSH configurations.
+
+OR IN ALTERNATIVE SSH allows you to specify a different configuration file than the default \~/.ssh/config. You can use the -F option followed by the path to your custom configuration file when executing SSH commands. This can be particularly useful when you're managing project-specific SSH configurations.
 
 Here's how you can use it: `ssh -F ~/.ssh/pdb/config [other_ssh_options] hostname`
 
 Permissions:
 
-* Ensure that the permissions for your project-specific SSH keys and config files are correctly set. SSH keys usually require strict permissions (like `600` for private keys).
+- Ensure that the permissions for your project-specific SSH keys and config files are correctly set. SSH keys usually require strict permissions (like `600` for private keys).
 
-Example project ⇒ PDB [⭐ Produzioni Dal Basso - Overview and Getting Started ⭐ ](https://docs.google.com/document/d/1HjYJOvBUw2tGkBklx3sKuLDIY1a7sYeD8AbVuM5hb8s/edit)
+Example project ⇒ PDB [⭐ Produzioni Dal Basso - Overview and Getting Started ⭐](https://docs.google.com/document/d/1HjYJOvBUw2tGkBklx3sKuLDIY1a7sYeD8AbVuM5hb8s/edit)
 
 ## HOWTO Get SSH Key Fingerprint
 
@@ -347,28 +345,26 @@ Host awesome
   IdentitiesOnly yes
 ```
 
-
 Once it’s saved, later you can SSH to your target host like this: `ssh awesome`
 
 ## SSH Agent Overview
 
-> [!WARNING]
+> [!WARNING]\
 > These part about the ssh-agent are not yet completed. It could be moved to a separate page.
 
 ### What is an SSH-Agent? {#what-is-an-ssh-agent?}
 
 An ssh-agent is a program that holds your private keys used by ssh for public key authentication. It holds your keys and certificates in memory, unencrypted, and ready for use by `ssh`. It saves you from typing a passphrase every time you connect to a server by caching the key for you and you only need to enter the password when the agent wants to decrypt it.
 
-> [!WARNING]
+> [!WARNING]\
 > If your private RSA key is not encrypted with a passphrase, then ssh-agent is not necessary. BUT you should never use a private key without a passphrase!.
 
 **Why should you use an ssh-agent?**
 
 - When you connect to an SSH deamon with your ssh client, the verification to the server is based on **challenge-response authentication**, where message are signed with your private key (see [How does ssh keys work](#how-does-ssh-keys-are-used)).
-- As a security measure, people protect their private keys with a passphrase, so any authentication attempt would require you to enter this passphrase.  
-- Having to enter the passphrase every time you connect to a server can be undesirable, so the ssh-agent caches the key for you and you only need to enter the password once, when the agent wants to decrypt it.  
+- As a security measure, people protect their private keys with a passphrase, so any authentication attempt would require you to enter this passphrase.
+- Having to enter the passphrase every time you connect to a server can be undesirable, so the ssh-agent caches the key for you and you only need to enter the password once, when the agent wants to decrypt it.
 - The benefit of using an ssh-agent is that **you only need to enter your passphrase once per session**, with the session duration defined by the agent's configuration. If the session ends (e.g., due to a reboot or a timeout configured in the agent), you'll need to re-enter your passphrase to reload your key.
-
 
 **Why is ssh-agent more secure?**:
 
@@ -380,7 +376,6 @@ An ssh-agent is a program that holds your private keys used by ssh for public ke
 ### HOW ssh based tools interact with an SSH agent
 
 Before moving on, let's see the tools ecosystem around the ssh tools and clarify the role of each tool.
-
 
 Usually on a development machine you choose to use a single SSH agent to manage all your private keys. But nothing prevent you to run multiple SSH agents on the same machine. Some examples of common agents:
 
@@ -407,8 +402,8 @@ In this case you can adopt the following strategy:
 
 SSH uses a Unix domain socket to talk to the agent via the [SSH agent protocol](https://tools.ietf.org/html/draft-miller-ssh-agent-04). Most people use the `ssh-agent` that comes with OpenSSH, but there's a variety of open-source alternatives.
 
-The ssh-agent creates a **socket** and then checks the connections from `ssh client`. Everyone who is able to connect to this socket also has access to the `ssh-agent`. The permissions are set as in a usual Linux or Unix system. 
- 
+The ssh-agent creates a **socket** and then checks the connections from `ssh client`. Everyone who is able to connect to this socket also has access to the `ssh-agent`. The permissions are set as in a usual Linux or Unix system.
+
 When the `ssh client` connects to the `ssh-agent` asking to sign a message with a specific private key. The `ssh-agent` will check if the private key is already **decrypted**, otherwise it will ask the user for the passphrase and then decrypt the private key.
 
 > [!NOTE] The SSH agent never hands the private keys to client programs, but merely presents a socket over which clients can send it data and over which it responds with data signed with the private keys (A side benefit of this is that you can use your private key even with programs you don't fully trust).
@@ -423,32 +418,31 @@ The agent protocol is so simple that one could write a basic SSH agent in a day 
 - Sign a message with a key stored in the agent
 - Lock or unlock the entire agent with a passphrase
 
-> [!DEFINITION]🤔 What's a constrained key? It's usually a key that either has a limited lifetime or one that demands explicit user confirmation when it is used. 
+> [!DEFINITION]🤔 What's a constrained key? It's usually a key that either has a limited lifetime or one that demands explicit user confirmation when it is used.
 
 The `ssh-add` command is your gateway to the SSH agent. It performs all of these operations except for signing.
 
-
 ### SSH-Agent and multiple keys {#ssh-agent-and-multiple-keys}
 
-Using a key agent also allows using multiple keys easily.   
+Using a key agent also allows using multiple keys easily.\
 Instead of having to specify the path to the key, when using a key agent ssh will try every key in it.
 
-NOTE: 
+NOTE:
 
-* try too many invalid keys on a server and it will close the connection before you got to the valid key.   
-* Of course, that's what \~/.ssh/config's IdentityFile option is good for, with or without the agent  
-* you can have multiple keys without an agent, but you can also specify in your \~/.ssh/config which key to use for which remote host, so that it knows exactly which one it needs
+- try too many invalid keys on a server and it will close the connection before you got to the valid key.
+- Of course, that's what \~/.ssh/config's IdentityFile option is good for, with or without the agent
+- you can have multiple keys without an agent, but you can also specify in your \~/.ssh/config which key to use for which remote host, so that it knows exactly which one it needs
 
 ### SSH-Agent Forwarding {#ssh-agent-forwarding}
 
 SSH agent can be forwarded over SSH. So when you ssh to host A, while forwarding your agent, you can then ssh from A to another host B without needing your key present (not even in encrypted form) on host A.
 
-[Using SSH agent forwarding \- GitHub Docs](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/using-ssh-agent-forwarding)  
-[An Illustrated Guide to SSH Agent Forwarding](http://www.unixwiz.net/techtips/ssh-agent-forwarding.html) 
+[Using SSH agent forwarding - GitHub Docs](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/using-ssh-agent-forwarding)\
+[An Illustrated Guide to SSH Agent Forwarding](http://www.unixwiz.net/techtips/ssh-agent-forwarding.html)
 
 ### Use SSH-Agent with AWS SSM {#use-ssh-agent-with-aws-ssm}
 
-[https://alestic.com/2018/12/aws-ssm-parameter-store-git-key/](https://alestic.com/2018/12/aws-ssm-parameter-store-git-key/)
+<https://alestic.com/2018/12/aws-ssm-parameter-store-git-key/>
 
 TODO: how can we inject AWS credential in a git build?
 
@@ -469,9 +463,10 @@ SSH_AUTH_SOCK=/var/folders/r1/bqjgbnfs77s397xqp6rkbbjm0000gn/T//ssh-QmF4F1RouuTJ
 SSH_AGENT_PID=65711; export SSH_AGENT_PID;
 echo Agent pid 65711;
 ```
+
 #### HOWTO Add a key to your ssh-agent
 
-If you are not using a password manager like 1Password, typically you can find your private key at `~/.ssh`  (ie  `~/.ssh/id_ed25519`).
+If you are not using a password manager like 1Password, typically you can find your private key at `~/.ssh` (ie `~/.ssh/id_ed25519`).
 
 Then run the following command to add your newly generated Ed25519 key to SSH agent:
 
@@ -488,32 +483,29 @@ When you run `ssh-add` without any parameters, it will scan your home director
 - `~/.ssh/id_dsa`
 - `~/.ssh/id_ecdsa`
 
-
-
 #### ssh-agent on OSX
 
 Tips for OSX:
 
 - [How to save your SSH key passphrase to your Apple Keychain on macOS](https://medium.com/hyperion360/how-to-save-your-ssh-key-passphrase-to-your-apple-keychain-on-macos-63cf7cf02dab): this document explain how to save your SSH key passphrase to your Apple Keychain on macOS. This way you can backup your private key and passphrase in a secure way using the standard OSX backup tools.
 
-
 # GIT
 
-> [!WARNING]
+> [!WARNING]\
 > These part about the git are not yet completed. It should be moved to a separate page. We reverse the information in the Addictive Slack and add both here in my doc and in the Addictive Doc.
 
 ## HOWTO tell git which private key to use
 
-[http://superuser.com/questions/232373/how-to-tell-git-which-private-key-to-use](http://superuser.com/questions/232373/how-to-tell-git-which-private-key-to-use) 
+<http://superuser.com/questions/232373/how-to-tell-git-which-private-key-to-use>
 
-ssh-agent  
-     If a command line is given, this is executed as a subprocess of the agent.  When the command dies, so does the agent.
+ssh-agent\
+If a command line is given, this is executed as a subprocess of the agent. When the command dies, so does the agent.
 
 # TailScale (WIP)
 
-> [!WARNING]
+> [!WARNING]\
 > These part about the git are not yet completed and may be we don't need it. It should be moved to a separate page.
 
 ### How to generate an SSH key with Tailscale
 
-⇒ [How to generate SSH keys · Tailscale](https://tailscale.com/learn/generate-ssh-keys/#how-to-generate-an-ssh-key-with-tailscale) 
+⇒ [How to generate SSH keys · Tailscale](https://tailscale.com/learn/generate-ssh-keys/#how-to-generate-an-ssh-key-with-tailscale)
