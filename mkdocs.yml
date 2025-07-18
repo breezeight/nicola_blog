@@ -33,8 +33,8 @@ plugins:
   - search
   - macros
   - gh-admonitions
-  # - tags:
-  #     tags_file: tags.md
+  - tags:
+      tags_file: tags.md
 
 extra:
   social:
