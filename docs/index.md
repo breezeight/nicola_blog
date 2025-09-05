@@ -75,8 +75,6 @@ S3:
 
 ### Nix
 
-[Nix](dev/nix/nix.md)
-
 Breezeight NixOS Config on OSX:
 
 - [**Breezeight Nix Config**](dev/nix/nix-breezeight-config-osx-and-linux-overview.md)
@@ -87,65 +85,7 @@ Home Manager Day by Day Usage:
 - [Home Manager Configuration Overview and Options](dev/nix/nix-homemanager-configuration-overview-and-options.md)
 - [Home Manager Nix Darwin Module Docs](dev/nix/nix-homemanager-nix-darwin-module-docs.md): links to the official docs + some notes.
 
-Home Manager Explanations and introductions:
-
-- [Home Manager Overview](dev/nix/nix-homemanager-overview-explanation.md): good to explain the big picture and to undestand the usage context, good for new users.
-- [GOOGLE DOC : Home Manager Configuration Overview and Options](https://docs.google.com/document/d/1UN77X-g7uTlgCRNU03Tnw4ao74hmc1oUxqYR-4kH6SA/edit?tab=t.0):
-  - Document Overview
-  - Installation
-  - General overview of Home-Manager
-  - Home-Manager internals
-  - Home-manager modules notes
-  - Frequent Jobs
-  - [JOB]
-  - Home-Manager for Darwin
-  - darwin-rebuild
-  - Install OSX in UTM
-  - Connect via ssh
-  - mac configuration
-  - nix-darwin config
-  - Understanding nix-darwin and Home Manager
-  - [Darwin] Homebrew Module
-  - [Darwin] system.defaults
-  - Home-manager config
-  - Home Manager Modules
-  - nixos-hardware
-  - Direnv
-  - Home Module
-  - Packages vs modules
-  - home.stateVersion
-  - Module to install DEVENV using flake
-  - Upgrading Home-Manager
-  - Impermanence and Home-Manager
-  - Home Manager Standalone Internals
-  - Profiles
-  - The Flake Structure and how it's used
-  - The Breezeight Parent module
-  - Global Module
-  - Session Settings
-  - Persistence Configuration
-  - Features Modules
-  - Features Modules - CLI - Overview
-  - Features Modules - CLI - git.nix
-  - Features Modules - CLI - gpg.nix
-  - Features Modules - CLI - ssh.nix
-  - Tooling and applications
-  - Misterio77's Configurations
-
-Remote Linux Builders:
-
-- [Nix Linux Remote Builder VM](dev/nix/nix-linux-remote-builder-vm-on-osx-howto.md)
-
-Bootstrap a Nixos system:
-
-- [Nix Bootstrap NixOS](dev/nix/nix-bootstrap-nixos-howto.md)
-- [Nix Bootstrap NixOS Explanation](dev/nix/nix-bootstrap-nixos-explanation.md)
-
-
-Nix and Docker:
-
-- [Nix and Docker](dev/nix/nix-and-docker.md)
-- [Nix Nixpaks](dev/nix/nix-nixpacks.md)
+All the other Nix related docs are indexed in the [Nix Index](dev/nix/nix-index.md) folder.
 
 ## Python
 
