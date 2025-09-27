@@ -1,0 +1,51 @@
+---
+glob: "docs/**/*.md"
+auto-attach: "docs/dev/**/*.md"
+---
+
+# Markdown Notes Structure
+
+## Repository Purpose
+This is a personal knowledge base containing markdown notes on various technical topics, organized for easy reference and learning.
+
+## File Organization
+
+### Directory Structure
+- **docs/dev/** - Development and technical topics
+- **docs/yoga_poses/** - Yoga-related content
+- **docs/images/** - Supporting images and diagrams
+- **docs/downloads/** - Downloadable resources
+
+### Naming Conventions
+- Use descriptive, lowercase filenames with hyphens or underscores
+- Group related topics in subdirectories (e.g., `aws/`, `python-language-reference-nicola/`)
+- Use consistent naming patterns within topic areas
+
+## Content Guidelines
+
+### File Structure
+1. **Title/Header** - Clear, descriptive title
+2. **Introduction** - Brief overview of the topic
+3. **Main Content** - Organized with proper headers
+4. **Examples** - Code snippets, configurations, or practical examples
+5. **References** - Links to external resources, documentation
+
+### Markdown Formatting
+- Use proper header hierarchy (H1, H2, H3, etc.)
+- Include code blocks with appropriate syntax highlighting
+- Use tables for structured information
+- Add images and diagrams where helpful
+- Include anchor links for easy navigation
+
+### Cross-References
+- Link between related notes using relative paths
+- Maintain consistent terminology across files
+- Update links when files are moved or renamed
+- Use descriptive link text
+
+### Content Quality
+- Keep information current and accurate
+- Include practical examples and use cases
+- Add troubleshooting sections where relevant
+- Organize content logically with clear sections
+- Use bullet points and numbered lists for readability

@@ -1,0 +1,48 @@
+---
+description: 
+globs: docs/dev/**/*.md
+alwaysApply: false
+---
+# Development Notes Guidelines
+
+## Technical Documentation Standards
+
+### Code Examples
+- Include complete, runnable code snippets
+- Add comments to explain complex logic
+- Show both basic and advanced use cases
+- Include error handling where appropriate
+- Use proper syntax highlighting
+
+### Configuration Examples
+- Provide complete configuration files
+- Include environment-specific variations
+- Add explanatory comments
+- Show before/after examples when relevant
+
+### Installation and Setup
+- Include step-by-step installation instructions
+- List prerequisites and dependencies
+- Provide troubleshooting guidance
+- Include version compatibility notes
+
+### Best Practices
+- Document recommended approaches
+- Include security considerations
+- Add performance tips where relevant
+- Provide migration guides for version changes
+- Follow the diataxis principle: a section or a file should be clearly categorable in that framework.
+- Follow the diataxis principle: for small notes avoid spreading them among too many file, you 
+
+### External Resources
+- Link to official documentation
+- Include community resources
+- Reference relevant tutorials and guides
+- Maintain working links to external sites
+
+### File Organization
+- Group related topics in subdirectories
+- Use consistent naming conventions
+- Maintain clear separation between different technologies
+- Include index files for complex topic areas
+- Use the main topic ar

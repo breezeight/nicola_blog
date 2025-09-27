@@ -1,0 +1,38 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# General Writing Guidelines
+
+## Content Creation
+
+### Clarity and Readability
+- Write clear, concise explanations
+- Use simple language when possible
+- Break complex topics into digestible sections
+- Include practical examples to illustrate concepts
+
+### Structure and Organization
+- Use consistent header hierarchy
+- Group related information together
+- Include table of contents for long documents
+- Use lists and tables for structured information
+
+### Accuracy and Maintenance
+- Verify technical information before publishing
+- Update content when technologies change
+- Include version numbers and dates where relevant
+- Review and update links regularly
+
+### Accessibility
+- Use descriptive link text
+- Include alt text for images
+- Ensure proper contrast in code examples
+- Use semantic HTML elements in markdown
+
+### Collaboration
+- Use consistent terminology across documents
+- Cross-reference related content
+- Maintain a logical flow between topics
+- Update indexes and navigation when adding content

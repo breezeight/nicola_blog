@@ -1,0 +1,13 @@
+---
+description: Cross project linking
+globs:
+  - 'main.py'
+  - 'docs/**/*.md'
+alwaysApply: true
+---
+
+- Enable MkDocs macros plugin for dynamic content generation
+- Create `main.py` with `abstract` macro for page summaries
+- **Index documents should always link other pages using the `abstract` macro**
+- Use front matter in markdown files with `title` and `abstract` fields
+- Example usage: `{{ abstract(pages["foo.md"]) }}`

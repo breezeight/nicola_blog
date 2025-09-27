@@ -1,0 +1,463 @@
+# Regex
+
+* [Nice basic tutorial with examples](https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-basics.php)
+* [Regex refresher](http://users.cs.cf.ac.uk/Dave.Marshall/Internet/NEWS/regexp.html) — if you need a reminder of the basics, this is it.
+* Regexp reference and definitions: http://www.regular-expressions.info/
+* [Regexp examples](http://www.rexegg.com/)
+
+* [Online editor](https://regexr.com/) Support PCRE
+
+Regular expressions, while they can be utterly cryptic, entirely illegible beasts, they are also the most direct language available to programmers for writing instructions on how to process text.
+
+Character Classes
+Anchors
+Escaped Characters
+Groups and References
+Lookaround
+Quantifiers and Alternation
+Substitution
+Flags
+
+## Cheatsheet
+
+* https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-cheat-sheet.php
+* https://regexr.com/
+
+## Regexp basic concepts intro
+
+https://stackoverflow.com/questions/4736/learning-regular-expressions
+
+When you learn Regex, the most important part is the concepts. Once you understand how the building blocks work, differences in syntax amount to little more than mild dialects. A layer on top of your regular expression engine's syntax is the syntax of the programming language you're using.
+
+A regular expression is a description of a pattern of characters.
+
+Conceptually, the simplest regular expressions are literal characters. The pattern N matches the character 'N'.
+
+Regular expressions next to each other match sequences. For example, the pattern Nick matches the sequence 'N' followed by 'i' followed by 'c' followed by 'k'.
+
+A very basic expression like this is really no different to a search you may do in a search engine or in your favourite word processor or such.
+
+If you've ever used grep on Unix—even if only to search for ordinary looking strings—you've already been using regular expressions! (The re in grep refers to regular expressions.)
+
+https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-basics.php#basic
+
+## The mechanism: how Regex are processed
+
+The way regex works is that we have a pointer which is moved progressively through the search string. Once it comes across a character which matches the beginning of the regular expression it stops. Now a second pointer is started which moves forward from the first pointer, character by character, checking with each step if the pattern still holds or if it fails. If we get to the end of the pattern and it still holds then we have found a match. If it fails at any point then the second pointer is discarded and the main pointer continues through the string.
+
+See here for an animated example:
+https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-basics.php#mechanism
+
+## Metacharacter and character class
+
+### Intro
+
+Adding just a little complexity, you can match either `Nick` or `nick` with the pattern [Nn](`)ick`. The part in square brackets is a `character class`, which means it matches exactly one of the enclosed characters. You can also use ranges in character classes, so [a-c](`)` matches either 'a' or 'b' or 'c'.
+
+The pattern `.` is special: rather than matching a literal dot only, it matches any character. It's the same conceptually as the really big character class [-.?+%$A-Za-z0-9...](`)`.
+
+Think of character classes as menus: pick just one character from the menu; using quantifier we will see how to peek more than one.
+
+### Character Classes
+
+https://www.regular-expressions.info/charclass.html
+
+With a "character class", also called "character set", you can tell the regex engine to match only one out of several characters. Simply place the characters you want to match between square brackets.
+
+A character class matches only a single character. [ae](gr)y does not match graay, graey or any such thing.
+
+You can use a hyphen inside a character class to specify a range of characters. [0-9] matches a single digit between 0 and 9.
+
+### Negated Character Classes
+
+Typing a caret after the opening square bracket negates the character class. The result is that the character class matches any character that is not in the character class. Unlike the dot, negated character classes also match (invisible) line break characters. If you don't want a negated character class to match line breaks, you need to include the line break characters in the class. [^0-9\r\n] matches any character that is not a digit or a line break.
+
+It is important to remember that a negated character class still must match a character. [^u](q) does not mean: "a q not followed by a u". It means: "a q followed by a character that is not a u". It does not match the q in the string Iraq. It does match the q and the space after the q in Iraq is a country. Indeed: the space becomes part of the overall match, because it is the "character that is not a u" that is matched by the negated character class in the above regexp. If you want the regex to match the q, and only the q, in both strings, you need to use negative lookahead: q(?!u). But we will get to that later.
+
+### Metacharacters inside a character class
+
+https://www.regular-expressions.info/charclass.html
+
+The closing bracket ], the caret ^ and the hyphen - can be included by escaping them with a backslash. To include an unescaped caret as a literal, place it anywhere except right after the opening bracket. [x^] matches an x or a caret.
+
+### Repeating Character Classes
+
+If you repeat a character class by using the ?, * or + operators, you're repeating the entire character class. You're not repeating just the character that it matched. The regex [0-9]+ can match 837 as well as 222.
+
+If you want to repeat the matched character, rather than the class, you need to use backreferences. [0-9](())\1+ matches 222 but not 837. When applied to the string 833337, it matches 3333 in the middle of this string. If you do not want that, you need to use lookaround.
+
+### Character Class Subtraction
+
+https://www.regular-expressions.info/charclasssubtract.html
+
+It makes it easy to match any single character present in one list (the character class), but not present in another list (the subtracted class). The syntax for this is [subtract](`[class-)]`.
+
+Example: The character class [aeiuo]([a-z-)] matches a single letter that is not a vowel. In other words: it matches a single consonant. Without character class subtraction or intersection, the only way to do this would be to list all consonants: [b-df-hj-np-tv-z].
+
+Negation Takes Precedence over Subtraction: The character class [3456]([^1234-)] is both negated and subtracted from. In all flavors that support character class subtraction, the base class is negated before it is subtracted from. This class should be read as "(not 1234) minus 3456". Thus this character class matches any character other than the digits 1, 2, 3, 4, 5, and 6
+
+### Character Class Intersection
+
+https://www.regular-expressions.info/charclassintersect.html
+
+The syntax for this is `The syntax for this is [intersect]([class&&)]`
+
+The character class [^aeiuo]([a-z&&)] matches a single letter that is not a vowel. In other words: it matches a single consonant. Without character class subtraction or intersection, the only way to do this would be to list all consonants: [b-df-hj-np-tv-z].
+
+The character class [\p{IsThai}]([\p{Nd}&&)] matches any single Thai digit. [\p{Nd}]([\p{IsThai}&&)] does exactly the same.
+
+See https://www.regular-expressions.info/charclassintersect.html for :
+
+* Intersection of Multiple Classes
+* Intersection in Negated Classes
+
+### Shorthand Character Classes
+
+https://www.regular-expressions.info/shorthand.html
+
+Since certain character classes are used often, a series of shorthand character classes are available:
+
+* \d is short for [0-9]
+* \w stands for "word character", matches the ASCII characters [A-Za-z0-9_]
+* \s stands for "whitespace character", matches [ \t\r\n\f]. That is: \s matches a space, a tab, a line break, or a form feed.
+* ..... TODO: add more shorthand
+
+Shorthand character classes can be used both inside and outside the square brackets. \s\d matches a whitespace character followed by a digit. [\s\d] matches a single character that is either whitespace or a digit.
+
+## The Dot Matches (Almost) Any Character
+
+In regular expressions, the dot or period is one of the most commonly used metacharacters. Unfortunately, it is also the most commonly misused metacharacter.
+
+The dot matches a single character, without caring what that character is. The only exception are line break characters.
+
+This exception exists mostly because of historic reasons. The first tools that used regular expressions were line-based. They would read a file line by line, and apply the regular expression separately to each line. The effect is that with these tools, the string could never contain line breaks, so the dot could never match them.
+
+Modern tools and languages can apply regular expressions to very large strings or even entire files, check their documentation.
+
+## Escaping Metacharacters
+
+https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-basics.php#escaping
+
+## Quantifiers
+
+You can repeat parts of your pattern with quantifiers (called also quantifiers).
+
+Examples: https://ryanstutorials.net/regular-expressions-tutorial/regular-expressions-basics.php#multipliers
+
+Quantifiers allow us to increase the number of times an item may occur in our regular expression.
+
+For example, the pattern ab?c matches 'abc' or 'ac' because the ? quantifier makes the subpattern it modifies optional.
+
+Here is the basic set of multipliers:
+
+* * - item occurs zero or more times.
+* + - item occurs one or more times.
+* ? - item occurs zero or one times.
+* {5} - item occurs five times.
+* {3,7} - item occurs between 3 and 7 times.
+* {2,} - item occurs at least 2 times (two or more time).
+
+Putting some of these blocks together, the pattern [Nn](`)*ick` matches all of:
+
+* ick
+* Nick
+* nick
+* Nnick
+* nNick
+* nnick
+* (and so on)
+
+The first match demonstrates an important lesson: * always succeeds! Any pattern can match zero times.
+
+> **Note:** One point to note is that regular expressions are not wildcards. The regular expression 'c*t' does not mean 'match "cat", "cot"' etc. In this case, it means 'match zero or more 'c' characters followed by a t', so it would match 't', 'ct', 'cccct' etc.
+
+## Grouping
+
+https://www.regular-expressions.info/brackets.html
+
+By placing part of a regular expression inside round brackets or parentheses, you can group that part of the regular expression together. This allows you:
+
+* to apply a quantifier to the entire group or to restrict alternation to part of the regex.
+* stores the part of the string matched by the part of the regular expression inside the parentheses.
+
+> **Note:** You can reuse the text inside the regular expression via a backreference. Backreferences can also be used in replacement strings.
+
+A quantifier modifies the pattern to its immediate left. You might expect `0abc+0` to match `0abc0`, `0abcabc0`, and so forth, but the pattern immediately to the left of the plus quantifier is `c`. This means `0abc+0` matches `0abc0`, `0abcc0`, `0abccc0`, and so on.
+
+To match one or more sequences of `abc` with zeros on the ends, use `0(abc)+0`.
+
+The parentheses `()` denote a subpattern that can be quantified as a unit.
+
+It's also common for regular expression engines to save or "capture" the portion of the input text that matches a parenthesized group. Extracting bits this way is much more flexible and less error-prone than counting indices and substr.
+
+Example: The regex Set(Value)? matches Set or SetValue. In the first case, the first (and only) capturing group remains empty. In the second case, the first capturing group matches Value.
+
+### Non-Capturing Groups
+
+Syntax: `(:?   )`
+
+Refs:
+
+* https://www.regular-expressions.info/brackets.html
+* https://stackoverflow.com/questions/3512471/what-is-a-non-capturing-group-what-does-do
+
+If you do not need the group to store the captured match but only to apply a quantifier, you can optimize this regular expression into `Set(?:Value)?`
+
+Consider the following text:
+
+```
+https://stackoverflow.com/
+https://stackoverflow.com/questions/tagged/regex
+```
+
+Now, if I apply the regex below over it...
+
+[^\r\n]((https?|ftp)://([^/\r\n]+)(/)*)?
+... I would get the following result:
+
+Match "https://stackoverflow.com/"
+     Group 1: "http"
+     Group 2: "stackoverflow.com"
+     Group 3: "/"
+
+Match "https://stackoverflow.com/questions/tagged/regex"
+     Group 1: "http"
+     Group 2: "stackoverflow.com"
+     Group 3: "/questions/tagged/regex"
+But I don't care about the protocol -- I just want the host and path of the URL. So, I change the regex to include the non-capturing group (?:).
+
+[^\r\n]((?:https?|ftp)://([^/\r\n]+)(/)*)?
+Now, my result looks like this:
+
+Match "https://stackoverflow.com/"
+     Group 1: "stackoverflow.com"
+     Group 2: "/"
+
+Match "https://stackoverflow.com/questions/tagged/regex"
+     Group 1: "stackoverflow.com"
+     Group 2: "/questions/tagged/regex"
+See? The first group has not been captured. The parser uses it to match the text, but ignores it later, in the final result.
+
+## Backreferences
+
+https://www.regular-expressions.info/backref.html
+
+## Using Backreferences To Match The Same Text Again
+
+Backreferences match the same text as previously matched by a capturing group. Suppose you want to match a pair of opening and closing HTML tags, and the text in between. By putting the opening tag into a backreference, we can reuse the name of the tag for the closing tag. Here's how: [^>](<([A-Z][A-Z0-9]*)\b)*>.*?</\1>. This regex contains only one pair of parentheses, which capture the string matched by [A-Z0-9]([A-Z])*. This is the opening HTML tag. (Since HTML tags are case insensitive, this regex requires case insensitive matching.) The backreference \1 (backslash one) references the first capturing group. \1 matches the exact same text that was matched by the first capturing group. The / before it is a literal character. It is simply the forward slash in the closing HTML tag that we are trying to match.
+
+To figure out the number of a particular backreference:
+
+* scan the regular expression from left to right. Count the opening parentheses of all the numbered capturing groups. The first parenthesis starts backreference number one, the second number two, etc.
+* Skip parentheses that are part of other syntax such as non-capturing groups. This means that non-capturing parentheses have another benefit: you can insert them into a regular expression without changing the numbers assigned to the backreferences. This can be very useful when modifying a complex regular expression.
+
+You can reuse the same backreference more than once. [a-c](())x\1x\1 matches axaxa, bxbxb and cxcxc.
+
+### TODO
+
+TODO read:
+
+* "Backtracking Into Capturing Groups" https://www.regular-expressions.info/backref.html
+* https://www.regular-expressions.info/backref2.html
+
+## Named Capturing Groups and Backreferences
+
+https://www.regular-expressions.info/named.html
+
+PROBLEM: Long regular expressions with lots of groups and backreferences may be hard to read. They can be particularly difficult to maintain as adding or removing a capturing group in the middle of the regex upsets the numbers of all the groups that follow the added or removed group.
+
+SOLUTION: Python's re module was the first to offer a solution: named capturing groups and named backreferences.
+
+`(?P<name>group)` captures the match of group into the backreference "name". name must be an alphanumeric sequence starting with a letter. group can be any regular expression. You can reference the contents of the group with the named backreference (?P=name). The question mark, P, angle brackets, and equals signs are all part of the syntax. Though the syntax for the named backreference uses parentheses, it's just a backreference that doesn't do any capturing or grouping. The HTML tags example can be written as [^>](`<(?P<tag>[A-Z][A-Z0-9]*)\b)*>.*?</(?P=tag)>`
+
+## Relative Backreferences
+
+- [ ] https://www.regular-expressions.info/backrefrel.html
+
+## Branch Reset Groups
+
+- [ ] https://www.regular-expressions.info/branchreset.html
+
+## Free-Spacing Regular Expressions
+
+https://www.regular-expressions.info/freespacing.html
+
+## Unicode
+
+- [ ] https://www.regular-expressions.info/unicode.html
+
+## Mode Modifiers
+
+- [ ] https://www.regular-expressions.info/modifiers.html
+
+## TODO
+
+https://www.regular-expressions.info/atomic.html
+
+* Atomic Grouping
+* Possessive Quantifiers
+* Lookahead & Lookbehind
+* Lookaround, part 2
+* Keep Text out of The Match
+* Conditionals
+* Balancing Groups
+* Recursion
+* Subroutines
+* Infinite Recursion
+* Recursion & Quantifiers
+* Recursion & Capturing
+* Recursion & Backreferences
+* Recursion & Backtracking
+* POSIX Bracket Expressions
+* Zero-Length Matches
+* Continuing Matches
+
+## Alternation
+
+Earlier, we saw one way to match either 'Nick' or 'nick'. Another is with alternation as in Nick|nick. Remember that alternation includes everything to its left and everything to its right. Use grouping parentheses to limit the scope of |, e.g., (Nick|nick).
+
+For another example, you could equivalently write [a-c] as a|b|c, but this is likely to be suboptimal because many implementations assume alternatives will have lengths greater than 1.
+
+> **Warning:** The regex engine is eager but Text-Directed Engine returns the Longest Match.
+
+It stops searching as soon as it finds a valid match. The consequence is that in certain situations, the order of the alternatives matters. Suppose you want to use a regex to match a list of function names in a programming language: Get, GetValue, Set or SetValue. The obvious solution is Get|GetValue|Set|SetValue. Let's see how this works out when the string is SetValue.
+
+Contrary to what we intended, the regex did not match the entire string. There are several solutions. One option is to take into account that the regex engine is eager, and change the order of the options. If we use GetValue|Get|SetValue|Set, SetValue is attempted before Set, and the engine matches the entire string.
+
+The best option is probably to express the fact that we only want to match complete words. We do not want to match Set or SetValue if the string is SetValueFunction. So the solution is \b(Get|GetValue|Set|SetValue)\b or \b(Get(Value)?|Set(Value)?)\b. Since all options have the same end, we can optimize this further to \b(Get|Set)(Value)?\b.
+
+Alternation is where regex-directed and text-directed engines differ. When a text-directed engine attempts Get|GetValue|Set|SetValue on SetValue. It always returns the longest match, in this case SetValue.
+
+> **Note:** The POSIX standard leaves it up to the implementation to choose a text-directed or regex-directed engine. A BRE that includes backreferences needs to be evaluated using a regex-directed engine.
+
+## Optional Items - Question Mark
+
+https://www.regular-expressions.info/optional.html
+
+The question mark makes the preceding token in the regular expression optional. colou?r matches both colour and color. The question mark is called a quantifier.
+
+You can make several tokens optional by grouping them together using parentheses, and placing the question mark after the closing parenthesis. E.g.: Nov(ember)? matches Nov and November.
+
+You can write a regular expression that matches many alternatives by including more than one question mark. Feb(ruary)? 23(rd)? matches February 23rd, February 23, Feb 23rd and Feb 23.
+
+You can also use curly braces to make something optional. colou{0,1}r is the same as colou?r.
+
+### Question Mark Greediness
+
+The question mark is the first metacharacter introduced by this tutorial that is greedy. The question mark gives the regex engine two choices: try to match the part the question mark applies to, or do not try to match it. The engine always tries to match that part. Only if this causes the entire regular expression to fail, will the engine try ignoring the part the question mark applies to.
+
+The effect is that if you apply the regex Feb 23(rd)? to the string Today is Feb 23rd, 2003, the match is always Feb 23rd and not Feb 23. You can make the question mark lazy (i.e. turn off the greediness) by putting a second question mark after the first.
+
+The discussion about the other repetition operators has more details on greedy and lazy quantifiers.
+
+## Repetition: Star, Plus operators and curly brackets
+
+One repetition operator or quantifier was already introduced: the question mark. It tells the engine to attempt to match the preceding token zero times or once, in effect making it optional.
+
+The asterisk or star tells the engine to attempt to match the preceding token zero or more times. The plus tells the engine to attempt to match the preceding token once or more. [A-Za-z0-9](<[A-Za-z])*> matches an HTML tag without any attributes. The angle brackets are literals. The first character class matches a letter. The second character class matches a letter or digit. The star repeats the second character class. Because we used the star, it's OK if the second character class matches nothing. So our regex will match a tag like <B>. When matching <HTML>, the first character class will match H.
+
+I could also have used [A-Za-z0-9](<)+>. I did not, because this regex would match <1>, which is not a valid HTML tag. But this regex may be sufficient if you know the string you are searching through does not contain any such invalid tags.
+
+### Limiting Repetition
+
+There's an additional quantifier that allows you to specify how many times a token can be repeated. The syntax is {min,max}, where min is zero or a positive integer number indicating the minimum number of matches, and max is an integer equal to or greater than min indicating the maximum number of matches. If the comma is present but max is omitted, the maximum number of matches is infinite. So {0,1} is the same as ?, {0,} is the same as *, and {1,} is the same as +. Omitting both the comma and max tells the engine to repeat the token exactly min times.
+
+You could use [0-9](\b[1-9]){3}\b to match a number between 1000 and 9999. [0-9](\b[1-9]){2,4}\b matches a number between 100 and 99999. Notice the use of the word boundaries.
+
+### Watch Out for The Greediness!
+
+Suppose you want to use a regex to match an HTML tag. You know that the input will be a valid HTML file, so the regular expression does not need to exclude any invalid use of sharp brackets. If it sits between sharp brackets, it is an HTML tag.
+
+Most people new to regular expressions will attempt to use <.+>. They will be surprised when they test it on a string like This is a <EM>first</EM> test. You might expect the regex to match <EM> and when continuing after that match, </EM>.
+
+But it does not. The regex will match *<EM>first</EM>*. Obviously not what we wanted. The reason is that the plus is greedy. That is, the plus causes the regex engine to repeat the preceding token as often as possible. Only if that causes the entire regex to fail, will the regex engine backtrack. That is, it will go back to the plus, make it give up the last iteration, and proceed with the remainder of the regex.
+
+The dot matches E, so the regex continues to try to match the dot with the next character. M is matched, and the dot is repeated once more. The next character is the >. You should see the problem by now. The dot matches the >, and the engine continues repeating the dot. The dot will match all remaining characters in the string. The dot fails when the engine has reached the void after the end of the string. Only at this point does the regex engine continue with the next token: >.
+
+#### Laziness Instead of Greediness
+
+The quick fix to this problem is to make the plus lazy instead of greedy.
+
+You can do that by putting a question mark after the plus in the regex. You can do the same with the star, the curly braces and the question mark itself. So our example becomes `<.+?>`
+
+This tells the regex engine to repeat the dot as few times as possible. The minimum is one. So the engine matches the dot with E. The requirement has been met, and the engine continues with > and M. This fails. Again, the engine will backtrack. But this time, the backtracking will force the lazy plus to expand rather than reduce its reach. So the match of .+ is expanded to EM, and the engine tries again to continue with >. Now, > is matched successfully. The last token in the regex has been matched. The engine reports that <EM> has been successfully matched.
+
+#### An Alternative to Laziness
+
+In this case, there is a better option than making the plus lazy. We can use a greedy plus and a negated character class: [^>](<)+>. The reason why this is better is because of the backtracking. When using the lazy plus, the engine has to backtrack for each character in the HTML tag that it is trying to match. When using the negated character class, no backtracking occurs at all when the string contains valid HTML code. Backtracking slows down the regex engine.
+
+## Escaping
+
+Although some characters match themselves, others have special meanings. The pattern \d+ doesn't match backslash followed by lowercase D followed by a plus sign: to get that, we'd use \\d\+. A backslash removes the special meaning from the following character.
+
+## Greediness
+
+> **Warning:** ho fatto solo un copia incolla, andrebbe approfondito
+
+Regular expression quantifiers are greedy. This means they match as much text as they possibly can while allowing the entire pattern to match successfully.
+
+For example, say the input is
+
+"Hello," she said, "How are you?"
+
+You might expect ".+" to match only 'Hello,' and will then be surprised when you see that it matched from 'Hello' all the way through 'you?'.
+
+To switch from greedy to what you might think of as cautious, add an extra ? to the quantifier. Now you understand how \((.+?)\), the example from your question works. It matches the sequence of a literal left-parenthesis, followed by one or more characters, and terminated by a right-parenthesis.
+
+If your input is '(123) (456)', then the first capture will be '123'. Non-greedy quantifiers want to allow the rest of the pattern to start matching as soon as possible.
+
+## Anchors
+
+https://regexr.com/3p6ki
+
+https://www.regular-expressions.info/anchors.html
+
+Anchors can be used to "anchor" the regex match at a certain position.
+
+The caret ^ matches the position before the first character in the string.
+
+Example:
+
+* Applying ^a to abc matches a.
+* ^b does not match abc at all, because the b cannot be matched right after the start of the string
+
+Similarly, $ matches right after the last character in the string.
+
+Example:
+
+* c$ matches c in abc
+* while a$ does not match at all.
+
+## Word boundaries
+
+https://www.regular-expressions.info/wordboundaries.html
+
+The metacharacter `\b` is an anchor like the caret and the dollar sign. It matches at a position that is called a "word boundary". This match is zero-length.
+
+There are three different positions that qualify as word boundaries:
+
+* Before the first character in the string, if the first character is a word character.
+* After the last character in the string, if the last character is a word character.
+* Between two characters in the string, where one is a word character and the other is not a word character.
+
+Simply put: \b allows you to perform a "whole words only" search using a regular expression in the form of \bword\b.
+
+Example:  \b4\b can be used to match a 4 that is not part of a larger number. This regex does not match 44 sheets of a4.
+
+## Alternation
+
+https://www.regular-expressions.info/alternation.html
+
+You can use alternation to match a single regular expression out of several possible regular expressions.
+
+If you want to search for the literal text cat or dog, separate both options with a vertical bar or pipe symbol: cat|dog. If you want more options, simply expand the list: cat|dog|mouse|fish.
+
+The alternation operator has the lowest precedence of all regex operators. That is, it tells the regex engine to match either everything to the left of the vertical bar, or everything to the right of the vertical bar. If you want to limit the reach of the alternation, you need to use parentheses for grouping. If we want to improve the first example to match whole words only, we would need to use \b(cat|dog)\b.
+
+# Examples
+
+http://www.rexegg.com/regex-cookbook.html
+
+## Extract HTML comments
+
+https://regexr.com/3p6ki

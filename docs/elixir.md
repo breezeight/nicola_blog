@@ -1,0 +1,7580 @@
+# Elixir
+
+## categories: ["elixir"]
+
+## Contents
+
+* Will be replaced with the ToC, excluding the "Contents" header
+
+## TODO
+
+Functional programming is about making the complex parts of your system explicit.
+
+Questions
+What are the strengths of Erlang?
+Why is the programming world becoming more interested in concurrency, distributed systems and functional languages?
+Can you contrast how errors are handled in Erlang and Elixir, compared to other languages?
+What was the reason for building Elixir? What did Erlang lack?
+Elixir compiles to bytecode for the Erlang VM – what does this mean?
+What is meta programming?
+How is the adoption of Phoenix and where is it headed?
+
+[http://softwareengineeringdaily.com/2016/04/18/elixir-erlang-jose-valim/](http://softwareengineeringdaily.com/2016/04/18/elixir-erlang-jose-valim/)
+
+* `@behaviour  @callback   @macrocallback @optional_callbacks`
+* [Naming Convention](https://hexdocs.pm/elixir/naming-conventions.html#content)
+
+Review Elixir 0.14 release http://elixir-lang.github.io/blog/2014/06/17/elixir-v0-14-0-released/ :
+
+* @derive
+* Protocol consolidation
+* Nested Structure access
+
+Review Elixir 0.15 release http://elixir-lang.github.io/blog/2014/08/07/elixir-v0-15-0-released/
+
+Review Elixir 1.3 release http://elixir-lang.github.io/blog/2016/06/21/elixir-v1-3-0-released/ and https://tuvistavie.com/2016/elixir-1-3/#exunit-new-features :
+
+* Deprecation of imperative assignment  *IMPORTANT!!!*
+* Calendar types and sigils
+* Access selectors
+* mix xref
+* mix app.tree and deps.tree
+* mix escript.install                   *IMPORTANT!!!*
+* Option parser integration
+* ExUnit:
+** mix test --stale, DONE <<Execute only stale tests, Execute only stale tests>> ,
+** Diffing, DONE <<Diffing,Diffing>> ,
+** Test types,
+** Named setups and describes
+
+Review Elixir 1.4 release http://elixir-lang.github.io/blog/2017/01/05/elixir-v1-4-0-released/ :
+
+* Registry
+* Iex Syntax coloring
+* Task.async_stream
+* Application inference
+* Mix install escript from SCM
+
+Review Elixir 1.5 release http://elixir-lang.github.io/blog/2017/07/25/elixir-v1-5-0-released/ :
+
+* UTF-8 atoms, function names and variables DONE
+* IEx helpers and breakpoints
+* Exception.blame
+* Streamlined child specs
+* @impl DONE
+* Calendar improvements
+
+review Elixir 1.6 release https://github.com/elixir-lang/elixir/releases/tag/v1.6.0-rc.0 :
+
+* https://soundcloud.com/elixirtalk/episode-106-chat-with-jose-valim?utm_campaign=elixir_radar_124&utm_medium=email&utm_source=RD+Station
+
+Stream: http://culttt.com/2016/06/13/working-enumerables-streams-elixir
+
+Review Elixir 1.8 release https://elixir-lang.org/blog/2019/01/14/elixir-v1-8-0-released/
+
+* Custom struct inspections TODO
+* Time zone database support OK
+* Improved instrumentation and ownership with $callers TODO
+*
+
+Upcoming
+
+* There is only one last major feature planned for upcoming Elixir versions, which is the addition of mix release to Elixir itself, streamlining the experience provided by packages like distillery. With mix release, a developer can bundle the VM and all compiled code in a single directory, which can then be packaged and sent to production. We are glad to say the work on this feature has already started.
+* https://github.com/elixir-lang/elixir/issues/8612
+
+Review Elixir 1.9 https://elixir-lang.org/blog/2019/06/24/elixir-v1-9-0-released/
+
+* addition of releases
+
+## Resources
+
+* [My Elixir Mind Map ](https://drive.mindmup.com/map/0By_bGJI79BIpa1hOUW1rcjJNeEE)
+
+* [Elixir Naming Convention](https://github.com/elixir-lang/elixir/blob/master/lib/elixir/pages/Naming%20Conventions.md)
+* Awesome Elixir: [https://github.com/h4cc/awesome-elixir](https://github.com/h4cc/awesome-elixir)
+* Trending on Github: [https://github.com/trending/elixir](https://github.com/trending/elixir)
+* Static code analyzer: [https://github.com/rrrene/credo](https://github.com/rrrene/credo)
+* code style: [https://github.com/rrrene/elixir-style-guide](https://github.com/rrrene/elixir-style-guide)
+* Docker Hub: [https://hub.docker.com/_/elixir/](https://hub.docker.com/_/elixir/)
+* [https://elixirforum.com/](https://elixirforum.com/)
+* [http://elixirstream.com/](http://elixirstream.com/)
+* [http://joearms.github.io/2013/05/31/a-week-with-elixir.html](http://joearms.github.io/2013/05/31/a-week-with-elixir.html)
+
+Online Exercise:
+
+* https://github.com/elixirkoans/elixir-koans
+
+Books:
+
+* 2016 THE LITTLE ELIXIR &amp; OTP GUIDEBOOK: [http://benjamintan.io/](http://benjamintan.io/)
+* "Metaprogramming Elixir" by Chris McCord the author of Phoenix [https://pragprog.com/book/cmelixir/metaprogramming-elixir](https://pragprog.com/book/cmelixir/metaprogramming-elixir)
+* [The BEAM Book](https://happi.github.io/theBeamBook)
+* Elixir_in_Action_Second_Edition.pdf [EIA_2nd]
+
+Elixir release notes:
+
+* All: [http://elixir-lang.org/blog/categories.html#Releases](http://elixir-lang.org/blog/categories.html#Releases)
+* [http://elixir-lang.org/blog/2014/04/21/elixir-v0-13-0-released/](http://elixir-lang.org/blog/2014/04/21/elixir-v0-13-0-released/)
+* [http://elixir-lang.org/blog/2014/06/17/elixir-v0-14-0-released/](http://elixir-lang.org/blog/2014/06/17/elixir-v0-14-0-released/)
+* derive
+* Protocol consolidation
+* Nested access
+* Mix and OTP
+*
+* Full release: [https://github.com/elixir-lang/elixir/releases/tag/v1.4.0](https://github.com/elixir-lang/elixir/releases/tag/v1.4.0)
+* Registry
+* Syntax coloring
+* Task.async_stream
+* Application inference
+* Mix install from SCM
+
+# People and companies
+
+* José Valim, Founder and Director of Research and Development at Plataformatec
+* [https://www.linkedin.com/in/jovalim](https://www.linkedin.com/in/jovalim)
+*
+
+# IEx
+
+Doc: [https://hexdocs.pm/iex/IEx.html#summary](https://hexdocs.pm/iex/IEx.html#summary)
+
+> **Note:** See "Starting the runtime: iex, mix, script" to understand how IEx load your modules and compile code
+
+> **Note:** many of the iex options were borrowed from the Erlang shell, therefore erl(1) can be used as an additional source of information on the options.
+
+* Print the current config `IEx.configuration()`
+* [Enable History in erlang 20](https://hexdocs.pm/iex/IEx.html#module-shell-history):`export ERL_AFLAGS="-kernel shell_history enabled"`
+
+## View documentation in IEx
+
+* `h/1` to print the documentation for the given module or for the given function/arity pair, ex: `h Enum.into/2`
+, or the Module documentation `h Enum`
+* `b/1` to print the documentation for the given callback function. Ex `b GenServer.handle_call` or `b GenServer` to print the documentation of all callbacks.
+
+## Load/Reload dependencies modules into iex: iex -S mix
+
+Q: How do I load an Elixir library into iex?
+A: Do `iex -S mix` within a mix project, you'll get all its dependencies.
+
+ref: https://stackoverflow.com/a/37979493
+
+- [ ] I still don't understand what the `-S` does exactly.... but it works...
+
+`iex -S mix` will add all the compiled files to you code_path.
+
+For example when you run `mix compile` from a project `my_project` with poison as dependencies, mix will put your compiled beam file into `_build` dir and will add this directory to the code path:
+
+* '_build/dev/lib/my_project/consolidated',
+* '_build/dev/lib/my_project/ebin',
+* '_build/dev/lib/poison/ebin',
+
+you can check by yourself running `:code.get_path`
+
+* When you update a file you can recompile and reload it with `r ModuleName`
+* To recompiles the current Mix application: https://hexdocs.pm/iex/IEx.Helpers.html#recompile/1
+
+Ref: https://elixirforum.com/t/hot-update-iex-s-mix/18186/4
+
+## IEx Intenals
+
+The `iex` command is a shell script that use the `elixir` command to load the `IEx.Cli` module:
+https://github.com/elixir-lang/elixir/blob/a304aac97b222d91d1762cf2d6bec26f08a0a720/lib/iex/lib/iex/cli.ex
+
+```
+# The iex script
+exec "$SCRIPT_PATH"/elixir --no-halt --erl "-noshell -user Elixir.IEx.CLI" +iex "$@"
+```
+## IEx Introspection
+
+When multiple external modules are included by calling use on some intermediate module, is there an easy way to determine in which module given method is actually defined?
+Yes, you can capture the function using `&` and then inspecting it, see below:
+
+[source, elixir]
+```
+defmodule ModuleB do
+  def method_b do
+  end
+
+  def method_b(param1, param2) do
+  end
+end
+
+defmodule ModuleA do
+  # imports ModuleB implicitly
+  use SomeModuleImportingModuleB
+
+  def method_a
+    # how to determine this is ModuleB.method_b?
+    IO.inspect &method_b/0  # outputs &ModuleB.method_b
+    method_b
+  end
+end
+```
+
+> **Note:** when using use the module in question might be injecting code directly (using macro) into the module being defined and creating functions dynamically - this might cause functions to become available that have not been defined in the used module.
+
+To instrospect an Elixir Module you can use the module function `__info__/1`, the argument can be:
+
+* `:functions` - keyword list of public functions along with their arities
+* `:macros` - keyword list of public macros along with their arities
+* `:module` - the module atom name
+* `:md5` - the MD5 of the module
+* `:compile` - a list with compiler metadata
+* `:attributes` - a list with all persisted attributes
+
+Ref: https://hexdocs.pm/elixir/1.8.0/Module.html#c:__info__/1
+
+[source, elixir]
+```
+iex(16)> ModuleB.module_info
+[
+  module: ModuleB,
+  exports: [
+    __info__: 1,
+    method_b: 0,
+    method_b: 2,
+    module_info: 0,
+    module_info: 1
+  ],
+  attributes: [vsn: [237599415356665481387925884711299501358]],
+  compile: [
+    version: '7.2.6',
+    options: [],
+    source: '/Users/nicolabrisotto/SRC/ADDICTIVE/addictive-dev-website/iex'
+  ],
+  native: false,
+  md5: <<178, 191, 251, 158, 13, 71, 205, 171, 146, 157, 184, 136, 55, 196, 205,
+    46>>
+]
+
+iex(17)> ModuleB.module_info :functions
+[__info__: 1, method_b: 0, method_b: 2, module_info: 0, module_info: 1]
+
+```
+
+> **Warning:** module_info/0 and module_info/1 are similar function but are not documented
+
+## Code path
+
+> **Note:** See "Starting the runtime: iex, mix, script" to understand how IEx load your modules and compile code
+
+`-pa directory`
+
+## Load a module or script into the IEx session
+
+If you have an elixir file; a script or a module and want to load it into the current IEx session, you can use the c/1 method:
+
+```
+iex(1)> c "lib/utils.ex"
+iex(2)> Utils.some_method
+```
+
+This will compile and load the module in IEx, and you'll be able to call all of it's public methods.
+
+For scripts, it will immediately execute the contents of the script:
+
+```
+iex(3)> c "/path/to/my/script.exs"
+Called from within the script!
+```
+
+# IDE and Editor
+
+## Visual Studio Code
+
+https://docs.google.com/document/d/1X4HrockI5tyBTgq20ITz_ZGXExy9EZry3CRfmD2g8vw/edit#
+
+## Atom Elixir
+
+[https://brainlid.org/elixir/2015/11/12/atom-editor-and-elixir.html](https://brainlid.org/elixir/2015/11/12/atom-editor-and-elixir.html)
+
+# CHEATSHEET
+
+IEx:
+
+* Help from iex: `h String`
+* `~/.iex.exs` and local `.iex.exs`
+* inspect (implement proto, etc): `i &quot;hello&quot;`
+* `#iex:break` Cancel a multiline command
+*
+
+Cheatsheet: [https://media.pragprog.com/titles/elixir/ElixirCheat.pdf](https://media.pragprog.com/titles/elixir/ElixirCheat.pdf)
+
+* Start a script: `iex math.exs`
+
+# Install Elixir, Erlang and hex
+
+Docker Example:
+
+* Erlang image: [https://github.com/c0b/docker-erlang-otp/blob/ea32d5f6f1735f9f55bee04b112166da96eb9c73/19/Dockerfile](https://github.com/c0b/docker-erlang-otp/blob/ea32d5f6f1735f9f55bee04b112166da96eb9c73/19/Dockerfile)
+* Elixir image: [https://github.com/c0b/docker-elixir/blob/22ee98417200ef8d9a049b2b4504e7cf279e911f/1.2/Dockerfile](https://github.com/c0b/docker-elixir/blob/22ee98417200ef8d9a049b2b4504e7cf279e911f/1.2/Dockerfile)
+
+## Install Multiple versions
+
+EVM Switching between multiple Erlang versions:
+
+* evm [https://medium.com/@ivorpaul/switching-between-multiple-erlang-versions-5559923ea7cd#.24kbmsk9x](https://medium.com/@ivorpaul/switching-between-multiple-erlang-versions-5559923ea7cd#.24kbmsk9x)
+* kerl: `brew install kerl`
+
+Manage multiple Elixir version with Kiex:
+
+* `brew install kiex`
+* To install [https://github.com/taylor/kiex](https://github.com/taylor/kiex)
+* [http://learningelixir.joekain.com/installing-multiple-elixir-version-with-kiex/](http://learningelixir.joekain.com/installing-multiple-elixir-version-with-kiex/)
+* `kiex use 1.3.4`
+
+Another alternative is [ASDF](https://github.com/asdf-vm/asdf)
+
+## Erlang-Elixir Code Portability
+
+[http://stackoverflow.com/questions/2255658/how-portable-are-erlang-beam-files](http://stackoverflow.com/questions/2255658/how-portable-are-erlang-beam-files)
+
+## Editor - IDE
+
+### Atom
+
+https://atom.io/packages/ide-elixir
+
+### VSCode
+
+SEE: https://docs.google.com/document/d/1X4HrockI5tyBTgq20ITz_ZGXExy9EZry3CRfmD2g8vw/edit#heading=h.ldma62q0hzhi
+
+### Intellij
+
+* `brew cask install intellij-idea-ce` ce = comunity edition
+
+# Rebar
+
+Erlang build tool that makes it easy to compile and test Erlang applications and releases.
+
+https://github.com/erlang/rebar3
+
+# Mix
+
+A build tool that ships with Elixir.
+
+Ref:
+
+* into: [http://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html](http://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html)
+* [Mix doc](https://hexdocs.pm/mix/Mix.html)
+
+Mix that provides tasks for:
+
+* creating,
+* compiling,
+* testing your application,
+* managing its dependencies and much more;
+
+TODO:
+
+* archive.install
+* doc: `mix help archive.install`
+
+Non ho capito come avere versioni multiple di phoenix e perchè non si usa hex….
+
+* `mix archive.install hex hex_package` or `mix archive.install hex hex_package 1.2.3` :
+[source, elixir]
+```
+ mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez
+Found existing archive: /Users/nicolabrisotto/.mix/archives/phoenix_new-1.2.1.
+Are you sure you want to replace it with "https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez"? [Yn] Y
+```
+
+* nerves.new
+* deps.get
+* compile
+* firmware
+* OTP application: come va gestita la voce "application" in un progetto gestito con Mix ?
+
+## Project Structure
+
+* ebin - contains the compiled bytecode
+* lib - contains elixir code (usually .ex files)
+* test - contains tests (usually .exs files)
+
+## Create a simple Mix Project
+
+[http://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html#our-first-project](http://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html#our-first-project)
+
+`-S option` to run scripts: `iex -S mix`
+
+## Running Mix commands from any directory
+
+[https://robots.thoughtbot.com/running-project-mix-commands-from-any-directory](https://robots.thoughtbot.com/running-project-mix-commands-from-any-directory)
+
+## Custom Mix Tasks
+
+* [Tutorial](https://medium.com/blackode/mix-task-creation-in-elixir-project-d89e49267fe3#.crf3y6ic3)
+* [Doc](http://elixir-recipes.github.io/mix/custom-mix-task/)
+
+### HOWTO Test Mix Tasks
+
+[https://jc00ke.com/2017/04/05/testing-elixir-mix-tasks/](https://jc00ke.com/2017/04/05/testing-elixir-mix-tasks/)
+
+## Mix Alias
+
+[https://sergiotapia.me/alias-your-phoenix-mix-commands-for-some-nice-developer-ux-4a02b2bf3474#.i9ag1tbd1](https://sergiotapia.me/alias-your-phoenix-mix-commands-for-some-nice-developer-ux-4a02b2bf3474#.i9ag1tbd1)
+
+## Mix Xref
+
+Ref: [http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/](http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/)
+
+`mix xref unreachable`:
+
+* performs cross reference checks in your code and find calls to modules and functions that do not exist.
+* Since such checks can discover possible bugs in your codebase, a new compiler called xref has been added to Mix.compilers/0, so it runs by default every time you compile your code.
+
+`mix xref callers Foo` or `mix xref callers Ecto.Queryable.to_query/1`
+* used to find all places in your code that calls a function from the module Foo
+
+* `mix xref graph` - generates a graph with dependencies between source files
+
+## Mix app.tree and deps.tree
+
+list all applications your current project needs to start in order to boot (i.e. the ones listed in application/0 in your mix.exs) while the second will lists all of your dependencies and so on recursively
+
+* mix deps.tree –format dot –only prod
+* `--format dot` option can also be given to generate graph files to be opened by GraphViz.
+
+## Mix task commandline options
+
+Elixir v1.3 includes improvements to the option parser, including OptionParser.parse!/2 and OptionParser.parse_head!/2 functions that will raise in case of invalid or unknown switches. Mix builds on top of this functionality to provide automatic error reporting solving a common complaint where invalid options were not reported by Mix tasks.
+
+For example, invoking mix test –unknown in earlier Elixir versions would silently discard the –unknown option. Now mix test correctly reports such errors:
+
+[source, elixir]
+```
+$ mix test --unknown
+** (Mix) Could not invoke task "test": 1 error found!
+--unknown : Unknown option
+```
+
+# Functional Programming in Elixir
+
+I
+ref: https://soundcloud.com/elixirtalk/episode-139-feat-zach-smith-empex-la-erlef-macros-and-functors-oh-my
+
+One big advantage is that when you don't have to think about "Global State" and "mutation", you can focus on a much smaller scope
+
+# HEX
+
+* [Hex Homepage](https://github.com/hexpm/hex)
+* [https://hex.pm/docs/usage](https://hex.pm/docs/usage)
+
+Hex is a package manager for the Erlang ecosystem.
+
+This project currently provides tasks that integrate with Mix, Elixir's build tool.
+
+# Elixir Software Architecture
+
+## Applications
+
+* https://code.tutsplus.com/articles/elixir-applications--cms-29598
+* [Application Behaviour](https://hexdocs.pm/elixir/Application.html)
+
+> **Note:** Mix hides most of the complexity of managing Erlang Application
+
+In Erlang Applications are used to build reusable components that behave as stand-alone units, while also providing easy dependency management.
+
+* An application is a component implementing some specific functionality, with a standardized directory structure, configuration, and lifecycle.
+* Applications are loaded, started, and stopped.
+
+* One application may have its own supervision tree and configuration, and it can rely on other applications that are available either locally or on some remote server.
+
+> **Note:** Some might argue that the term "application" is not very appropriate because in Erlang and Elixir it actually means a component, or some code that has a bunch of dependencies. The application itself can be used as a dependency as well.
+
+An Erlang Application consist of one or multiple modules with zero or more dependencies and are described by the application resource file https://hexdocs.pm/elixir/Application.html#module-the-application-resource-file
+Mix generate it automatically from a mix project.
+
+Some of the resource file keys are taken from the keyword lists returned by the `project/0` and `application/0` functions defined in `mix.exs`, and others are generated by Mix itself.
+
+A Compiled Erlang applications consist of:
+
+* the compiled `.beam` files containing virtual machine code,
+* an application specification `.app` file that tells the VM how to handle the application,
+* an optional application `callback module` that is used to start, run and stop the application (specified by the `:mod` key in the .app file).
+
+## Application with a supervisor
+
+For applications with supervisors, the application callback module defines functions that start and stop the application.
+
+In Elixir, an application callback module uses the Application behavior(https://hexdocs.pm/elixir/Application.html).
+
+The behavior implements the `start/2` and `stop/1` callbacks. The former starts the application’s main supervisor, and the latter is an optional callback that’s used to clean up after stopping the supervisor. When used, the Application module adds a stub of the stop/1 function, which returns an ok-tuple. The generated start/2 function starts the app’s main supervisor.
+
+Elixir’s mix new task automatically creates an application callback module when a new project is generated with the `--sup` flag: `mix new --sup elixir_app`
+
+The generated project contains an application callback module in `lib/elixir_app/application.ex`.
+
+```
+defmodule ElixirApp.Application do
+  # See https://hexdocs.pm/elixir/Application.html
+  # for more information on OTP Applications
+  @moduledoc false
+
+  use Application
+
+  def start(_type, _args) do
+    # List all child processes to be supervised
+    children = [
+      # Starts a worker by calling: ElixirApp.Worker.start_link(arg)
+      # {ElixirApp.Worker, arg},
+    ]
+
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
+    opts = [strategy: :one_for_one, name: ElixirApp.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+end
+```
+
+## Application without a supervisor
+
+Applications without supervisors (usually libraries with functions you can call without no internal state) omit the callback module since the application doesn’t need to be started.
+
+Each seperate library, as well as your application itself, is an application. Some applications have a supervision tree, requiring them to have a callback module that takes care of starting and stopping the whole application.
+
+Your application can depend on other applications, and each of these can have their own supervision trees and callback modules. Whatever’s in there, it’s always specified in the application specification file. Think of it as the formula for your Elixir.
+
+## Application lifecycle
+
+https://hexdocs.pm/elixir/Application.html#module-the-application-lifecycle
+
+### Loading applications
+
+the runtime finds and processes their resource file
+
+### Starting applications
+
+Once your application is compiled, running your system is a matter of starting your current application and its dependencies.. Differently from other languages, Elixir does not have a main procedure that is responsible for starting your system. Instead, you start one or more applications, each with their own initialization and termination logic.
+
+Once your application is compiled, running your system is a matter of starting your current application and its dependencies. Differently from other languages, Elixir does not have a main procedure that is responsible for starting your system. Instead, you start one or more applications, each with their own initialization and termination logic.
+
+When an application is started, the runtime loads it if it hasn’t been loaded yet (in the technical sense described above). Then, it checks if the dependencies listed in the applications key of the resource file are already started. Having at least one dependency not started is an error condition, but when you start an application with mix run, Mix takes care of starting all the dependencies for you, so in practice you don’t need to worry about it unless you are starting applications manually with the API provided by this module.
+
+If the application does not have a callback module configured, starting is done at this point. Otherwise, its start/2 callback if invoked. The PID of the top-level supervisor returned by this function is stored by the runtime for later use, and the returned application state is saved too, if any.
+
+### Start Phases
+
+https://hexdocs.pm/mix/Mix.Tasks.Compile.App.html#module-phases
+
+### Start Phases in umbrella app
+
+https://elixirforum.com/t/best-way-to-do-synchronized-start-between-umbrella-apps-using-start-phases/8285/4
+
+### Stopping applications
+
+Application.stop(:ex_unit)
+#=> :ok
+Stopping an application without a callback module is defined, but except for some system tracing, it is in practice a no-op.
+
+Stopping an application with a callback module has three steps:
+
+If present, invoke the optional callback prep_stop/1.
+Terminate the top-level supervisor.
+Invoke the required callback stop/1.
+The arguments passed to the callbacks are related to the state optionally returned by start/2, and are documented in the section about the callback module above.
+
+It is important to highlight that step 2 is a blocking one. Termination of a supervisor triggers a recursive chain of children terminations, therefore orderly shutting down all descendant processes. The stop/1 callback is invoked only after termination of the whole supervision tree.
+
+Shutting down a live system cleanly can be done by calling System.stop/1. It will shut down every application in the opposite order they had been started.
+
+From Erlang/OTP 19.1, a SIGTERM from the operating system will automatically translate to System.stop/0. Erlang/OTP 20 gives user more explicit control over OS signals via the :os.set_signal/2 function.
+
+## Tools to manage application lifecycle
+
+`Mix`, `Distillery`, `escript` and `Archive` are tools used to manage the application lifecycle.
+
+The Mix build tool can also be used to start your applications, for example:
+
+* `mix test` automatically starts your application dependencies and your application itself before your test runs.
+* `mix run --no-halt` boots your current project and can be used to start a long running system. See mix help run.
+
+Developers can also use tools like Distillery that build releases. Releases are able to package all of your source code as well as the Erlang VM into a single directory. Releases also give you explicit control over how each application is started and in which order. They also provide a more streamlined mechanism for starting and stopping systems, debugging, logging, as well as system monitoring.
+
+Finally, Elixir provides tools such as escripts and archives, which are different mechanisms for packaging your application. Those are typically used when tools must be shared between developers and not as deployment options. See mix help archive.build and mix help escript.build for more detail.
+
+## MORE INFO
+
+For further details on applications please check the documentation of the application Erlang module, and the Applications(http://www.erlang.org/doc/design_principles/applications.html) section of the OTP Design Principles User’s Guide(http://erlang.org/doc/design_principles/users_guide.html).
+
+## Use mix project to manage an Elxir Application
+
+Running `mix compile.app` places the application’s specification in the `.app` file in the `ebin` directory, and is one of the steps taken when compiling the app with `mix compile`.
+
+The specification contains Erlang terms which define the application:
+
+* the modules defined in the app,
+* the version number,
+* a list of other apps that the app depends on.
+* optionally specifies the module to be used as the callback that starts the app.
+* the environment
+
+The specification file is based on the settings in the application’s `mix.exs` file.
+A Mix project is defined by calling `use Mix.Project` in a module, usually placed in `mix.exs`
+Ref: https://hexdocs.pm/mix/master/Mix.Project.html#content
+
+The `mix.exs` file, which is responsible for the project's configuration, defines two public functions: `application` and `project`.
+
+Some of the resource file keys are taken from the keyword lists returned by the `project/0` and `application/0` functions defined in `mix.exs`, and others are generated by Mix itself.
+
+To specify the name and version number defined in its project function:
+
+```
+defmodule ElixirApp.MixProject do
+  use Mix.Project
+
+  def project do
+    [
+      app: :elixir_app,
+      version: "0.1.0"
+    ]
+  end
+end
+```
+
+To specify the Erlang callback module (`:mod` key):
+
+```
+defmodule ElixirApp.MixProject do
+  # ...
+
+  def application do
+    [
+      mod: {ElixirApp.Application, []}
+    ]
+  end
+end
+```
+
+When generating the specification, it includes the callback module. This key points to the application’s callback module, so the VM knows which module to use to start the application.
+
+```
+{application,elixir_app,
+             [kernel,stdlib,elixir,logger]([{applications,)},
+              {description,"elixir_app"},
+              ['Elixir.ElixirApp','Elixir.ElixirApp.Application']({modules,)},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.ElixirApp.Application',[]}}]}.
+```
+
+> **Note:** The list in the :mod-tuple is used to pass configuration options to the application. Anything passed in ends up as the arguments to the callback module’s start/2 function.
+
+config/config.exs
+https://hexdocs.pm/mix/master/Mix.Config.html#content
+
+https://hexdocs.pm/mix/Mix.Tasks.Compile.App.html
+
+https://hexdocs.pm/mix/master/Mix.Project.html#content
+
+The `project` function defines the application's name, the version of Elixir to be used, and makes a call to deps() that pulls in the necessary project dependencies.
+
+```
+def project do
+   [
+     app: :romanNumerals,
+     version: "0.0.1",
+     elixir: "~> 1.4",
+     elixirc_paths: elixirc_paths(Mix.env),
+     compilers: [:phoenix, :gettext] ++ Mix.compilers,
+     build_embedded: Mix.env == :prod,
+     start_permanent: Mix.env == :prod,
+     deps: deps()
+   ]
+  end
+```
+
+Dependencies pulled down by mix are usually split into two :
+
+1. types—libraries
+2. OTP applications.
+
+Libraries provide functionality in a standard fashion where you use a module from the library to achieve a goal. An example of this is [Poison](https://github.com/devinus/poison) .
+
+https://hexdocs.pm/elixir/Application.html#c:start/2
+
+## :applications AND :extra_applications
+
+ref: https://www.amberbit.com/blog/2017/9/22/elixir-applications-vs-extra_applications-guide/
+
+The applications key in the specification lists all the applications that your app depends on. By default, mix compile.app includes kernel stdlib and elixir.
+
+Dependencies are automatically added to the applications list, and they’re automatically started before the application boots if they have an Application module.
+
+The `:applications` key is used to explicitly specify the applications that are to be included in the specification. When used, *only the listed* applications and the defaults will be added. Any other dependencies are not automatically included.
+
+> **Note:** usually you can omit the :applications key, Elixir will do the heavy lifting for you. By going through the list of your dependencies, and building the applications list for you behind the scenes, all dependencies you declared in your deps/0 function will be started before your application is started - provided they declare OTP application callback module to start in first place.
+
+Let’s say you declared the following dependencies in your deps/0 function:
+
+```
+defp deps do
+  [
+    {:postgrex, ">= 0.0.0"},
+    {:ecto, "~> 2.1"},
+    {:bamboo, "~> 1.0.0-rc1"}
+  ]
+end
+```
+
+There’s no need to explicitly start postgrex, ecto or bamboo by adding them manually to :applications nor :extra_applications. The :applications list will be inferred from the deps for you (by magical Elixir! ;)).
+
+What if I don’t want this magic?
+
+If, for some reason, you hate the above behavior, or it simply does not suit your needs, you can disable it either altogether or partially.
+
+To disable the behavior altogether, provide :applications key instead of :extra_applications:
+
+```
+def application do
+  [
+    applications: [:logger, :bamboo]
+  ]
+end
+```
+
+This will stop Elixir from going through the list of your dependencies and starting them all on your app start up.
+
+You can also disable the procedure for individual dependencies. If you want to start all of them, but say keep :bamboo stopped, use runtime: false option in your deps/0 function instead:
+
+```
+def application do
+  [
+    extra_applications: [:logger]
+  ]
+end
+
+defp deps do
+  [
+    {:postgrex, ">= 0.0.0"},
+    {:ecto, "~> 2.1"},
+    {:bamboo, "~> 1.0.0-rc1", runtime: false}
+  ]
+end
+```
+
+The code above starts both `:postgrex` and `:ecto` (and all their runtime dependencies) because we did not override the defaults with :applications list of our own. It won’t start :bamboo, however, because runtime: false stops it from doing so.
+
+Starting optional dependencies with `:extra_applications`. Erlang itself ships with applications that are optional, but you don’t have to list them in dependencies. In fact there’s no way to list them I think. How do you start those then?
+
+Add those dependencies to :extra_applications:
+
+```
+def application do
+  [
+    extra_applications: [:logger, :runtime_tools]
+  ]
+end
+```
+
+This is precisely why `:extra_applications` is there. All the optional dependencies, either from Erlang or from your `deps/0` (with optional: true), should be added to `:extra_applications`. When you do so, Elixir will infer the list of :applications and then merge it with list of :extra_applications for you. Simple!
+
+To add more applications like Elixir’s logger, you add them to the :extra_applications key and they will subsequently be added to the existing list.
+
+```
+defmodule ElixirApp.MixProject do
+
+  # ...
+
+  def application do
+    [
+      extra_applications: [:logger],
+      mod: {ElixirApp.Application, []}
+    ]
+  end
+end
+```
+
+## Umbrella Project
+
+Refs:
+
+* https://soundcloud.com/elixirtalk/episode-103-umbrella-apps
+* https://elixirschool.com/en/lessons/advanced/umbrella-projects/
+* https://8thlight.com/blog/georgina-mcfadyen/2017/05/01/elixir-umbrella-projects.html
+
+* Hex private repo
+* Start with Umbrella and move to Hex later on
+* Applications, Umbrella, Hex package, Phoenix Context are all about isolation but with different flavors
+* Application isolate configuration etc...
+
+### Cheatsheet Umbrella App
+
+mix new test_cmd_tool --umbrella
+cd test_cmd_tool
+cd apps
+mix new my_app
+
+## Drop-in libraries
+
+https://soundcloud.com/elixirtalk/episode-105-drop-in-libraries-supervisors
+
+* 11:00 discussion about location libraries
+* 16:00 discuss devise complexity
+* TODO finire di ascoltare dal minuto 19:00
+
+Risks:
+
+* Having too many options to fit all the possible use cases
+
+# Testing and code quality
+
+## Code coverage
+
+[https://github.com/parroty/excoveralls](https://github.com/parroty/excoveralls) + optionally coveralls.io service
+
+## Profiling
+
+Using kcachegrind: [http://blog.equanimity.nl/blog/2013/04/24/fprof-kcachegrind/](http://blog.equanimity.nl/blog/2013/04/24/fprof-kcachegrind/)
+
+## Best Practices
+
+Naming convention https://github.com/elixir-lang/elixir/blob/master/lib/elixir/pages/Naming%20Conventions.md
+
+* `is_` prefix
+* Trailing question mark `foo?`
+* Trailing bang `foo!`
+* Underscore `_foo`
+* `snake_case` when defining variables, function names, module attributes, etc. Filenames follow the snake_case convention of the module they define.
+* Aliases, commonly used as module names, are an exception as they must be capitalized and written in CamelCase
+* Atoms can be written either in :snake_case or :CamelCase, although the convention is to use the snake case version throughout Elixir.
+
+### When to Use Structs, String-keyed Maps, and Atom-keyed Maps
+
+[https://engineering.appcues.com/2016/02/02/too-many-dicts.html](https://engineering.appcues.com/2016/02/02/too-many-dicts.html)
+
+## Dialyzer and Dialyxir
+
+[https://github.com/jeremyjh/dialyxir](https://github.com/jeremyjh/dialyxir)
+
+[http://erlang.org/doc/apps/dialyzer/dialyzer_chapter.html](http://erlang.org/doc/apps/dialyzer/dialyzer_chapter.html)
+
+Dialyzer uses a typing-inference algorithm called `success typings`. Success typings are optimistic:
+
+* Assume that all your functions are used correctly. In other words, your code is innocent until proven guilty.
+* Starts by over-approximating the valid inputs to and outputs from your functions.
+* As the algorithm develops a better understanding of your code, it generates constraints. Example:
+* it sees x + y, then x and y must be numbers.
+* Guards such as is_atom(z) provide additional constraints.
+
+> **Note:** Dialyzer doesn’t guarantee that your code is type-safe. If it finds something wrong, Dialyzer is guaranteed to be correct.
+
+Revealing types with iex helpers:
+
+* `t/1` prints the types for the given module or for the given function/arity pair (ex: t Enum)
+* `i/1` prints information about the given data type (ex: `i(&quot;ohai&quot;)`, `i(&#39;ohai&#39;)`)
+
+Dialyzer messages:
+
+`no local return` means the function will definitely fail, Dialyzer has found a type error, the function can never return.
+
+### Examples
+
+see `~/SRC/ELIXIR/testbed/dialyzer_playground` and The_Little_Elixir_&amp;_OTP_Guidebook.pdf CH 10.4.
+
+### Persistent Lookup Table (PLT)
+
+* Dialyzer stores the result of an analysis in a Persistent Lookup Table (PLT).
+* You can also use a previously constructed PLT that serves as a starting point for Dialyzer.
+* any nontrivial Elixir application will probably involve OTP; if you run Dialyzer on such an application, the analysis will undoubtedly take a long time, you can always build a base PLT and only run Dialyzer on your application, which by comparison will take much less time. But when you upgrade Erlang and/or Elixir, you must remember to rebuild the PLT.
+
+### Dialyxir
+
+Mix tasks to simplify use of Dialyzer in Elixir projects.
+
+## ExUnit
+
+Refs:
+
+* [Getting Started](https://elixirschool.com/en/lessons/basics/testing/)
+* [EIA_2nd] 7.2.2 Writing tests
+
+TODO:
+
+* https://medium.com/onfido-tech/the-not-so-magic-tricks-of-testing-in-elixir-1-2-89bfcf252321
+
+The testing framework for Elixir is called `ex_unit`, and it’s included in the Elixir distribution.
+
+ExUnit is well integrated with `mix`, running tests is as easy as invoking `mix test`. But you need to respect the mix conventions. To be included in the test execution, a test file must:
+
+* reside in the test folder `<PROJ_ROOT>/test`
+* its name must end with `_test.exs`
+* The script file must define the test module that contains the tests.
+* The test module must `use ExUnit.Case`, it makes the module compliant with ex_unit and imports some helper test macros to the module.
+
+To learn more about `mix test`, see here https://hexdocs.pm/mix/Mix.Tasks.Test.html
+
+[source, elixir]
+```
+defmodule StringTest do
+  use ExUnit.Case
+  ....
+end
+```
+
+`use ExUnit.Case` will import the `test` macro, which can be used to define tests.
+
+Mix will also load the `test_helper.exs` file before executing the tests.
+
+* ExUnit:
+** mix test --stale, DONE <<Execute only stale tests, Execute only stale tests>> ,
+** Diffing, DONE <<Diffing,Diffing>> ,
+** Test types,
+** Named setups and describes
+
+.exs file extension
+
+ Before we can run our tests we need to start ExUnit with ExUnit.start(), this is most commonly done in test/test_helper.exs.
+
+ We can run our project’s tests with
+
+ mix test
+
+### ExUnit.Case
+
+https://hexdocs.pm/ex_unit/ExUnit.Case.html
+
+ExUnit.Case module must be used in other modules as a way to configure and prepare them for testing.
+
+`:async` - configures tests in this module to run concurrently with tests in other modules. Tests in the same module never run concurrently. It should be enabled only if tests do not change any global state. Defaults to false
+
+automatically includes all callbacks defined in ExUnit.Callbacks
+
+All tests receive a context as an argument.
+
+`describe`: Every describe block receives a name which is used as prefix for upcoming tests. Inside a block, ExUnit.Callbacks.setup/1 may be invoked and it will define a setup callback to run only for the current block. The describe name is also added as a tag, allowing developers to run tests for specific blocks:
+
+* `mix test --only describe:"String.capitalize/1"`
+* or by passing the exact line the describe block starts on `mix test path/to/file:123`
+
+[source, elixir]
+```
+defmodule StringTest do
+  use ExUnit.Case, async: true
+
+  describe "String.capitalize/1" do
+    test "first grapheme is in uppercase" do
+      assert String.capitalize("hello") == "Hello"
+    end
+
+    test "converts remaining graphemes to lowercase" do
+      assert String.capitalize("HELLO") == "Hello"
+    end
+  end
+end
+```
+
+> **Note:** describe blocks cannot be nested. Instead of relying on hierarchy for composition, developers should build on top of named setups.
+
+For example:
+
+[source, elixir]
+```
+defmodule UserManagementTest do
+  use ExUnit.Case, async: true
+
+  describe "when user is logged in and is an admin" do
+    setup [:log_user_in, :set_type_to_admin]
+
+    test ...
+  end
+
+  describe "when user is logged in and is a manager" do
+    setup [:log_user_in, :set_type_to_manager]
+
+    test ...
+  end
+
+  defp log_user_in(context) do
+    # ...
+  end
+end
+```
+
+### Test Types
+
+ExUnit v1.3 includes the ability to register different test types. This means libraries like QuickCheck can now provide functionality such as:
+
+[source, elixir]
+```
+defmodule StringTest do
+  use ExUnit.Case, async: true
+  use PropertyTestingLibrary
+
+  property "starts_with?" do
+    forall({s1, s2} <- {utf8, utf8}) do
+      String.starts_with?(s1 <> s2, s1)
+    end
+  end
+end
+```
+
+At the end of the run, ExUnit will also report it as a property, including both the amount of tests and properties:
+
+[source, elixir]
+```
+1 property, 10 tests, 0 failures
+```
+
+#### Quick check style test
+
+REF:
+
+* Ref: [https://github.com/parroty/excheck](https://github.com/parroty/excheck)
+* QuickCheck [http://www.cse.chalmers.se/~rjmh/QuickCheck/](http://www.cse.chalmers.se/~rjmh/QuickCheck/)
+
+### Describe Blocks
+
+Organize tests together in describe blocks:
+
+[source, elixir]
+```
+defmodule StringTest do
+  use ExUnit.Case, async: true
+
+  describe "String.capitalize/2" do
+    test "uppercases the first grapheme" do
+      assert "T" <> _ = String.capitalize("test")
+    end
+
+    test "lowercases the remaining graphemes" do
+      assert "Test" = String.capitalize("TEST")
+    end
+  end
+end
+```
+
+Every test inside a describe block will be tagged with the describe block name. This allows developers to run tests that belong to particular blocks, be them in the same file or across many files:
+
+[source, elixir]
+```
+$ mix test --only describe:"String.capitalize/2"
+```
+
+Note describe blocks cannot be nested. Instead of relying on hierarchy for composition, we want developers to build on top of named setups. For example:
+
+[source, elixir]
+```
+defmodule UserManagementTest do
+  use ExUnit.Case, async: true
+
+  describe "when user is logged in and is an admin" do
+    setup [:log_user_in, :set_type_to_admin]
+
+    test ...
+  end
+
+  describe "when user is logged in and is a manager" do
+    setup [:log_user_in, :set_type_to_manager]
+
+    test ...
+  end
+
+  defp log_user_in(context) do
+    # ...
+  end
+end
+```
+
+By restricting hierarchies in favor of named setups, it is straight-forward for the developer to glance at each describe block and know exactly the setup steps involved.
+
+### Doctest and ExDoc
+
+Ref:
+
+* https://github.com/elixir-lang/ex_doc
+* https://ericdouglas.github.io/2017/08/27/elixir-built-in-documentation-and-testing-tools/
+
+`ExUnit.DocTest` allows us to generate tests from the code examples in a module/function/macro's documentation.
+
+`ExDoc` is an external tool to generate documentation for your Elixir projects. To add it to a project `{:ex_doc, "~> 0.20", only: :dev, runtime: false}`. It's used by all Elixir project to generate html doc.
+
+With `DocTest` you can create tests that lives inside your documentation (`@doc` section). With such tests, you can assure your docs are up-to-date, because whenever you run your tests, the tests inside your documentation will also be verified.
+
+In this example https://ericdouglas.github.io/2017/08/27/elixir-built-in-documentation-and-testing-tools/ we test the `string_gen/2` function.
+
+First we add test directly into the documentation. Every line that starts with `iex>` is a new test. Multiline expressions can be used by prefixing subsequent lines with either `...>` (recommended) or `iex>.
+
+The expected result should start at the next line after the `iex>` or `...>` line(s) and is terminated either by:
+
+* a newline,
+* new `iex>` prefix
+* the end of the string literal.
+
+- [ ] capire se anche queste cose sono richieste:
+Add ## Example
+Skip a line
+Add 4 spaces considering the column where ## Example started
+Add iex> and the function/code that will be tested
+Write what is the expected return of such function in the line below
+
+[source, elixir]
+```
+@doc """
+Generate a string of size `size` made with characters `char`
+## Example
+    iex> Staircase.string_gen(0, "#")
+    ""
+    iex> Staircase.string_gen(1, "#")
+    "#"
+    iex> Staircase.string_gen(7, "#")
+    "#######"
+    iex> Staircase.string_gen(0, " ")
+    ""
+    iex> Staircase.string_gen(1, " ")
+    " "
+    iex> Staircase.string_gen(7, " ")
+    "       "
+"""
+def string_gen(0, _), do: ""
+def string_gen(size, char) when size > 0 do
+  Enum.reduce(1..size, "", fn(_i, acc) -> acc <> char end)
+end
+```
+
+Second we run the `doctest Staircase` macro https://hexdocs.pm/ex_unit/ExUnit.DocTest.html#doctest/2 . Calling doctest(Module) will generate tests for all doctests found in the Staircase module. These tests will be runned when the StaircaseTest is executed.
+
+[source, elixir]
+```
+defmodule StaircaseTest do
+  use ExUnit.Case
+  import ExUnit.CaptureIO
+  doctest Staircase # Macro that generate test's from the Staircase module documentation
+  ....
+end
+```
+
+It allows us to generate tests from the code examples in a module/function/macro's documentation.
+
+### [JOB] Execute only stale tests
+
+Ref: [http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/](http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/)
+
+`mix test --stale` builds on top of `mix xref`: will only run the tests that may have changed since the last time you ran mix test –stale.
+
+For example:
+
+* If you saved a test file on disk, Mix will run that file and ignore the ones that have not changed
+* If you changed a library file, for example, lib/foo.ex that defines Foo, any test that invokes a function in Foo directly or indirectly will also run
+* If you modify your mix.exs or your test/test_helper.exs, Mix will run the whole test suite
+
+This feature provides a great workflow for developers, allowing them to effortlessly focus on parts of the codebase when developing new features.
+
+### Diffing
+
+From Elixir 1.3
+
+For this addition, `String.myers_difference/2` has been added to the String module.
+
+[source, elixir]
+```
+iex(1)> String.myers_difference("foobar", "fopbar")
+[eq: "fo", del: "o", ins: "p", eq: "bar"]
+```
+
+## Mock
+
+http://teamon.eu/2017/different-approach-to-elixir-mocks-doubles/
+
+* example available here https://github.com/teamon/elixir-test-doubles
+** requires to grasp Macro and GenServer
+
+https://github.com/sonerdy/double
+
+* It doesn't get commit since few months
+* Nice 10 min video explaning the issues solved: https://www.youtube.com/watch?v=cyU_SFyVRro&feature=youtu.be
+
+https://github.com/appunite/mockery
+
+* Good candidate, check the discussion here http://teamon.eu/2017/different-approach-to-elixir-mocks-doubles/
+
+- [ ] Watch [J B Rainsberger Integrated Tests Are A Scam HD](https://www.youtube.com/watch?v=VDfX44fZoMc)
+
+goals/issues of a good Mock/Double strategy:
+
+* No module compilation hackery
+* Reduce boilerplate to the minimum
+* Be explicit
+* Allow multiple implementations per module
+* Works with `async` tests
+
+### Mock Library
+
+https://github.com/jjh42/mock
+
+# Debug and Monitoring
+
+## Erlang Observer
+
+`:observer.start`
+
+* See how much load the VM is taking
+* See the layout of your supervision trees
+
+## IEx.pry
+
+[source, elixir]
+```
+require IEx
+
+IEx.pry
+```
+
+To run pry within a test suite:
+
+`iex -S mix test`
+
+[Elixir 1.5 addition and tips](https://www.youtube.com/watch?v=LE2y4kh56pQ) :
+
+* Set break points
+* Require private functions
+* Print why a function didn't match
+
+# Deployment production Monitoring
+
+## Elixir Releases
+
+Ref: https://elixir-lang.org/blog/2019/06/24/elixir-v1-9-0-released/
+
+A release is a self-contained directory that consists of:
+
+* your application code, 
+* all of its dependencies,
+* plus the whole Erlang Virtual Machine (VM) and runtime.
+
+Once a release is assembled, it can be packaged and deployed to a target as long as the target runs on the *same operating system (OS) distribution and version* as the machine running the mix release command: https://hexdocs.pm/mix/Mix.Tasks.Release.html
+
+Why releases? 
+
+They allow developers to precompile and package all of their code and the runtime into a single unit.
+
+* : 
+
+*Code preloading* - The VM has two mechanisms for loading code:
+
+* *interactive* : which dynamically loads modules when they are used for the first time. The first time your application calls Enum.map/2, the VM will find the Enum module and load it. There’s a downside. When you start a new server in production, it may need to load many other modules, causing the first requests to have an unusual spike in response time.
+* *embedded* : which loads all available modules upfront, guaranteeing your system is ready to handle requests after booting.
+
+By default the VM it runs in the interactive mode,  Releases run in embedded mode.
+
+*Configuration and customization* : Releases give developers fine grained control over system configuration and the VM flags used to start the system.
+
+## Distillery
+
+Distillery 2 release post: https://dockyard.com/blog/2018/08/23/announcing-distillery-2-0
+
+Distillery is A pure Elixir implementation of release packaging functionality for the Erlang VM.
+
+https://github.com/bitwalker/distillery
+
+takes your Mix project and produces an Erlang/OTP release, a distilled form of your raw application's components; a single package which can be deployed anywhere, independently of an Erlang/Elixir installation. No dependencies, no hassle.
+
+https://blog.dockbit.com/deploying-elixir-applications-with-docker-1e1dd5b39ab9 :
+
+* Snippet to sync Phoenix version with image name https://github.com/DockbitExamples/phoenix/commit/4f54c9c6cf10034370b68586cdf5ae5de34a7848
+
+* https://zorbash.com/post/docker-multi-stage-elixir-distillery-releases/
+
+> **Note:** Exrm has been replaced by Distillery
+
+### Distillery TIPS
+
+### Check build-time variable 
+
+cat releases/1.1.1/sys.config
+
+cat /app/var/sys.config
+
+#### Describe
+
+Print useful information about the betania releas
+
+app@6e8321833d3e:/app$ bin/betania describe
+
+betania-1.1.1
+erts:        10.5.6
+path:        /app/releases/1.1.1
+sys.config:  /app/var/sys.config
+vm.args:     /app/var/vm.args
+name:        betania@127.0.0.1
+cookie:      "Uxdp73uhFdSKHiFlPrFTzjGSKY/VuBvIJge90XH0X+2dAXtA/O1Of1sVCpzH5ShBa2oskVNFDVJYCBI4VO3veNzT0dx6jrHUrW7L6nlYazS9y+TpMSv9L/ItpXMGgySs"
+erl_opts:    none provided
+run_erl_env: none provided
+
+hooks:
+No custom hooks found.
+
+commands:
+/app/releases/1.1.1/commands/migrate.sh
+/app/releases/1.1.1/commands/seed.sh
+
+## How to create a standalone executable
+
+https://www.reddit.com/r/elixir/comments/5e4ti2/building_a_standalone_cli_executable/
+
+# Elixir Scopes
+
+Reference: [Scoping Rules in Elixir (and Erlang)](http://elixir-lang.readthedocs.io/en/latest/technical/scoping.html)
+
+For everyday use it is sufficient to understand the basics of scoping rules in Elixir:
+
+* *top level scope* every variable and identifier defined outside of any other scope
+* *function clause scope*
+
+But there are, in fact, quite a few rules you need to know to get a complete picture of the way scopes work in Elixir.
+
+There are a number of constructs that create new scope:
+
+* modules and module-like structures: `defmodule`, `defprotocol`, `defimpl`
+* functions: `fn`, `def`, `defp`
+* comprehensions: `for`
+* `try` block bodies
+
+> **Warning:** `if`, `case` and friends don't define a scope but you should think that they do define a scope, let's see why. Elixir compiler will warn if you assign to a variable that is accessed in an outer scope. This warning, intruduced in 1.3, will gives the opportunity to unify the language scoping rules in future releases.
+
+More details here: https://stackoverflow.com/questions/39550644/elixir-set-variable-in-if-statement and here:  https://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/
+
+*TODO: capire meglio la relazione che c'è tra come si comporta `if`, o meglio come si comporta `case` e la relazione con unquote la macro hygeine.*
+
+Elixir Scopes Are Lexical:
+
+* is based on where variables and blocks of scope have been authored in the source code.
+* *Nesting* : any variables defined in the surrounding scope are accessible in all other scopes it contains. There is an exception to this rule which applies only to named functions: any variable coming from the surrounding scope has to be unquoted inside a function clause body.
+* *Shadowing* : Any variable in a nested scope whose name coincides with a variable from the surrounding scope will shadow that outer variable,but does not affect it in any way
+* All variable bindings introduced in a scope are available until the end of that scope.
+* Elixir has a few special forms that treat scopes a little differently (namely require, import, and alias).
+
+> **Note:** also Javascript use lexical scope https://medium.com/@nickbalestra/javascripts-lexical-scope-hoisting-and-closures-without-mystery-c2324681d4be
+
+Most of the time user code in Elixir is structured in the following way. At the top level we define modules. Each module contains a number of attributes and function clauses. Inside a function clause there can be arbitrary number of expressions including control flow constructs like case, if, or try:
+
+[source, elixr]
+```
+abc = "abc"            T ---------------------+
+                                              |
+defmodule M do             M ---------------+ |
+  @doc "factorial"                          | |
+  @limit 13                                 | |
+                                            | |
+  def foo(n) do                F ---------+ | |
+    x = case n do                         | | |  # T: top level scope
+      0 -> 1                              | | |
+      i when i > 0 -> n * foo(n - 1)      | | |  # M: module's scope
+      _ -> :undef                         | | |
+    end                                   | | |  # F: function clause scope
+                                          | | |
+    for x <- [1,2,3] do            C ---+ | | |  # C: comprehension's scope
+      -x                                | | | |
+    end                            -----+ | | |
+                                          | | |
+  end                          -----------+ | |
+                                            | |
+end                        -----------------+ |
+                        ----------------------+
+```
+
+.ditaa Figure 1
+[ditaa,file="images/ditaa-example.png"]
+--
+
++------------------------------------------------------------+
+| Top level                                                  |
+|                                                            |
+|  +------------------------+     +------------------------+ |
+|  | Module                 |     | Module                 | |
+|  |                        |     |                        | |
+|  | +--------------------+ |     | +--------------------+ | |
+|  | | Function clause    | |     | | Function clause    | | |
+|  | |                    | |     | |                    | | |
+|  | | +----------------+ | |     | | +----------------+ | | |
+|  | | | Comprehension  | | |     | | | Comprehension  | | | |
+|  | | +----------------+ | |     | | +----------------+ | | |
+|  | | +----------------+ | | ... | | +----------------+ | | |
+|  | | | Anon. function | | |     | | | Anon. function | | | |
+|  | | +----------------+ | |     | | +----------------+ | | |
+|  | | +----------------+ | |     | | +----------------+ | | |
+|  | | | Try block      | | |     | | | Try block      | | | |
+|  | | +----------------+ | |     | | +----------------+ | | |
+|  | +--------------------+ |     | +--------------------+ | |
+|  +------------------------+     +------------------------+ |
+|                                                            |
++------------------------------------------------------------+
+--
+
+In the general case, however, all scopes are arbitrarily nestable: we could imagine a case expression inside a comprehension or a top-level if expression defining different modules depending on some condition. For example:
+
+[source, elixir]
+```
+f = fn x ->
+  case x do
+    1 ->
+      defmodule M do
+        def say do
+          "one"
+        end
+      end
+    2 ->
+     defmodule N do
+        def say do
+          "two"
+        end
+      end
+  end
+end
+
+#=> no module has been defined yet
+M.say       #=> undefined function: M.say/0
+N.say       #=> undefined function: N.say/0
+
+#=> define M
+f.(1)
+M.say       #=> "one"
+N.say       #=> undefined function: N.say/0
+
+#=> define N
+f.(2)
+M.say       #=> "one"
+N.say       #=> "two"
+```
+
+## Top level scope
+Named functions cannot be defined at the top level because a named function always belongs within a module. However, named functions
+can be imported into any lexical scope (including the top level scope) like this:
+
+[source, elixir]
+```
+import String, only: [reverse: 1]
+reverse "Hello"  #=> "olleH"
+```
+
+In fact, all functions and macros from the Kernel module are autoimported in the top level scope by the compiler.
+
+## Function scope
+
+Each function clause defines a new lexical scope: any new variable bound inside it will not be available outside of that clause:
+
+[source, elixir]
+```
+f = fn() ->
+  a = 1
+end
+
+f.()
+IO.puts a
+#=> ** (CompileError) iex:30: undefined function a/0  <1>
+```
+<1> a is bound within the function but doesn't leak outside of the function scope
+
+Hiding example: the `multiplier` parameter will hide the `multiplier` variable:
+
+[source, elixir]
+```
+multiplier = 6
+f = fn(x, multiplier) ->
+  x*multiplier
+end
+f.(2, 20)
+#=> 40
+```
+
+Hinding example: parameter that hide a function
+
+[source, elixir]
+```
+defmodule M do
+  #=> in this case the argument 'y' shadows the named function 'y/0'
+  def y(y), do: y*2
+
+  #=> here the reference to 'y' inside the function body is actually a recursive call to 'y/0'
+  def y, do: y*2
+end
+```
+
+## Named functions and modules
+
+As mentioned before, named function have a couple of peculiarities.
+
+1) defining a named function does not introduce a new binding into the current module scope:
+
+[source, elixir]
+```
+defmodule M do
+  def foo, do: "hi"
+
+  foo()  # will cause CompileError: undefined function foo/0
+end
+```
+
+But you can reference foo/0 from bar/0
+
+[source, elixir]
+```
+defmodule M do
+  def foo, do: "hi Foo"
+
+  def bar, do: IO.puts "Bar function calls foo and get: #{foo()}"
+end
+
+M.foo
+#> "hi Foo"
+
+M.bar
+#> Bar function calls foo and get: hi Foo
+```
+
+> **Warning:** TODO capire bene perchè con le struct nelle firme dei metodi devo usare il nome esteso del modulo come nell'esempio qua sotto
+
+2) Struct Naming has rules:
+
+[source, elixir]
+```
+defmodule API.User do
+  defstruct name: nil, age: 0
+  def old?(%User{name: name, age: age} = user) do  end  # <1>
+end
+#=> ** (CompileError) iex:22: User.__struct__/0 is undefined, cannot expand struct User
+```
+<1> User must be reference with it's full scope
+
+[source, elixir]
+```
+defmodule API.User do
+  defstruct name: nil, age: 0
+  def old?(%API.User{name: name, age: age} = user) do  # <1>
+  end
+end
+```
+<1> Use the full scope
+
+A trick is to define an alias
+ref: https://dockyard.com/blog/2017/08/15/elixir-tips
+
+[source, elixir]
+```
+defmodule API.User do
+  alias __MODULE__
+
+  defstruct name: nil, age: 0
+
+  def old?(%API.User{name: name, age: age} = user) do
+
+  end
+end
+```
+
+3) named functions cannot directly access surrounding scope with unquoting:
+
+[source, elixir]
+```
+defmodule M do
+  y = 1 # <1>
+  def foo(a), do: a * y  # <2>
+end
+#=> ** (CompileError) iex:3: undefined function y/0
+```
+<1> We define a variable outside in the body of the module
+<2> But the variable is not accessible within the body of the function
+
+> **Note:** def and defmodule are implemented with `defmacro` and return a quoted expression. The code within the defmodule body, as any other macro, is evaluated at compile time
+
+https://stackoverflow.com/questions/35515196/why-can-unquote-be-called-outside-a-macro
+
+Elixir source code that implements `def` :
+
+* https://github.com/elixir-lang/elixir/blob/928302a912e397917be957142a9837ae58610207/lib/elixir/lib/kernel.ex#L3146L3148
+* https://github.com/elixir-lang/elixir/blob/928302a912e397917be957142a9837ae58610207/lib/elixir/lib/kernel.ex#L3225L3227
+
+> **Note:** `def/2` is a macro https://hexdocs.pm/elixir/Kernel.html#def/2  questa issue creata da Josè è interessante e parla di bind quoted e  https://github.com/elixir-lang/elixir/issues/880
+
+Instead for anonymous function the nesting rule is valid:
+
+[source, elixir]
+```
+multiplier = 6
+f = &(&1*multiplier)
+f.(2)
+#=> 12
+```
+
+> **Note:** in Elixir, you don’t have to define the Foo module before being able to define the Foo.Bar module, as the language translates all module names to atoms. You can define arbitrarily-nested modules without defining any module in the chain (e.g., Foo.Bar.Baz without defining Foo or Foo.Bar first).
+
+You can use `unquote` to "restore" the nesting rule:
+
+[source, elixir]
+```
+defmodule M do
+  y = 2
+  def foo(a), do: a * unquote(y)  # <1>
+end
+
+M.foo 3
+#=> 6
+```
+<1> unquoting `a`
+
+TODO:
+* https://medium.com/elixirlabs/define-dynamic-functions-with-dynamic-arguments-arity-using-elixir-macros-a28241d4f119
+* https://groups.google.com/forum/#!topic/elixir-lang-core/wKp7vxcaCQk
+* https://github.com/elixir-lang/elixir/issues/880
+
+# Are Elixir variables really immutable?
+
+* [http://stackoverflow.com/questions/29967086/are-elixir-variables-really-immutable](http://stackoverflow.com/questions/29967086/are-elixir-variables-really-immutable)
+* [http://blog.plataformatec.com.br/2016/01/comparing-elixir-and-erlang-variables/](http://blog.plataformatec.com.br/2016/01/comparing-elixir-and-erlang-variables/)
+
+In Elixir, once a variable references a list such as [1,2,3], you know it will always reference those same values (until you rebind the variable).
+
+## What is the difference between mutability and rebinding?
+
+[source, elixir]
+```
+name = "elixir"     
+cap_name = String.capitalize name
+"Elixir"     
+name    
+"elixir"
+```
+
+* The data structure referenced by name is never changed
+* In functional we never tranform data
+
+# Type System
+
+## Term (Elixir or Erlang)
+
+ref: https://en.wikibooks.org/wiki/Erlang_Programming/Terms
+
+The basic unit of expressing a value in Erlang/Elixir is the term. We say `term` when we refer generically to one of the basic Erlang/Elixir type listed below.
+There are more simple terms like Atoms, integer, etc and more complex term that are collections of other term, like list, tuple, etc ...
+
+For example a tuple containing a string and a list is a term: `{"hello", [1, 2, 3]}`
+
+Value types:
+
+* Arbitrary-sized integers
+* Floating-point numbers
+* Atoms
+* Ranges
+* Regular expressions
+
+System types:
+
+* PIDs and ports
+* References
+
+Collection types:
+
+* Tuples
+* Lists
+* Maps
+* Binaries
+
+In Elixir, functions are a type too.
+
+String and structures are built using the types above.
+
+## Type Safety: type checking
+
+[http://learningelixir.joekain.com/elixir-type-safety/](http://learningelixir.joekain.com/elixir-type-safety/)
+
+## Integer
+
+Binary, hexdecimal, octal:
+
+[source, elixir]
+```
+iex(14)> 0b101
+5
+iex(15)> 0xaf
+175
+iex(16)> 0o10
+8
+```
+
+Sugar, use underscore to improve readability : `1_000_000`
+
+## Float
+
+`1.0   0.2456   0.314159e1 314159.0e-5`
+
+## Truth
+
+* `true`, `:true` is its alias
+* `false`, `nil`
+* In most context any value other than `nil` or `false` is treated as `true` 
+
+## Binaries and bitstrings
+
+Ref:
+
+* EIA_2nd pag 67
+* [http://elixir-lang.org/getting-started/binaries-strings-and-char-lists.html](http://elixir-lang.org/getting-started/binaries-strings-and-char-lists.html)
+* https://elixir-lang.org/getting-started/binaries-strings-and-char-lists.html
+
+A binary is a chunk of bytes. Is one of the basic term of the Elixir language.
+
+Syntax to create a Binary:
+
+* enclose the byte sequence between `<<` and `>>` operators.
+* Each number represents the value of the corresponding byte.
+* If you provide a byte value bigger than 255, it’s truncated to the byte size
+
+The following snippet creates a 2-byte binary:
+
+[source, elixir]
+```
+iex(8)> bin = << 1, 2 >>
+<<1, 2>>
+iex(9)> byte_size bin
+2
+
+iex(2)> <<256>>   # Truncated bytes examples
+  <<0>>
+iex(3)> <<257>>
+  <<1>>
+iex(4)> <<512>>
+  <<0>>
+```
+
+Usecases:
+
+* Data binary type: to access data as a sequence of bits or bytes
+* Represent string
+
+You can add modifiers to control the type and size of each individual field:
+You can add modifiers `::size(<size_in_bit>)` or `::<size_in_bit>` to specify the size of each value and thus tell the compiler how many bits to use for that particular value:
+
+[source, elixir]
+```
+iex(5)> <<257::16>>
+<<1, 1>>
+```
+
+This expression places the number 257 into 16 bits of consecutive memory space. The output indicates that you use 2 bytes, both having a value of 1. This is due to the binary representation of 257, which in 16-bit form is written 00000001 00000001.
+
+> **Note:** The size specifier is in bits and need not be a multiplier of 8.
+
+The following snippet creates a binary by combining two 4-bit values, he resulting value has 1 byte and is represented in the output using the normalized form 31 (0001 1111):
+
+[source, elixir]
+```
+iex> bin = <<1::4, 15::4>>
+<<31>>
+iex(25)> :io.format("~8.2b~n", :binary.bin_to_list(bin))
+00011111
+```
+
+- [ ] come funziona la stampa con :io.format ??? è Erlang…
+- [ ] non ho ben capito come si gestiscono Binaries con più di 8 bit
+
+[source, elixir]
+```
+bin = << 1::size(1), 0::size(8) >>
+ <<128, 0::size(1)>>
+```
+
+If the total size of all the values isn’t a multiple of 8, the binary is called a `bitstring` — a sequence of bits:
+
+[source, elixir]
+```
+iex(7)> <<1::1, 0::1, 1::1>>
+<<5::size(3)>>
+
+iex(14)> <<1::1, 0::1, 1::1, 2::12>>
+<<160, 2::size(7)>>
+```
+
+## Concatenate Binaries and Bitstrings
+
+You can also concatenate two binaries or bitstrings with the operator `<>`:
+
+[source, elixir]
+```
+ iex(8)> <<1, 2>> <> <<3, 4>>
+<<1, 2, 3, 4>>
+```
+
+## Strings: UTF8 and bitnaries
+
+> **Warning:** Elixir doesn’t have a dedicated string type. Strings are represented by using either a binary or a list type.
+
+A string in Elixir is a binary that contains byte sequence of the encoded in UTF-8.
+
+REF: [String module doc](http://elixir-lang.org/docs/stable/elixir/String.html#content)
+
+In order to understand exactly what we mean by that, we need to understand the difference between bytes and code points.
+
+The Unicode standard assigns code points to many of the characters we know. For example, the letter a has code point 97 while the letter ł has code point 322. When writing the string "hełło" to disk, we need to convert this sequence of characters to bytes. If we adopted a rule that said one byte represents one code point, we wouldn’t be able to write "hełło", because it uses the code point 322 for ł, and one byte can only represent a number from 0 to 255. But of course, given you can actually read "hełło" on your screen, it must be represented somehow. That’s where encodings come in.
+
+When representing code points in bytes, we need to encode them somehow. Elixir chose the UTF-8 encoding as its main and default encoding. When we say a string is a UTF-8 encoded binary, we mean a string is a bunch of bytes organized in a way to represent certain code points, as specified by the UTF-8 encoding.
+
+Since we have characters like ł assigned to the code point 322, we actually need more than one byte to represent them. That’s why we see a difference when we calculate the byte_size/1 of a string compared to its String.length/1:
+
+[source, elixir]
+```
+iex> string = "hełło"
+"hełło"
+iex> byte_size(string)
+7
+iex> String.length(string)
+5
+There, byte_size/1 counts the underlying raw bytes, and String.length/1 counts characters.
+```
+
+UTF-8 requires one byte to represent the characters h, e, and o, but two bytes to represent ł. In Elixir, you can get a character’s code point by using `?`:
+
+[source, elixir]
+```
+iex> ?a
+97
+iex> ?ł
+322
+```
+
+These can be used anywhere you want to refer to a characters codepoint.
+
+You can also use the functions in the String module to split a string in its individual characters, each one as a string of length 1:
+
+[source, elixir]
+```
+iex> String.codepoints("hełło")
+["h", "e", "ł", "ł", "o"]
+```
+
+### Strings: Character lists
+
+The alternative way of representing strings is to use single-quote syntax:
+
+[source, elixir]
+```
+iex(1)> 'ABC'
+'ABC'
+
+#The previous result is exactly the same as if you manually construct the list of integers
+iex(2)> [65, 66, 67]
+'ABC'
+```
+
+This creates a character list, which is essentially a list of integers in which each element represents a single character.
+
+> **Warning:** In general, you should prefer binary strings as much as possible, using character lists only when some third-party library (most often written in pure Erlang) requires it.
+
+As you can see, even the runtime doesn’t distinguish between a list of integers and a character list.
+
+> **Note:** Character lists aren’t compatible with binary strings.
+
+### Working with strings
+
+String interpolation: use `#{}` to place an Elixir expression in a string constant:
+
+[source, elixir]
+```
+name="nicola"
+"ciao #{name}"
+-> "ciao nicola"
+```
+
+Classical `\` escaping works as you’re used to: "\r \n \" \\"
+
+Strings don’t have to finish on the same line:
+
+[source, elixir]
+```
+iex(4)> "
+        This is
+        a multiline string
+        "
+```
+
+You can enclose the string inside `~s()` sigil:
+
+[source, elixir]
+```
+iex(5)> ~s(This is also a string)
+"This is also a string"
+```
+
+Sigils can be useful if you want to include quotes in a string:
+
+[source, elixir]
+```
+iex(6)> ~s("Do... or do not. There is no try." -Master Yoda)
+"\"Do... or do not. There is no try.\" -Master Yoda"
+```
+
+There’s also an uppercase version `~S` that doesn’t handle interpolation or escape characters (\):
+
+[source, elixir]
+```
+iex(7)> ~S(Not interpolated #{3 + 0.14})
+"Not interpolated \#{3 + 0.14}"
+iex(8)> ~S(Not escaped \n)
+"Not escaped \\n"
+```
+
+Finally, there’s a special heredocs syntax, which supports better formatting for multiline strings. Heredocs strings start with a `triple double-quote`. The ending triple double-quote must be on its own line:
+
+[source, elixir]
+```
+iex(9)> """
+        Heredoc must end on its own line """
+        """
+"Heredoc must end on its own line \"\"\"\n"
+```
+
+Because strings are binaries, you can concatenate them with the `<>` operator:
+
+[source, elixir]
+```
+iex(10)> "String" <> " " <> "concatenation"
+"String concatenation"
+```
+
+Many helper functions are available for working with binary strings. Most of them reside in the String module (https://hexdocs.pm/elixir/String.html).
+
+Just like with binary strings, there are syntax counterparts for various definitions of character lists:
+
+[source, elixir]
+```
+iex(3)> 'Interpolation: #{3 + 0.14}'
+'Interpolation: 3.14'
+iex(4)> ~c(Character list sigil)
+'Character list sigil'
+iex(5)> ~C(Unescaped sigil #{3 + 0.14})
+'Unescaped sigil \#{3 + 0.14}'
+iex(6)> '''
+        Heredoc
+        '''
+'Heredoc\n'
+```
+
+To convert:
+
+* a binary string to a character use `String.to_charlist/1`
+* a character list to a binary string use `List.to_string/1`
+
+### Binaries, strings and char lists
+
+[http://elixir-lang.org/getting-started/binaries-strings-and-char-lists.html](http://elixir-lang.org/getting-started/binaries-strings-and-char-lists.html)
+
+* String byte size and length are different
+
+[source, elixir]
+```
+byte_size("hellö") # ö is encoded with 2 bytes
+6
+
+byte_size("hello")
+5
+
+String.length("hellö")
+5
+
+String.length("hello")
+5
+```
+
+## Atoms
+
+Atoms are literal named constants. We write them using a leading colon (:). An atom consists of two parts: the text and the value. The atom text is whatever you put after the colon character.
+
+At runtime, this text is kept in the atom table: The value is the data that goes into the variable, and it’s merely a reference to the atom table.
+
+This is exactly why atoms are best used for named constants. They’re efficient both
+memory- and performance-wise. When you say
+variable = :some_atom
+the variable doesn’t contain the entire text, but only a reference to the atom table. Therefore, memory consumption is low, the comparisons are fast, and the code is still readable.
+
+Atom constants start with a colon character, followed by a combination of alphanumerics and/or underscore characters: `:an_atom`, `:another_atom`
+
+It’s possible to use spaces in the atom name with the following syntax: `:"an atom with spaces"`
+
+Two atoms with the same name will always compare as being equal, even if they were created by different applications on two computers separated by an ocean.
+
+We’ll be using atoms a lot to tag values.
+
+## Alias (sintax sugar to create atoms)
+
+There’s another syntax for atom constants. You can omit the beginning colon and start with an uppercase character: `AnAtom`
+
+This is called an alias, and at compile time it’s transformed into this:
+
+```
+
+iex(1)> AnAtom == :"Elixir.AnAtom"
+true
+```
+
+When you use an alias, the compiler implicitly adds the Elixir. prefix to its text and inserts an atom there. But if an alias already contains that prefix, it’s not added. Consequently, the following also works:
+`iex(2)> AnAtom == Elixir.AnAtom`
+
+It’s no accident that the term alias is used for both things. When you write alias IO, as: MyIO, you instruct the compiler to transform MyIO into IO. Resolving this further, the final result emitted in the generated binary is :Elixir.IO. Therefore, with an alias set up, the following also holds:
+
+```
+iex(5)> MyIO == Elixir.IO
+true
+```
+
+All of this may seem strange, but it has an important underlying purpose. Aliases sup- port the proper resolution of modules.
+
+This will be discussed at "Modules and functions in the runtime" ( see also EIA_2nd ch 2.7.1 )
+
+## Calendar and sigils
+
+Calendar and Date, Time, NaiveDateTime and DateTime types was added in 1.3, see here:
+
+* [https://github.com/elixir-lang/elixir/releases/tag/v1.3.0](https://github.com/elixir-lang/elixir/releases/tag/v1.3.0)
+* [http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/](http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/)
+
+## PIDs
+
+PID is a reference to a local or remote process
+
+`self` is the PID
+
+Pids are important when cooperating between concurrent tasks
+
+TODO EIA ch 5
+
+## Port Identifiers
+
+The port identifier is important when using ports. It’s a mechanism used in Erlang to talk to the outside world. File I/O and communication with external programs are done through ports.
+
+- [ ] https://hexdocs.pm/elixir/Port.html
+
+## Anonymous functions
+
+In Elixir, a function is a first-class citizen, which means it can be assigned to a variable:
+
+* doesn’t mean calling the function and storing its result to a variable.
+* the function definition itself is assigned, and you can use the variable to call the function.
+
+You can also pass a function as the argument to another function. This is often referred to as anonymous functions or lambdas in other programming languages.
+
+Here we will talk about anonymous functions, in the Module's chapter we will see other way to define functions.
+
+Anonymous Functions are delimited by the keywords `fn` and `end`:
+
+[source, elixir]
+```
+add = fn a, b -> a + b end
+is_function(add)
+iex> is_function(add, 2) # Test function's arity
+true
+iex> is_function(add, 1)
+false
+iex> add.(1, 2)
+3
+```
+
+* Functions are “first class citizens” in Elixir meaning they can be passed as arguments.
+* dot (.) between the variable and parenthesis is required to invoke an anonymous function.
+* CLOSURE: anonymous functions are closures
+
+> **Note:** When you encounter a `add.(1,2)` expression in the source code, you know the function invoked is anonyous instead of defined in a module. Without the dot operator, you’d have to parse the surrounding code to understand whether you’re calling a named or an anonymous function.
+
+[source, elixir]
+```
+iex> add_two = fn a -> add.(a, 2) end
+ #Function<6.71889879/1 in :erl_eval.expr/5>
+iex> add_two.(2)
+4
+```
+
+* A variable assigned inside a function does not affect its surrounding environment:
+
+[source, elixir]
+```
+iex> x = 42
+42
+iex> (fn -> x = 0 end).()
+0
+iex> x
+42
+```
+
+Syntax convention is:
+
+* list of arguments is enclosed in parentheses
+* single argument isn’t enclosed in parentheses
+
+Because functions can be stored in a variable, they can be passed as arguments to other functions. This is often used to allow clients to parameterize generic logic.
+
+For example, the function `Enum.each/2` implements the generic iteration, it takes two arguments:
+
+* an enumerable (Lists, Maps, etc)
+* a one-arity lambda (an anonymous function that accepts one argument).
+
+[source, elixir]
+```
+print_element = fn x -> IO.puts(x) endi # Defines the lambda
+Enum.each(
+  [1, 2, 3],
+  print_element
+)
+
+Enum.each(
+  [1, 2, 3],
+  fn x -> IO.puts(x) end # Or with inline anonymous function definition
+)
+```
+
+You can use the `&`, the capture operator, to define anonymous functions in a compact way:
+It takes the full function qualifier — a module name, a function name, and an arity — and turns that function into a lambda that can be assigned to a variable.
+
+Elixir makes it possible to directly reference the function and have a more compact lambda definition. Instead of writing `fn x → IO.puts(x) end`, you can write `&IO.puts/1`.
+
+[source, elixir]
+```
+Enum.each(
+          [1, 2, 3],
+          &IO.puts/1
+)
+```
+
+The capture operator can also be used to shorten the lambda definition, making it possible to omit explicit argument naming:
+
+* you can turn this definition: `lambda = fn x, y, z -> x * y + z end`
+* into a more compact form: `lambda = &(&1 * &2 + &3)`
+* This snippet creates a three-arity lambda. Each argument is referred to via the &n place- holder, which identifies the nth argument of the function. You can call this lambda like any other: `lambda.(2, 3, 4)``
+
+## References
+
+A reference is an almost unique piece of information in a BEAM instance.
+It’s generated by calling `Kernel.make_ref/0` (or `make_ref`).
+
+According to the Elixir documentation, a reference will reoccur after approximately 2^82 calls. But if you restart a BEAM instance, reference generation starts from the beginning, so its uniqueness (among connected nodes) is guaranteed only during the lifetime of the BEAM instance.
+
+Use cases:
+
+* https://stackoverflow.com/questions/50799883/what-are-some-usages-for-make-ref-function-in-elixir
+*
+
+> **Note:** UUID could be a good alternative for references unless you are concerned about the memory load: references are way more efficient. http://erlang.org/doc/efficiency_guide/advanced.html#unique_references
+
+## Ranges
+
+A range is an abstraction that allows you to represent a range of numbers. Elixir even provides a special syntax for defining ranges: `range = 1..2`
+
+* Syntax: start..end
+* Ranges are enumerable
+* range isn’t a special type. Internally, it’s represented as a map that contains range boundaries, footprint of a range is very small, regardless of the size. A million-number range is still just a small map.
+
+[source, elixir]
+```
+Enum.each(
+          1..3,
+          &IO.puts/1
+)
+1
+2
+3
+```
+
+## MapSet
+
+A MapSet is the implementation of a set — a store of unique values, where a value can be of any type. It's a kind of list with the added property of uniqueness of values.
+
+If we did:
+
+[source, elixir]
+```
+iex(4)> set = [1, 1, 1, 2](MapSet.new())
+[1, 2](#MapSet<)>
+iex(5)> MapSet.size(set)
+2
+```
+
+The element 1 will only appear in there once and no more, the size is 2.
+
+> **Note:**  MapSets are actually Hash array mapped trie. https://en.wikipedia.org/wiki/Hash_array_mapped_trie
+
+* MapSet are Enumerable. `Enum.each(days, &IO.puts/1)`
+* MapSet doesn’t preserve the ordering of the items.
+* Check for membership:
+
+[source, elixir]
+```
+iex(2)> days = [:monday, :tuesday, :wednesday](MapSet.new()) [:monday, :tuesday, :wednesday](#MapSet<)>
+iex(3)> MapSet.member?(days, :monday)
+true
+iex(4)> MapSet.member?(days, :not_in)
+false
+```
+
+MapSet module doc: https://hexdocs.pm/ elixir/MapSet.html
+
+### MapSet Performance
+
+MapSet are really fast and is really useful when searching for something:
+
+* check existence of an element in **O(log(n))** time
+* You may want to consider using a MapSet rather than a List when searching through a collection depending on your use case.
+
+> **Note:** that HashSet is deprecated in the later versions of Elixir
+
+## HashSet
+
+HashSet is deprecated in the later versions of Elixir, use MapSet instead.
+
+## Times and dates
+
+Ref: https://elixirschool.com/en/lessons/basics/date-time/
+- [ ] capire meglio come funzionano le timezone
+
+In Elixir v1.3, Elixir added four types, known as Calendar types, working with dates and times types:
+
+* `Date` struct. It contains the fields year, month, day ...
+* `Time` struct. It contains the fields hour, minute, second and microseconds.
+* `DateTime` module (with time zone)
+* `NaiveDateTime` module (without time zone)
+
+Elixir v1.8 now defines a `Calendar.TimeZoneDatabase behaviour`, allowing developers to bring in their own time zone databases. By defining an explicit contract for time zone behaviours, Elixir can now extend the DateTime API, adding functions such as DateTime.shift_zone/3. By default, Elixir ships with a time zone database called `Calendar.UTCOnlyTimeZoneDatabase` that only handles UTC.
+
+A date can be created with the `~D` sigil:
+
+[source, elixir]
+```
+iex(1)> date = [2018-01-31](~D)
+[2018-01-31](~D)
+
+iex(2)> date.year
+2018
+
+iex(3)> date.month
+1
+```
+
+Useful functions are:
+
+* `Date.day_of_year/1`
+* `Date.quarter_of_year/1`
+* `Date.year_of_era/1`
+* `Date.day_of_era/1`
+* ....
+
+Time can be created with the `~T` sigil:
+
+[source, elixir]
+```
+iex(5)> time = [11:59:12.00007](~T)
+[11:59:12.00007](~T)
+
+iex(2)> time.hour
+11
+
+iex(3)> time.minute
+59
+```
+
+There are also some useful functions available in the modules Date (https://hexdocs.pm/ elixir/Date.html) and Time (https://hexdocs.pm/elixir/Time.html):
+
+* `Time.utc_now` get the current time
+* `Date.utc_today` get the current date
+
+The naive version can be created with the `~N` sigil.
+The DateTime module can be used to work with datetimes in some timezone. Unlike with other types, no sigil is available. Instead, you can create a datetime by using Date- Time functions
+
+[source, elixir]
+```
+iex(1)> naive_datetime = [2018-01-31 11:59:12.000007](~N)
+iex(2)> naive_datetime.year
+2018
+iex(3)> naive_datetime.hour
+11
+
+iex(4)> datetime = DateTime.from_naive!(naive_datetime, "Etc/UTC")
+iex(5)> datetime.year
+2018
+iex(6)> datetime.hour
+11
+iex(7)> datetime.time_zone
+"Etc/UTC"
+
+iex(4)> datetime = DateTime.from_naive!(naive_datetime, "Europe/Rome")
+iex(5)> datetime.year
+2018
+iex(6)> datetime.hour
+11
+iex(7)> datetime.time_zone
+"Etc/UTC"
+```
+
+## RegEx
+
+Regular expressions, while they can be utterly cryptic, entirely illegible beasts, they are also the most direct language available to programmers for writing instructions on how to process text.
+
+Elixir’s regex is based on PCRE [Perl Compatible Regular Expressions](http://www.pcre.org/)
+
+For a general refresh about Regex see: [Regex Guide](link:regex.md{outfilesuffix})
+
+Other useful resources more related to Elixir:
+
+* [Online editor](https://regexr.com/) Support PCRE
+* [Elixir Regex Online Editor](http://www.elixre.uk/)
+* [Erlang’s regex syntax details](http://erlang.org/doc/man/re.html#regexp_syntax) — documentation.
+* [PCRE syntax sheet](http://www.pcre.org/original/doc/html/pcrepattern.html) — Erlang’s regex is derived directly from this page.
+* [Elixir Regex Module Doc](https://hexdocs.pm/elixir/Regex.html)
+* [http://elixir-lang.org/docs/stable/elixir/Regex.html](http://elixir-lang.org/docs/stable/elixir/Regex.html)
+* https://blog.grillwork.io/https-blog-grillwork-io-mastering-elixir-regex-e5b9f46671af
+
+### Intro
+
+Elixir’s sigils and regular expressions are all just macros! You can create regexes using `Regex.compile!/2` or the sigil forms `~r` or `~R`, and they are compiled to Erlang’s `:re` module in the same way.
+
+You can delimit the regex sigil in several ways with Elixir:
+
+* `~r/hello/`
+* `~r|hello|`
+* `~r"hello"`
+* `~r'hello'`
+* `~r(hello)`
+* [hello](`~r)`
+* `~r{hello}`
+* `~r<hello>`
+
+You can use the `~r{<regex>}` sigil or `~r/<regex>/`. Using the curly brackets version is more convenient as you can match / forward slash characters without having to escape it.
+
+The `Regex` module basic methods are the following:
+
+* `run`
+* `scan`
+* `split`
+* `replace`
+* `match?`
+
+### Run
+
+`run` runs the regular expression against the given string until the first match.
+
+[source, elixir]
+```
+iex> Regex.run(~r{c(d)}, "abcd")
+["cd", "d"]
+iex> Regex.run(~r{e}, "abcd")
+nil
+```
+
+### Scan
+
+`scan` performs run several times collecting all matches of the regular expression.
+
+[source, elixir]
+```
+iex> Regex.scan(~r/c(d|e)/, "abcd abce")
+["cd", "d"]([), ["ce", "e"]]
+```
+
+### Split
+
+`split` splits the given target based on the given pattern.
+
+[source, elixir]
+```
+iex> Regex.split(~r/-/, "a-b-c")
+["a", "b", "c"]
+```
+
+### Replace
+
+`replace` takes in a regex, a string and a replacement, returns a new string where all matches are replaced by the replacement.
+
+[https://hexdocs.pm/elixir/Regex.html#replace/4](Documentation)
+
+[source, elixir]
+```
+iex> Regex.replace(~r/b/, "abc", "d")
+"adc"
+
+iex> Regex.replace(~r/b/, "abc", [\\0](")") #\\N refers to the Nth character of the match
+[b]("a)c"
+
+iex> Regex.replace(~r/a(b|d)c/, "abcadc", [\\1](")")
+[d]("[b])"
+
+iex> Regex.replace(~r/a(b|d)c/, "abcadc", fn _, x -> [#{x}](")" end) # You can also pass functions as the replacement argument
+[d]("[b])"
+```
+
+### Match
+
+`match?` Test if a string matches `true = Regex.match?( ~r/foo/ , "Hello foo")``
+
+## Collections
+
+Elixir collections can hold values of any type (including other collections).
+
+## Collection: Tuples
+
+Are ordered untyped collection of a fixed number of elements.
+
+`{ 1, 2 }      { :ok, 42, &quot;next&quot;  }   { :error, :enoent }`
+
+CONVENTION:
+
+* A typical Elixir tuple has two to four elements, any more and you’ll probably want to look at maps, or structs.
+* It is common for functions to return a tuple where the first element is the atom :ok. A common idiom is to write matches that assume success
+
+[source, elixir]
+```
+iex> { :ok, file } = File.open("Rakefile")
+{:ok, #PID<0.39.0>}
+iex> { :ok, file } = File.open("non-existent-file")
+** (MatchError) no match of right hand side value: {:error, :enoent}
+```
+
+The second open failed, and returned a tuple where the first element was :error.
+
+Patter matching:
+
+[source, elixir]
+```
+iex> {status, count, action} = {:ok, 42, "next"}
+{:ok, 42, "next"}
+iex> status  
+
+iex> count   
+42           
+iex> action  
+"next"
+```
+
+* To extract an element from the tuple use the `Kernel.elem/2` function, which accepts a tuple and the zero-based index of the element. Recall that the Kernel module is auto-imported, so you can call elem instead of Kernel.elem.
+* To modify an element of the tuple, you can use the `Kernel.put_elem/3`
+
+[source, elixir]
+```
+iex(1)> person = {"Bob", 25}
+{"Bob", 25}
+iex(2)> age = elem(person, 1)
+25
+
+iex(3)> put_elem(person, 1, 26)
+{"Bob", 26}
+```
+
+Recall that data in Elixir is immutable, so you can’t do an in-memory modification of a value.
+
+## Collection: Lists
+
+Usecase: manage dynamic, variable-sized collections of data
+
+The syntax deceptively resembles arrays from other languages: [1,2,3](`)`
+
+List in Elixir are like linked list:
+
+* head contains a value
+* tails contains the list
+
+Operations with Complexity O(1)
+  * traverse linearly
+  * push into the the top  `new_list = [:new_element | a_list]`
+  * pop from the top [1, 2, 3](`List.first())` or better for recursion:
+```
+a_list = [5, :value, true]
+iex(3)> [h|t] = a_list
+[5, :value, true]
+iex(4)> h
+5
+iex(5)> t
+[:value, true]
+```
+  * get the head [1, 2, 3, 4](`hd())`
+  * get the tail [1, 2, 3, 4](`tl())`
+
+> **Note:** see "Internals: recursive list definition" to understand why this is the complexity
+
+Operations with Complexity O(n)
+  * expensive to access in random order (to get to the nth element, you have to scan through n–1 previous elements) and to ther the length `Kernel.length/1`
+  * modifying an arbitrary element has a complexity
+  * appending to the end is expensive because it always takes n steps, n being the length of the list.
+  * Concatenation [1, 2, 3](`) ++ [4, 5]` the complexity is O(n), n being the length of the left list (the one you’re appending to).
+  * Membership `1 in [1,2,3,4]`
+  * `Kernel.length/1`
+  * `List.replace_at/3`
+  * `List.insert_at`
+
+* Lists are never a good fit when direct access is called for. For those purposes, tuples, maps, or a higher-level data structure is appropriate.
+*  Lists are most efficient when new elements are pushed to the top, or popped from it.
+
+> **Warning:** Avoid adding elements to the end of a list. Lists are most efficient when new elements are pushed to the top, or popped from it.
+
+* For a detailed reference, see the documentation for the List module (https://hexdocs.pm/elixir/List.html).
+* There are also many helpful services in the Enum module (https://hexdocs.pm/elixir/Enum.html). The Enum module deals with many different enumerable structures and is not limited to lists. The concept of enumerables will be explained in detail in when we discuss protocols.
+
+* To get an element of a list, you can use the Enum.at/2 function: iex(3)> Enum.at(prime_numbers, 3)
+
+Cheatsheet lists:
+
+[source, elixir]
+```
+[ 1, 2, 3 ] ++ [ 4, 5, 6 ]      # concatenation
+[1, 2, 3, 4] -- [2, 4]           # difference
+1 in [1,2,3,4]                   # membership
+true         
+iex> "wombat" in [1, 2, 3, 4]
+false        
+
+iex(3)> Enum.at(prime_numbers, 3)
+7
+
+prime_numbers = [2, 3, 5, 7]
+length(prime_numbers)          # get the lenght
+
+Enum.at(prime_numbers, 3)      # get an element of a list
+
+new_primes = List.replace_at(prime_numbers, 0, 11)
+[11, 3, 5, 7]
+
+List.insert_at(prime_numbers, 3, 13)
+[11, 3, 5, 13, 7]
+```
+
+#### Internals: recursive list definition
+
+REF: EIA_2nd pag 37
+
+An alternative way of looking at lists is to think of them as recursive structures.
+
+A list can be represented by a pair (head, tail), where:
+
+* `head` is the first element of the list
+* `tail` “points” to the (head, tail) pair of the remaining elements
+
+In Elixir, there’s a special syntax to support recursive list definition: `a_list = [head | tail]`
+
+Examples:
+
+```
+iex(1)> [1 | []]
+[1]
+
+iex(2)> [1 | [2 | []]]
+[1, 2]
+
+iex(3)> [1 | [2]]
+[1, 2]
+
+iex(4)> [1 | [2, 3, 4]]
+[1, 2, 3, 4]
+
+#a canonical recursive definition of a list:
+iex(1)> [1 | [2 | [3 | [4 | []]]]]
+[1, 2, 3, 4]
+```
+
+To get the head or the tail of the list, you can use the `hd` or `tl` function.
+
+```
+iex(1)> [1, 2, 3, 4](hd())
+1
+
+iex(2)> [1, 2, 3, 4](tl())
+[2, 3, 4]
+```
+
+> **Note:** Both operations are O(1), because they amount to reading one or the other value from the (head, tail ) pair.
+
+#### Keywords List
+
+A keyword list is a special case of a list:
+
+* each element is a two-element tuple,
+* and the first element of each tuple is an atom.
+* The second element can be of any type.
+
+`iex(1)> days = [{:monday, 1}, {:tuesday, 2}, {:wednesday, 3}]`
+
+A Syntax SHORTCUT to generate the same list of key value tuples (a KEYWORD LIST) is:
+
+`iex(2)> days = [monday: 1, tuesday: 2, wednesday: 3]`
+
+Keyword lists are often used for small-size key/value structures, where keys are atoms. Many useful functions are available in the Keyword module (https://hexdocs.pm/ elixir/Keyword.html).
+
+For example, you can use Keyword.get/2 to fetch the value for a key: `Keyword.get(days, :monday)`
+Or Just as with maps, you can use the operator [] to fetch a value: [:tuesday](`days)``
+
+> **Warning:** the complexity of a lookup operation is O(n), it's a list!
+
+USECASE: Keyword lists are most often useful for allowing clients to pass an arbitrary number of optional arguments.
+
+Example:
+
+[source, elixir]
+```
+iex(6)> [100, 200, 300](IO.inspect())
+[100, 200, 300]
+
+iex(7)> [100, 200, 300](IO.inspect(), [width: 3])
+[100,
+200,
+300]
+```
+
+In fact, this pattern is so frequent that Elixir allows you to omit the square brackets if the last argument is a keyword list:
+
+[source, elixir]
+```
+iex(8)> [100, 200, 300](IO.inspect(), width: 3, limit: 1)
+[100,
+...]
+```
+
+Another example:
+`DB.save record, [ {:use_transaction, true}, {:logging, "HIGH"} ]` is equivalent to `DB.save record, use_transaction: true, logging: "HIGH";`
+
+Elixir allow also a more implicit conversion:
+
+In general we can leave off the brackets if a keyword list appears as the last item in any context where a list of values is expected:
+
+* [1, fred: 1, dave: 2](`)`
+* Will be converted into [1, {:fred, 1}, {:dave, 2}](`)`
+* and printed as `{1, [fred: 1, dave: 2]}`
+
+in pratica una tuple di 2 elementi dentro una lista viene sempre stampata come una keyword list
+
+> **Note:** It’s best accept function optional parameters as keyword lists
+
+You may wonder if it’s better to use maps instead of keywords for optional arguments. A keyword list can contain multiple values for the same key. In addition, you can control the ordering of keyword list elements—something that isn’t possible with maps. Finally, many functions in standard libraries of Elixir and Erlang take their options as keyword lists. It’s best to stick to the existing convention and accept optional parameters via keyword lists.
+
+## Collection: Maps
+
+A map is a key/value store, where keys and values can be any term.
+
+* Allow only one entry for a given key (!= keyword list)
+* Efficient as they grow
+* can be used with pattern matching
+* use it when you need associative arrays
+
+[source, elixir]
+```
+states = %{ "AL" => "Alabama", "WI" => "Wisconsin" }
+
+response_types = %{ { :error, :enoent } => :fatal, { :error, :busy } => :retry }
+
+colors = %{ red: 0xff0000, green: 0x00ff00, blue: 0x0000ff }
+
+```
+
+Accessing:
+
+* If the keys are atoms, you can also use a dot notation: `colors.green`
+* [&quot;AL&quot;](`states)`
+* [{:error,:busy}](`response_types)`
+
+#### Map keys: Symbol VS String
+
+Ref: [The many different ways to key Elixir Maps](http://learningwithjb.com/posts/the-many-different-ways-to-key-elixir-maps)
+
+There are three different syntax to define a similar maps that can be misleading.
+
+> **Warning:** You must look carefully if `:` or `=>` are used
+
+[source, elixir]
+```
+map1 = %{ key: "value" }
+map2 = %{ "key": "value" }
+map3 = %{ "key" => "value" }
+
+iex(9)> map1
+%{key: "value"}
+
+iex(10)> map2
+%{key: "value"}
+
+iex(11)> map3
+%{"key" => "value"}
+```
+
+both `"key":` and `key:` use an atom as the key, instead in the 3rd case the key is a string
+
+This means that map1 and map2 are equivalent and can be matched agaist the same map but the match with map3 will fail because it uses a string as key:
+
+[source, elixir]
+```
+iex(15)> %{key: value} = map1
+%{key: "value"}
+iex(16)> %{key: value} = map2
+%{key: "value"}
+iex(17)> %{key: value} = map3
+** (MatchError) no match of right hand side value: %{"key" => "value"}
+```
+
+And obtain a similar result with this:
+
+[source, elixir]
+```
+iex(17)> %{"key": value} = map1
+%{key: "value"}
+iex(18)> %{"key": value} = map2
+%{key: "value"}
+iex(19)> %{"key": value} = map3
+** (MatchError) no match of right hand side value: %{"key" => "value"}
+```
+
+The reverse is true, a String key does't match a symbol key:
+
+[source, elixir]
+```
+iex(19)> %{"key" => value} = map1
+** (MatchError) no match of right hand side value: %{key: "value"}
+
+iex(19)> %{"key" => value} = map2
+** (MatchError) no match of right hand side value: %{key: "value"}
+
+iex(19)> %{"key" => value} = map3
+%{"key" => "value"}
+```
+
+#### Map keys: Anything Else
+
+As keys you can use: Integers, Tuples, Lists, even maps!
+
+[source, elixir]
+```
+map = %{ 3 => "JB" }
+map = %{ {"hi"} => "foo" }
+map = %{ [1,"hi"] => "JB" }
+```
+
+## Collection: Structs
+
+[http://elixir-lang.org/getting-started/structs.html](http://elixir-lang.org/getting-started/structs.html)
+
+Define a Struct with `defstruct`, with defaults:
+
+[source, elixir]
+```
+defmodule User do
+  defstruct name: "John", age: 27  # Keyword list defines what fields the struct will have along with their default values.
+end
+```
+
+without defaults, `nil` will be assumed ad default:
+
+[source, elixir]
+```
+defmodule Product do
+  defstruct [:name]
+end
+
+%Product{}  # %Product{name: nil}
+```
+
+To create a User:
+
+* `%User{}` produces `%User{age: 27, name: &quot;John&quot;}` which takes the default values
+* `%User{name: &quot;Meg&quot;}` produces `%User{age: 27, name: &quot;Meg&quot;}`, age field is still the default value
+
+To access a User:
+
+[source, elixir]
+```
+john = %User{}
+john.name
+
+```
+
+To create a new User from existing one ():
+
+[source, elixir]
+```
+john = %User{}                    # %User{age: 27, name: "John"}
+laura = %{john|name: "laura"}     # %User{age: 27, name: "laura"}  NOTE: john don't change value
+```
+
+Structs VS maps:
+
+* structs are bare maps with a fixed set of fields.
+* bare means that none of the protocols implemented for maps are available for structs.For example, you can neither enumerate nor access a struct:
+[source, elixir]
+```
+iex> john = %User{}
+%User{age: 27, name: "John"}
+iex> [:name](john)
+** (UndefinedFunctionError) function User.fetch/2 is undefined (User does not implement the Access behaviour)
+             User.fetch(%User{age: 27, name: "John"}, :name)
+iex> Enum.each john, fn({field, value}) -> IO.puts(value) end
+** (Protocol.UndefinedError) protocol Enumerable not implemented for %User{age: 27, name: "John"}
+```
+
+But you can use all the function of the [Map Module](https://hexdocs.pm/elixir/Map.html)
+
+[source, elixir]
+```
+iex> kurt = Map.put(%User{}, :name, "Kurt")
+%User{age: 27, name: "Kurt"}
+iex> Map.merge(kurt, %User{name: "Takashi"})
+%User{age: 27, name: "Takashi"}
+iex> Map.keys(john)
+[:__struct__, :age, :name]
+```
+
+* As maps, structs store a “special” field named `__struct__` that holds the name of the struct
+* Structs provide compile-time guarantees that only the fields (and all of them) defined through defstruct will be allowed to exist in a struct
+
+#### Required Keys
+
+You can also enforce that certain keys have to be specified when creating the struct:
+
+[source, elixir]
+```
+defmodule Car do
+  @enforce_keys [:make]
+  defstruct [:model, :make]
+end
+
+iex> %Car{}
+** (ArgumentError) the following keys must also be given when building struct Car: [:make]
+    expanding struct: Car.__struct__/1
+```
+
+#### Derive
+
+Ref: [http://elixir-lang.org/blog/2014/06/17/elixir-v0-14-0-released/](http://elixir-lang.org/blog/2014/06/17/elixir-v0-14-0-released/)
+
+In many situation we want to implement some protocol like `Enumerable` for a struct.
+
+`@derive` allows us to dynamically derive implementations for structs based on the implementation for maps.
+
+[source, elixir]
+```
+defmodule User do
+  @derive [Enumerable]
+  defstruct name: "", age: 0
+end
+
+Enum.each %User{name: "jose"}, fn {k, v} ->
+  IO.puts "Got #{k}: #{v}"
+end
+#=> Got __struct__: Elixir.User
+#=> Got name: jose
+#=> Got age: 0
+```
+
+The deriving functionality can be customized by implementing `PROTOCOL.Map.__deriving__/3`. For example, a JSON protocol could define a `JSON.Map.__deriving__/3` function that derives specific implementations for every struct. Such implementations could access the struct fields and generate a JSON template at compilation time, avoiding work at runtime.
+
+#### Access Behaviour
+
+[https://hexdocs.pm/elixir/Access.html#t:t/0](https://hexdocs.pm/elixir/Access.html#t:t/0)
+[https://hexdocs.pm/elixir/Kernel.html#update_in/3](https://hexdocs.pm/elixir/Kernel.html#update_in/3)
+[http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/](http://elixir-lang.org/blog/2016/06/21/elixir-v1-3-0-released/)
+
+accessors to make it simpler for developers to traverse nested data structures, traversing and updating data in different ways.
+
+For instance, given a user with a list of languages, here is how to deeply traverse the map and convert all language names to uppercase:
+
+[source, elixir]
+```
+iex> user = %{name: "john",
+...>          languages: [%{name: "elixir", type: :functional},
+...>                      %{name: "c", type: :procedural}]}
+iex> update_in user, [:languages, Access.all(), :name], &String.upcase/1
+%{name: "john",
+  languages: [%{name: "ELIXIR", type: :functional},
+              %{name: "C", type: :procedural}]}
+```
+
+You can see the new accessors in the Access module.
+
+### Records
+
+> **Warning:** Are Records will be DEPRECATED [http://elixir-lang.org/blog/2014/04/21/elixir-v0-13-0-released/](http://elixir-lang.org/blog/2014/04/21/elixir-v0-13-0-released/) "Structs are meant to replace Elixir records. "
+
+Records in Elixir are simply tuples supported by modules which store record metadata
+
+## ADVANCED: How Erlang terms are stored in memory
+
+https://blog.stenmans.org/theBeamBook/#CH-TypeSystem
+
+# Immutability
+
+Elixir data can’t be mutated. Every function returns the new, modified version of the input data.
+
+The modification of the input will result in some data copying, BUT generally, most of the memory will be shared between the old and the new version.
+
+For more details EIA_2nd pag 62
+
+Keep in mind that:
+
+* tuples are always copied, but the copying is shallow.
+* Lists, however, have different properties:
+  * When you modify the nth element of a list, the new version will contain shallow copies of the first n – 1 elements.
+  * In contrast, pushing an element to the top of a list doesn’t copy anything
+
+Benefits:
+
+* side-effect-free functions and data consistency.
+
+Elixir isn’t a pure functional language:
+
+* functions may still have side effects (ex: write something to a file and issue a database or network call, which causes it to produce a side effect).
+* But you can be certain that a function won’t modify the value of any variable.
+
+# Sigils
+
+[http://elixir-lang.org/getting-started/sigils.html](http://elixir-lang.org/getting-started/sigils.html)
+
+Sigils are one of the mechanisms provided by the language for working with textual representations:
+
+* start with the tilde `~` character which is
+* followed by a letter (which identifies the sigil)
+* and then a delimiter
+* optionally, modifiers can be added after the final delimiter
+
+# Operators
+
+## Comparison operators
+
+`a === b`    # strict equality   (so 1 === 1.0 is false)
+`a !== b`    # strict inequality (so 1 !== 1.0 is true)
+`a ==  b`    # value equality    (so 1 ==  1.0 is true)
+`a !=  b`    # value inequality  (so 1 !=  1.0 is false)
+`a  &gt;  b`    # normal comparison
+`a &gt;=  b`    #   :
+`a  &lt;  b`    #   :
+`a &lt;=  b`    #   :
+
+The ordering comparisons in Elixir are less strict than in many languages, as you can compare values of different types. If the types are the same or are compatible (for example `3 &gt; 2` or `3.0 &lt; 5`), the comparison uses natural ordering. Otherwise comparison is based on type according to this rule:
+
+`number &lt; atom &lt; reference &lt; function &lt; port &lt; pid &lt; tuple &lt; map &lt; list &lt; binary`
+
+##  Boolean operators
+
+(These operators expect true or false as their first argument.)
+
+`a or  b`    # true if a is true, otherwise b
+`a and b`    # false if a is false, otherwise b
+`not a`      # false if a is true, true otherwise
+
+##  Relaxed Boolean operators
+
+These operators take arguments of any type. Any value apart from nil or false is interpreted as true.
+
+`a || b`  a if a is truthy, otherwise b
+`a &amp;&amp; b`  b if a is truthy, otherwise a
+`!a`      false if a is truthy, otherwise true
+
+## Arithmetic operators
+
+`+     -    *    /  div rem`
+
+Integer division yields a floating-point result. Use `div(a,b)` to get an integer result.
+
+* `rem` is the remainder operator. It is called as a function `(rem(11, 3) =&gt; 2)`. It differs from normal modulo operations in that the result will have the same sign as the function’s first argument.
+
+## Join operators
+
+* `binary1 &lt;&gt; binary2` concatenates two binaries (later we'll see that binaries include strings)
+* `list1   ++ list2` concatenates two lists
+* `list1   -- list2`   returns elements in list1 not in list2
+
+## The in operator
+
+`a in enum` tests if a is included in enum (for example, a list or a range)
+
+## The pipe operator
+
+Refs:
+
+* [http://culttt.com/2016/04/25/using-pipe-operator-elixir/](http://culttt.com/2016/04/25/using-pipe-operator-elixir/)
+* [https://elixirschool.com/lessons/basics/pipe-operator/](https://elixirschool.com/lessons/basics/pipe-operator/)
+
+The Pipe operator makes easy to combine functions.
+
+In functional languages, you will often want to combine functions by passing the result of one function as the argument to the next.
+
+The pipe operator `|>` passes the result of an expression as the first parameter of another expression.
+
+Example:
+
+* `foo(bar(baz(new_function(other_function()))))` is quite messy
+* `other_function() |> new_function() |> baz() |> bar() |> foo()` has the same meaning but much more readable
+
+If you have more than one parameters, for example the `String.ends_with?(string, suffixes)` function, this syntax are equivalent:
+
+[source, elixir]
+```
+"elixir" |> String.ends_with?("ixir")
+
+String.ends_with?("Elixir","ixir")
+```
+
+# Modules
+
+Ref:
+
+* Intro: [http://elixir-lang.org/getting-started/modules.html](http://elixir-lang.org/getting-started/modules.html)
+* Doc: [http://elixir-lang.org/docs/stable/elixir/Module.html](http://elixir-lang.org/docs/stable/elixir/Module.html)
+* [http://culttt.com/2016/04/18/working-functions-modules-elixir/](http://culttt.com/2016/04/18/working-functions-modules-elixir/)
+* [https://github.com/doomspork/elixir-school/blob/master/lessons/basics/functions.md](https://github.com/doomspork/elixir-school/blob/master/lessons/basics/functions.md)
+* [http://learningelixir.joekain.com/use-import-require-in-elixir/](http://learningelixir.joekain.com/use-import-require-in-elixir/)
+
+A module is a way of organizing a collection of functions into a namespace. A module basically acts as a namespace.
+
+[source, elixir]
+```
+defmodule Calculator do
+  def sum(a, b) do
+    a+b
+  end
+end
+```
+
+`defmodule` create a module
+
+To define functions within a module:
+* `def` definine a function
+* `defp` definine a private function
+
+Module name rules:
+
+* Start with an uppercase letter
+* written CammelCase `defmodule MyModule`
+* use alphanumerics, underscores, and the `.` character
+* CONVENTION: the `.` is used to organize modules hierarchically. But note that it's only a naming convention; onece the code is compiled, there are no special hierarchical relations between modules. (ex: `Animal.Lion`, `Animal.Tiger` )
+
+### defmodule, def and defp are macros
+
+`defmodule`, `def` and `defp` aren't language keyword but they are macros. When you begin to learn Elixir you don't need to know this detail and think they are keywords but it's good to know for the future.
+
+### Functions
+
+A function must
+
+Naming conventions:
+
+* start with a lower case or `_`
+* use alphanumerics or `_`
+* can end with `?` or `!`
+
+By convention:
+
+* a function ending with `?` may return either `true` or `false`
+* a function ending with `!` may raise a runtime error
+
+The return value of a function is its last expression.
+
+If a function resides in the same module, you can omit the module prefix:
+
+```
+defmodule Geometry do
+  def rectangle_area(a, b) do
+    a* b
+  end
+
+  def square_area(a) do
+    rectangle_area(a, a)  # you don't need the module prefix
+  end
+end
+```
+
+### Modules and functions in the runtime
+
+see also EIA_2nd ch 2.7.1
+
+Regardless of how you start the runtime, an OS process for the BEAM instance is started, and everything runs inside that process (the beam process).
+
+When you call a function from a module, BEAM first checks whether the module is loaded:
+
+* If it is, the code of the corresponding function is executed.
+* Otherwise the VM tries to find the compiled module file — the bytecode — on the disk and then load it and execute the function. The VM looks for the file in the current folder and then in the code paths.
+
+> **Note:** A compiled module file has the extension .beam (for Bogdan/ Björn’s Erlang Abstract Machine). The name of the file corresponds to the module name.
+
+You can check which code paths are used at runtime by calling the Erlang function `:code.get_path`.
+
+If multiple modules are defined in a single source file, the compiler will produce multiple .beam files that correspond to those modules.
+
+Let’s recall how modules are defined:
+
+```
+defmodule Geometry do
+  ...
+end
+```
+
+Also recall from the discussion about atoms that Geometry is an alias that corresponds to `:"Elixir.Geometry"`, as demonstrated in the following snippet:
+
+```
+iex(1)> Geometry == :"Elixir.Geometry"
+true
+```
+
+When you compile the source containing the Geometry module, the file generated on the disk is named Elixir.Geometry.beam, regardless of the name of the input source file.
+
+### How iex load and compile modules
+
+When you run `$ iex my_source.ex` This command compiles the source file and then immediately loads all generated modules. Notice that in this case, .beam files aren’t saved to disk. The iex tool performs an in-memory compilation.
+
+Similarly, you can define modules in the shell:
+
+```
+iex(1)> defmodule MyModule do   # In-memory bytecode generation and loading of a module
+          def my_fun, do: :ok
+        end
+iex(2)> MyModule.my_fun
+
+```
+
+Again, the bytecode isn’t saved to the disk in this case.
+
+### Dynamically calling functions: Kernel.apply/3
+
+Kernel.apply/3 can be useful when you need to make a runtime decision about which function to call.
+
+```
+iex(1)> apply(IO, :puts, ["Dynamic function call."])
+```
+
+Kernel.apply/3 receives three arguments: the module atom, the function atom, and the list of arguments passed to the function.
+
+### Starting the runtime: iex, mix, script
+
+There are multiple ways of starting BEAM: iex, elixir, mix
+
+`iex`:
+
+* When you start the shell, the BEAM instance is started underneath, and the Elixir shell takes control. The shell takes the input, interprets it, and prints the result.
+* USECASE: quick tests, debug, console. The interactive shell is used for evaluation, debugging and introspection of the Elixir runtime system. It is also possible to use the program for testing the work of small pieces of code escaping the stage of saving the code in a file.
+
+`elixir`:
+
+* `elixir my_source.ex`
+* The BEAM instance is started.
+* The file my_source.ex is compiled in memory, and the resulting modules are loaded to the VM. No .beam file is generated on the disk.
+* Whatever code resides outside of a module is interpreted.
+* Once everything is finished, BEAM is stopped.
+* USECASE: scripting
+
+Ex:
+
+``` 
+defmodule MyModule do
+  def run do
+    IO.puts("Called MyModule.run")
+  end
+end
+MyModule.run
+```
+
+Code outside of a module is executed immediately. You can execute this script from the command line: `$ elixir script.exs`
+
+This call first does the in-memory compilation of the MyModule module and then calls MyModule.run. After the call to MyModule.run finishes, the BEAM instance is stopped.
+
+If you don’t want a BEAM instance to terminate, you can provide the --no-halt parameter: `$ elixir --no-halt script.exs`. This is most often useful if your main code (outside a module) starts concurrent tasks that perform all the work.
+
+### Function Arity and default values
+
+Arity of a function is the number of arguments a function receives.
+
+A function is uniquely identified by:
+
+* its containing module,
+* its name,
+* its arity.
+
+Basic example:
+
+```
+defmodule Rectangle do
+  def area(a), do: area(a, a)  # Rectangle.area/1
+  def area(a, b), do: a * b    # Rectangle.area/2
+end
+```
+
+The above example can be refactored using default values:
+
+```
+defmodule Calculator do
+  def sum(a, b \\ 0) do
+    a + b
+  end
+end
+```
+
+But Always keep in mind that default values generate multiple functions of the same name with different arities.
+
+> **Note:** Because arity distinguishes multiple functions of the same name, it’s not possible to have a function accept a variable number of arguments. There’s no counterpart of C’s ... or JavaScript’s arguments.
+
+### Function: named parameters and optional parameter
+
+https://blog.praveenperera.com/named-arugments-with-default-values-in-elixir/
+
+> **Note:** TL;DR: It’s best accept function optional parameters as keyword lists
+
+You may wonder if it’s better to use maps instead of keywords for optional arguments. A keyword list can contain multiple values for the same key. In addition, you can control the ordering of keyword list elements—something that isn’t possible with maps. Finally, many functions in standard libraries of Elixir and Erlang take their options as keyword lists. It’s best to stick to the existing convention and accept optional parameters via keyword lists.
+
+#### Use Keyword list as last param: mimic named parameter
+
+Elixir provide some additional syntactic sugar that is based on pattern matchting and Keywordlists. Elixir allows you to *omit the square brackets* if the last argument of a function a keyword list.
+
+EXAMPLE 1:
+
+In the example [name: name, birthday: bday](`introduction())` you can omit the square brakets and obtain the same result:  `introduction(name: name, birthday: bday)`
+
+The same happens when you invoke a function: [name: "Nicola", birthday: "01-01-1999"](`Talk.introduction())` and `Talk.introduction(name: "Nicola", birthday: "01-01-1999")` are equivalent
+
+[source, elixir]
+```
+defmodule Talk do
+  def introduction(name: name, birthday: bday) do
+    IO.puts "Hi my name is #{name} and I was born on #{bday}"
+  end
+end
+
+#Invoke with square brackets
+iex(4)> [name: "Nicola", birthday: "01-01-1999"](Talk.introduction())
+Hi my name is Nicola and I was born on 01-01-1999
+
+#Invoke without square brackets
+iex(5)> Talk.introduction(name: "Nicola", birthday: "01-01-1999")
+Hi my name is Nicola and I was born on 01-01-1999
+
+```
+
+> **Note:** in this example the last param is also the first param. In this way you can
+
+Drawbacks:
+
+* can't have any defaults arguments
+* if you pass arguments in the wrong order (birthday before name) you will get a pattern match error
+
+#### Use Keyword list as last param: optional params
+
+Keyword lists are most often useful for allowing clients to pass an arbitrary number of optional arguments.
+
+For example, the result of the function IO.inspect, which prints a string representation of a term to the console, can be controlled by providing additional options through a keyword list:
+
+[source, elixir]
+```
+iex(7)> [100, 200, 300](IO.inspect(), [width: 3])
+[100,
+200, 300]
+```
+
+In fact, this pattern is so frequent that Elixir allows you to omit the square brackets if the last argument is a keyword list: [100, 200, 300](`IO.inspect(), width: 3, limit: 1)`
+
+> **Note:** in this example that you’re still sending two arguments to `IO.inspect/2`, a number and a two-element keyword list.
+
+To implement the same behaviour of `IO.inspect/2`, you can accept a keyword list as the last argument of your function, and make that argument default to an empty list:
+
+[source, elixir]
+```
+def my_fun(arg1, arg2, opts \\ []) do
+  ...
+end
+```
+
+It’s up to you to check the contents in the opts argument and perform some conditional logic. You can use `Keyword.get` to pull out the keys you are interested in if they exist, the third parameter we pass to `Keyword.get/3` is a default value to use if the key’s not found. You can use Module's attributes to make default values more readable.
+
+[source, elixir]
+```
+defmodule Paint do
+  @default_color "black"
+  @default_shape "circle"
+
+  def draw(options \\ [] ) do
+    color = Keyword.get(options, :color, @default_color)
+    shape = Keyword.get(options, :shape, @default_shape)
+    IO.puts("Draw a #{color} #{shape}")
+  end
+end
+```
+
+An alternative approach is taking advantage of pattern matching to extract values but you have to convert to a map first. You can create the default as a map then merge values from the keyword list passed in.
+
+[source, elixir]
+```
+
+defmodule Paint do
+  @defaults %{color: "black", shape: "circle"}
+  def draw(options \\ [] ) do
+    %{color: color, shape: shape} = Enum.into(options, @defaults)
+    IO.puts("Draw a #{color} #{shape}")
+  end
+end
+
+iex(1)> Paint.draw(color: "red", shape: "Square")
+Draw a red Square
+
+iex(2)> Paint.draw(shape: "Square", color: "red")
+Draw a red Square
+
+```
+
+This solves one of our problems, we can now pass in the arguments in any order we wish.
+
+`Enum.into/2` inserts the given enumerable elements into a collectable, for example:
+
+[source, elixir]
+```
+iex> [1, 2](Enum.into(), [0])        # List element are prefixed to List
+[0, 1, 2]
+
+[a: 1, b: 2](Enum.into(), [9])       # Keywordlist elements are added as tuple element to the generic List Collectable
+[9, {:a, 1}, {:b, 2}]
+
+iex> [a: 1, b: 2](Enum.into(), %{})  # Keywordlist elements are added as key/value to the Map Collectable
+%{a: 1, b: 2}
+iex> [a: 1, a: 2](Enum.into(), %{})  # Duplicated keys are overwritten
+%{a: 2}
+
+iex> Enum.into(%{a: 1}, %{b: 2})  # First level Map's keys are added as First level Map Collectable
+%{a: 1, b: 2}
+
+iex(19)> [1, 2](Enum.into(), %{})  # Collectable must be compatible element of the Enumerable
+** (ArgumentError) argument error
+(stdlib) [1, 2](:maps.from_list())
+(elixir) lib/map.ex:174: Map.new/1
+```
+
+### Nested modules
+
+Nest modules in Elixir is a naming CONVENTION: the `.` is used to organize modules hierarchically. But note that it's only a naming convention; onece the code is compiled, there are no special hierarchical relations between modules. (ex: `Animal.Lion`, `Animal.Tiger` )
+
+[source, elixir]
+```
+defmodule Calculator.Addition do
+  def sum(a, b) do
+    a+b
+  end
+end
+```
+
+or
+
+[source, elixir]
+```
+defmodule Calculator do
+  defmodule Addition do
+    def sum(a, b) do
+      a+b
+    end
+  end
+end
+```
+
+[source, elixir]
+```
+defmodule Example.Greetings do
+  def morning(name) do
+    "Good morning #{name}."
+  end
+
+  def evening(name) do
+    "Good night #{name}."
+  end
+end
+
+iex> Example.Greetings.morning "Sean"
+"Good morning Sean."
+```
+
+### Function visibility: Private Module Functions with defp
+
+When you define a function using the `def` macro, the function is made public. To to make the function private, use the macro `defp`.
+
+* Function defined with `defp` can be invoked only from a function of the module
+* When we don't want other modules accessing a specific function we can make the function private.
+* Private functions can only be called from within their own Module
+* Error if you call a private func: `UndefinedFunctionError`
+
+[source, elixir]
+```
+defmodule Math do
+  def sum(a, b) do
+    do_sum(a, b)
+  end
+
+  defp do_sum(a, b) do
+    a + b
+  end
+end
+
+IO.puts Math.sum(1, 2)    #=> 3
+IO.puts Math.do_sum(1, 2) #=> ** (UndefinedFunctionError)
+```
+
+[source, elixir]
+```
+defmodule Greeting do
+  def hello_public
+    hello_private
+  end
+
+  defp hello_private
+    IO.puts "Hello from a private function"
+  end
+end
+
+iex(1)> Greeting.hello_public
+Hello from a private function
+
+iex(2)> Greeting.hello_private
+** (UndefinedFunctionError) function Greeting.hello_private/0 is undefined or private
+    Greeting.hello_private()
+
+```
+
+### Import and Alias Modules
+
+Ref:
+
+* [http://elixir-lang.org/getting-started/alias-require-and-import.html#import](http://elixir-lang.org/getting-started/alias-require-and-import.html#import)
+* [https://hexdocs.pm/elixir/Kernel.SpecialForms.html#import/2](https://hexdocs.pm/elixir/Kernel.SpecialForms.html#import/2)
+
+Use `import` to avoid prefixing the module
+
+[source, elixir]
+```
+IO.puts "Hello"
+puts  #  ** (CompileError) iex:1: undefined function puts/0
+import IO
+puts "hello"
+```
+
+Import only selected functions:
+
+* [https://hexdocs.pm/elixir/Kernel.SpecialForms.html#import/2-selector](https://hexdocs.pm/elixir/Kernel.SpecialForms.html#import/2-selector)
+* `import List, only: [duplicate: 2]` : import only duplicate/2 (with arity 2) function from the List module
+* `import List, only: :functions`
+* `import List, only: :macros`
+* `import List, except: [flatten: 1]` 
+
+Alias a module to add an alternative module name:
+
+[source, elixir]
+```
+IO.puts "Hello"
+alias IO, as: Say
+Say.puts "Hello"
+
+```
+
+[source, elixir]
+```
+defmodule UseImportRequire do
+  alias UseImportRequire.AliasMe
+  alias UseImportRequire.AliasMe, as: AnotherName
+
+  def alias_test do
+    AliasMe.my_function
+  end
+
+  def alias_as_test do
+     AnotherName.my_function
+  end
+end
+```
+
+* I would recommend using import sparingly. It removes a lot of information which can be a burden for any reader of your code.
+* However, there are a few cases where import is helpful. If you are writing a module that is very focused in that it makes heavy use of a specific module then import may make sense.
+* One common example is that in a module that makes extensive use of Ecto queries it is common to import Ecto.Query.
+
+The import macro also allows importing of specific functions or macros. This limits “namespace pollution” and can reduce the chance of ambiguity or confusion. Again, this is common with Ecto.Query - the documentation recommends:
+
+[source, elixir]
+```
+import Ecto.Query, only: [from: 2]
+```
+
+in order to import only the Ecto.Query.from/2 macro.
+
+#### Restrict alias and import Scope
+
+As I’ve mentioned there are tradeoffs for using alias and import between convenience and clarity. There is another way to help mitigate this tradeoff. The alias and import macros don’t need to be called at the outer module scope as we have been using them. They can, for example, be called from within another function. Here’s an example using import:
+
+[source, ]
+```
+defmodule UseImportRequire.WithScope do
+  def scope_test do
+    import UseImportRequire.ReferenceMe
+    function
+  end
+end
+```
+
+### "use" a module
+
+* [http://www.zohaib.me/use-in-elixir-explained/](http://www.zohaib.me/use-in-elixir-explained/)
+* [Elixir Doc](https://hexdocs.pm/elixir/Kernel.html#use/2)
+
+With `use` developers can inject code into your module. When calling:
+
+[source, elixir]
+```
+use MyModule, some: :options
+```
+
+the `\__using__/1` macro from the MyModule module is invoked with the second argument passed to use as its argument and the module is required. Since *using*/1 is a macro, all the usual macro rules apply, and its return value should be quoted code that is then inserted where use/2 is called.
+
+Behind the scenes, `use` allow the module to inject some code into the current context. Generally speaking, the following module:
+
+[source, elixir]
+```
+defmodule Example do
+  use Feature, option: :value
+end
+```
+
+is compiled into
+
+[source, elixir]
+```
+defmodule Example do
+  require Feature
+  Feature.__using__(option: :value)
+end
+```
+
+Here’s an example:
+
+[source, elixir]
+```
+#=> lib/use_import_require/use_me.ex
+defmodule UseImportRequire.UseMe do
+  defmacro __using__(_) do
+    quote do
+      def use_test do
+        IO.puts "Use test!"
+      end
+    end
+  end
+end
+```
+
+and we add this line to UseImportRequire:
+
+[source, elixir]
+```
+defmodule TestLibrary do
+  use UseImportRequire.UseMe
+end
+
+iex(1)> TestLibrary.use_test
+Use test!
+
+```
+
+Using `UseImportRequire.UseMe` defines a `use_test/0` function through invocation of the `__using__/1` macro.
+
+Here we have defined a module in which under *using* macro we inject a function.
+
+It is common for the `__using__` macro to in turn call alias, require, or import. This in turn will create aliases or imports in the using module. This allows the module being used to define a policy for how its functions and macros should be referenced. This can be quite flexible in that `__using__/1` may set up references to other modules, especially submodules.
+
+The Phoenix framework makes use of use and `__using__/1` to cut down on the need for repetitive alias and import calls in user defined modules.
+
+Here’s an nice and short example from the Ecto.Migration module:
+
+[source, elixir]
+```
+defmacro __using__(_) do
+  quote location: :keep do
+    import Ecto.Migration
+    @disable_ddl_transaction false
+    @before_compile Ecto.Migration
+  end
+end
+```
+
+The `Ecto.Migration.__using__/1` macro includes an import call so that if use `Ecto.Migration` you also `import Ecto.migration`. It also sets up a module property which I assume control Ecto’s behavior.
+
+To recap: the use macro just invokes the `__using__/1` macro of the specified module. To really understand what that does you need to read the `__using__/1` macro.
+
+### use VS import VS require
+
+Ref: [http://stackoverflow.com/questions/28491306/elixir-use-vs-import](http://stackoverflow.com/questions/28491306/elixir-use-vs-import)
+
+* `import Module` brings all the Functions and Macros of Module un-namespaced into your module.
+
+* `require Module` allows you to use macros of Module but does not import them. (Functions of Module are always available namespaced.)
+
+* `use Module` first requires module and then calls the *using* macro on Module.
+
+Examples:
+
+* Phoenix framework make heavy use of `use`, Crish also wrote a book about it [https://pragprog.com/book/cmelixir/metaprogramming-elixir](https://pragprog.com/book/cmelixir/metaprogramming-elixir)
+* Exprotobuf make heavy use of `use` [https://github.com/bitwalker/exprotobuf](https://github.com/bitwalker/exprotobuf)
+
+#### Ecto Example
+
+Here’s a really nice example of using import:
+
+[source, elixir]
+```
+defmodule Orthrus.Repo.Migrations.CreateUser do
+  use Ecto.Migration
+
+  def change do
+    create table(:users) do
+      add :name, :string
+      add :username, :string
+      add :password_hash, :string
+      add :email, :string
+
+      timestamps
+    end
+
+  end
+end
+```
+
+The use `Ecto.Migration` call invokes `Ecto.Migration.__using__/1`. And we saw above that this macro in turn calls `import Ecto.Migration`. The import allows us to write very clean code in the migration. We can call create, add, timestamps without needing to clutter up the code with an Ecto.Migration prefix.
+
+For migrations, this is a good tradeoff a migration is narrowly focused task. When you read these references to create table, and add you are in the mindset of thinking about database migrations so this code makes sense.
+
+If you have other tasks that are not as focused you may want to ask yourself if import is the right choice.
+
+### Require a module
+
+The require macro instructs the compiler to load the specified module before compiling the containing module.
+
+This is only necessary if you want to reference macros from the specified module
+
+### Module attributes
+
+http://elixir-lang.github.io/getting-started/module-attributes.html
+https://www.erlang-solutions.com/blog/elixir-module-attributes-alchemy-101-part-1.html
+
+Module attributes in Elixir serve three purposes:
+
+* They serve to annotate the module, often with information to be used by the user or the VM.
+* They work as constants.
+* They work as a temporary module storage to be used during compilation.
+
+On pag 35 Of Elixir Metaprogramming Chris explains how to use  `Module attributes`, `accumulate: true` and `@before_compile` to create at compile time a list of tests to be executed.
+
+http://elixir-lang.github.io/getting-started/module-attributes.html#as-annotations
+
+> **Note:** Module attributes are evaluated at compile time; All occurrences of the module attribute are replaced with whatever it evaluates to at compile time. https://www.erlang-solutions.com/blog/elixir-module-attributes-alchemy-101-part-1.html [Example]
+
+#### As Temporary Storage VS as Annotation
+
+You can use both the unquote mechanism or module attributes to store a value in a variable at compile time: http://elixir-lang.github.io/getting-started/module-attributes.html#as-temporary-storage
+
+Module attributes can be used as annotations. Elixir has a handful of reserved attributes. Here are a few of them, the most commonly used ones:
+
+* `@moduledoc` - provides documentation for the current module.
+* `@doc` - provides documentation for the function or macro that follows the attribute.
+* `@behaviour` - (notice the British spelling) used for specifying an OTP or user-defined behaviour.
+* `@before_compile` - provides a hook that will be invoked before the module is compiled. This makes it possible to inject functions inside the module exactly before compilation.
+
+Ref http://elixir-lang.github.io/getting-started/module-attributes.html#as-annotations
+
+#### Register a module attribute
+
+Ref: https://hexdocs.pm/elixir/Module.html#register_attribute/3
+
+By registering an attribute, a developer is able to customize how Elixir will store and accumulate the attribute values.
+
+Meaningful example: Building an Internationalization Library: <<Example: Building an Internationalization Library,Example: Building an Internationalization Library>>
+
+When registering an attribute, two options can be given:
+
+* `:accumulate` - several calls to the same attribute will accumulate instead of override the previous one. New attributes are always added to the top of the accumulated list.
+
+* `:persist` - the attribute will be persisted in the Erlang Abstract Format. Useful when interfacing with Erlang libraries.
+
+By default, both options are false.
+
+ Examples:
+
+```elixir
+```
+defmodule MyModule do
+  Module.register_attribute __MODULE__,
+    :custom_threshold_for_lib,
+    accumulate: true,
+    persist: false
+
+  @custom_threshold_for_lib 10
+  @custom_threshold_for_lib 20
+  @custom_threshold_for_lib #=> [20, 10]
+  IO.inspect  Module.get_attribute __MODULE__, :custom_threshold_for_lib
+  IO.inspect @custom_threshold_for_lib
+
+end
+```
+
+`Module.get_attribute` is an alternative the `@` syntax
+
+Doc: https://hexdocs.pm/elixir/Module.html#get_attribute/2
+
+- [ ] Capire meglio quando usare Module.get_attribute e quando invece usare @my_attribute https://groups.google.com/forum/#!topic/elixir-lang-talk/CaYFQjc6qmM
+
+#### @before_compile
+
+https://hexdocs.pm/elixir/Module.html#module-before_compile
+
+The `@before_compile` attribute accepts a module argument where a `++__before_compile__/1++`
+ macro must be defined. This macro is invoked just before compilation in order to perform a final bit of code generation.
+
+In the example below the code in `++__using__++` is called and return value injected as soon as you call `use` within a module, while `++__before_compile__++`` is called and the return value injected after all the code directly inside the module is executed, just before the module is compiled.
+
+A simple program to demonstrate the difference:
+
+```elixir
+```
+defmodule When do
+  defmacro __using__(_) do
+    IO.inspect :using
+    __CALLER__.module |> Module.definitions_in |> IO.inspect
+    quote do end
+  end
+
+  defmacro __before_compile__(_) do
+    IO.inspect :before_compile
+    __CALLER__.module |> Module.definitions_in |> IO.inspect
+    quote do end
+  end
+end
+
+defmodule Main do
+  @before_compile When
+  use When
+  IO.puts "added `@before_compile` and `use`"
+  def add(x, y), do: x + y
+end
+
+#> :using
+#> []
+#> added `@before_compile` and `use`
+#> :before_compile
+#> [add: 2]
+```
+
+Meaningful examples:
+
+* USe <<Chris McCord - Metaprogramming: Assertion Module at pag 27,Chris McCord - Metaprogramming: Assertion Module at pag 27>>
+* Building an Internationalization Library: <<Example: Building an Internationalization Library,Example: Building an Internationalization Library>>
+
+#### External resources: @external_resource
+
+Ref: https://hexdocs.pm/elixir/Module.html#module-external_resource
+
+Elixir provides the `@external_resource` module attribute to handle cases where we want to specify compile-time resources that our module depends on—when the resources change, mix will recompile our module. See example: <<Compile time code generation: Mime Type Library,Compile time code generation: Mime Type Library>>
+
+## One line function definition
+
+To make small function much more readable you can use this compact syntax:
+
+[source, elixir]
+```
+defmodule Calculator do
+  def sum(a, b), do: a + b
+end
+```
+
+## Function Capturing - & operator
+
+http://elixir-lang.github.io/getting-started/modules-and-functions.html#function-capturing
+
+You can retrieve a named function as a function type
+
+[source, elixir]
+```
+iex> Math.zero?(0)
+true
+iex> fun = &Math.zero?/1
+&Math.zero?/1
+iex> is_function(fun)
+true
+iex> fun.(0)
+true
+```
+
+If you want to capture a function from a module, you can do &amp;Module.function():
+
+[source, elixir]
+```
+iex> fun = &List.flatten(&1, &2)
+&List.flatten/2
+iex> [1, [[2](fun.(), 3]], [4, 5])
+[1, 2, 3, 4, 5]
+```
+
+Remember Elixir makes a distinction between anonymous functions and named functions, where the former must be invoked with a dot (.) between the variable name and parentheses.
+
+The capture operator bridges this gap by allowing named functions to be assigned to variables and passed as arguments in the same way we assign, invoke and pass anonymous functions.
+
+## & shortcut for creating functions
+
+Shorthand to create anonymous functions
+
+[source, elixir]
+```
+iex> sum = &(&1 + &2)
+iex> sum.(2, 3)
+5
+```
+
+Parameters are available to us as &amp;1, &amp;2, &amp;3, and so on
+
+## Default Values
+
+Ref:
+
+* http://elixir-lang.github.io/getting-started/modules-and-functions.html#default-arguments
+* [Elixir Documentation](https://hexdocs.pm/elixir/Kernel.html#def/2-default-arguments)
+
+Named functions in Elixir also support default arguments:
+
+[source, elixir]
+```
+defmodule Concat do
+  def join(a, b, sep \\ " ") do
+    a <> sep <> b
+  end
+end
+
+IO.puts Concat.join("Hello", "world")      #=> Hello world
+IO.puts Concat.join("Hello", "world", "_") #=> Hello_world
+```
+
+> **Note:** If a function with default values has multiple clauses, it is required to create a function head (without an actual body) for declaring defaults:
+
+[source, elixir]
+```
+defmodule Concat do
+  def join(a, b \\ nil, sep \\ " ")
+
+  def join(a, b, _sep) when is_nil(b) do
+    a
+  end
+
+  def join(a, b, sep) do
+    a <> sep <> b
+  end
+end
+
+IO.puts Concat.join("Hello", "world")      #=> Hello world
+IO.puts Concat.join("Hello", "world", "_") #=> Hello_world
+IO.puts Concat.join("Hello")               #=> Hello
+```
+
+> **Warning:** When using default values, one must be careful to avoid overlapping function definitions. Consider the following example:
+
+[source, elixir]
+```
+defmodule Concat do
+  def join(a, b) do
+    IO.puts "***First join"
+    a <> b
+  end
+
+  def join(a, b, sep \\ " ") do
+    IO.puts "***Second join"
+    a <> sep <> b
+  end
+end
+```
+
+If we save the code above in a file named “concat.ex” and compile it, Elixir will emit the following warning:
+
+  this clause cannot match because a previous clause at line 2 always matches
+  The compiler is telling us that invoking the join function with two arguments will always choose the first definition of join whereas the second one will only be invoked when three arguments are passed:
+
+[source, elixir]
+```
+$ iex concat.exs
+iex> Concat.join "Hello", "world"
+***First join
+"Helloworld"
+iex> Concat.join "Hello", "world", "_"
+***Second join
+"Hello_world"
+```
+
+## BlocksParameter
+
+* https://thepugautomatic.com/2015/12/elixir-block-keywords/
+* https://groups.google.com/forum/#!topic/elixir-lang-talk/jVqCeLcaUV0/discussion
+
+`do ... else ... end` blocks are syntactic sugar for passing a keyword list.
+
+`do ... block ... end` emits the same AST as `do: (... block ...)`. That's why you can use if with both syntax, you don't have to do anything.
+
+To create blocks the following `block keywords` are supported:
+
+* `do`
+* `catch`
+* `rescue`
+* `after`
+* `else`
+
+The parser internal code can be found here:
+
+* https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/src/elixir_tokenizer.erl#L1050-L1053
+* https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/src/elixir_exp_clauses.erl
+* https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/lib/macro.ex#L652
+
+Example: Given this `foobar` named function:
+
+[source, elixir]
+```
+defmodule Example do
+  def foobar(do: _, else: _, catch: _, after: _, rescue: _) do
+  end
+end
+```
+
+This call:
+
+[source, elixir]
+```
+
+Example.foobar do
+ IO.puts "first block"
+else
+ IO.puts "else block"
+catch
+ IO.puts "catch block"
+after
+ IO.puts "after block"
+rescue
+ IO.puts "rescue block"
+end
+
+first block
+else block
+catch block
+after block
+rescue block
+```
+
+Is equivalent to:
+
+[source, elixir]
+```
+[do: IO.puts("true"), else: IO.puts("false"), catch: IO.puts "catch block", after: IO.puts "after block", rescue: IO.puts "rescue block"](Example.foobar())
+
+first block
+else block
+catch block
+after block
+rescue block
+```
+
+If you are curious, you can inspect a block:
+
+[source, elixir]
+```
+IO.inspect do
+ IO.puts "first block"
+else
+ IO.puts "else block"
+catch
+ IO.puts "catch block"
+after
+ IO.puts "after block"
+rescue
+ IO.puts "rescue block"
+end
+
+[do: :ok, else: :ok, catch: :ok, after: :ok, rescue: :ok]
+```
+
+> **Note:** The keyword list is evaluated before it’s even passed to the function, like any keyword list would be. That includes evaluating the IO.puts function calls.
+
+## Closures
+
+ref: [http://joearms.github.io/2013/05/31/a-week-with-elixir.html](http://joearms.github.io/2013/05/31/a-week-with-elixir.html)
+
+Closures in Elixir (fn's) are really just closures in Erlang (fun's).
+
+`fn` capture the present value of any variables that are in their scope (ie we can create immutable closures). This is something that JavaScript gets very wrong.
+
+Here's an example in JavaScript and Elixir so you can see the difference:
+
+[source, elixir]
+```
+js> a = 5;
+5
+js> f = function(x) { return x+a };
+function (x){return x+a}
+js> f(10)
+15
+js> a = 100
+100
+js> f(10)
+110
+```
+
+We broke the function f:
+
+* We define a function f,
+* start using it.
+* Redefine a and this has the side effect of breaking f.
+
+One of the good things about functional programming is that it makes it easy to reason about programs. If f(10) evaluates to 15 then it should evaluate to 15 forever, you should not be able to remotely break it.
+
+What about Elixir? This gets closures right:
+
+[source, elixir]
+```
+iex> a = 5
+5
+iex> f = fn(x) -> x + a end
+#Function
+iex> f.(10)
+15
+iex> a = 100
+100
+iex> f.(10)
+15
+```
+
+* Proper closures should only contain pointers into immutable data (which is the case in Erlang) - no pointers into mutable data.
+* If a closure contains a pointer into mutable data and you change the data later you break the closure. This means you can't parallelize your program and even sequential code can contain weird errors.
+* In a conventional language creating proper closures would be very expensive since it would require deep copying of all the variables that are captured in the environment, but this is not the case in Erlang or Elixir, since data once written is immutable. All you can do later is refer to it.
+* Internally this is through a pointer (which the programmer never sees) and the garbage collector removes all data that can never be referenced since nothing points to it.
+
+## Compilation
+
+* `elixirc math.ex` generate `Elixir.Math.beam`
+*  
+
+## def VS fn
+
+* [http://stackoverflow.com/questions/18011784/why-are-there-two-kinds-of-functions-in-elixir](http://stackoverflow.com/questions/18011784/why-are-there-two-kinds-of-functions-in-elixir)
+
+# Pattern Matching and Conditionals
+
+* [http://elixir-lang.org/getting-started/pattern-matching.html](http://elixir-lang.org/getting-started/pattern-matching.html)
+* [https://elixirschool.com/lessons/basics/pattern-matching/](https://elixirschool.com/lessons/basics/pattern-matching/)
+* [https://medium.com/@turnandface/pattern-matching-in-elixir-743e71ceac92#.fyyf62wg7](https://medium.com/@turnandface/pattern-matching-in-elixir-743e71ceac92#.fyyf62wg7)
+* [http://stackoverflow.com/questions/23693173/elixir-pattern-matching-works-differently-for-tuples-and-maps](http://stackoverflow.com/questions/23693173/elixir-pattern-matching-works-differently-for-tuples-and-maps)
+
+Ref: EIA_2nd ch 3.1
+
+Elixir uses pattern-matching mechanics in many kind of espression:
+
+* The match operator `=`
+* Functions arguments
+
+The pattern-matching expression consists of two parts:
+
+* the pattern (left side)
+* the term (right side).
+
+In a match expression, the attempt to match the term to the pattern takes place.If the match succeeds, all variables in the pattern are bound to the corresponding values from the term.
+
+The result of the entire expression is the entire term you matched. If the match fails, an error is raised.
+
+Therefore, in a pattern-matching expression, you perform two different tasks:
+
+* You assert your expectations about the right-side term. If these expectations aren’t met, an error is raised.
+*  You bind some parts of the term to variables from the pattern.
+
+### The match opertator =
+
+The operator `=` isn’t an assignment, it is actually a match operator.
+
+This is the most basic use of the match operator: `person = {"Bob", 25}`
+`
+We treated this as something akin to an assignment, but in reality something more complex is going on here. At runtime:
+
+* the left side of the = operator is matched to the right side.
+* The left side is called a *pattern*
+* the right side you have an expression that evaluates to an Elixir term.
+
+We will see how you can define pattern in Elixir. This general rules apply:
+
+* A pattern match when the it match the entire structure
+* But there is an exception, maps are the only data structure that allow partial pattern matching
+* An Elixir variable always matches the right-side term and it becomes bound to the value of that term.
+
+When you use a more complex pattern, whenever a variable name exists in the left-side pattern, it always matches the corre- sponding right-side term. Let's see same example:
+
+```
+{date, time} = :calendar.local_time() # The date and time are also tuples, which you can further decompose
+
+iex(5)> {year, month, day} = date
+iex(6)> {hour, minute, second} = time
+```
+
+What happens if the right side doesn’t correspond to the pattern? The match fails, and an error is raised:
+
+``` 
+iex(7)> {name, age} = "can't match"
+** (MatchError) no match of right hand side value: "can't match"
+```
+
+Occasionally we aren’t interested in a value from the right-side term, but we still need to match on it.  In such cases, you can use the anonymous variable `_`:
+
+* it works just like a named variable: it matches any right-side term.
+* But the value of the term isn’t bound to any variable.
+
+```
+iex(1)> {_, time} = :calendar.local_time()
+iex(2)> time
+{20, 44, 18}
+```
+
+Patterns can be arbitrarily nested. To retrieve only the current hour of the day:
+
+```
+iex(3)> {_, {hour, _, _}} = :calendar.local_time()
+iex(4)> hour
+20
+```
+
+A variable can be referenced multiple times in the same pattern but it's matching value must be identical:
+
+```
+iex(5)> {amount, amount, amount} = {127, 127, 127}
+       {127, 127, 127}
+iex(6)> {amount, amount, amount} = {127, 127, 1}     #Fails because the tuple elements aren’t identical
+** (MatchError) no match of right hand side value: {127, 127, 1}
+```
+
+### Pattern Matching Tuples
+
+[source, elixir]
+```
+> {a, b, c} = {:hello, “world”, 42}
+{:hello, “world”, 42}
+> a
+
+> b
+“world”
+> c
+42
+```
+
+Here the right-hand side of the match operator, =, is a tuple. It has three elements, an atom, a string and an integer. Ok so far.
+Now, in order to make the left-hand side equal to the right we’d need to have a three element tuple on the left with with either identical values or ‘placeholders’, variables that can be assigned. Elixir does this by assigning the variables a, b, c into them. We have a match!
+
+In contrast to this, if the tuples have a different number of element there is an error:
+
+[source, elixir]
+```
+{a, b} = {:hello, “world”, 42}
+** (MatchError) no match of right hand side value: {:hello, “world”, 42}
+```
+
+In this case, you can pass an underscore on the left-hand side and Elixir will immediately discard the value it matches, while still allowing the match to take place.
+
+[source, elixir]
+```
+> {a, b, _} = {:hello, “world”, 42}
+{:hello, “world”, 42}
+```
+
+[source, ]
+```
+iex(6)> {_,a} = {1,2}
+{1, 2}
+iex(7)> a
+2
+```
+
+`_` is the "catch-all" pattern but you need to provide it for all elements of the tuple:
+
+[source, elixir]
+```
+iex(8)> {_,b} = {1,2,3}
+** (MatchError) no match of right hand side value: {1, 2, 3}
+
+iex(8)> {_, b, _} = {1,2,3}
+{1, 2, 3}
+iex(9)> b
+2
+```
+
+Taking this one step further, let’s change up the example slightly.
+
+[source, elixir]
+```
+> {:hello, b, c} = {:hello, “world”, 42}
+{:hello, “world”, 42}
+> b
+“world”
+> c
+42
+```
+
+Here, we’ve hard-coded the first element of the left-hand tuple to :hello. The pattern matching remains the same, can it make the left equal to the right? Here it can, and two variables are created, b and c. This was the start of my understanding of why pattern matching exists.
+
+=== Pattern Matching Lists
+
+List matching works similarly to tuples.
+
+[source, elixir]
+```
+[first, second, third] = [1, 2, 3] # Decomposes a three-element list
+[1, second, third] = [1, 2, 3]     # The first element must be 1
+[first, first, first] = [1, 1, 1]  # All elements must have the same value
+[first, second, _] = [1, 2, 3]     # You don’t care about the third element, but it must be present.
+[^first, second, _] = [1, 2, 3]    # The first element must have the same value as the variable first.
+```
+
+A special patter for List is [head|tail](`)`. Non-empty list is a recursive structure that can be expressed in the form [head | tail]. You can use pattern matching to put each of these two elements into separate variables
+
+[source, elixir]
+```
+[h|t] = [1, 2, 3]
+
+iex(11)> h
+1
+
+iex(12)> t
+[2, 3]
+```
+
+If you need only one element of the [head, tail] pair, you can use the anonymous variable: [min | _](`) = [3,2,1](Enum.sort())`
+
+### Pattern Matching Maps
+
+Ref: https://stackoverflow.com/questions/23693173/elixir-pattern-matching-works-differently-for-tuples-and-maps
+
+When matching maps though, you can match on one or more keys in the map, the left-side pattern doesn’t need to contain all the keys from the right-side term:
+
+[source, elixir]
+```
+%{a: b} = %{a: :foo, b: :bar}
+```
+
+The semantics are a bit different between data structures, but are fairly common sense: when you match on a map usually you are looking for specific keys or values and you don't care about the other keys/values.
+
+The tuple rule exists because two tuples cannot be the same unless they have the same number of elements, a list has the same limitation.
+
+Because of the semantics of lists, accessing the head element of the list is the most common operation when working with them, hence the [h|t] syntax.
+
+Maps however can match based on specific keys, so the number of elements are irrelevant, as long as both sides of the match contain the same key, and optional pattern for the value, then it's a successful match.
+
+> **Note:** maps are the only data structure that allow partial pattern matching, everything else requires the pattern to match the entire structure.
+
+[source, elixir]
+```
+iex(16)> {a} = {1, 2}  # Tuple fails
+** (MatchError) no match of right hand side value: {1, 2}
+iex(16)> {a,_} = {1, 2}
+{1, 2}
+
+iex(1)> [a, b] = [1, 2, 3]
+** (MatchError) no match of right hand side value: [1, 2, 3]
+
+iex(3)> %{:a => one, :c => three} = %{:a => 1, :b => 2, :c =>3}
+%{a: 1, b: 2, c: 3}
+iex(4)> three
+3
+iex(5)> one
+1
+
+iex(6)> %{} = %{:a => 1, :b => 2, :c =>3}
+%{a: 1, b: 2, c: 3}
+iex(7)> %{:d => four} = %{:a => 1, :b => 2, :c =>3}
+** (MatchError) no match of right hand side value: %{a: 1, b: 2, c: 3}
+
+iex(8)> %{:a => one, :d => four} = %{:a => 1, :b => 2, :c =>3}
+** (MatchError) no match of right hand side value: %{a: 1, b: 2, c: 3}
+```
+
+### Pattern Matching Bitstring
+
+To match a binary, you use syntax similar to creating one. To extracts individual bytes:
+
+[source, elixir]
+```
+iex(1)> binary = <<1, 2, 3>>       # Create
+<<1, 2, 3>>
+iex(2)> <<b1, b2, b3>> = binary    # Pattern Matching
+<<1, 2, 3>>
+
+iex(3)> b1
+1
+
+iex(4)> b2
+2
+
+iex(5)> b3
+3
+```
+
+`::NUM_BITS` To extract separate bits or groups of bits use. The following example splits a single byte into two 4-bit values:
+
+[source, elixir]
+```
+iex(9)> <<a :: 4, b :: 4>> = << 155 >>
+<< 155 >>
+
+iex(10)> a
+9
+
+iex(11)> b
+11
+```
+
+Use `::binary` to match an arbitrary-sized binary:
+
+[source, elixir]
+```
+iex(6)> <<b1, rest :: binary>> = binary
+<<1, 2, 3>>
+
+iex(7)> b1
+1
+
+iex(8)> rest
+<<2, 3>>
+```
+
+> **Note:** Useful to parse the header of binary encoded data
+
+### Pattern Matching Binary String
+
+Strings are binaries, so you can use binary matches to extract individual bits and bytes from a string:
+
+[source, elixir]
+```
+iex(13)> <<b1, b2, b3>> = "ABC"
+"ABC"
+
+iex(13)> b1
+65
+
+iex(14)> b2
+66
+
+iex(15)> b3
+67
+```
+
+To match the beginning of the string use `<>`:
+
+[source, elixir]
+```
+iex(16)> command = "ping www.example.com"
+"ping www.example.com"
+
+iex(17)> "ping " <> url = command
+"ping www.example.com"
+
+iex(18)> url
+"www.example.com"
+```
+
+When you write "ping " <> url = command, you state the expectation that a command variable is a binary string starting with "ping ".
+
+### Pattern Matching with Structs
+
+Structs can also be used in pattern matching:
+
+* for matching on the value of specific keys
+
+[source, elixir]
+```
+defmodule User do
+   defstruct name: "John", age: 27
+end
+
+iex> john = %User{age: 27, name: "John"}
+iex> %User{name: name} = john
+iex> name     #We extract the value of the field name
+"John"
+```
+
+* for ensuring that the matching value is a struct of the same type as the matched value.
+
+[source, elixir]
+```
+iex> %User{} = %{}
+** (MatchError) no match of right hand side value: %{}
+```
+
+### Pattern Matching: Compound matches, Match chaining
+
+Ref: EIA_2nd 3.1.8 Compound matches
+
+Patterns can be:
+
+* arbitrarily nested
+* Chained
+
+Nested pattern example: [_, {name, _}, _](`) = [{"Bob", 25}, {"Alice", 30}, {"John", 35}]``
+Chained pattern example: `date_time = {_, {hour, _, _}} = :calendar.local_time()`
+
+To fully understand pattern chaining we need to discuss match expressions in more detail. A match expression has this general form: `pattern = expression`
+
+Let’s break down what happens here:
+
+* The expression on the right side is evaluated.
+* The resulting value is matched against the left-side pattern.
+* Variables from the pattern are bound.
+* The result of the match expression is the result of the right-side term.
+
+An important consequence of this is that match expressions can be chained:
+
+[source, elixir]
+```
+iex(3)> a = (b = 1 + 3)
+4
+
+iex(7)> a
+4
+
+iex(8)> b
+4
+```
+
+In this (not so useful) example, the following things happen:
+
+* The expression 1 + 3 is evaluated.
+* The result (4) is matched against the pattern b.
+* The result of the inner match (which is again 4) is matched against the pattern a.
+
+Consequently, both a and b have the value 4.
+
+Parentheses are optional, and many developers omit them in this case: `a = b = 1 + 3`
+
+A more useful example:
+
+[source, elixir]
+```
+iex(7)> {_, {hour, _, _}} = date_time = :calendar.local_time()
+iex(8)> date_time
+{{ "{{" }}2018, 11, 11{{ "}}" }}, {{ "{{" }}21, 32, 34{{ "}}" }}
+iex(9)> hour
+21
+```
+
+### Assign variables in the function definition: Phoenix controller example
+
+Elixir allow to use `Match Chaining` also with function arguments, a good example is a Phoenix controller.
+
+When I first used Phoenix I saw something I found confusing in some method signatures. Here’s an example from the show action of a controller.
+
+Here’s an example from the show action of a controller:
+
+[source, elixir]
+```
+def show(conn, %{“user_id” => user_id} = params) do
+  # … show stuff here using variables user_id and params
+end
+```
+
+Hmmm. This `show/2` function takes two parameters, but, in the signature there appears to be some pattern matching going on, this really confused me.
+
+The explanation is quite simple. Elixir is pattern matching params first (the passed in map is the right-hand side, params becomes the left), then pattern matches user_id, as the left-hand side, against params which is now the right-hand side, like so.
+
+[source, elixir]
+```
+%{“user_id” => user_id} = params = <map passed in>
+ # breaks down to
+params = <map passed in>
+ # then to
+%{“user_id” => user_id} = params
+```
+
+As a result of this you have access to the full params map, and a separate user_id in the function body. This is another example of decomposition.
+
+### Pattern Matching with functions
+
+Ref: EIA 3.2 Matching with functions
+
+The pattern-matching mechanism is used in the specification of function arguments.
+
+Recall the basic function definition:
+
+[source, elixir]
+```
+def my_fun(arg1, arg2) do
+  ...
+end
+```
+
+The argument specifiers arg1 and arg2 are patterns, and you can use standard matching techniques.
+
+Elixir allows you to *overload* a function by specifying multiple clauses. A `clause` is a function definition specified by the def construct.
+
+You can for example declare three function clauses with the same name and arity:
+
+[source, elixir]
+```
+defmodule Chatter do
+  def converse({:hello, name, employer}) do
+    IO.puts "Hi #{name}. Nice to meet you. I hear you work for #{employer}."
+  end
+
+  def converse({:small_talk, name, fav_hobby}) do
+    IO.puts "Hey #{name}, have you been doing much #{fav_hobby} lately?"
+  end
+
+  def converse({:goodbye, name}) do
+    IO.puts "#{name}, great to talk to you today, goodbye."
+  end
+end
+```
+
+I can call the converse/1 function thus, the tuple will be passed to the converse/1 function in our Chatter module:
+
+[source, elixir]
+```
+> Chatter.converse({:hello, “Stephanie”, “World Bank”})
+#=> Hi Stephanie. Nice to meet you. I hear you work for World Bank.
+> Chatter.converse({:hello, “Trevor”, “Local Bank”})
+#=> Hi Trevor. Nice to meet you. I hear you work for Local Bank.
+> Chatter.converse({:small_talk, “Stephanie”, “fishing”})
+#=> Hey Stephanie, have you been doing much fishing lately?
+> Chatter.converse({:goodbye, “Trevor”})
+#=> Trevor, it was great to talk to you today, goodbye.
+```
+
+you can see we have allowed for three different types of conversation without any conditionals in our code. Each of the method signatures clearly show their intent through the first element of the tuple. Our code is simplified.
+
+This works because when you call the function, the runtime:
+
+* goes through each of its clauses, in the order they’re specified in the source code,
+* and tries to *pattern match* the provided arguments.
+* if no clause matches, an error is raised: `(FunctionClauseError) no function clause matching in...`
+
+> **Note:** It’s important to be aware that from the caller’s perspective, a multiclause function is a single function
+
+Default Clause: Sometimes you’ll want a function to return a term indicating a failure, rather than raising an error; You can introduce a default clause that always matches.
+
+> **Warning:** For this to work correctly, it’s important to place the clauses in the appro- priate order. The runtime tries to select the clauses using the order in the source code.
+
+> **Note:** always group clauses of the same function together, instead of scattering them in various places in the module.
+
+[source, elixir]
+```
+defmodule Chatter do
+  def converse({:hello, name, employer}) do
+    IO.puts "Hi #{name}. Nice to meet you. I hear you work for #{employer}."
+  end
+
+  def converse({:small_talk, name, fav_hobby}) do
+    IO.puts "Hey #{name}, have you been doing much #{fav_hobby} lately?"
+  end
+
+  def converse({:goodbye, name}) do
+    IO.puts "#{name}, great to talk to you today, goodbye."
+  end
+
+  def converse(unknown) do # If none of the first three clauses match, the final clause is called.
+    {:error, {:unknown_shape, unknown}}
+  end
+end
+```
+
+#### Guards and multiple clauses
+
+* [Elixir Guard Doc on HEX](https://hexdocs.pm/elixir/guards.html#content)
+* [Elixir guard syntax reference](https://github.com/elixir-lang/elixir/blob/master/lib/elixir/pages/Guards.md)
+* Use pattern matching
+* support both do: and do/end block syntax
+* Cheatsheet: https://kapeli.com/cheat_sheets/Elixir_Guards.docset/Contents/Resources/Documents/index
+
+Guards are a way to augment pattern matching with more complex checks. They are allowed in a predefined set of constructs where pattern matching is allowed.
+
+This is best illustrated by example. The following code tests whether a given number is positive, negative, or zero.
+
+[source, elixir]
+```
+defmodule TestNum do
+  def test(x) when x < 0 do
+    :negative
+  end
+
+  def test(0), do: :zero
+
+  def test(x) when x > 0 do
+    :positive
+  end
+end
+
+iex(1)> TestNum.test(-1)
+
+iex(2)> TestNum.test(0)
+
+iex(3)> TestNum.test(1)
+
+```
+
+Surprisingly enough, calling this function with a non-number yields strange results: `TestNum.test(:not_a_number)` returns `:positive`
+
+To fix this, you have to extend the guard by testing whether the argument is a number
+
+[source, elixir]
+```
+defmodule TestNum do
+  def test(x) when is_number(x) and x < 0 do
+    :negative
+  end
+
+  def test(0), do: :zero
+
+  def test(x) when is_number(x) and x > 0 do
+    :positive
+  end
+end
+```
+
+The set of operators and functions that can be called from guards is very limited.You may not call your own functions, and most of the other functions won’t work. These are some examples of operators and functions allowed in guards:
+
+* Comparison operators (==, !=, ===, !==, >, <, <=, >=)
+* Boolean operators (and, or) and negation operators (not, !)
+* Arithmetic operators (+, -, *, /)
+* Type-check functions from the Kernel module (for example, is_number/1, is_atom/1, and so on)
+
+You can find the complete up-to-date list at https://hexdocs.pm/elixir/guards.html
+
+> **Note:** If an error is raised from inside the guard, it won’t be propagated, and the guard expression will return false.
+
+#### Multi-clause Lambda
+
+Anonymous functions (lambdas) may also consist of multiple clauses. A lambda can be defined as `double = fn x -> x*2 end`.
+
+[source, elixir]
+```
+fn
+  pattern_1, pattern_2 ->
+    ... # Executed if pattern_1 matches
+  pattern_3, pattern_4 ->
+    ...
+  ...
+end
+```
+
+Let’s see this in action by reimplementing the `test/1` function that inspects whether a number is positive, negative, or zero:
+
+[source, elixir]
+```
+test_num =
+  fn
+    x when is_number(x) and x < 0 ->
+      :negative
+    0 -> :zero
+    x when is_number(x) and x > 0 ->
+      :positive
+  end
+```
+
+> **Note:** there’s no special ending terminator for a lambda clause. The clause ends when the new clause is started (in the form pattern →) or when the lambda definition is finished with end.
+
+===== Assign variables in the function definition:
+
+[https://medium.com/rebirth-delivery/how-to-use-elixir-pattern-matched-functions-arguments-a793733acc6d#.c0l26oy4d](https://medium.com/rebirth-delivery/how-to-use-elixir-pattern-matched-functions-arguments-a793733acc6d#.c0l26oy4d)
+
+#### Pattern Matching and default parameters
+
+[http://stackoverflow.com/questions/38820327/pattern-matching-and-default-parameters](http://stackoverflow.com/questions/38820327/pattern-matching-and-default-parameters)
+
+#### The case operator
+
+[source, elixir]
+```
+#=> my_case.exs
+defmodule MyCase do
+
+  def do_something(tuple) do
+    case tuple do
+      {:ok, value} -> "The status was :ok!"
+      {:nope, value}  - > "Nope nope nope nope..."
+      _ -> "You passed in something else."
+    end
+  end
+
+end
+```
+
+Then load up the file in iex by running `$ iex my_case.exs.`
+
+[source, elixir]
+```
+iex> MyCase.do_something({:ok, true})
+"The status was :ok!"
+iex> MyCase.do_something({:nope, true})
+"Nope nope nope nope..."
+iex> MyCase.do_something({:wat, true})
+"You passed in something else."
+```
+
+### The pin operator ^
+
+Occasionally, you’ll need to match against the contents of the variable. This technique is used less often and is mostly relevant when you need to con- struct the pattern at runtime.
+
+For this purpose, the pin operator (^) is provided. This is best explained with an example:
+
+```
+iex(7)> expected_name = "Bob"              # Matches anything and then binds to the variable expected_name
+        "Bob"
+iex(8)> {^expected_name, _} = {"Bob", 25}  # Matches to the content of the variable expected_name
+        {"Bob", 25}
+
+iex(9)> {^expected_name, _} = {"Alice", 30}
+       ** (MatchError) no match of right hand side value: {"Alice", 30}
+```
+
+Using ^expected_name in patterns says that you expect the value of the variable expected_name to be in the appropriate position in the right-side term.
+
+In this example, it would be the same as if you used the hard-coded pattern `{"Bob", _}`. Therefore, the first match succeeds, but the second one fails.
+
+Notice that the pin operator doesn’t bind the variable. You expect that the variable is already bound — in other words, that it has a value — and you try to match against that value.
+
+## Conditional with Classical branching constructs: if, unless, cond, case
+
+Classical branching construct are the macros: if, unless, cond, case.
+
+REF: 3.3.2 Classical branching constructs
+
+Ref : https://stackoverflow.com/questions/21075026/what-is-the-difference-between-cond-and-case
+
+### Conditional: if
+
+[source, elixir]
+```
+if condition do
+  ...
+else
+  ...
+end
+
+if condition, do: something, else: another_thing # One line version
+```
+
+> **Note:** everything in Elixir is an expression that has a return value. The if expres- sion returns the result of the executed block (that is, of the block’s last expression)
+
+If the condition isn’t met and the else clause isn’t specified, the return value is the atom nil:
+
+[source, elixir]
+```
+iex(1)> if 5 > 3, do: :one
+
+iex(2)> if 5 < 3, do: :one
+nil
+iex(3)> if 5 < 3, do: :one, else: :two
+
+def max(a, b) do
+        if a >= b, do: a, else: b
+end
+```
+
+### Conditional: cond
+
+`cond`: The cond macro can be thought of as equivalent to an if-else-if pattern.
+
+It takes a list of expressions and executes the block of the first expression that evaluates to a truthy value:
+
+[source, elixir]
+```
+cond do
+  expression_1 ->
+  ...
+  expression_2 ->
+    ...
+  ...
+end
+```
+
+[source, elixir]
+```
+def max(a, b) do
+  cond do
+    a >= b -> a
+    true -> b end
+end
+```
+
+The result of cond is the result of the corresponding executed block. If none of the conditions is satisfied, cond raises an error.
+
+The true pattern in the example ensures that the condition will always be satisfied. If none of the previously stated conditions in the cond construct are met, the true branch is executed.
+If none of the conditions are evaluated ,`** (CondClauseError) no cond clause evaluated to a truthy value`
+
+### Conditional: case
+
+The term pattern here indicates that it deals with pattern matching. In the case con- struct, the provided expression is evaluated, and then the result is matched against the given clauses.
+
+The first one that matches is executed, and the result of the corre- sponding block (its last expression) is the result of the entire case expression. If no clause matches, an error is raised.
+
+[source, elixir]
+```
+case expression do
+  pattern_1 ->
+    ...
+  pattern_2 ->
+    ...
+  ...
+  _ -> ... # DEFAULT CLAUSE
+end
+```
+
+Default Cluse: You can specify the default clause by using the anonymous variable to match anything
+
+The case-powered version of the max function would then look like this:
+
+[source, elixir]
+```
+defmodule Compare do
+  def max(a,b) do
+    case a >= b do
+      true -> a
+      false -> b
+    end
+  end
+end
+```
+
+There are no differences between case and multiclause functions. In fact, the general case syntax can be directly translated into the multiclause approach:
+
+[source, elixir]
+```
+defp fun(pattern_1), do: ...
+defp fun(pattern_2), do: ...
+```
+
+[source, elixir]
+```
+defmodule Compare do
+  def max(a,b) when a>=b do
+    a
+  end
+  def max(a,b) when a<b do
+    b
+  end
+end
+```
+
+## Conditionals with Multiclause functions
+
+In a typical imperative lan- guage, such as JavaScript, you could write something like the following:
+
+[source, javascript]
+```
+function test(x){
+   if (x < 0) return "negative";
+   if (x == 0) return "zero";
+   return "positive";
+}
+```
+
+In Elixir you can use multiclauses:
+
+[source, elixir]
+```
+defmodule TestNum do
+        def test(x) when x < 0, do: :negative
+        def test(0), do: :zero
+        def test(x), do: :positive
+end
+```
+
+There’s nothing you can do with multiclauses that can’t be done with classical branch- ing constructs. But the multiclause approach forces you to layer your code into many small functions and push the conditional logic deeper into lower layers.
+
+## Conditional: Summary
+
+Ref: https://stackoverflow.com/questions/21075026/what-is-the-difference-between-cond-and-case
+
+If, cond, case and multi-clause solve similar problems. Classical constructs like if and case seem more imperative but can often prove simpler than the multiclause approach. Selecting an appropriate solution depends on the specific situation as well as your personal preferences.
+Multiclauses offer a more declarative feel of branching, but they require you to define a separate function and pass all the necessary arguments to it.
+
+Let's explain by examples: suppose you want to eat apple if today is raining or rice if not, then you could use:
+
+[source, elixir]
+```
+if weather == :raining do
+  IO.puts "I'm eating apple"
+else
+  IO.puts "I'm eating rice"
+end
+```
+
+Problem: if you want to expand your options you will start to add a sequece of if-else-if-else... which is not easly readable. The `cond` statement is for that
+
+[source, elixir]
+```
+cond do
+  weather == :raining and not is_weekend ->
+    IO.puts "I'm eating apple"
+  weather == :raining and is_weekend ->
+    IO.puts "I'm will eat 2 apples!"
+  weather == :sunny ->
+    IO.puts "I'm happy!"
+  weather != :raining and is_sunday ->
+    IO.puts "I'm eating rice"
+  true ->
+    IO.puts "I don't know what I'll eat"
+end
+```
+
+If you prefer using pure pattern matching use `case` or multi-clause functions:
+
+[source, elixir]
+```
+defmodule Weather do
+  def reaction(weather, weekday) do
+    case { weather, weekday } do
+      {weather, _} = { :raining, :weekend } ->
+        IO.puts "#{weather} : I'm will eat 2 apples!"
+
+      {weather, _} = { :raining, _ } ->
+        IO.puts "#{weather} : I'm eating apple"
+
+      {weather, _} = { :sunny, _ } ->
+        IO.puts "#{weather} : I'm happy!"
+
+      {weather, _} = { _, :sunday } ->
+        IO.puts "#{weather} : I'm eating rice"
+
+      {weather, _} = { _, _ } ->
+        IO.puts "#{weather} : I don't know what I'll eat"
+    end
+  end
+end
+```
+
+The same can be refactored in a more readable multi-clause:
+
+[source, elixir]
+```
+defmodule Weather do
+  def reaction({weather, _} = { :raining, :weekend }), do: IO.puts "#{weather} : I'm will eat 2 apples!"
+  def reaction({weather, _}  = { :raining, _ }), do: IO.puts "#{weather} : I'm eating apple"
+  def reaction({weather, _}  = { :sunny, _ }), do: IO.puts "#{weather}  : I'm happy!"
+  def reaction({weather, _}  = { _, :sunday }), do: IO.puts "#{weather} : I'm eating rice"
+  def reaction({weather, _}  = { _, _ }), do: IO.puts "#{weather} : I don't know what I'll eat"
+end
+```
+
+> **Note:** we are using Pattern chaining with function arguments to
+
+## Conditional: Handling Errors
+
+Some background about the conventions of most Elixir functions:
+
+* Tuple: A data structure consisting of multiple parts.
+* Tagged Tuple: A tuple where the first part is an atom that acts as a label describing the remaining contents in the tuple.
+
+Elixir has inherited the tagged tuple error handling convention from Erlang.Let’s take a function that has a chance of failing to compute:
+
+* If all goes well, the function will return a tuple tagged with the `:ok` atom and a value.
+* If the function could not return a value then it returns a tuple tagged `:error` and the reason.
+
+Subsequent code can then pattern match on the tag to call the correct behaviour.
+
+[source, elixir]
+```
+case MyModule.flaky_method do
+  {:ok, value} -> IO.puts "All good value was: #{value}."
+  {:error, reason} -> IO.puts "Uh oh! Failed due to #{reason}."
+end
+```
+
+Returning a tagged tuple is only a convention. In the real world many functions do not adhere to this contract:
+
+* Some functions simply return nil or :error instead of a tuple and a reason.
+* Some functions can’t fail so just return a value. As in my original tweet, adding 2 numbers always works and so 2 + 2 will only return 4.
+* Some functions borrow a Ruby convention and have functions that can throw errors and end with an exclamation mark.
+
+### OK Lib
+http://insights.workshop14.io/2015/10/18/handling-errors-in-elixir-no-one-say-monad.html
+https://github.com/CrowdHailer/OK?utm_source=elixirdigest&utm_medium=email&utm_campaign=featured
+
+### With
+
+* Elxir DOC: [https://hexdocs.pm/elixir/Kernel.SpecialForms.html#with/1](https://hexdocs.pm/elixir/Kernel.SpecialForms.html#with/1)
+* [http://learningelixir.joekain.com/learning-elixir-with/](http://learningelixir.joekain.com/learning-elixir-with/)
+* [http://elixir-lang.org/getting-started/mix-otp/docs-tests-and-with.html#with](http://elixir-lang.org/getting-started/mix-otp/docs-tests-and-with.html#with)
+
+The final branching construct we’ll discuss is the `with` special form, which can be very useful when you need to chain a couple of expressions and return the error of the first expression that fails.
+
+The pipe operator is great when all functions are acting on a consistent piece of data. It falls apart when we introduce variability.
+
+`cond` is great with pattern matching but when you want to evaluate a sequence of expression and check the result it become coumbersome.
+
+For example suppose you need to process registration data submitted by a user. The input is a map, with keys being strings (“login”, “email”, and “password”). Here’s an example of one input map:
+
+[source, elixir]
+```
+       %{
+         "login" => "alice",
+         "email" => "some_email",
+         "password" => "password",
+         "other_field" => "some_value",
+         "yet_another_field" => "...",
+         ...
+}
+```
+
+Your task is to normalize this map into a map that contains only the fields login, email, and password. Therefore, for the given input, you can return the following structure: `%{login: "alice", email: "some_email", password: "password"}`
+But some required field might not be present in the input map. In this case, you want to report the error.
+
+[source, elixir]
+```
+defmodule Login do
+  def extract_user(user) do
+    case extract_login(user) do
+      {:error, reason} -> {:error, reason}
+      {:ok, login} ->
+        case extract_email(user) do
+          {:error, reason} -> {:error, reason}
+          {:ok, email} ->
+            case extract_password(user) do
+              {:error, reason} -> {:error, reason}
+              {:ok, password} ->
+                %{login: login, email: email, password: password}
+            end
+        end
+    end
+  end
+
+  defp extract_login(%{"login" => login}), do: {:ok, login}
+  defp extract_login(_), do: {:error, "login missing"}
+  defp extract_email(%{"email" => email}), do: {:ok, email}
+  defp extract_email(_), do: {:error, "email missing"}
+  defp extract_password(%{"password" => password}), do: {:ok, password}
+  defp extract_password(_), do: {:error, "password missing"}
+end
+
+Login.extract_user %{login: "alice", email: "some_email", password: "password"} # return {:error, "login missing"}
+```
+
+> **Note:** This is quite noisy, given that the code composes three functions. Each time you fetch something, you need to branch depending on the result
+
+That's where `with` comes in. `with` is a lot like a mix between `|>` and `cond`, it allows:
+
+* to match each intermediary result.
+* to match on multiple expressions concisely.
+* to execute with a clear syntax a sequence of expressions.
+* return the first unexpected result.
+
+It allows you to simplify code, replacing nested case calls with a chain of matching clauses.
+
+In its simplest form, with has the following shape:
+
+[source, elixir]
+```
+with pattern_1 <- expression_1,
+     pattern_2 <- expression_2,
+     ...
+do
+  ...
+end
+```
+
+`with` will retrieve the value returned by the right-side of `<-` and match it against the pattern on the left side. If the value matches the pattern, with moves on to the next expression. In case there is no match, the non-matching value is returned.
+
+Previously, one would write
+
+[source, elixir]
+```
+case File.read("my_file.ex") do
+  {:ok, contents} ->
+    case Code.eval_string(contents) do
+      {res, _binding} ->
+        {:ok, res}
+      error ->
+        error
+  error -> error
+    error
+end
+```
+
+using `with`:
+
+[source, elixir]
+```
+with {:ok, contents} <- File.read("my_file.ex"),
+     {res, binding} <- Code.eval_string(contents),
+     do: {:ok, res}
+```
+
+the Login example can be refactored:
+
+[source, elixir]
+```
+defmodule Login do
+  def extract_user(user) do
+    with {:ok, login} <- extract_login(user),
+         {:ok, email} <- extract_email(user),
+         {:ok, password} <- extract_password(user) do
+      {:ok, %{login: login, email: email, password: password}}
+    end
+  end
+
+  defp extract_login(%{"login" => login}), do: {:ok, login}
+  defp extract_login(_), do: {:error, "login missing"}
+  defp extract_email(%{"email" => email}), do: {:ok, email}
+  defp extract_email(_), do: {:error, "email missing"}
+  defp extract_password(%{"password" => password}), do: {:ok, password}
+  defp extract_password(_), do: {:error, "password missing"}
+end
+
+Login.extract_user %{login: "alice", email: "some_email", password: "password"} # return {:error, "login missing"}
+```
+
+SCOPE:
+
+* all the variable matched are in scope in the subsequent expressions and in the do block. In the above example we use `login`, `email` and `password` in the `do` block.
+* variables bound inside with/1 won't leak, see this example
+
+[source, elixir]
+```
+width = nil
+opts = %{width: 10, height: 15}
+with {:ok, width} <- Map.fetch(opts, :width),
+     double_width = width * 2,
+     {:ok, height} <- Map.fetch(opts, :height) do
+  {:ok, double_width * height}
+end
+{:ok, 300}
+width
+nil
+```
+
+`Guards` can be used in patterns as well:
+
+[source, elixir]
+```
+users = %{"melany" => "guest", "bob" => :admin}
+with {:ok, role} when not is_binary(role) <- Map.fetch(users, "bob") do
+  {:ok, to_string(role)}
+end
+{:ok, "admin"}
+```
+
+In case a match fails, an `else` option can be given to modify what is being returned from with in the case of a failed match. It can be useful to return an uniform return value for all the errors that can happen in your chain. The else block is similar to a `case` block.
+
+Example:
+
+[source, elixir]
+```
+opts = %{width: 10}
+with {:ok, width} <- Map.fetch(opts, :width),
+     {:ok, height} <- Map.fetch(opts, :height) do
+  {:ok, width * height}
+else
+  :error ->
+    {:error, :wrong_data}
+end
+{:error, :wrong_data}
+```
+
+If an else block is used and there are no matching clauses, a WithClauseError exception is raised.
+
+If there is no matching `else` block, then a `WithClauseError` exception is raised.
+
+[source, elixir]
+```
+with ... <- ... ,
+    ... <- ... ,
+    ... <- ... ,
+    ... <- ... do
+  {:ok, double_width * height}
+else
+  :error -> {:error, :wrong_data}
+  :error2 -> {:error, :nil_data}
+end
+```
+
+NOTE that:
+
+* non andare a capo con il `do` quando si usa `else`
+* “bare expressions” may also be inserted between the clauses
+* Guards can be used in patterns
+* variables bound inside with/1 won’t leak;
+
+Example:
+
+[source, elixir]
+```
+width = nil
+opts = %{width: 10, height: 15}
+with {:ok, width} <- Map.fetch(opts, :width),
+    double_width = width * 2,
+    {:ok, height} <- Map.fetch(opts, :height),
+    do: {:ok, double_width * height}
+
+{:ok, 300}
+
+width = nil
+opts = %{width: 10}
+with {:ok, width} <- Map.fetch(opts, :width),
+    double_width = width * 2,
+    {:ok, height} <- Map.fetch(opts, :height),
+    do: {:ok, double_width * height}
+
+width = nil
+opts = %{width: 10}
+a = with {:ok, width} <- Map.fetch(opts, :width),
+    double_width = width * 2,
+    {:ok, height} <- Map.fetch(opts, :height) do
+  {:ok, double_width * height}
+else
+  :error -> {:error, :wrong_data}
+end
+
+{:error, :wrong_data}
+```
+
+Refactor example: [http://openmymind.net/Elixirs-With-Statement/](http://openmymind.net/Elixirs-With-Statement/)
+
+### Happy With
+
+If you want to be more specific in the way you handle errors and you cannot obtain it with patter matching use `happy_with` and `tags`:
+
+* [https://github.com/vic/happy_with](https://github.com/vic/happy_with)
+* [https://github.com/vic/happy/blob/master/README.md#tags](https://github.com/vic/happy/blob/master/README.md#tags)
+
+# Loops and iterations
+
+Ref: EIA 3.4 Loops and iterations
+
+Looping in Elixir works very differently than it does in mainstream languages. Constructs such as while and do...while aren’t provided. In Elixir you can:
+
+* Iterate with recursion
+* Iterate with Comprehension
+* Iterate with high-level functions (Enum Module, etc)
+
+## Iterating with recursion
+
+Ref: EIA 3.4.1 Iterating with recursion
+
+The principal looping tool in Elixir is *recursion*.
+
+But although recursion is the basic building block of any kind of looping, most production Elixir code uses it sparingly. That’s because there are many higher-level abstractions that hide the recursion details.
+
+TL;DR:  Always use Tail call function with recursion to avoid memory issues
+
+We will start showing a basic example that demonstrates the basic way of interating.
+The following code implements a function that sums all the elements in a given list:
+
+[source, elixir]
+```
+defmodule ListHelper do
+        def sum([]), do: 0
+        def [head | tail](sum()) do
+          head + sum(tail)
+        end
+end
+```
+
+This code looks very declarative:
+*  The sum of all the elements of an empty list is 0.
+*  The sum of all the elements of a non-empty list equals the list’s head plus the sum of the list’s tail.
+
+PROBLEM: You probably know from other languages that a function call will lead to a stack push, and therefore will consume some memory. A very deep recursion might lead to a stack overflow and crash the entire program.
+
+In Elixir (and also in other languages) this isn’t necessarily a problem, because of the tail-call optimization. But we need refactor our code!
+
+## Tail function call and TAIL CALL OPTIMIZATION
+
+Ref:
+
+* https://www.youtube.com/watch?v=HIt_GPuD7wk
+* https://www.quora.com/How-does-compiler-know-whether-the-recursion-is-a-tail-recursion-or-not-and-how-does-it-optimize-tail-recursion
+
+A recursive function is said to be "tail recursive" if the recursive call is the last thing done by the function.
+
+[source, elixir]
+```
+def original_fun(...) do
+  ...
+  another_fun(...)  ## <<<---  Tail call
+end
+
+def original_fun2(...) do
+  x = 10
+  ...
+   x + another_fun(...)  ## <<<---  NOT a Tail call: x + the returned value is the last function call
+end
+```
+
+> **Note:** Intuitively, in the `original_fun2` example, we can't avoid a stack frame allocation because we need to keep the value of x around after we get the result of `another_fun` to calculate the result of `original_fun2`. We do this by keeping track of x in a stack frame, which is exactly what tail call elimination avoids.
+
+Elixir (or, more precisely, Erlang) treats tail calls in a specific manner by performing a *tail-call optimization*:
+
+* it turn certain function calls into jumps which don't use the stack, making them more efficient and preventing stack overflows.
+* A compiler can eliminate a function call if it's in tail position (regardless of whether the call is recursive or not—tail call elimination can hit normal function calls as easily as recursive ones.)
+* The final result of `original_fun` is the result of `another_fun`. This is why the compiler can safely perform the operation by jumping to the beginning of another_fun without doing additional memory allocation.
+
+> **Note:** Tail position is a syntactic property, meaning that we can get it solely by looking at the code without doing additional processing or abstract execution.
+
+In the next listing, you'll convert the `ListHelper.sum/1` function to the tail-recursive version.
+
+[source, elixir]
+```
+defmodule ListHelper do
+  def sum(list) do
+    do_sum(0, list)
+  end
+
+  defp do_sum(current_sum, []) do
+    current_sum
+  end
+
+  defp do_sum(current_sum, [head | tail]) do
+    do_sum(head + current_sum, tail) #  is still tail-recursive because it calls itself at the very end
+  end
+end
+```
+
+The two functions above represent a standard example of how to implement tail recursion:
+
+* `sum/1` is the exported function called by the module clients and is also responsible for initializing the value of the current_sum parameter that’s passed recursively in do_sum.
+* `do_sum/2` is private, implemented as a 2-clause function
+  * `do_sum(current_sum, [head | tail])` : calculates the new sum and calls itself recursively with the remainder of the list and the new sum
+  * `do_sum(current_sum, [])` :  is responsible for stopping the recursion. It matches on an empty list.
+
+> **Note:** Benchmark with benchee: https://pragtob.wordpress.com/2019/04/08/revisiting-tail-call-optimization-in-elixir-erlang-with-benchee-1-0/
+
+## Iterate with higher-level functions (Enum Module, etc)
+
+Ref: 3.4.3 Higher-order functions
+
+A *higher-order function* is a fancy name for a function that takes one or more functions as its input or returns one or more functions (or both).
+
+For example `Enum.each/2` takes a lambda as its input so it’s called a higher-order function.
+
+You can use Enum.each/2 to iterate over enumerable structures without writing the recursion. But Under the hood, Enum.each/2 is powered by recursion: there’s no other way to do loops and iterations in Elixir.
+
+[source, elixir]
+```
+iex(1)> Enum.each(
+          [1, 2, 3],
+          fn x -> IO.puts(x) end # Passing a function value to another function
+        )
+1
+2
+3
+```
+
+Elixir’s standard library provides many other useful iteration helpers in the Enum module:
+
+* `Enum.map/2` takes an enumerable and a lambda that maps each element to another element
+* `Enum.filter/2` to extract only some elements of the list, based on certain criteria
+* `Enum.reduce/3` used to transform an enumerable into anything
+* https://hexdocs.pm/elixir/Enum.html
+
+> **Note:** If you’re coming from lan- guages that support first-class functions, you may already know reduce under the name inject or fold.
+
+Most functions from the Enum module work on `enumerables`: lists, ranges, maps, and MapSet, etc...  It’s also possible to turn your own data structures into enumerables and thus harness all the features from the Enum module.
+
+[source, elixir]
+```
+iex(1)> Enum.map(
+          [1, 2, 3],
+          fn x -> 2 * x end
+        )
+[2, 4, 6]
+
+iex(2)> Enum.map(
+          [1, 2, 3],
+&(2 * &1) )  ## Same of the above but more compact
+
+iex(3)> Enum.filter(
+          [1, 2, 3],  ## Enumerable
+          fn x -> rem(x, 2) == 1 end   ## Lambda
+        )
+[1, 3]
+```
+
+Reducing is best explained with a specific example: you’ll use reduce to sum all the elements in a list.
+
+The function has the following shape:
+
+[source, elixir]
+```
+Enum.reduce(
+  enumerable,
+  initial_acc,    # initial value for the accumulator
+  fn element, acc ->
+    ...
+  end
+)
+```
+
+* The lambda’s task is to compute and return the new accumulator value.
+* When the iteration is done, Enum.reduce/3 returns the final accumulator value.
+
+[source, elixir]
+```
+iex(4)> Enum.reduce(
+          [1, 2, 3],
+          0,          # Sets the initial accumulator value
+          fn element, sum -> sum + element end  # Incrementally updates the accumulator
+        )
+6
+```
+
+> **Note:** Coming from an imperative background, it helps to think of the lambda as the function that’s called in each iteration step. Its task is to add a bit of the information to the result.
+
+REFACTOR: you can turnan operator into a lambda by calling &+/2, &*/2, and so on: [1,2,3](`Enum.reduce(), 0, &+/2)`
+
+> **Note:** there’s a function called `Enum.sum/1` that works exactly like this snippet.
+
+REFACTOR: The previous example works only if you pass a list that consists exclusively of numbers. If the list contains anything else, an error is raised (because the + operator is defined only for numbers)
+
+[source, elixir]
+```
+Enum.reduce(
+  [1, "not a number", 2, :x, 3],
+  0,
+  fn                            # Multiclause lambda
+    element, sum when is_number(element) ->  # Matches numerical elements
+      sum + element
+    _, sum -> sum                            # Matches anything else
+  end
+)
+```
+
+REFACTOR FOR READABILITY: Personally, I tend to avoid writing elaborate lambdas.  In the following snippet, the lambda code is pushed to a separate private function:
+
+[source, elixir]
+```
+defmodule NumHelper do
+  def sum_nums(enumerable) do
+    Enum.reduce(enumerable, 0, &add_num/2) # Captures the add_num/2 to lambda
+
+  end
+
+  # Handles each iteration step
+  defp add_num(num, sum) when is_number(num), do: sum + num
+  defp add_num(_, sum), do: sum
+end
+```
+
+## Iterate with Comprehensions
+
+* https://elixirschool.com/en/lessons/basics/comprehensions/
+* http://elixir-lang.github.io/getting-started/comprehensions.html
+
+Comprehensions are syntactic sugar for looping over an Enumerable, optionally filtering out some results and mapping values into another Collectable (any structure that implements the [Collectable protocol](https://hexdocs.pm/elixir/Collectable.html))
+
+In this basic form of Comprehensions, it is no different than `Enum.map/2`.
+
+Whilst there’s no benefit other than the syntactic sugar, comprehensions are still very important to learn about because you will see them in other people’s Elixir code.
+
+For example, we can map a list of integers into their squared values:
+
+```elxir
+```
+iex> for n <- [1, 2, 3, 4], do: n * n
+[1, 4, 9, 16]
+```
+
+The same result could be achived with `Enum.map/2`:
+
+```elxir
+```
+iex> [1, 2, 3, 4](Enum.map(), &(&1 * &1))
+[1, 4, 9, 16]
+```
+
+A comprehension is made of various parts:
+
+* generators:
+** generates values to be passed into the comprehension (in the example: `n <- [1, 2, 3, 4]`).
+** you can pass any *Enumerable* data structure into the right side of the generator.
+** each element will be *pattern matched* with the leftside.
+
+* filters
+
+* collectables
+
+More generator examples:
+
+[source, elxir]
+```
+#=> getting the message from a keyword list of responses
+responses = [ok: "Hello World", error: "Server Error", ok: "What up"]
+for {code, msg} <- responses, do: msg
+
+#=> or using pattern matching to only return the ok responses
+for {:ok, msg} <- responses, do: msg
+```
+
+### Multiple generators act like nested loops
+
+It’s possible to perform nested iterations over multiple Enumerator combining multiple generators.
+
+Calling the provided block for each combination of input collections.
+
+Below you can see we iterate through the first list and then iterate through the second list for each element:
+
+```elxir
+```
+for a <- 1..3, b <- 4..6, do: {a, b}
+[{1, 4}, {1, 5}, {1, 6}, {2, 4}, {2, 5}, {2, 6}, {3, 4}, {3, 5}, {3, 6}]
+```
+
+### Filters
+
+If pattern matching doesn’t cut it when using a comprehension, you could also use a filter. A filter is basically the same as a guard.
+
+For example, if you had the following list: `items = [:ok, 123, "hello world"]`
+We could create a new list by using the is_atom function: `for n <- items, is_atom(n), do: n`
+This will produce a new list containing only the `:ok` atom.
+
+You can also pass in your own functions to be used as a filter. Here we have a function that checks to see if a number is divisible by 5: `divisible_by_5? = fn(n) -> rem(n, 5) == 0 end`
+We can pass this function as a filter just like we did in the previous example: `for n <- 1..100, divisible_by_5?.(n), do: n`
+
+This will produce the following list: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100](`)`
+
+You can also use multiple filters:
+
+```elxir
+```
+import Integer
+
+for n <- 1..100, divisible_by_5?.(n), is_even(n), do: n
+
+[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+```
+
+### Insert in other structure than List
+
+If you want to return a different type of data structure you can do that using the `:into` option. The only requirement is that the data structure must implement the Collectable protocol [Collectable protocol Doc](https://hexdocs.pm/elixir/Collectable.html)
+
+For example, here I’ve got a map where I want to convert each value to begin with an uppercase character:
+
+```elxir
+```
+me = %{first_name: "philip", last_name: "brown"}
+for {k, v} <- me, into: %{}, do: {k, String.capitalize(v)}
+
+%{first_name: "Philip", last_name: "Brown"} # Result
+```
+
+### List comprehension with counter in Elixir
+
+Use Enum.with_index:
+
+```elxir
+```
+iex(1)> for {c, counter} <- ["a", "b"](Enum.with_index()), do: {counter, c}
+[{0, "a"}, {1, "b"}]
+```
+
+## Iterate with Stream
+
+REF: EIA 3.4.5 Streams
+
+Both `Enum` and `Stream` modules have the same functions with the same signatures. The difference is:
+
+* the `Enum` module will act on the data *eagerly*
+* the `Stream` module will act on the data *lazily*
+
+This will make a big difference if you are working with a large dataset.
+
+# Elixir Macros
+
+## References
+
+* [The Erlangelist: Understanding Elixir Macros](http://theerlangelist.com/article/macros_1)
+* Metaprogramming Elixir by Chris McCord
+** Website: https://pragprog.com/book/cmelixir/metaprogramming-elixir
+** Forum: https://forums.pragprog.com/forums/371
+** Source code:
+* TODO https://dockyard.com/blog/2017/12/07/macro-madness-how-to-use-use-well
+* TODO [http://elixir-lang.org/getting-started/meta/macros.html](http://elixir-lang.org/getting-started/meta/macros.html)
+* [http://slides.com/chrismccord/elixir-macros#/14](http://slides.com/chrismccord/elixir-macros#/14)
+* https://elixirschool.com/en/lessons/advanced/metaprogramming/#macros
+* [Andrea Leopardi: Compile-time work with Elixir macros](http://andrealeopardi.com/posts/compile-time-work-with-elixir-macros/)
+
+## Intro
+
+Metaprogramming is the process of using code to write code. In Elixir this gives us the ability to extend the language to fit our needs and dynamically change the code.
+
+During compilation, all of our source code will be transformed into AST before producing final bytecode. With a macro we can d
+Usually, macros are described as functions that take code instead of data and return code instead of data;
+
+Macros simply take an abstract syntax tree (AST) as input, and return another as output. Anything else is just implementation details.
+Macro are used to do work at compile time. We can execute any code inside the macro at compile time, as long as we return valid quoted code. Furthermore, the code we execute before returning the quoted code will just disappear at runtime.
+
+We’ll start by looking at:
+
+* `AST and quote`: how Elixir represents code under the hood?
+* `defmacro`: how to modify code?
+* and finally we can use this knowledge to extend the language.
+
+## Quote and AST
+
+The first step to metaprogramming is understanding how expressions are represented. In Elixir the abstract syntax tree (AST), the internal representation of our code, is composed of tuples. Elixir also refers to an `AST` as a `quoted expression`.
+
+These tuples contain three parts: `{function_call, meta_data_for_context, argument_list}`
+
+There are three ways to create quoted expressions in Elixir:
+
+* Manually construct it
+* Macro.escape  [Elixir Doc](https://hexdocs.pm/elixir/1.2.6/Macro.html#escape/2)
+* quote/unquote to compose AST
+
+`quote` is a macro that returns the representation of any expression (AST).
+
+> **Note:** `quote` mark off context, this is very important when used with unquote fragments, see <<Compile time code generation: Mime Type Library,Compile time code generation: Mime Type Library>>
+
+.Example
+[source, elixir]
+```
+quote do: 10/2
+{:/, [context: Elixir, import: Kernel], [10, 2]} # <1>
+```
+
+AST is represented as a series of three element tuples:
+
+* The first element is always an atom denoting the function call, or another tuple, representing a nested node in the AST.
+* The second element represents metadata about the expression
+* The third element is a list of the arguments for the function call
+
+[Quote Documentation](https://hexdocs.pm/elixir/Kernel.SpecialForms.html#quote/2)
+
+[source, elixir]
+```
+add = fn a, b -> a + b end
+quote do: add.(1, 2)
+
+{
+  {:., [], [ {:add, [], Elixir}]},
+  [],
+  [1, 2]
+}
+```
+
+### Code Module
+
+[Code Elixir Module](https://hexdocs.pm/elixir/Code.html) : Utilities for managing code compilation, code evaluation and code loading. This module complements Erlang’s :code module to add behaviour which is specific to Elixir.
+
+`Code.eval_quoted/3` can be used to eval quoted code [Doc](https://hexdocs.pm/elixir/Code.html#eval_quoted/3)
+
+[source, elixir]
+```
+iex(6)> ast = quote do: 5*10
+{:*, [context: Elixir, import: Kernel], [5, 10]}
+
+iex(7)> Code.eval_quoted ast
+{50, []}
+```
+
+### AST in deep
+
+Ref:
+
+* https://www.botsquad.com/2019/04/11/the-ast-explained/
+* https://ast.ninja/
+
+There are five Elixir literals that will remain the same format as their high-level source: Atoms, floats, integers, touples, lists.
+
+```elxir
+```
+iex> quote do: :atom
+
+iex> quote do: 123
+123
+iex> quote do: 3.14
+3.14
+iex> quote do: [1, 2, 3]
+[1, 2, 3]
+iex> quote do: "string"
+"string"
+iex> quote do: {:ok, 1}
+{:ok, 1}
+iex> quote do: {:ok, [1, 2, 3]}
+{:ok, [1, 2, 3]}
+```
+
+If we quote other types, you can see that an abstract form is returned.
+
+```elxir
+```
+iex> quote do: %{a: 1, b: 2}
+{:%{}, [], [a: 1, b: 2]}
+
+iex> quote do: Enum
+{:__aliases__, [alias: false], [:Enum]}
+```
+
+https://github.com/elixir-lang/elixir/blob/master/lib/elixir/pages/Syntax%20Reference.md#the-elixir-ast
+
+https://groups.google.com/forum/#!topic/elixir-lang-talk/a4GOpumJeAo
+
+https://elixirforum.com/t/what-does-counter-value-represent-in-ast-metadata/7756
+
+The metadata helps the Elixir compiler perform things like macro hygiene.
+
+metadata `import`
+ the metadata tells the + function exists in the scope that defines the quote as a function imported from the Kernel module.
+
+[source, elixir]
+```
+iex(1)> quote do: 1 + 1
+{:+, [context: Elixir, import: Kernel], [1, 1]}
+
+iex(2)> import Kernel, except: [+: 2] // <1>
+nil
+iex(3)> quote do: 1 + 1
+{:+, [], [1, 1]}
+```
+<1> Here don't import the `+` function and the metadata don't change.
+
+In theory you don't need to generate the metadata. It just means you should avoid aliases as well as imports because we won't be able to resolve it in different situations.
+
+For example, see this:
+
+iex(1)> Code.eval_quoted quote do: [1, 2, 3](flatten())
+** (CompileError) nofile:1: undefined function flatten/1
+    (elixir) src/elixir.erl:228: :elixir.quoted_to_erl/3
+    (elixir) src/elixir.erl:179: :elixir.eval_forms/4
+    (elixir) lib/code.ex:163: Code.eval_quoted/3
+    (stdlib) erl_eval.erl:657: :erl_eval.do_apply/6
+    (elixir) src/elixir.erl:197: :elixir.erl_eval/3
+    (elixir) src/elixir.erl:185: :elixir.eval_forms/4
+       (iex) lib/iex/evaluator.ex:116: IEx.Evaluator.handle_eval/4
+iex(1)> import List, only: [flatten: 1]
+nil
+iex(2)> Code.eval_quoted quote do: [1, 2, 3](flatten())
+[1, 2, 3]({), []}
+
+Although the AST is the same, the second one will have the import annotated and be able to expand because the context that define the quote has a flatten function imported.
+
+This means that, when you generate a quote with metadata, it will work as in the context that defines the quote, rather than the context the quote is expanded, and that is extremely important.
+
+metadata `alias: false`
+
+quote do: Enum
+{:__aliases__, [alias: false], [:Enum]}
+
+## Inject values into our code
+
+### Unquote
+
+When we unquote an expression it will be evaluated and injected into the AST produced by a `quote` block.
+You can think of unquote into a quote blcok as string interpolation (`#{}`) for code into an unquote.
+
+> **Note:** You cannot call unquote outside of a quote block. The only exception is <<Unquote Fragments,Unquote Fragments>>
+
+[Kernel.SpecialForms.unquote/1 Doc](https://hexdocs.pm/elixir/Kernel.SpecialForms.html#unquote/1)
+
+To demonstrate `unquote/1` let’s look at some examples:
+
+[source, elixir]
+```
+multiplier = 2
+#=> 2
+
+ast = quote do: 42 * multiplier
+#=> {:*, [context: Elixir, import: Kernel], [42, {:multiplier, [], Elixir}]} # <1>
+
+Code.eval_quoted ast
+#=> ** (CompileError) nofile:1: undefined function multiplier/0 # <2>
+```
+<1> The variable `multiplier` is quoted so the resulting AST includes a tuple for accessing the variable.
+<2> But if we try to evaluate the code we get an error because the variable doesn't exists.
+
+What we need is a way of directly injecting contents of `multiplier` to corresponding places in the AST fragment we’re generating.
+
+That’s the purpose of `unquote(...)` - the expression inside parentheses is *immediately evaluated*, and inserted in place of the unquote call.
+
+> **Warning:** This in turn means that the result of unquote must also be a valid AST fragment.
+
+You evaluate an expression that must be valid in the current context, and inject the result in the expression you’re building (an AST fragment).
+
+[source, elixir]
+```
+multiplier = 2
+#=> 2
+
+ast = quote do: 42 * unquote(multiplier)  # <1>
+#=> {:*, [context: Elixir, import: Kernel], [42, 2]}
+
+Code.eval_quoted ast
+#=> {84, []}  # The first element of the tupla is the result
+```
+<1> We now use unquote and the resulting AST includes the value of `multiplier`
+
+- [ ] capire se l'input di unquote deve essere un AST ... cap
+
+> **Note:** unquote is not a reversal of a quote;
+
+While quote takes a code fragment and turns it into a quoted expression, unquote doesn’t do the opposite. If you want to turn a quoted expression into a string, you can use `Macro.to_string/1`.
+
+### bind_quoted
+
+ref: pag 29 Metaprogramming Elixir Chris McCord.
+
+https://elixirschool.com/en/lessons/advanced/metaprogramming/#binding
+
+We already covered the usefulness of unquote/1, but there’s another way to inject values into our code: binding. With variable binding we are able to include multiple variables in our macro and ensure they’re only unquoted once, avoiding accidental revaluations. To use bound variables we need to pass a keyword list to the `bind_quoted` option in `quote/2`.
+
+`bind_quoted` is an option of the `quote`, it passes a binding to the block, ensuring that the outside bound variables are unquoted only a single time. We could have written our quote block without bind_quoted, but it’s good practice to use it whenever possible to prevent accidental reevaluation of bindings.
+
+For example, the following blocks of code are equivalent:
+
+[source, elixir]
+```
+quote bind_quoted: [operator: operator, lhs: lhs, rhs: rhs] do
+  Assertion.Test.assert(operator, lhs, rhs)
+end
+
+quote do
+ Assertion.Test.assert(unquote(operator), unquote(lhs), unquote(rhs))
+end
+```
+
+To see why using it is good practice, have a look at the folling example:
+
+[source, elixir]
+```
+defmodule Debugger do
+  defmacro log(expression) do
+    if Application.get_env(:debugger, :log_level) == :debug do
+      quote do
+        IO.puts "================="
+        IO.inspect unquote(expression)
+        IO.puts "================="
+        unquote(expression)
+      end
+    else
+      expression
+    end
+  end
+end
+
+iex> c "debugger.exs" [Debugger]
+iex> require Debugger nil
+iex> Application.put_env(:debugger, :log_level, :debug) :ok
+iex> remote_api_call = fn -> IO.puts("calling remote API...") end
+
+iex> Debugger.log(remote_api_call.())  #<1>
+=================
+calling remote API...
+
+=================
+calling remote API... :ok              #<2>
+iex>
+```
+<1> We log once
+<2> But the remote_api_call is invoked twice! because we acciden- tally unquoted the expression twice in our log macro.
+
+Let’s fix this by using bind_quoted.
+
+[source, elixir]
+```
+defmodule Debugger do
+  defmacro log(expression) do
+    if Application.get_env(:debugger, :log_level) == :debug do
+      quote bind_quoted: [expression: expression] do            #<1>
+        IO.puts "================="
+        IO.inspect expression
+        IO.puts "================="
+        expression
+      end
+    else
+      expression
+    end
+  end
+end
+```
+<1> Use bind_quoted
+
+###  Unquote Fragments
+
+pag 47 Chris McCord Metaprogramming Elixir
+
+https://elixirforum.com/t/using-unquote-outside-of-quote-block/6179
+
+Unquote fragments allow you to create functions dynamically, like we do in the example: <<Compile time code generation: Mime Type Library,Compile time code generation: Mime Type Library>>.
+
+Unquote fragments was implemented as an answer to these issues:
+
+* https://github.com/elixir-lang/elixir/issues/880
+* https://github.com/elixir-lang/elixir/issues/846
+
+Implementation details are discussed here by Josè Valim: https://groups.google.com/forum/#!topic/elixir-lang-core/wKp7vxcaCQk
+
+Macro fragments allow:
+
+1. Macros to define macros
+2. Easy dynamic generation of functions
+3. With unquote fragments, we can pass any valid atom to def and dynamically define a function with that name.
+
+Before macro fragments were implemeted, Elixir always escaped unquoted contents, so if you had a macro that had to define another macro, like this:
+
+[source, elixir]
+```
+defmacro new_macro do
+   quote do
+     defmacro sample(a) do
+       quote do
+         unquote(a) + 1
+       end
+     end
+   end
+ end
+```
+
+The example above would fail because "unquote(a)" would be expanded when evaluating `new_macro/0` and since `a` is not available in there, it would generate an exception. The code above now works because `unquote(a)` is just expanded when `sample/1` is called. In other words, the unquote now always binds to the direct parent quote. In this example this concept is discussed in deep <<Compile time code generation: Mime Type Library,Compile time code generation: Mime Type Library>>.
+
+https://groups.google.com/forum/m/#!topic/elixir-lang-core/wKp7vxcaCQk
+
+https://hexdocs.pm/elixir/1.2.6/Kernel.SpecialForms.html#quote/2-binding-and-unquote-fragments
+
+For others who (like me) stumble on this and want more context, this feature is called "unquote fragments". It's discussed in the docs and was also discussed on the mailing list at the time of this issue.
+ [Here's the actual commit](https://github.com/elixir-lang/elixir/commit/2817b2ee903ede4413f5bc222ff0ddd87552ff98).
+
+## Inject values into our code: Caller’s Context
+
+Macros don’t just generate code for the caller, they inject it.
+
+`Context` is the place where a macro inject our code.
+
+A context is the scope of the caller’s:
+
+* bindings,
+* imports,
+* and aliases.
+
+.macros/callers_context.exs
+```elixir
+```
+defmodule Mod do
+  defmacro definfo do
+    IO.puts "In macro's context (#{__MODULE__})." # <1>
+
+    quote do
+      IO.puts "In caller's context (#{__MODULE__})." # <2>
+
+      def friendly_info do
+        IO.puts """
+        My name is #{__MODULE__} # <3>
+        My functions are #{inspect __info__(:functions)} # <4>
+        """
+      end
+    end
+  end
+end
+```
+
+```elixir
+```
+defmodule MyModule do
+  require Mod
+  Mod.definfo
+end
+```
+
+To the caller of a macro, the context is precious. It holds your view of the world, and by virtue of immutability, you don’t expect your variables, imports, and aliases to change out from underneath you.
+
+By default Elixir protect the caller's context
+
+## Hygiene: variables binding, alias, imports
+
+Ref:
+* https://elixir-lang.org/getting-started/meta/macros.html#macros-hygiene
+* [Kernel.var!/2](https://hexdocs.pm/elixir/Kernel.html#var!/2)
+* http://theerlangelist.com/article/macros_2
+
+Macros are *by default* hygienic: variable bindings, imports and aliases introduced by a macro won’t conflict with a variable defined in the context where that macro is expanded; in other words macros do not affect the Caller Context.
+
+For example:
+
+```elixir
+```
+defmodule Hygiene do
+  defmacro no_interference do
+    quote do: a = 1   # <1>
+  end
+end
+
+defmodule HygieneTest do
+  def go do
+    require Hygiene
+    a = 13  # <2>
+    Hygiene.no_interference
+    a
+  end
+end
+
+HygieneTest.go
+#=> 13
+```
+<1> Within the macro variable `a` is set to 1
+<2> Before calling the macro we set `a` to 13
+<3> After calling the macro `a` is still 1
+
+Most of the time hygiene is exactly what you want, it prevents unexpected implicit behaviours and namespace clashes.
+
+But there are exceptions. Sometimes, you may need to create a variable that is available to the code calling the macro. To achieve this Elixir force you to be explicit, for such purposes you can use `var!` construct, example:
+
+```elixir
+```
+defmodule NoHygiene do
+  defmacro interference do
+    quote do: var!(a) = 1   # <1>
+  end
+end
+
+a #<1>
+#>  ** (CompileError) iex:3: undefined function a/0
+
+require NoHygiene
+NoHygiene.interference #<2>
+
+a #<3>
+#> 1
+
+a=10
+NoHygiene.interference #<4>
+
+a
+#> 1
+```
+<1> The variable `a` is not binded
+<2> We invoke the not hygeniec macro
+<3> Now the variable `a` is binded
+<4> The variable `a` is rebinded
+
+Conclusion: The default behaviour makes macro more safe and with scope rules similar to a function call
+
+TODO:
+
+* alias and import hygenie
+
+### Capire meglio la questione dei binding
+
+https://elixirforum.com/t/is-there-something-wrong-with-the-iex/6284/12
+
+- [ ] You can see that even in iex, Elixir is tracking a file and a line number of the environment. In library code, this would be the actual file and line of the code you’re working with. This can be useful for stack traces and special error handling, because you can have access to the caller’s environment from elsewhere in your program. You can also see that Elixir tracks the bound variables of the current environment, which can be accessed from __ENV__.vars. Note that unlike the binding macro, which returns all bound variables with their values, the vars field tracks variable contexts instead. This is because a variable’s value is dynamic at runtime, so the environment can track only which variables have been bound and from where.
+
+## Define Macros
+
+What is a macro?
+
+In the simplest of terms macros are special functions designed to return a quoted expression (AST format) that will be inserted into our application code *at compile time*.
+
+The returned AST is injected back into the global program’s compile tree, replacing of the macro invokation.
+
+Macros simply take an abstract syntax tree (AST) as input, and return another as output. Anything else is just implementation details.
+
+Imagine the macro being replaced with the quoted expression rather than called like a function. With macros we have everything necessary to extend Elixir and dynamically add code to our applications.
+
+You should always keep in mind that macros are essentially Elixir functions that are invoked in expansion phase.
+
+IMPORTANT: macros receive ASTs as arguments and provide ASTs as return values. By writing macros, you are building ASTs using Elixir’s high-level syntax.
+
+We can define a macro using `defmacro/2` which, like much of Elixir, is itself a macro (let that sink in).
+
+[defmacro/2 doc](https://hexdocs.pm/elixir/Kernel.html#defmacro/2) : `defmacro(call, expr \\ nil)`
+
+> **Warning:** Metaprogramming is tricky and should only be used when necessary. Overuse will almost certainly lead to complex code that is difficult to understand and debug.
+
+* Code that writes code: Macros allow us to generate code dynamically at compile time.
+* Elixir itself is primarily built with macros (if, unless, cond, def, defmodule)
+* Full access to Elixir at *compile time*
+
+## Import and require Macros
+
+Macro must be defined within Module and must be *imported or required*, why?
+
+First looks at these two seemingly contradicting properties of macros:
+
+* A macro is an Elixir code
+* A macro runs in expansion time, before the final bytecode is produced
+
+How can Elixir code run before it is produced? *It can’t.*
+
+To call a macro, the container module (the module where the macro is defined) must already be compiled.
+
+Consequently, to run macros defined in the module, we must ensure that it is already compiled. In other words, we must provide some *hints to the compiler* about the *module ordering*. When we require a module, we instruct the Elixir to hold the compilation of the current module until the required module is compiled and loaded into the compiler run-time (the Erlang VM instance where compiler is running).
+
+Using import has the same effect but it additionally lexically imports all exported functions and macros.
+
+## Macro Context
+
+> **Warning:** TODO
+
+https://groups.google.com/forum/#!topic/elixir-lang-talk/a4GOpumJeAo
+
+Context:
+
+* context of the macro definition
+* context of the caller's invocation of the macro
+
+The metadata helps the Elixir compiler perform things like macro hygiene. For example, the metadata tells the `+` function exists in the scope that defines the quote as a function imported from the Kernel module. See below:
+
+```elixir
+```
+iex(1)> quote do: 1 + 1
+{:+, [context: Elixir, import: Kernel], [1, 1]}
+iex(2)> import Kernel, except: [+: 2]
+nil
+iex(3)> quote do: 1 + 1
+{:+, [], [1, 1]}
+```
+
+## Macro expansion
+
+Roughly speaking, the compilation of Elixir code happens in three phases:
+
+* Initial parsing: produce an AST
+* Expansion: various built-in and custom macros are called to transform the input AST into the final version
+* Bytecode generation: Elixir can produce final bytecode - a binary representation of your source program.
+
+The main point to understand is that meta-programming magic happens in the expansion phase. The compiler initially starts with an AST that closely resembles your original Elixir code, and then expands it to the final version.
+
+When the compiler encounters a macro, it recursively expands it until the code no longer contains any macro calls. If the expanded code also contains macros, those get expanded as well. See Chris_McCord-Metaprogramming_Elixir-EN.pdf pag 28
+
+`Macro.expand_once`: to expand an AST a single time while capturing the result of each step.
+
+[source, elixir]
+```
+defmodule ControlFlow do
+  defmacro unless(expression, do: block) do
+    quote do
+      if !unquote(expression), do: unquote(block)
+    end
+  end
+end
+
+require ControlFlow
+
+ast = quote do
+  ControlFlow.unless 2 == 5, do: "block entered"
+end
+
+expanded_once = Macro.expand_once(ast, __ENV__) # <1>
+expanded_fully = Macro.expand_once(expanded_once, __ENV__) # <2>
+Macro.expand(ast, __ENV__) # <3>
+Macro.expand(ast, __ENV__) == expanded_fully # <4>
+```
+<1> `unless` is transformed into an `if !` expression
+<2> `if` is still a macro and it's transformed into a `case`
+<3> `Macro.expand` directly produce the final resul in one step
+<4> The result is false... why ? Because of the counter metadata but if you try the code above you will see that the AST produced are almost the same.
+
+## Elixir uses macro for its on construct
+
+The best way to think about metaprogramming in Elixir is to throw away the notion of rigid keywords and opaque language internals.
+
+Elixir was designed with extension in mind.
+
+The language is open to your exploration and custom features. This is what makes metaprogramming in Elixir so pleasantly natural.
+
+defmodule, def, if, etc are all macros.
+
+## Macro Best Practices
+
+Warning about macros: Remember that explicit is better than implicit. Clear code is better than concise code.
+
+* MACRO RULE #1 : DON'T WRITE MACROS
+* MACRO RULE #2 : USE MACROS GRATUITOUSLY
+* Generate as little code as possible within the caller’s context. Example: <<Chris McCord - Metaprogramming: Assertion Module at pag 27, Chris McCord - Metaprogramming: Assertion Module at pag 27>>  TODO: mi sembra di capire che questo significhi evitare di dare l'inject di AST molto grandi e replicati che ridefiniscono funzioni grandi.... però boh sarebbe da indagare meglio....
+* Use `bind_quoted` instead of `unquote` to avoid double evaluation at runtime of arguments AST. Example:
+
+## Macro debug and testing
+
+### Macro.to_string: Make Sense of Your Generated Code
+
+Macro.to_string takes an AST and produces a string of the high-level Elixir source. It’s incredibly helpful when debugging your generated ASTs, especially for cases where many function heads are generated
+
+### Testing Macro
+
+Chris McCord
+
+## Kernel.SpecialForms Environment and other info
+
+https://hexdocs.pm/elixir/Kernel.SpecialForms.html#quote/2
+
+The Kernel.SpecialForms module defines a set of constructs that you can’t override; it also includes a number of pseudo variables that contain information about the environment at compile time.
+
+`\__CALLER__` :
+
+* to return information about the caller’s environment
+* can only be called within macros
+* useful for stack traces and special error handling
+
+`__MODULE__` :
+
+*
+
+`\__ENV__` :
+
+* Returns a `Macro.ENV` struct containing compile time environment information.
+* `\__ENV__.vars` the bound variables of the current environment
+
+[Macro.Env documentation](https://hexdocs.pm/elixir/Macro.Env.html#content)
+
+## Macro use-cases and examples
+
+* Eliminating boilerplate
+* Advanced compile time code generation
+* Domain Specific Languages (DSLs)
+* Optimization: they run during compilation, macros make it possible to optimize some code by moving calculations to compile-time.
+
+### Misc links
+
+Chris McCord - Metaprogramming:
+
+* pag 22: create `while` in Elixir
+
+### Example: A useless expression-counting macro
+To stay true to the ancient tradition of making useless example with absolutely no connection to the real world, let’s build a macro that logs the number of Elixir expressions (and sub-expressions) in some given code:
+
+```elixir
+```
+defmodule UselessExamplesAreFun do
+  defmacro log_number_of_expressions(code) do
+    {_, counter} = Macro.prewalk code, 0, fn(expr, counter) ->
+      {expr, counter + 1}
+    end
+
+    IO.puts "You passed me #{counter} expressions/sub-expressions"
+
+    code
+  end
+end
+```
+
+Let’s walk through the macro. First, we count the expressions and sub-expressions by using Macro.prewalk/3. Then, we print this number: this is our compile time work. Finally, we just return the argument code (which is already an AST). This macro effectively does nothing at runtime: in fact, it won’t leave a trace in the compiled code. This is great for performance because, well, the compile-time logging code just disappears.
+
+```elixir
+```
+#>in lib/greetings.ex
+import MyApp.Gettext
+gettext "Hello people of Gotham!", "fr"
+```
+
+Running mix gettext.extract results in a .po file with this content:
+
+```elixir
+```
+#> lib/greetings.ex:2
+msgid "Hello people of Gotham!"
+msgstr ""
+```
+
+What most gettext bindings for other languages (such as Python) do to extract translations is parsing the code and looking for calls to gettext() functions. In Elixir, instead, we just have to register the string to extract inside the macro, at compile-time, and then force-recompile the project to expand the macros and extract the translations. Awesome!
+
+This is what the definition of gettext roughly looks like (and the [actual implementation](https://github.com/elixir-lang/gettext/blob/v0.6.1/lib/gettext/compiler.ex#L40-L60)):
+
+```elixir
+```
+defmacro gettext(msgid, locale) do
+  extract(msgid)
+
+  quote do
+    translate(unquote(msgid), unquote(locale))
+  end
+end
+```
+
+When we call extract/2, we register the msgid by pushing it to an agent that we started before recompiling. When the compilation is done, we just dump the state of this agent. This has no impact whatsoever on the expanded code that is executed at runtime: calls to gettext/2 are just calls to translate/2 at runtime.
+
+### Example: print the spoken form of an Elixir mathematical expression
+
+To print the spoken form of an Elixir mathematical expression, such as 5 + 2, when calculating a result. In most languages, we would have to parse a string expression into something digestible by our program.
+
+With Elixir, we can access the representation of expressions directly with macros.
+
+Code: `~/SRC/ELIXIR/metaprogramming_elixir/macros/math.exs`
+
+[source, elixir]
+```
+defmodule Math do
+
+  # {:+, [context: Elixir, import: Kernel], [5, 2]}
+  defmacro say({:+, _, [lhs, rhs]}) do # <1>
+    quote do # <2>
+      lhs = unquote(lhs) # <3>
+      rhs = unquote(rhs)
+      result = lhs + rhs
+      IO.puts "#{lhs} plus #{rhs} is #{result}" <4>
+      result
+    end
+  end
+
+  # {:*, [context: Elixir, import: Kernel], [8, 3]}
+  defmacro say({:*, _, [lhs, rhs]}) do
+    quote do
+      lhs = unquote(lhs)
+      rhs = unquote(rhs)
+      result = lhs * rhs
+      IO.puts "#{lhs} times #{rhs} is #{result}"
+      result
+    end
+  end
+end
+
+```
+<1> macros receive the AST representation of the arguments we pass to them, we pattern matched directly on the AST
+<2> We use quote to return the AST representation for the caller to replace our Math.say invocations
+<3> TODO: capire bene perchè usiamo unquote
+<4> TODO
+
+### Example: implement while
+
+<<BlocksParameter,Blocks Parameter>>
+
+Elixir `if` is just a macro using blocks parameters: https://github.com/elixir-lang/elixir/blob/c37ea4e8740539918683eb03ca9fce28239a3cac/lib/elixir/lib/kernel.ex#L2321-L2341
+
+<<BlocksParameter,Blocks Parameter>>
+
+### Example: gettext implementation
+
+ref: http://andrealeopardi.com/posts/compile-time-work-with-elixir-macros/
+
+José Valim proposed to use this technique while we were building [gettext for Elixir](https://github.com/elixir-lang/gettext). Gettext provides a mix gettext.extract task which is used to extract translations from source files and write them to .po files. Translations are just calls to gettext macros with strings as arguments:
+
+```elixir
+```
+#> in lib/greetings.ex
+import MyApp.Gettext
+gettext "Hello people of Gotham!", "fr"
+```
+
+### Example: Building an Internationalization Library
+
+Ref: Chris McCord Metaprogramming Elixir pag 49
+
+Concepts used in this example:
+
+* Module.register_attribute
+* unquote
+* bind_quoted
+* Module.get_attribute
+* `++__before_compile__++` hook: used to postpone the code generation, so we have all the translation registered by the `locale` macro
+* `Macro.to_string`
+* Compile time optimization
+
+### Remove Logger statements
+
+`Logger.debug "Writing contents to file #{path}"` is a macro that can return an empty expression according with the debug level
+
+Elixir can conditionally remove log statements of the form Logger.debug/2 to Logger.error/2 at compile time: `config :logger, compile_time_purge_level: :info`
+
+ref: https://til.hashrocket.com/posts/2c8e7b4b39-compile-time-purge-level
+
+### Example: Tracing expressions
+
+ref: http://theerlangelist.com/article/macros_1
+
+We’ll write a macro that can help us in debugging the code. Here’s how this macro can be used:
+
+```elixir
+```
+iex(1)> Tracer.trace(1 + 2)
+Result of 1 + 2: 3
+3
+```
+
+The `Tracer.trace` takes a given expression and:
+
+* prints the expression
+* prints it’s result to the screen.
+* return the result of the expression.
+
+Initially I thought to implement it like this:
+
+```elixir
+```
+defmodule Tracer do
+  defmacro trace(expression_ast) do
+    quote do
+      result = unquote(expression_ast)
+      Tracer.print(Macro.to_string(result), result) # <1>
+      result
+    end
+  end
+
+  def print(string_representation, result) do
+    IO.puts "Result of #{string_representation}: #{inspect result}"
+  end
+end
+
+Tracer.trace(1 + 2)
+#> Result of 3: 3
+#> 3
+```
+<1> Error: Macro.to_string will be executed at runtime and it's parameter will be the evaulated AST.
+
+Instead we want to read the AST at compile time and get the string representation:
+
+```elixir
+```
+defmodule Tracer do
+  defmacro trace(expression_ast) do
+    string_representation = Macro.to_string(expression_ast)
+
+    quote do
+      result = unquote(expression_ast)
+      Tracer.print(unquote(string_representation), result)
+      result
+    end
+  end
+
+  def print(string_representation, result) do
+    IO.puts "Result of #{string_representation}: #{inspect result}"
+  end
+end
+```
+
+### Implement Plug.Router
+
+In this example a simplified version of `Plug.Router` is implemented http://theerlangelist.com/article/macros_2
+
+The original is linked here [Plug.Router v1.4](https://github.com/elixir-plug/plug/blob/v1.4/lib/plug/router.ex)
+
+### Write Test Libraries with Macros
+
+Refs:
+
+* http://theerlangelist.com/article/macros_3
+* ExUnit: https://github.com/elixir-lang/elixir/blob/v1.6.1/lib/ex_unit/lib/ex_unit/assertions.ex#L163
+
+#### Chris McCord - Metaprogramming: Assertion Module at pag 27
+
+Macro gives you the power of accessing information that is not available at run-time, like the source code of your application.
+This allows a single assert macro to peer into the code representation to provide contextual failure messages realy easly.
+With this example elixir lib you will write the code you are going to test exactly in the same way you will write production code:
+
+* Elixir production code: `value == 12`
+* Elixir testing lib: `assert value == 12`
+* Ruby production code: `value == 12`
+* Ruby testing lib: `assert_equal value, 12`
+
+The reason these languages require methods and functions like this is to ensure relevant failure messages. If an assertion like assert value <= 100 failed in Ruby, you would only receive a less than helpful “expected true, got false” test output. By providing unique functions per assertion, the correct failure messages can be generated, but it comes at a cost of a larger testing API. You also take on the mental overhead of which function is required each time you need to write an assertion.
+
+On pag 31: Chris show how to proxy out the internal logic to a function on an internal module to avoid pollution of the namespace when the Assertion module is imported:
+
+```elixir
+```
+defmodule Assertion do
+
+  defmacro assert({operator, _, [lhs, rhs]}) do
+    quote bind_quoted: [operator: operator, lhs: lhs, rhs: rhs] do
+      Assertion.Test.assert(operator, lhs, rhs)  # <1>
+    end
+  end
+end
+
+defmodule Assertion.Test do # <2>
+  def assert(:==, lhs, rhs) when lhs == rhs do
+    IO.write "."
+  end
+  def assert(:==, lhs, rhs) do
+    IO.puts """
+    FAILURE:
+      Expected:       #{lhs}
+      to be equal to: #{rhs}
+    """
+  end
+
+  def assert(:>, lhs, rhs) when lhs > rhs do
+    IO.write "."
+  end
+  def assert(:>, lhs, rhs) do
+    IO.puts """
+    FAILURE:
+      Expected:           #{lhs}
+      to be greater than: #{rhs}
+    """
+  end
+end
+```
+<1> Proxy out to the `Assertion.Test` module <2>
+
+> **Note:** using pattern matching with function you can easly manage different cases
+
+On pag 35 Chris explain `use` as Common API for Module Extension
+
+On pag 35 Chris explains how to use:
+
+* `Module attributes`, `accumulate: true` and `@before_compile` to create at compile time a list of tests to be executed.
+* `def/2` with symbols and unquote to programmatically define functions `def unquote(test_func)(), do: unquote(test_block)`
+* pag 41: `apply/3` to programmatically invoke functions https://hexdocs.pm/elixir/Kernel.html#apply/3
+
+### Compile time code generation: Mime Type Library
+
+ref:
+
+* pag 46 - Metaprogramming Chris McCord
+* https://blog.m346e.info/articles/think_about_quote_and_unquote_from_viewpoint_of_context/
+
+In this example we use <<Unquote Fragments,Unquote Fragments>> to dynamically generate code at compile time.
+
+We will see how unquote binds variables to different contexts (and is not always the direct parent quote block context).
+
+The `Mime` module defines several functions based on type and extension in mimes.txt:
+
+```elixir
+```
+defmodule Mime do
+  for line <- [__DIR__, "mimes.txt"](File.stream!(Path.join()), [], :line) do
+    [type, rest] = line |> String.split("\t") |> Enum.map(&String.strip(&1))
+    extensions = String.split(rest, ~r/,\s?/)
+
+    def exts_from_type(unquote(type)), do: unquote(extensions)                  #<1>
+    def type_from_ext(ext) when ext in unquote(extensions), do: unquote(type)
+  end
+
+  def exts_from_type(_type), do: []
+  def type_from_ext(_ext), do: nil
+  def valid_type?(type), do: exts_from_type(type) |> Enum.any?
+end
+
+#> this code works like this.
+iex(13)> c "mime.exs"
+warning: String.strip/1 is deprecated, use String.trim/1
+  mime.exs:6
+
+[Mime]
+iex(14)> Mime.exts_from_type("text/html")
+[".html"]
+iex(15)> Mime.exts_from_type("video/jpeg")
+[".jpgv"]
+iex(16)> Mime.type_from_ext(".json")
+"apoplication/json"
+```
+<1> Unquote fragment used outside of a quote. Here this unquote is called “unquote fragments”.
+
+In the `Mime` module when we set a type, a function returns extensions. On the other hand a function returns type when we set a extension.
+
+IMPORTANT: Role of unquote is resolving whether a name of variable binds a value or not by referring to variables in a high context.
+
+In this case there isn't a quote context, to which context are the unquoted variables binded?
+`def NAME, do: BODY` define a context, the higher context is `defmodule Mime do ... end`, by using `unquote` we access this second scope and the variable are binded here.
+
+Let's look at a simple example that explain better this example.
+
+```elixir
+```
+defmodule MyContext do
+  a = "mishiro"
+  def c1(a) do
+    IO.puts a           #<1>
+    IO.puts unquote(a)  #<2>
+  end
+end
+
+MyContext.c1 "Foo"
+#> "Foo"
+#> "mishiro"
+```
+<1> By default variables never refer to outside variables in the body of `def` or `defmacro`
+<2> If you use unquote you can access the higher scope
+
+#### MIME module and use
+
+Let’s think how we could allow an arbitrary module to have the functions defined by the the `Mime` module. `use` is the perfect fit, the resulting code will be super easy to use:
+
+```elixir
+```
+defmodule MimeMapper do
+  use Mime
+end
+```
+
+We need to add the `__using__` macro:
+
+```elixir
+```
+defmodule Mime do
+  @external_resource @mimes_path [__DIR__, "mimes.txt"](Path.join())
+  defmacro __using__(_opt) do                                                   #<1>
+    for line <- File.stream!(@mimes_path, [], :line) do
+      [type, rest] = line |> String.split(";") |> Enum.map(&String.strip(&1))
+      extensions = String.split(rest, ~r/, \s?/)
+
+      def exts_from_type(unquote(type)), do: unquote(extensions)                #<2>
+      def type_from_ext(ext) when ext in unquote(extensions), do: unquote(type)
+    end
+  end
+end
+
+** (CompileError) iex:15: undefined function type/0
+    (stdlib) lists.erl:1354: :lists.mapfoldl/3
+    (stdlib) lists.erl:1355: :lists.mapfoldl/3
+    (elixir) expanding macro: Kernel.defmacro/2
+```
+<1> `defmacro` defines a new context and the `do` block
+<2> `type` is not defined, why? In the `def` and `defmacro` do block, a key word `def` is not evaluated so if we use unquote here, unquote refer to the outside of defmacro `++__using__++`. So we have two problem to fix: "we need to evaulate `def` to define a function" and we need to access `type` in the right context.
+
+We can use `quote` to solve both problems:
+
+```elixir
+```
+defmodule Mime do
+  @external_resource @mimes_path [__DIR__, "mimes.txt"](Path.join())
+  defmacro __using__(_opt) do
+    for line <- File.stream!(@mimes_path, [], :line) do
+      [type, rest] = line |> String.split(";") |> Enum.map(&String.strip(&1))
+      extensions = String.split(rest, ~r/, \s?/)
+      quote do  #<1>
+        def exts_from_type(unquote(type)), do: unquote(extensions)  #<2>
+        def type_from_ext(ext) when ext in unquote(extensions), do: unquote(type) #<2>
+       end
+    end
+  end
+end
+
+iex(29)> c "mimes.exs"
+[Mime]
+iex(30)> c "mime_mapper.exs"
+[MimeMapper]
+
+iex(31)> MimeMapper.exts_from_type("text/html")
+[".html"]
+```
+<1> We don't have to evaluate `def` into the `using` macro because we are still in the `Mime` module context. Using quote we get an AST that will be evaluated after macro expansion in the context of `MimeMapper` module.
+<2> `unquote` now binds outside of the quote block
+
+> **Note:** Elixir provides the `@external_resource` module attribute to handle cases where we want to specify compile-time resources that our module depends on—when the resources change, mix will recompile our module.
+
+#### Recap
+
+How was that? Considering context of unquote and quote together, it can be easy to read what is going on metaprogramming code
+
+* unquote is resolving whether a name of variable binds a value or not by referring to variables in a high context.
+* quote mark off context as well as treating expressions as an AST
+
+Actually quote have some extra informations about context, but I recommend that you read Metaprogramming Elixir book for it.
+
+## When are macros required?
+
+# Specifications and types
+
+Ref:
+
+* [Elixir School](http://elixirschool.com/lessons/advanced/typespec/)
+* [Elixir Doc: Typespec](https://hexdocs.pm/elixir/typespecs.html)
+* [List of Elixir types](https://hexdocs.pm/elixir/typespecs.html#types-and-their-syntax)
+* The_Little_Elixir_&amp;_OTP_Guidebook.pdf CH 10.5
+
+Elixir comes with a notation for declaring types and specifications.
+
+Use case:
+
+* Defines callback for Behaviours
+* Hint for static analyzer tools like Dialyzer
+* Documentation: with dynamic languages, valid inputs and the type of the return value are sometimes not obvious.
+
+Type specifications (sometimes referred to as typespecs) are defined in different contexts using the following attributes:
+
+* `@spec function_name(type1, type2) :: return_type` : specification of function that will be checked by compiler.
+* `@type type_name :: type` :
+* `@typep type_name :: type`
+* `@opaque type_name :: type`
+* `@callback function_name(type1, type2) :: return_type`
+* `@macrocallback macro_name(type1, type2) :: Macro.t`
+
+> **Note:** Elixir is still dynamic language, that means all information about type will be ignored by compiler, but could be used by other tools.
+
+types can be:
+
+* Built-in types [https://hexdocs.pm/elixir/typespecs.html](https://hexdocs.pm/elixir/typespecs.html))
+* Parametrized types: `list(integer)`
+* Union types: a type made of one or more types, ex: `integer | float`
+* Remote types
+
+To match a Struct inside a typespec, use the normal %StructName{} syntax.
+
+## Types
+
+* [Basic types](https://hexdocs.pm/elixir/typespecs.html#basic-types)
+* [Literals](https://hexdocs.pm/elixir/typespecs.html#literals)
+* [Built in types](https://hexdocs.pm/elixir/typespecs.html#built-in-types)
+* [Remote Types](https://hexdocs.pm/elixir/typespecs.html#remote-types) : Types defined in a Module
+* [User Defined Types](https://hexdocs.pm/elixir/typespecs.html#user-defined-types): `@type`, `@typep`, `@opaque`
+
+> **Note:** Types can be parameterized by defining variables as parameters https://elixirschool.com/en/lessons/advanced/typespec/
+
+## Example
+
+### Keyword List type check
+
+[https://elixirforum.com/t/typespecs-best-way-to-spec-keyword-lists/2991/2](https://elixirforum.com/t/typespecs-best-way-to-spec-keyword-lists/2991/2)
+
+[key1: type1, key2: type2](`)` actually means the same as [{:key1, type1} | {:key2, type2}](`)`:
+
+* Order does not matter
+* an empty list is OK
+* unknown keys are rejected.
+
+[source, elixir]
+```
+defmodule TypeSpecDemo do
+
+  @spec [bar: String.t, baaz: String.t](hello()) :: {:world, list}
+  def hello(opts \\ []) do
+    {:world, opts}
+  end
+
+  # correct usage
+  def default_to_empty_list, do: hello()
+  def call_with_empty_list, do: hello([])
+  def first_key_only, do: hello(bar: "bar")
+  def second_key_only, do: [baaz: "baaz"](hello())
+  def both_keys_in_order, do: [bar: "bar", baaz: "baaz"](hello())
+  def both_keys_reversed, do: [baaz: "baaz", bar: "bar"](hello())
+
+  # incorrect usage
+  def bad_arg, do: hello("world")
+  def unknown_key, do: hello(foo: "foo")
+  def wrong_value, do: hello(baaz: 15)
+end
+```
+
+To test it:
+
+* `_guides/elixir_examples/dialyzer_playground/lib/keyword_list_example.ex`
+* `mix dialyzer|grep keyword_list_example`
+
+### Example 1
+
+The `Range` module defines a Range struct and a type `t`
+
+[source, elixir]
+```
+https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/range.ex#L42
+
+defmodule Range do
+  defstruct first: nil, last: nil
+
+  @type t :: %Range{first: integer, last: integer}
+  @type t(first, last) :: %Range{first: first, last: last}
+```
+
+that can be referred as `Range.t`
+
+[source, elixir]
+```
+defmodule Cashy.Prova do
+
+  @spec test_remote_type(Range.t) :: Range.t
+  def test_remote_type(a) do
+    a
+  end
+
+  def run do
+    test_remote_type(1..2)
+  end
+end
+```
+
+### Example 2
+
+A `Library.Book` struct that has a single property of `:title`. I’ve then defined a custom type using this struct. I’ve also declared that the :title property should be a string.
+
+[source, elixir]
+```
+defmodule Library.Book do
+  defstruct [:title]
+
+  @typedoc """
+  A custom type that holds the properties of a book
+  """
+  @type t :: %Library.Book{title: String.t}
+end
+```
+
+We can now update the specs from earlier to use this new custom book type:
+
+[source, elixir]
+```
+@spec add(Library.Book.t) :: :ok
+@spec all :: list(Library.Book.t)
+```
+
+# Protocols
+
+Refs:
+
+* [http://culttt.com/2016/06/27/what-are-elixir-protocols/](http://culttt.com/2016/06/27/what-are-elixir-protocols/)
+* [http://elixir-lang.org/getting-started/protocols.html](http://elixir-lang.org/getting-started/protocols.html)
+* [Blog Engine example](https://blog.usejournal.com/beyond-functions-in-elixir-refactoring-for-maintainability-5c73daba77f3)
+
+Protocols are a mechanism to achieve polymorphism in Elixir. Dispatching on a protocol is available to any data type as long as it implements the protocol.
+
+Polymorphism:
+
+* Describes functions that can have different implementations for different types.
+* In programming this means you can usually act on something in a generic way, without knowing specifically what the thing is.
+* As long as the thing you are acting on knows how to handle the action, you’re good to go. This is polymorphism because it doesn’t matter what the thing is, as long as it responds correctly.
+
+> **Tip:** You use protocol to print something as a string, without knowing what the thing is.
+
+[source, elixir]
+```
+to_string("Hello World")
+"Hello World"
+
+to_string(123)
+"123"
+
+to_string(99.9)
+"99.9"
+```
+
+Structs alongside protocols provide data polymorphism in Elixir.
+
+The real power of Protocols comes when you combine its polymorphism with structs. When you pass a struct to a protocol function, it will dispatch to that structs implementation.
+
+- [ ] link alla definizione di function head
+
+You can think of Protocols just like you think of pattern matching with multiple function heads. In fact, when you compile your Elixir code in production mode, they get compiled down to exactly that.
+
+The main difference between Protocols and pattern matching on different values is the *inversion of control*.
+
+Elixir provides both *closed ad-hoc polymorphism* via pattern matching on function clauses and *open ad-hoc polymorphism* via protocols (which are close to interfaces). ref: https://elixirforum.com/t/behaviours-defoverridable-and-implementations/3338/9
+
+Protocols let you add more “function heads” after the fact, so that app and library developers can match on their type separate from the definition of the Protocol itself, they are not required to implement every possible function heads.
+
+Is impossible for a library developer to know every type the app developer will needs, in this case protocols come to the rescue.
+
+Example:
+
+[source, elixir]
+```
+defprotocol Size do
+  @doc "Calculates the size (and not the length!) of a data structure"
+  def size(data)
+end
+```
+
+The Size protocol expects a function called size that receives one argument (the data structure we want to know the size of) to be implemented. We can now implement this protocol for the data structures that would have a compliant implementation:
+
+[source, elixir]
+```
+defimpl Size, for: BitString do
+  def size(string), do: byte_size(string)
+end
+
+defimpl Size, for: Map do
+  def size(map), do: map_size(map)
+end
+
+defimpl Size, for: Tuple do
+  def size(tuple), do: tuple_size(tuple)
+end
+```
+
+We didn’t implement the Size protocol for lists as there is no “size” information precomputed for lists, and the length of a list has to be computed (with length/1).
+
+## Elixir Standard Protocols : Intro
+
+Elixir comes with several protocols out of the box; Collectable, Enumerable, Inspect, List.Chars, and String.Chars.
+
+## Elixir Standard Protocols : Enumerable
+
+The `Enumerable` protocol lets you iterate over the elements in a type—given a collection, you can get the elements. `
+
+## Elixir Standard Protocols : Collectable
+
+Ref:
+
+* [https://hexdocs.pm/elixir/Collectable.html#content](https://hexdocs.pm/elixir/Collectable.html#content)
+* http://learningelixir.joekain.com/learning-elixir-collectable/
+* https://www.oreilly.com/library/view/programming-elixir/9781680500530/f_0088.html
+
+The `Enumerable` protocol lets you iterate over the elements in a type—given a collection, you can get the elements. `Collectable` is in some sense the opposite—it allows you to build a collection by inserting elements into it.
+
+Not all collections are collectable. Ranges, for example, cannot have new entries added to them.
+
+The collectable API is pretty low-level, so you’ll typically access it via the `Enum.into/2` and `Stream.into/2` functions; they take advantage of this collectable protocol to insert elements into a collectable. Here's an example:
+
+[source, elixir]
+```
+iex> Enum.into(1..10, [])
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+iex> Enum.into(1..10, [5, 4, 3])
+[5, 4, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+iex> Enum.into(1..10, %{})
+** (ArgumentError) argument error
+	(stdlib) [1, 2, 3, 4, 5, 6, 7, 8, 9, 10](:maps.from_list())
+	(elixir) lib/map.ex:182: Map.new_from_enum/1
+iex> [{:name, "Bob"}, {:age, 43}](Enum.into(), %{})
+%{age: 43, name: "Bob"}
+```
+
+Lists are collectables, so I was able to insert the range 1 to 10 into an empty list. If I use a non-empty list, the range is inserted at the end of the list.
+
+Maps are also collectables, but we can't insert numbers into a map. Maps need key-value pairs, and I was able to successfully insert key-value tuples into a map. By the way, I had no idea this was possible until I wondered about it and thought I'd try it out. I figured that if maps are enumerable (they can emit key-value pairs) when they are also probably collectable. It can sometimes pay off to play around and try things out.
+
+Similarly, to Enum.into/3 you can use a for comprehension to store data into an Collectable. By default a comprehension writes values out to a list but you can use the into: keyword to use a different type.
+
+Let’s take a look at the Collectable Protocol:
+
+[source, elixir]
+```
+defprotocol Collectable do
+  @type command :: {:cont, term} | :done | :halt
+
+  @spec into(t) :: {term, (term, command -> t | term)}
+  def into(collectable)
+end
+```
+
+he Collectable documentation gives a description of how to implement the Protocol:
+
+into(collectable)
+
+Returns a function that collects values alongside the initial accumulation value.
+
+The returned function receives a collectable and injects a given value into it for every {:cont, term} instruction.
+
+If injection is suddenly interrupted, :halt is passed and it can return any value, as it won’t be used.
+
+The implementations for Collectable for the standard library are for List, BitString and Map.
+
+Let’s start by taking a look at the implementation for Map
+
+[source, elixir]
+```
+defimpl Collectable, for: Map do
+  def into(original) do
+    {original, fn
+      map, {:cont, {k, v}} -> :maps.put(k, v, map)
+      map, :done -> map
+      _, :halt -> :ok
+    end}
+  end
+end
+```
+
+The function into/1 returns a 2-tuple:
+
+* the first element of the tuple is the `original` argument of `into/1`
+* The second element is A function that accepts the 3 command terms described in the documentation.
+
+This function has two arguments in each clause, first the accumulated value. This will be original the first time the anonymous function is called. The second time, it will be the result of the first call. The value accumulates as we enumerate the source.
+
+The List implementation is 
+
+## Example: Temperature Protocol
+
+[https://medium.com/@mustafaturan/polymorphism-in-elixir-cd0c765b6929](https://medium.com/@mustafaturan/polymorphism-in-elixir-cd0c765b6929)
+
+# Behaviours
+
+Behaviours in Elixir (and Erlang) are a way to separate and abstract an API interface:
+
+* `the behaviour module` : which is the generic part that define the interface
+* `the callback module` the specific part that implement the behaviour
+
+Behaviours perform two primary roles:
+
+* Defining a set of function that must be implemented.
+* Checking whether that set was actually implemented (you will get compiler warning).
+
+For example, the `GenServer` behaviour and functions abstract away all the message-passing (sending and receiving) and error reporting that a “server” process will likely want to implement from the specific parts such as the actions that this server process has to perform.
+
+Ref:
+
+* [Elixir Doc: Behaviours](https://hexdocs.pm/elixir/behaviours.html#content)
+* [http://elixirschool.com/lessons/advanced/behaviours/](http://elixirschool.com/lessons/advanced/behaviours/)
+* [https://www.djm.org.uk/posts/writing-extensible-elixir-with-behaviours-adapters-pluggable-backends/](https://www.djm.org.uk/posts/writing-extensible-elixir-with-behaviours-adapters-pluggable-backends/)
+*
+
+* [https://www.djm.org.uk/posts/writing-extensible-elixir-with-behaviours-adapters-pluggable-backends/](https://www.djm.org.uk/posts/writing-extensible-elixir-with-behaviours-adapters-pluggable-backends/)
+
+## Defining the behaviour module
+
+To better understand behaviours let’s implement one for a worker module. These workers will be expected to implement two functions: `init/1` and `perform/2`.
+
+In order to accomplish this, we’ll use:
+
+* the `@callback` directive with syntax similar to `@spec`, this defines a required function;
+* for macros we can use `@macrocallback`.
+
+Let’s specify the `init/1` and `perform/2` functions for our workers:
+
+[source, elixir]
+```
+defmodule Example.Worker do
+  @callback init(state :: term) :: {:ok, new_state :: term} | {:error, reason :: term}
+  @callback perform(args :: term, state :: term) ::
+              {:ok, result :: term, new_state :: term}
+              | {:error, reason :: term, new_state :: term}
+end
+```
+
+Here we’ve defined init/1 as accepting any value and returning a tuple of either `{:ok, state}` or `{:error, reason}`, this is a pretty standard initialization. Our `perform/2` function will receive some arguments for the worker along with the state we initialized, we’ll expect `perform/2` to return `{:ok, result, state}` or `{:error, reason, state}` much like `GenServers`.
+
+## Implementing the callback module
+
+Adding a behaviour to our module is easy with the `@behaviour` attribute.
+
+[source, exixir]
+```
+defmodule Example.Compressor do
+  @behaviour Example.Worker
+
+  def init(opts), do: {:ok, opts}
+
+  def perform(payload, opts) do
+    payload
+    |> compress
+    |> respond(opts)
+  end
+
+  defp compress({name, files}), do: :zip.create(name, files)
+
+  defp respond({:ok, path}, opts), do: {:ok, path, opts}
+  defp respond({:error, reason}, opts), do: {:error, reason, opts}
+end
+```
+
+If we happen to add a behaviour but fail to implement all of the required functions, a compile time warning will be raised `warning: undefined behaviour function`;
+
+## Optional Callback
+
+https://hexdocs.pm/elixir/behaviours.html#optional-callbacks
+
+Optional callbacks are callbacks that callback modules may implement if they want to, but are not required to.
+
+To check if the callbacks are defined you can use `function_exported?/3` or `macro_exported?/3`.
+
+> **Note:** [here](https://elixirforum.com/t/behaviours-defoverridable-and-implementations/3338) is documented an antipattern that Optional callbacks resolves: before it exists developers create an overridable version of the optional function which throws an exception if invoked.
+
+## @impl: mark which functions are an implementation of a callback
+
+Elixir v1.5 introduces the `@impl <MYBEAHVIOUR>` or `@impl true` attribute, which allows us to mark that certain functions are implementation of callbacks.
+
+Why is it useful? Once more and more behaviour and functions are added to the module, it becomes increasingly harder to know the purposes of each of them.
+
+For example, when using the Plug project, one needs to implement both `init/1` and `call/2` when writing a Plug:
+
+[source, elixir]
+```
+defmodule MyApp do
+  @behaviour Plug
+
+  @impl Plug
+  def init(_opts) do
+    opts
+  end
+
+  @impl Plug
+  def call(conn, _opts) do
+    Plug.Conn.send_resp(conn, 200, "hello world")
+  end
+end
+```
+
+> **Note:** you can ues `@impl true` without specifing the behaviour but it's much less readable
+
+Overall, using @impl has the following advantages:
+
+* Readability of the code is increased, as it is now clear which functions are part of your API and which ones are callback implementations. To reinforce this idea, @impl true automatically marks the function as @doc false, disabling documentation unless @doc is explicitly set
+
+* If you define @impl before a function that is not a callback, Elixir will error. This is useful in case of typos or in case the behaviour definition changes (such as a new major version of a library you depend on is released)
+
+* If you use @impl in one implementation, Elixir will force you to declare @impl for all other implementations in the same module, keeping your modules consistent
+
+### Enforce @impl with Credo Static Analyzer
+
+https://github.com/rrrene/credo/issues/427
+
+### Examples
+
+SEE: _guides/elixir_examples/behaviours_defoverridable_example
+
+## Create default implementations: defoverridable and use
+
+Ref:
+
+* https://elixirforum.com/t/behaviours-defoverridable-and-implementations/3338
+
+To create a default implementation of behaviour's function you can combine:
+
+* `use`
+* `defoverridable` [doc](https://hexdocs.pm/elixir/Kernel.html#defoverridable/1)
+
+A good example is the GenServer behaviour https://github.com/elixir-lang/elixir/blob/v1.5.3/lib/elixir/lib/gen_server.ex#L1
+
+[source, elixir]
+```
+defmodule GenServer do
+  @callback init(args :: term) ::
+    {:ok, state} |
+    {:ok, state, timeout | :hibernate} |
+    :ignore |
+    {:stop, reason :: any} when state: any
+
+  @callback terminate(reason, state :: term) ::
+    term when reason: :normal | :shutdown | {:shutdown, term} | term
+
+    ....
+
+  defmacro __using__(_) do
+    quote do
+      @behaviour GenServer      # 1
+      def init(...) do ... end  # 2
+      def terminate(..., ...) do ... end
+      .....
+      defoverridable GenServer  # 3
+    end
+  end
+end
+
+defmodule MyServer do
+  use GenServer
+end
+```
+
+In this example the MyServer callback module implements the GenServer behaviour and all it's callback in one line because through the `__using__` macro:
+
+* 1 invoke `@behaviour GenServer`
+* 2 defines a default implementation for all the GenServer callback
+* 3 make all GenServer callback overridable with `defoverridable GenServer`
+
+> **Note:** `super` can be used to call the default implementation when you reimplement a overridable function.
+
+## Use @spec with Behaviour
+
+Sadly it's not possible to check if we are using a module that implements a given behaviour:
+
+* https://stackoverflow.com/questions/44731975/how-to-use-typespecs-and-dialyzer-with-behaviours
+* https://elixirforum.com/t/behaviour-and-typespec/3408/2
+
+# Behaviour VS Protocols
+
+Protocols VS Behaviors references:
+
+* https://elixirforum.com/t/why-is-access-a-behaviour-instead-of-a-protocol-when-to-use-a-protocol-instead-of-a-behaviour/1020/3
+* [https://www.djm.org.uk/posts/elixir-behaviours-vs-protocols-what-is-the-difference/](https://www.djm.org.uk/posts/elixir-behaviours-vs-protocols-what-is-the-difference/)
+
+* http://samueldavies.net/2017/04/19/polymorphism-in-elixir-protocols-vs-behaviours/
+
+Here are the major differences between protocols and behaviours in Elixir:
+
+.Protocol VS Behaviour
+[options="header"]
+|=======================
+|Protocols	                    |Behaviours
+|Apply to data structures	    |Apply to modules
+|Specify new implementations of existing functions for new datatypes	|Specify a public spec/contract for modules to implement
+|“Here’s my datatype, it can X”	|“Here’s my module, it implements Y”
+|Exclusive to Elixir	        |Provided by the Erlang runtime
+|=======================
+
+The @callback attribute doesn’t do as much as you might think, at best it just generates some compile time errors. You can actually use behaviours just fine w/o ever using the module that defines them.
+
+A behaviour is just a promise that your module implements a function with given inputs.
+
+A Protocol is a means for defining functions that potentially work for many different data types.
+
+One other difference (maybe the important difference) that came to mind now, is that a Protocol doesn’t care where it is defined_
+
+* Person A could create a Protocol,
+* Person B could create a data structure doing something.
+* Finally, Person C could define an implementation of Protocol A for Struct B.
+* With behaviours, you’re limited to defining the Behaviour inside the module that defines the structure.
+Maybe this is exactly why Access is defined as a Behaviour, by the way, to prevent people from adding it to external data structures at a later time.
+
+PERFORMANCE: Now that Elixir always consolidates protocols during standard compilation, these performance issues have gone away, right?
+
+I asked @josevalim about it in the IRC group today directly. His reply:
+
+(10:19:50 PM) josevalim: you only consolidate inside a project and after compilation
+(10:20:03 PM) josevalim: this means all the access during compilation and in scripts still won’t be fast enough, which is a no-go
+
+which is a very clear answer. Thank you very much, José!
+
+`Poly = many`, `Morph = change or form`.
+
+Polymorphism is the ability in programming to present the same interface for differing underlying forms. What does that mean for us? Protocols allow the defining of interfaces (a series of functions) which can go on to be implemented by any data type and then used generically; and Behaviours define a common interface to a module, so that modules can be used interchangeably. Don't worry if you're lost, we'll delve deeper later.
+
+If you're ever added a float to an integer in a dynamic language, this is under-the-hood polymorphism at work. Both of them are numbers to us but they are stored differently in memory and are therefore different from the perspective of a computer. Polymorphism allows us to do calculations between the two data types without worrying about their underlying differences. In most languages, this happens behind the scenes by defining a common contract.
+
+Elixir can mostly be thought of in terms of 3 core things: processes, modules & data. In José's words: "they are all interconnected: processes run the code defined in modules that manipulate the data types" ¹.
+
+All 3 have their own way of "doing" polymorphism in Elixir:
+
+# Processes and the actor model
+
+Ref:
+
+* The_Little_Elixir_&amp;_OTP_Guidebook.pdf CH3 is a good intro
+
+## Processes
+
+The concept of lightweight processes is the essence of Erlang/Elixir and the BEAM; they are what makes BEAM stand out from other virtual machines.
+
+In order to understand how the BEAM (and Erlang and Elixir) works you need to know the details of how processes work.
+
+What is a BEAM Process?
+
+* A process is an isolated entity where code execution occurs.
+* protects your system from errors in your code by isolation
+* are the fundamental units of concurrency in Erlang/Elixir (supports up to 134 million processes)
+* processes created by the Erlang VM are independent of the operating system
+* take mere microseconds to create
+
+An Erlang process is very similar to an OS process:
+
+* It has its own address space,
+* it can communicate with other processes through signals and messages,
+* the execution is controlled by a preemptive scheduler.
+
+## Inspect a project
+
+REF:
+* The Beam Book https://blog.stenmans.org/theBeamBook/#CH-Processes
+* Elixir DOC: https://hexdocs.pm/elixir/Process.html
+
+`:shell_default.i` prints a list of all processes in the system and for each you get:
+
+* Process ID (Pid) (ex: <0.0.0> )and the name of the process if any (ex: init)
+* The code the process is started with (otp_ring0:start/) and is executing(init:loop/1).
+* heap size (1598)
+* stack size (2)
+* and the number of reductions and messages in the process.
+
+.Process info
+[options="header"]
+|=======================
+| Pid                   |Initial Call             | Heap      | Reds  | Msgs
+| Registered            |Current Function         | Stack     |
+| <0.0.0>               |otp_ring0:start/2        | 1598      | 10694 | 0
+| init                  |init:loop/1              | 2         |
+=======================
+
+We can further examine a process with the `i/3`:
+
+[source, elixir]
+```
+iex(2)> :shell_default.i(0,0,0)
+[
+  registered_name: :init,
+  current_function: {:init, :loop, 1},
+  initial_call: {:otp_ring0, :start, 2},
+  status: :waiting,
+  message_queue_len: 0,
+  links: [#PID<0.40.0>, #PID<0.42.0>, #PID<0.8.0>],
+  dictionary: [],
+  trap_exit: true,
+  error_handler: :error_handler,
+  priority: :normal,
+  group_leader: #PID<0.0.0>,
+  total_heap_size: 3196,
+  heap_size: 1598,
+  stack_size: 2,
+  reductions: 10695,
+  garbage_collection: [
+    max_heap_size: %{error_logger: true, kill: true, size: 0},
+    min_bin_vheap_size: 46422,
+    min_heap_size: 233,
+    fullsweep_after: 65535,
+    minor_gcs: 3
+  ],
+  suspending: []
+]
+```
+
+the process is suspended waiting for messages ({status,waiting}) and that there are no messages in the mailbox ({message_queue_len,0}, {messages,[]}).
+
+The fields priority, suspending, reductions, links, trap_exit, error_handler, and group_leader control the process execution, error handling, and IO. We will look into this a bit more when we introduce the Observer.
+
+The last few fields (dictionary, total_heap_size, heap_size, stack_size, and garbage_collection) give us information about the process memory usage. We will look at the process memory areas in detail in chapter The Memory Subsystem: Stacks, Heaps and Garbage Collection.
+
+Another, even more intrusive way of getting information about processes is to use the process information given by the `BREAK menu: ctrl+c p [enter]`. Note that while you are in the BREAK state the whole node freezes.
+
+The shell functions just print the information about the process but you can actually get this information as data:
+
+* list of all processes with `erlang:processes/0`; In Elixir `:erlang.processes` or Process.list()  https://hexdocs.pm/elixir/Process.html#list/0
+* more information about a process with erlang:process_info/1
+* to get a pid from a name `whereis/1`; in Elixir `Process.whereis(:name_of_the_process)` https://hexdocs.pm/elixir/Process.html#whereis/1
+
+process_info/1 function only returns a subset of all the information available for the process and how the process_info/2 function can be used to fetch extra information.
+
+https://hexdocs.pm/elixir/Process.html#info/1
+https://hexdocs.pm/elixir/Process.html#info/2
+
+to extract the backtrace for the code_server process above, we could run process_info(whereis(code_server), backtrace)
+
+## Inspect with the Observer
+
+The Observer is an extensive graphical interface for inspecting the Erlang RunTime System.
+
+Ref: https://elixir-lang.org/getting-started/debugging.html#observer
+
+Elixir:
+
+$ iex -S mix
+iex(1)> :observer.start()
+
+## Process are just memory
+
+Ref: https://blog.stenmans.org/theBeamBook/#_processes_are_just_memory
+
+A process is basically four blocks of memory:
+
+* stack: is used for keeping track of program execution by storing return addresses, for passing arguments to functions, and for keeping local variables.
+* heap: store large structures, such as lists and tuples.
+* message area (also called the mailbox): store messages sent to the process from other processes
+* Process Control Block (the PCB): keep track of the state of the process. (TODO: che significa?)
+
+## Mailboxes and Message Passing
+
+- [ ] reade the beam book
+Ref: https://blog.stenmans.org/theBeamBook/#_mailboxes_and_message_passing
+
+Process communication is done through message passing. A process send is implemented so that a sending process copies the message from its own heap to the mailbox of the receiving process.
+
+## Actor concurrency model
+
+Erlang (and therefore Elixir) uses the Actor concurrency model. This means the following:
+
+* Each actor is a process.
+* Each process performs a specific task.
+* To tell a process to do something, you need to send it a message. The process can reply by sending back another message.
+* The kinds of messages the process can act on are specific to the process itself. In other words, messages are pattern-matched.
+* Other than that, processes don’t share any information with other processes.
+
+If you've done objet-oriented programming, you could argue that the Actor is a purer form of object-orientation.
+
+A PID is a reference to a process, much as in object-oriented programming the result of initializing an object is a reference to that object. With the pid, you can send the process messages. The kinds of messages the process can receive are defined in the receive block
+
+`receive` Checks if there is a message matching the given clauses in the current process
+mailbox.
+
+To create a process use `spawn(fun)`:
+
+* Spawns the given function and returns its PID.
+* `child  = spawn(fn -&gt; send current, {self(), 1 + 2} end)`
+
+OR `spawn(module, fun, args)`:
+
+* `spawn(SomeModule, :function, [1, 2, 3])`
+* Spawns the given module and function passing the given args and returns its PID.
+
+OR `Process` and `Node` modules for other functions to handle processes, including spawning functions in nodes.
+
+> **Note:** it’s good practice to have the match-all case as the last message to be matched. This is because unmatched messages are kept in the mailbox. Therefore, it’s possible to make the VM run out of memory
+
+`send/2`:
+
+* Sends a message to the given dest and returns the message.
+* `send self(), :hello`
+* message can be any structure: `send(pid, {self, &quot;Singapore&quot;})`
+
+`flush/0`: Flushes all messages sent to the shell and prints them out.
+
+> **Note:** there’s no shared memory. The only way a change of state can occur within a process is when a message is sent to it. This is different from threads, because threads share memory. This means multiple threads can modify the same memory—an endless source of concurrency bugs (and headaches).
+
+### Process Module
+
+* Process.alive?(pid)
+* Process.info(pid)
+*
+
+TODO molte info da capire
+
+# OTP
+
+Ref:
+
+* The_Little_Elixir_&amp;_OTP_Guidebook.pdf CH4
+
+## Gen server
+
+REF:
+
+* The_Little_Elixir_&amp;_OTP_Guidebook.pdf CH4
+* Source code: [https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/gen_server.ex#L1](https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/gen_server.ex#L1)
+* [https://medium.com/@StevenLeiva1/understanding-elixir-s-genserver-a8d5756e6848](https://medium.com/@StevenLeiva1/understanding-elixir-s-genserver-a8d5756e6848)
+
+GenServer:
+
+* is nothing more than a module (it simply a container for a set of functions and / or macros).
+* is a type of module called a behavior.
+
+A behavior is simply a way to define what functions a module must implement.
+
+TESTING a Genserver: [http://elixir-lang.org/getting-started/mix-otp/genserver.html#testing-a-genserver](http://elixir-lang.org/getting-started/mix-otp/genserver.html#testing-a-genserver)
+
+[defoverridable](https://hexdocs.pm/elixir/Kernel.html#defoverridable/1) :
+
+* Makes the given functions in the current module overridable.
+* `super` can be used to call the default implementation.
+
+## Supervisor
+
+- [ ] [https://jbodah.github.io/blog/2016/11/18/supervisors-work/](https://jbodah.github.io/blog/2016/11/18/supervisors-work/)
+
+# Applications and use cases
+
+Elixir and big data: [https://elixirforum.com/t/big-data-with-elixir/154/2](https://elixirforum.com/t/big-data-with-elixir/154/2)
+
+Leveraging Elixir to access HDFS-like and inter-operate to Python for the map-reduce or machine-learning, and back again to Elixir for the database and Web inter-operability. This can be done by using protobuffer or a common swap space.
+Again, one of the weakness of the software you mentioned is of being monolithic and to enforce the use of certain tools (above all Java).
+
+# Executables and command line tools with Elixir
+
+Ref:
+
+* https://wecode.wepay.com/posts/wetools-an-elixir-cli?utm_campaign=elixir_radar_135&utm_medium=email&utm_source=RD+Station
+
+## Run bash command from Elixir
+
+System.cmd https://hexdocs.pm/elixir/System.html#cmd/3
+
+If you desire to execute a trusted command inside a shell, with pipes, redirecting and so on, please check :os.cmd/1.
+
+## Escript
+Escript produces an executable that can be run on any system with Erlang installed.
+
+* [Writing a command line application in Elixir](http://asquera.de/blog/2015-04-10/writing-a-commandline-app-in-elixir/)
+* [https://elixirschool.com/lessons/advanced/escripts/](https://elixirschool.com/lessons/advanced/escripts/)
+
+To install into `~/.mix/escripts` (which must be added to your PATH): `mix escript.install`
+
+[Tutorial with testing example](https://www.amberbit.com/blog/2017/6/29/tdd-elixir-command-line-application-with-exunit/?utm_campaign=elixir_radar_103&utm_medium=email&utm_source=RD+Station) :
+
+* https://github.com/amberbit/what_the_key [Source Code]
+*
+
+## Artificery
+
+A toolkit for creating terminal user interfaces in Elixir, from the same author of Distillery: https://github.com/bitwalker/artificery
+
+Macros:
+
+* `command` for defining top-level and nested commands; Note: argument can only be used inside of command, as it applies to the current command being defined, and has no meaning globally.
+* `argument` for defining **positional arguments** for the current command.
+
+https://hexdocs.pm/artificery/Artificery.html#defoption/3
+
+Valid types are the same as those defined in OptionParser:
+https://hexdocs.pm/elixir/OptionParser.html#parse/2-types
+
+## Ex Cli
+
+https://github.com/tuvistavie/ex_cli
+
+## Example wetools
+
+* https://wecode.wepay.com/posts/wetools-an-elixir-cli?utm_campaign=elixir_radar_135&utm_medium=email&utm_source=RD+Station
+
+WeTools CLI is set up as an Elixir umbrella project.
+
+This is done for ease of managing internal dependencies and executing any unit or functional tests on the entire suite of applications that make up WeTools.
+
+We have a main app we and additional apps for each team, while each team providing modules for the we command.
+
+    mix new test_cmd_tool --umbrella
+    cd test_cmd_tool
+    cd apps
+    mix new my_app
+
+# Code Snippet
+
+## Iterate over an Enumerable ()
+
+[source, elixir]
+```
+Enum.each %{foo: :bar}, fn {k, v} ->
+  IO.puts "Got #{k}: #{v}"
+end
+```
+
+## Reading a file
+
+Page 45 The_Little_Elixir_&amp;_OTP_Guidebook.pdf
+
+## Tic-Tac-Toe board
+
+Page 46 The_Little_Elixir_&amp;_OTP_Guidebook.pdf
+
+## Parsing MP3 file
+
+Page 47 The_Little_Elixir_&amp;_OTP_Guidebook.pdf
+
+## Commandline option parsing
+
+[https://hexdocs.pm/elixir/OptionParser.html](https://hexdocs.pm/elixir/OptionParser.html)
+
+# Common Libraries
+
+## Authentication
+
+### Guardian
+
+[https://github.com/ueberauth/guardian?utm_source=elixirdigest&utm_medium=web&utm_campaign=featured](https://github.com/ueberauth/guardian?utm_source=elixirdigest&utm_medium=web&utm_campaign=featured)
+
+# Erlang
+
+## Erlang RunTime System ERTS
+
+https://github.com/happi/theBeamBook
+
+# JOBS
+
+[https://elixir-examples.github.io/](https://elixir-examples.github.io/)
+
+## Migrate from Rails PaperClip
+
+https://medium.com/onfido-tech/from-zero-to-production-elixir-in-1-month-1-2-a9d051191ad7
+
+Ruby PaperClip cons:
+
+* upload provided by Paperclip was synchronous
+* it didn’t have a caching mechanism
+* didn’t offer a direct way of getting the document from S3 without interacting with the Rails application
+
+## Create DSL
+
+Attributes can be used to store data at compile time:
+http://elixir-lang.github.io/getting-started/module-attributes.html#as-temporary-storage
+
+## Read Env Variable
+
+`System.get_env("ENV_VAR_NAME_HERE")`
+
+> **Note:** When you use in an app config it will executed at compile time
+
+## IEX
+### IEX: How do I recompile an Elixir project and reload it from within iex?
+
+> **Note:** Dig into both alternative, at the moment the first seems the best
+
+#### ALTERNATIVE 1:
+
+[Cortex home page](https://github.com/urbint/cortex#-1)
+
+* Add Cortex to your mix file
+* Run `iex -S mix`
+* your code will be live recompiled and reloaded (?!?! what does it means exactly !?!? )
+* TODO: it should helps also with test running `MIX_ENV=test iex -S mix`
+
+#### ALTERNATIVE 2:
+
+Ref:
+* https://stackoverflow.com/questions/36490089/how-do-i-recompile-an-elixir-project-and-reload-it-from-within-iex
+
+* Start your project with `iex -S mix`
+* When you want to recompile just type: `recompile` [Elxir Doc](https://hexdocs.pm/iex/IEx.Helpers.html#recompile/0)
+
+The application is not restarted after compilation, which means any long running process may crash as any changed module will be temporarily removed and recompiled, without going through the proper code changes callback.
+
+If you want to reload a single module, consider using r(ModuleName) instead.
+
+This function is meant to be used for development and debugging purposes. Do not depend on it in production code.
+
+### IEX: Cancel a multiline command
+
+http://elixir-recipes.github.io/iex/cancel-multiline-command/
+
+`#iex:break`
+
+# Debug Elixir
+
+TODO:
+https://blog.usejournal.com/elixir-quick-reference-for-debugging-techniques-8dad3920ab93
+
+# DSL
+
+Example DSL:
+
+* https://www.botsquad.com/dev/
+* https://www.botsquad.com/2018/04/14/beyond-the-dsl/
+* https://www.botsquad.com/2019/04/11/the-ast-explained/
+
+# Functional Programming in Elixir: Algebra, Monoids, functors, monads, arrows, categories ...
+
+WIP: https://docs.google.com/document/d/1yZJ4VL9dUeCb8qzCv71sqbuS_raHf2r5vsd7Gz2ntEg/edit#

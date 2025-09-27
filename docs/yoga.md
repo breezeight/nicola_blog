@@ -187,45 +187,45 @@ NOTE: Salamba yoga poses should be mastered before the yogi attempts the more ch
 - Salamba balasana (supported child's pose) - the torso and head rest on a prop, typically a rolled-up blanket or several blankets
 
 # Poses
-include::yoga_poses/ardha_matsyendrasana.adoc[]
+include::yoga_poses/ardha_matsyendrasana.md[]
 
-include::yoga_poses/ardha_matsyendrasana.adoc[]
+include::yoga_poses/ardha_matsyendrasana.md[]
 
-include::yoga_poses/adho_mukha_svanasana.adoc[]
+include::yoga_poses/adho_mukha_svanasana.md[]
 
-include::yoga_poses/adho_mukha_vrksasana.adoc[]
+include::yoga_poses/adho_mukha_vrksasana.md[]
 
-include::yoga_poses/adho_mukha_virasana.adoc[]
+include::yoga_poses/adho_mukha_virasana.md[]
 
-include::yoga_poses/dandasana.adoc[]
+include::yoga_poses/dandasana.md[]
 
-include::yoga_poses/dhanurasana.adoc[]
+include::yoga_poses/dhanurasana.md[]
 
-include::yoga_poses/janu_sirsasana.adoc[]
+include::yoga_poses/janu_sirsasana.md[]
 
-include::yoga_poses/muktasana.adoc[]
+include::yoga_poses/muktasana.md[]
 
-include::yoga_poses/paschimottanasana.adoc[]
+include::yoga_poses/paschimottanasana.md[]
 
-include::yoga_poses/salamba_shirshasana.adoc[]
+include::yoga_poses/salamba_shirshasana.md[]
 
-include::yoga_poses/savasana_or_mrtasana.adoc[]
+include::yoga_poses/savasana_or_mrtasana.md[]
 
-include::yoga_poses/shirshasana.adoc[]
+include::yoga_poses/shirshasana.md[]
 
-include::yoga_poses/swastikasana.adoc[]
+include::yoga_poses/swastikasana.md[]
 
-include::yoga_poses/tadasana.adoc[]
+include::yoga_poses/tadasana.md[]
 
-include::yoga_poses/trikonasana.adoc[]
+include::yoga_poses/trikonasana.md[]
 
-include::yoga_poses/urdhva_dhanurasana.adoc[]
+include::yoga_poses/urdhva_dhanurasana.md[]
 
-include::yoga_poses/urdhva_mukha_svanasana.adoc[]
+include::yoga_poses/urdhva_mukha_svanasana.md[]
 
-include::yoga_poses/uttanasana.adoc[]
+include::yoga_poses/uttanasana.md[]
 
-include::yoga_poses/virasana.adoc[]
+include::yoga_poses/virasana.md[]
 
 TODO:
 

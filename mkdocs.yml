@@ -71,9 +71,7 @@ nav:
     - Control Flow: dev/python-language-reference-nicola/control-flow.md
     - Classes and Objects: dev/python-language-reference-nicola/classes-and-objects.md
     - Modules and Packages: dev/python-language-reference-nicola/modules-and-packages.md
-
-#- ... | docker-*.md
-
-
-  # - Guides:  # You can define a folder manually
-  #     - Getting Started: guides/getting-started.md
+  - Elixir: elixir.md
+  - Elixir Web Development: elixir_webdev.md
+  - Regex: regex.md
+  - Yoga: yoga.md
