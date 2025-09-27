@@ -1278,7 +1278,7 @@ The then function takes in two optional arguments (onFulfill and onReject handle
 
 2. If the base promise is settled (i.e. fulfilled or rejected), then the appropriate handler should be called immediately. Adehun.js handles this scenario by calling process in the then function.
 
-[then()](https://github.com/abdulapopoola/Adehun/blob/95c90fe91ed5db16477b9714d34029fc9393597f/adehun.js#L30)
+{{ github_code_ref("/abdulapopoola/Adehun/blob/95c90fe91ed5db16477b9714d34029fc9393597f/adehun.js", 30) }}
 
 ### WIP ferch API with Promise example
 

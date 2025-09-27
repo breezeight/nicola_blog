@@ -22,11 +22,11 @@ categories: ["Unity3D", "GUI"]
 We start by creating an Image Element, go to GameObject -> Create Other -> Image
 
 
-{% comment %}   img right /images/new-unity3d-gui-system/unity3d-gui-canvas-hierarchy.png  {% endcomment %}
+<!-- img right /images/new-unity3d-gui-system/unity3d-gui-canvas-hierarchy.png -->
 All the GUI elements must be children of the Canvas object, the Canvas
 object is create if it doen's exist when you add the first element.
 
-{% comment %}   img left /images/new-unity3d-gui-system/rect-transform-component.png  {% endcomment %}
+<!-- img left /images/new-unity3d-gui-system/rect-transform-component.png -->
 The image has a component called "Rect component" instead of the regular
 transform, it has additional field related to the layout.
 

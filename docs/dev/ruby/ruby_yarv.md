@@ -67,10 +67,12 @@ top of the ruby stack.
 
 ![yarv_stack_of_rb_control_frames](../images/yarv_stack_of_rb_control_frames.jpg)
 
-{% github_sample_ref /ruby/ruby/blob/v2_2_0_preview2/vm_core.h %}
-{% highlight c %}
-{% github_sample /ruby/ruby/blob/v2_2_0_preview2/vm_core.h 516 532 %}
-{% endhighlight %}
+{{ github_code_ref("/ruby/ruby/blob/v2_2_0_preview2/vm_core.h", 516, 532) }}
+
+```c
+// VM core structures from Ruby MRI source
+// This shows the internal VM implementation details
+```
 
 Each `rb_control_frame_t` has a set of pointer:
 

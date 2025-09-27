@@ -16,7 +16,7 @@ In generale ho visto che l'ecosistema Django è invece molto più orientato a le
 * Per la questione del problema  di avere degli env file da caricare quando fai development nativo e non usi docker compose, non so se è davvero un problema. Ti puoi caricare gli env file dal tuo file settings.dev.py. Ci sono librerie che lo fanno automaticamente. Da capire se danno predecedenza all'env definito già nella shell o se sovrascrivono...
 
 Environs read_env()
-https://github.com/sloria/environs/blob/815a4773419a7e8496fabe970fc1eef556e0f0d9/src/environs/__init__.py#L452
+{{ github_code_ref("/sloria/environs/blob/815a4773419a7e8496fabe970fc1eef556e0f0d9/src/environs/__init__.py", 452) }}
 
 che sotto usa https://pypi.org/project/python-dotenv/
 
@@ -578,7 +578,7 @@ def setup(set_prefix=True):
 
 Each import line in the setup function corresponds to a piece of plumbing that makes the django setup process work. `Django.setup()` is the function that triggers the setup process and is usually invoked, behind the scenes, when you start the server or execute a management command. Only if you write a custom script you need to call `django.setup()` explicitly.
 
-For example this is the [function that return a WSGIHandler](https://github.com/django/django/blob/857b1048d53ebf5fc5581c110e85c212b81ca83a/django/core/wsgi.py#L12):
+For example this is the {{ github_code_ref("/django/django/blob/857b1048d53ebf5fc5581c110e85c212b81ca83a/django/core/wsgi.py", 12) }}:
 
 ```python
 def get_wsgi_application():

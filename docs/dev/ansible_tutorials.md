@@ -50,7 +50,7 @@ What You Learned
 Let me know if you’d like a visual aid or a code block ready to copy into your editor.
 
 
-### AWS and Ansible {#aws-and-ansible}
+### AWS and Ansible
 
 Use AWS Systems Manager to execute complex Ansible playbooks:  
 [https://aws.amazon.com/about-aws/whats-new/2019/09/now-use-aws-systems-manager-to-execute-complex-ansible-playbooks/](https://aws.amazon.com/about-aws/whats-new/2019/09/now-use-aws-systems-manager-to-execute-complex-ansible-playbooks/) 

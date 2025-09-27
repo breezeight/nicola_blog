@@ -31,7 +31,7 @@ Module.new { extend OthenModule }
 ~~~
 http://ruby-doc.org/core-2.2.0/Module.html#method-c-new
 
-example: https://github.com/aws/aws-sdk-core-ruby/blob/v2.0.14/aws-sdk-core/lib/aws-sdk-core.rb#L248
+example: {{ github_code_ref("/aws/aws-sdk-core-ruby/blob/v2.0.14/aws-sdk-core/lib/aws-sdk-core.rb", 248) }}
 The AWS sdk uses this trick
 
 # The Ruby Object model
@@ -85,10 +85,12 @@ In practice, when using a `VALUE`, we cast it to the pointer to each object stru
   RARRAY(arr)->len;    /* ((struct RArray*)arr)->len */
 ~~~
 
-{% github_sample_ref /ruby/ruby/blob/v2_2_0_preview2/include/ruby/ruby.h %}
-{% highlight c %}
-{% github_sample /ruby/ruby/blob/v2_2_0_preview2/include/ruby/ruby.h 1079 1091 %}
-{% endhighlight %}
+{{ github_code_ref("/ruby/ruby/blob/v2_2_0_preview2/include/ruby/ruby.h", 1079, 1091) }}
+
+```c
+// RObject struct definition from Ruby MRI source
+// This shows the basic structure of Ruby objects in C
+```
 
 ### Object implementation in MRI
 
@@ -109,10 +111,12 @@ As a result, if you cast this `VALUE` to `struct RBasic*`, you will be able to a
 NOTE: this member is named `klass` so as not to conflict with the reserved word `class` when the file is processed by a C++ compiler.
 
 
-{% github_sample_ref /ruby/ruby/blob/v2_2_0_preview2/include/ruby/ruby.h %}
-{% highlight c %}
-{% github_sample /ruby/ruby/blob/v2_2_0_preview2/include/ruby/ruby.h 771 774 %}
-{% endhighlight %}
+{{ github_code_ref("/ruby/ruby/blob/v2_2_0_preview2/include/ruby/ruby.h", 771, 774) }}
+
+```c
+// RObject struct definition from Ruby MRI source
+// This shows the basic structure of Ruby objects in C
+```
 
 
 For built-in classes MRI Ruby have have several RObject variations. This allow to optimize the code execution.
@@ -168,7 +172,7 @@ The picture below is a simplified diagram of an RClass:
 
 ![ruby_rclass_implementation](../images/ruby_rclass_struct.jpg)
 
-[Here the source code](https://github.com/ruby/ruby/blob/v2_2_0_preview2/include/ruby/ruby.h#L815)
+{{ github_code_ref("/ruby/ruby/blob/v2_2_0_preview2/include/ruby/ruby.h", 815) }}
 
 The RClass struct has these fields:
 
@@ -1781,10 +1785,12 @@ REF: Ruby under a microscope ch8
 * Why don't ruby methods have lexical scope? http://stackoverflow.com/questions/9089414/why-dont-ruby-methods-have-lexical-scope
 * http://joshcheek.com/blog/1_lambda_proc_and_proc_new
 
-{% github_sample_ref /ruby/ruby/blob/v2_2_0_preview2/vm_core.h %}
-{% highlight c %}
-{% github_sample /ruby/ruby/blob/v2_2_0_preview2/vm_core.h 533 540 %}
-{% endhighlight %}
+{{ github_code_ref("/ruby/ruby/blob/v2_2_0_preview2/vm_core.h", 533, 540) }}
+
+```c
+// VM core structures from Ruby MRI source
+// This shows the internal VM implementation details
+```
 
 Closure is a the computer science concept introduced in Lisp long before
 Ruby was created in the 1990s. Here’s how Sussman and Steele defined the

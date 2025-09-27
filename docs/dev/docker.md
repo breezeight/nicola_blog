@@ -16,8 +16,8 @@ categories: ["docker"]
 # Related Documentation
 
 * [Cheatsheet](https://github.com/wsargent/docker-cheat-sheet)
-* [Docker Compose](dev/docker-compose.md)
-* [Docker and Docker Compose arguments and environment variables](dev/docker-and-docker-compose-arg-env.md)
+* [Docker Compose](docker-compose.md)
+* [Docker and Docker Compose arguments and environment variables](docker-and-docker-compose-arg-env-management-in-complex-project.md)
 
 # HOWTO Docker Management
 

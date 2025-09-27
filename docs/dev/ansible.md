@@ -151,7 +151,7 @@ This the `devenv.nix` to install Ansible 2.17
   - [Use Ansible Agentless to Get Uptime from Remote Machines](ansible_tutorials.md#use-ansible-agentless-to-get-uptime-from-remote-machines) - Learn how to use Ansible in agentless mode to connect to remote machines and retrieve system information
   - [AWS and Ansible](ansible_tutorials.md#aws-and-ansible) - Use AWS Systems Manager to execute complex Ansible playbooks
 
-# Link and Tutorials, Roles and Collections {#link-and-tutorials,-roles-and-collections}
+# Link and Tutorials, Roles and Collections {#link-and-tutorials-roles-and-collections}
 
 Very good Hands-On Labs:  
 [https://linuxacademy.com/library/search/ansible/](https://linuxacademy.com/library/search/ansible/)

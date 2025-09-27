@@ -8,7 +8,7 @@
 - SSH-Agent
 - Using SSH-Agent with AWS SSM
 
-## Related Documents {#related-documents}
+## Related Documents
 
 [GPG - PGP](cryptography-pgp-gpg.md)
 

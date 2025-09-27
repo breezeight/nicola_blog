@@ -1950,5 +1950,5 @@ https://www.npmjs.com/package/resolve
 ### Internals
 
 - http://eli.thegreenplace.net/2013/05/27/how-require-loads-modules-in-node-js
-- https://github.com/joyent/node/blob/master/lib/module.js#L380
+- {{ github_code_ref("/joyent/node/blob/master/lib/module.js", 380) }}
 - What is the purpose of Node.js module.exports and how do you use it? http://stackoverflow.com/questions/5311334/what-is-the-purpose-of-node-js-module-exports-and-how-do-you-use-it

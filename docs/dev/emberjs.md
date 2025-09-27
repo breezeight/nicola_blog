@@ -175,9 +175,9 @@ Both allow you to include the components as `<ReceivedMessage />`
 
 ## Components Arguments
 
-This component app/components/avatar.hbs: `<div class="avatar" title="{{@title}}">{{@initial}}</div>`
+This component app/components/avatar.hbs: `<div class="avatar" title="{{"{{" }}@title{{ "}}" }}">{{"{{" }}@initial{{ "}}" }}</div>`
 
-* Have two args: {{@title}} and {{@initial}}
+* Have two args: {{"{{" }}@title{{ "}}" }} and {{"{{" }}@initial{{ "}}" }}
 * To use it: `<Avatar @title="Tomster's avatar" @initial="T" />`
 
 @ Syntax:

@@ -8,6 +8,10 @@
 
 [Tmux](dev/tmux.md)
 
+
+
+
+
 ## Yoga
 
 ## Development Best Practices
@@ -87,6 +91,10 @@ Home Manager Day by Day Usage:
 
 All the other Nix related docs are indexed in the [Nix Index](dev/nix/nix-index.md) folder.
 
+## Go Lang
+
+{{ abstract("dev/go/go-index.md") }}
+
 ## Python
 
 [NICOLA's LEGACY GOOGLE docs](https://drive.google.com/drive/u/1/folders/1E5SPSk__OBUlzkI0crqYYpp00ZtX702W):
@@ -108,7 +116,7 @@ All the other Nix related docs are indexed in the [Nix Index](dev/nix/nix-index.
 
 These links are tentative of make AI summarize the python language reference. THE PROBLEM is that the original text is meant to be read by developers of the core of language, so it **is too technical**:
 
-- [python-official-language-reference-with-ai](python-official-language-reference-with-ai.md): this is tentative of make AI summarize the python language reference. THE PROBLEM is that the original text is meant to be read by developers of the core of language, so it **is too technical**.
+- [python-official-language-reference-with-ai](dev/python-official-language-reference-with-ai.md): this is tentative of make AI summarize the python language reference. THE PROBLEM is that the original text is meant to be read by developers of the core of language, so it **is too technical**.
 
 ### Pythons Devops - Packaging - Dependencies management
 
@@ -129,11 +137,11 @@ Specific tools:
 ### Django
 
 - [Django](dev/django/django-settings-best-practices-explanation.md)
-- [Django Celery](dev/python/celery-explanation.md)
+- [Django Celery](dev/python-language-reference-nicola/celery-explanation.md)
 
 ### Distributed Systems
 
-- [Django Celery](dev/python/celery-explanation.md)
+- [Django Celery](dev/python-language-reference-nicola/celery-explanation.md)
 
 ### Python Type Hints
 
@@ -162,7 +170,7 @@ Explanations:
 
 VPN:
 
-- [Tailscale](dev/tailscale.md)
+- [Tailscale](dev/tailscale_index.md)
 
 ## Most important HOWTOs
 

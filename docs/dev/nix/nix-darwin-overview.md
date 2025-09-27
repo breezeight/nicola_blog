@@ -34,5 +34,5 @@ If you to start with a minimal configuration, you can use the [nixcademy.com](ht
 
 ## Building Linux binaries
 
-See [Nix Linux Remote Builder VM on OSX Howto](dev/nix/nix-linux-remote-builder-vm-on-osx-howto.md) for details.
+See [Nix Linux Remote Builder VM on OSX Howto](nix-linux-remote-builder-vm-on-osx-howto.md) for details.
 

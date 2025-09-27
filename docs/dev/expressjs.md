@@ -70,7 +70,7 @@ NOTE: `index.js` will be your default entry point
 Tutorial REST API only [How to build a REST API with Node js & Express](https://www.youtube.com/watch?v=pKd0Rpw7O48&t=2587s)
 
 - Very basic tutorial, it explain also what REST and HTTP are (very high level), good for absolute code beginner but also for somebody that need a refresh.
-- Don't use a Database, use a global variable: see https://github.com/techstationspace/expressjs-Intro/blob/master/index.js#L4
+- Don't use a Database, use a global variable: see {{ github_code_ref("/techstationspace/expressjs-Intro/blob/master/index.js", 4) }}
 - 00:00 - 07:00 Rest Conventions, Show an example of API built without a framework, Callback - Route Handler
 - 14:41 Compare the router syntax with and without a framework
 - 15:00 Nodemon
@@ -86,7 +86,7 @@ Tutorial REST API only [How to build a REST API with Node js & Express](https://
   - Intro to middleware.
   - POST convention (return the object JUST Created): many time the client need to know the id of the new object
   - Enable JSON parsing of the body of a POST request `app.use(express.json())`
-  - example: https://github.com/techstationspace/expressjs-Intro/blob/master/index.js#L4
+  - example: {{ github_code_ref("/techstationspace/expressjs-Intro/blob/master/index.js", 4) }}
 - 33:54 https://youtu.be/pKd0Rpw7O48?t=2034
   - Postman
 - 36:00 https://youtu.be/pKd0Rpw7O48?t=2165
@@ -400,7 +400,7 @@ Broadly speaking, there are four stages that we can analyze:
 
 the line `(A)` requires the `http` nodejs standard module ( small guide here https://www.w3schools.com/nodejs/nodejs_http.asp ). `http.createServer(app);` sets `app` as the handler of the http request, every request to the http server will invoke the `app.handle(req, res)` function with req and res parameter. At this point the express logic will handle the request as we will see below.
 
-Express uses the Factory design pattern, is a creational design pattern allowing us to abstract away object creation implementation details from the outside world. Express does this by only exporting the factory `createApplication()` in [lib/express.js](https://github.com/expressjs/express/blob/4.18/lib/express.js#L37).
+Express uses the Factory design pattern, is a creational design pattern allowing us to abstract away object creation implementation details from the outside world. Express does this by only exporting the factory `createApplication()` in {{ github_code_ref("/expressjs/express/blob/4.18/lib/express.js", 37) }}.
 
 ```js
 // ...

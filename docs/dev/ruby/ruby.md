@@ -565,42 +565,42 @@ Why you should use keyword arguments:
 
 Since ruby 2.0:
 
-{% highlight ruby %}
+```ruby
 def foo(bar: 'default')
   puts bar
 end
 
 foo # => 'default'
 foo(bar: 'baz') # => 'baz'
-{% endhighlight %}
+```
 
 
 Also blocks can be defined with keyword arguments:
 
-{% highlight ruby %}
+```ruby
 define_method(:foo) do |bar: 'default'|
   puts bar
 end
 
 foo # => 'default'
 foo(bar: 'baz') # => 'baz'
-{% endhighlight %}
+```
 
 Since ruby 2.1 required arguments are supported:
 
-{% highlight ruby %}
+```ruby
 def foo(bar:)
   puts bar
 end
 
 foo # => ArgumentError: missing keyword: bar
 foo(bar: 'baz') # => 'baz'
-{% endhighlight %}
+```
 
 
 In Ruby 1.9, we could do something similar using a single Hash parameter:
 
-{% highlight ruby %}
+```ruby
 def foo(options = {})
   bar = options.fetch(:bar, 'default')
   puts bar
@@ -608,7 +608,7 @@ end
 
 foo # => 'default'
 foo(bar: 'baz') # => 'baz'
-{% endhighlight %}
+```
 
 
 ## TIPS: Migrate from hash to keywords

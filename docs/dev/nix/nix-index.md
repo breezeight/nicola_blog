@@ -2,13 +2,13 @@
 
 Breezeight NixOS Config on OSX:
 
-- [**Breezeight Nix Config**](dev/nix/nix-breezeight-config-osx-and-linux-overview.md)
-- [Nix Darwin Overview](dev/nix/nix-darwin-overview.md)
+- [**Breezeight Nix Config**](nix-breezeight-config-osx-and-linux-overview.md)
+- [Nix Darwin Overview](nix-darwin-overview.md)
 
 Home Manager Day by Day Usage:
 
-- [Home Manager Configuration Overview and Options](dev/nix/nix-homemanager-configuration-overview-and-options.md)
-- [Home Manager Nix Darwin Module Docs](dev/nix/nix-homemanager-nix-darwin-module-docs.md): links to the official docs + some notes.
+- [Home Manager Configuration Overview and Options](nix-homemanager-configuration-overview-and-options.md)
+- [Home Manager Nix Darwin Module Docs](nix-homemanager-nix-darwin-module-docs.md): links to the official docs + some notes.
 
 [Nix Ecosystem : Community - People - Companies](https://docs.google.com/document/d/1rIRtmH7mKLIsa83Lv5ghYriYPpYNMRm9MPRg3qgnWm4)
 

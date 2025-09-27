@@ -160,8 +160,7 @@ There are variable that you can use with the syntax `{{ variable_name }}` within
 * HTTPIP and HTTPPort
 * Name
 
-
-~~~json
+```json
     "boot_command": [
       "<esc><esc><enter><wait>",
       "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-12.04-amd64/preseed.cfg ",
@@ -173,11 +172,11 @@ There are variable that you can use with the syntax `{{ variable_name }}` within
     ],
 
     "http_directory": "http",
-~~~
+```
 
 The [shell provisioner](http://www.packer.io/docs/provisioners/shell.html) is used to provision the vagrant minimun requirements.
 
-~~~json
+```json
   "provisioners": [{
     "type": "shell",
     "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
@@ -187,7 +186,7 @@ The [shell provisioner](http://www.packer.io/docs/provisioners/shell.html) is us
       "scripts/compact.sh"
     ]
   }]
-~~~
+```
 
 NB: images will be cached, see the subdirectory packer_cache, so that any subsequent build does not trigger a full download again.
 
@@ -202,7 +201,7 @@ Ref: [vagrant-opsworks](https://github.com/wwestenbrink/vagrant-opsworks)
 Ref: [OpsWorks under the hood](http://www.slideshare.net/AmazonWebServices/aws-opsworks-under-the-hood-dmg304-aws-reinvent-2013)
 
 
-~~~json
+```json
 {
     "builders": [
         {
@@ -266,7 +265,7 @@ Ref: [OpsWorks under the hood](http://www.slideshare.net/AmazonWebServices/aws-o
         "output": "{{.Provider}}/ubuntu1204-opsworks.box"
     }]
 }
-~~~
+```
 ##  Use Case: create an AWS AMI
 
 Coming soon

@@ -8,12 +8,57 @@ This document is divided in three sections:
 2. [HOWTO - traditional IAM users](#howto-traditional-iam-users)
 3. [Explanation: how to choose the best option for your environment](#explanation-how-to-choose-the-best-option-for-your-environment): explain the advantages and disadvantages of each approach and some choices made.
 
+> [!NOTE] 
+> This documement cover only how to setup the credentials on the client side, not the server side. For the server side, see:
+> * the [AWS IAM Identity Center Nicola's Docs](aws-iam-identity-center.md).
+> * the [AWS IAM User Offcial Docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html).
+
+## Example of ~/.aws/config file
+
+This is an example of a `~/.aws/config` file that uses both approaches described in this document. Use it as a reference to configure your own `~/.aws/config` file. How to use it is explained in the next sections.
+
+```toml
+# Idrostudi AWS Accounts: idr
+[profile idr-AdministratorAccess]
+region = eu-central-1
+credential_process = ${aws1pHelperFullPath} "aws-idr-iam-access-key-nicola.brisotto"
+
+# Addictive aws-ad-lab account
+[profile aws-ad-lab-AdministratorAccess]
+sso_start_url = https://addictive.awsapps.com/start
+sso_region = eu-west-1
+sso_account_id = 034362055352
+sso_role_name = AdministratorAccess
+region = eu-west-1
+output = json
+
+# Addictive aws-ad-prod account
+[profile aws-ad-prod-AdministratorAccess]
+sso_start_url = https://addictive.awsapps.com/start
+sso_region = eu-west-1
+sso_account_id = 124355679718
+sso_role_name = AdministratorAccess
+region = eu-west-1
+output = json
+```
 
 ## HOWTO - IAM Identity Center
 
-> [WARNING] IAM Identity Center is recommended to be used instead of IAM users.
+> [!WARNING] 
+> IAM Identity Center is recommended to be used instead of IAM users.
 
 TODO.....
+
+```toml
+# Addictive aws-ad-prod account
+[profile aws-ad-prod-AdministratorAccess]
+sso_start_url = https://addictive.awsapps.com/start
+sso_region = eu-west-1
+sso_account_id = 124355679718
+sso_role_name = AdministratorAccess
+region = eu-west-1
+output = json
+```
 
 ## HOWTO - traditional IAM users 
 

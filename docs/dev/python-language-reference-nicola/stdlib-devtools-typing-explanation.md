@@ -30,7 +30,7 @@ These features and practices make Python’s typing system a powerful tool for w
 Related official and community documentation:
 
 
-* **Typing cheat sheet by MyPy** (summarized here and integrated by me in [Python Type Hints Reference](dev/python-language-reference-nicola/stdlib-devtools-typing-reference.md)): A quick reference of type hints.
+* **Typing cheat sheet by MyPy** (summarized here and integrated by me in [Python Type Hints Reference](stdlib-devtools-typing-reference.md)): A quick reference of type hints.
 
 * ["Static Typing with Python"](https://typing.readthedocs.io/en/latest/): Type-checker-agnostic documentation written by the community detailing type system features, useful typing related tools and typing best practices. **it's also linked in the official documentation**.
 
