@@ -56,7 +56,7 @@ Functions in Python can accept a variety of argument types to provide flexibilit
    # Keyword arguments: {'key1': 'value1', 'key2': 'value2'}
    ```
 
-For details on arguments in methods, see [Classes and Objects - Method Definitions](#classes-and-objects-method-definitions).
+For details on arguments in methods, see [Classes and Objects - Method Definitions].
 
 ### Anonymous Functions (`lambda`)
 Lambda functions are small anonymous functions defined using the `lambda` keyword. They can have any number of arguments but only a single expression.

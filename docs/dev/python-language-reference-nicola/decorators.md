@@ -28,8 +28,8 @@ To understand decorators, you need this prerequisite knowledge:
 
 - Functions in Python are [first class citizens](https://en.wikipedia.org/wiki/First-class_citizen). This means that they support operations such as being passed as an argument, returned from a function, modified, and assigned to a variable. This property is crucial as it allows functions to be treated like any other object in Python, enabling greater flexibility in programming. [Learn more about first class functions](functions.md#python-has-first-class-functions)
 
-- [Variable Scope in Python](functions.md#variable-scope-in-python)
-- [Closures in Python](functions.md#closures-in-nested-functions)
+- [Variable Scope in Python](functions.md)
+- [Closures in Python](functions.md)
 
 With this knowledge, you are ready to understand decorators see [here](https://www.datacamp.com/tutorial/decorators-python)
 

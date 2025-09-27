@@ -31,7 +31,7 @@ let myGreeting = setTimeout(function () {
 
 The image below show you the stack status when the code snippet in the image is executed. We can think about the stack as a pile of post-it: each time we start the execution of a function we add a post-it with the name of the function to the pile, when the execution is over we remove it. 
 
-![](../images/js_event_loop_with_callback.png)
+![](../../images/js_event_loop_with_callback.png)
 
 [Ref: JavaScript. Event Loop and Promises](https://medium.com/javascript-in-plain-english/javascript-event-loop-y-promises-951ba6845899)
 
@@ -58,7 +58,7 @@ However, there is a “but”. Since the callback of the function is not known a
 
 It is to solve this for what promises arose as we will see below.
 
-![](../images/js_hell_callback.png)
+![](../../images/js_hell_callback.png)
 
 
 ## Why Async?
@@ -105,7 +105,7 @@ Ref:
 
 By default, JavaScript runs in a single thread – in both web browsers and Node.js. The so-called event loop sequentially executes tasks (pieces of code) inside that thread. The event loop is depicted in the fig below:
 
-![](../images/js_event_loop.svg)
+![](../../images/js_event_loop.svg)
 
 - Browser event loop processing is single thread (events processed in FIFO order) but the mechanism that manage events before their handlers are executed are not on the same thread.
 - The event loop sequentially executes tasks (pieces of code) inside that thread.
@@ -456,7 +456,7 @@ To summarize a Promise can be in three states:
 - fulfilled
 - rejected
 
-![](../images/js_promises_statuses.png)
+![](../../images/js_promises_statuses.png)
 
 To these Promise objects, developers can attach callbacks through the `then` instruction so that we can execute code once the value resolved by the Promise is available (or the reason why it could not be resolved).
 
@@ -481,7 +481,7 @@ The executor is called automatically and immediately (by new Promise).
 - The executor receives two arguments: resolve and reject. These functions are pre-defined by the JavaScript engine, so we don’t need to create them. We should only call one of them when ready.
 - After one second of “processing” the executor calls resolve("done") to produce the result. This changes the state of the promise object:
 
-![](../images/js_promise_resolve.png)
+![](../../images/js_promise_resolve.png)
 
 That was an example of a successful job completion, a “fulfilled promise”.
 
@@ -496,7 +496,7 @@ let promise = new Promise(function (resolve, reject) {
 
 The call to `reject(...)` moves the promise object to "rejected" state:
 
-![](../images/js_promise_reject.png)
+![](../../images/js_promise_reject.png)
 
 A promise that is either resolved or rejected is called “settled”, as opposed to an initially “pending” promise.
 
@@ -737,7 +737,7 @@ Here the flow is:
 - The value that it returns is passed to the next .then handler (\*\*\*)
 - …and so on.
 
-![](../images/js_promise_chain.png)
+![](../../images/js_promise_chain.png)
 
 As the result is passed along the chain of handlers, we can see a sequence of alert calls: 1 → 2 → 4.
 
@@ -770,7 +770,7 @@ promise.then(function (result) {
 });
 ```
 
-![](../images/js_promise_chain_common_error.png)
+![](../../images/js_promise_chain_common_error.png)
 
 Then always return a promise [ref](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then)
 

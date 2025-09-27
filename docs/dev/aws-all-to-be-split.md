@@ -1982,12 +1982,6 @@ AWS::SSM::Parameter::Value
 https://aws.amazon.com/it/blogs/mt/integrating-aws-cloudformation-with-aws-systems-manager-parameter-store/
 
 
-
-
-# OpsWorks
-
-[see this post](/guides/opsworks-introduction.html)
-
 # ECS: EC2 Container Service
 
 Doc: https://aws.amazon.com/ecs/
@@ -3804,7 +3798,7 @@ https://www.newgenapps.com/blog/bid/211045/Protecting-images-on-Amazon-S3-throug
 
 REF: [AWS doc](http://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteHosting.html)
 
-For naked domain redirect see [here](aws.md#redirect-nakedroot-domain-to-www)
+For naked domain redirect see [here](#redirect-nakedroot-domain-to-www)
 
 The website is then available at the region-specific website endpoint of the bucket:
 

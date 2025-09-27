@@ -83,7 +83,7 @@ However, outside of the foo() scope, count is inaccessible. If you try to access
 
 If you've defined a variable inside of a function or code block, then you can use this variable only within that function or code block. The above example demonstrates this behavior.
 
-![](../images/js_scope-3.svg)
+![](../../images/js_scope-3.svg)
 
 Now, let's see a general formulation: "The scope is a space policy that rules the accessibility of variables".
 
@@ -136,7 +136,7 @@ outerFunc();
 Indeed, `outerVar` variable is accessible inside `innerFunc()` scope. The variables of the outer scope are accessible inside the inner scope.
 
 
-![](../images/js_nested-scopes-3.svg)
+![](../../images/js_nested-scopes-3.svg)
 
 Now you know 2 interesting things:
 
@@ -234,7 +234,7 @@ Running this code has exactly the same effect as the previous example of the `ou
 
 In other words, `innerFunc()` closes over (a.k.a. captures, remembers) the variable outerVar from its lexical scope. In other words, `innerFunc()` is a closure because it closes over the variable outerVar from its lexical scope.
 
-![](../images/js-closure-6.svg)
+![](../../images/js-closure-6.svg)
 
 
 You've made the final step to understanding what a closure is: The closure is a function that accesses its lexical scope even executed outside of its lexical scope.
@@ -870,7 +870,7 @@ If an identifier can’t be found in the current environment, the outer environm
 - the matching variable is found,
 - or with a reference error if we’ve reached the global environment and there’s no sign of the searched-for identifier.
 
-![image](https://raw.githubusercontent.com/getify/You-Dont-Know-JS/2nd-ed/scope-closures/../images/fig2.png)
+![image](https://raw.githubusercontent.com/getify/You-Dont-Know-JS/2nd-ed/scope-closures/../../images/fig2.png)
 
 Ref: See [SOJS_2nd] figure 5.9
 
@@ -2711,7 +2711,7 @@ alert(generator.next(4).value); // "3 * 3 = ?"
 alert(generator.next(9).done); // true
 ```
 
-![](../images/js-generators-next-arg.png)
+![](../../images/js-generators-next-arg.png)
 
 ### `yield*` considers end-of-iteration values
 

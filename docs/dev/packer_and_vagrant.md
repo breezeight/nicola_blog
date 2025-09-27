@@ -229,8 +229,8 @@ Ref: [OpsWorks under the hood](http://www.slideshare.net/AmazonWebServices/aws-o
             "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
             "disk_size": 10140,
             "vboxmanage": [
-                ["modifyvm", "{{.Name}}", "--memory", "512"],
-                ["modifyvm", "{{.Name}}", "--cpus", "1"]
+                ["modifyvm", "{{ .Name }}", "--memory", "512"],
+                ["modifyvm", "{{ .Name }}", "--cpus", "1"]
             ]
         },
         ....

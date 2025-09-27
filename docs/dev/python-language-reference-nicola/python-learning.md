@@ -134,8 +134,8 @@ This topic is very important to understand how Python works, and it's a good ide
 
 * Nicola's notes: [Scopes and Namespaces](scopes-and-namespaces.md): this is a good overview of the topic.
 * the same topic is also covered in more detail in the following sections:
-  - [classes](classes-and-objects.md#how-scopes-and-namespaces-apply-to-classes)
-  - [functions](functions.md#how-scopes-and-namespaces-apply-to-functions)
+  - [classes](classes-and-objects.md)
+  - [functions](functions.md)
 
 ### Object Oriented Programming
 

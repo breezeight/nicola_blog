@@ -170,7 +170,7 @@ what happens is:
 - So the js engine checks to see if the longEar's prototype object has a walk() method available on it.
 - It doesn't, then the browser checks rabbit's prototype object's prototype object, and it has. So the method is called, and all is good!
 
-![](../images/js_prototype_long_chain.png)
+![](../../images/js_prototype_long_chain.png)
 
 There are only two limitations:
 
@@ -180,7 +180,7 @@ There are only two limitations:
 
 Given that a prototype object can have a prototype itself, we get a chain of objects – the so-called `prototype chain`.
 
-![](../images/js_prototype_chain.svg)
+![](../../images/js_prototype_chain.svg)
 
 Prototypes are JavaScript’s only inheritance mechanism: each object has a prototype that is either null or an object.
 
@@ -381,7 +381,7 @@ When we call the function via the new operator, invoking it as a constructor, an
 
 Notice that all objects created with the Ninja constructor will have access to the swingSword method. Now that’s code reuse!
 
-![](../images/js_prototype_ninja.png)
+![](../../images/js_prototype_ninja.png)
 
 IMPORTANT:
 
@@ -470,7 +470,7 @@ console.log(person2.friends); //Output: "Jadeja, Vijay"
 Here as we have wanted each object to have their own name, age, and friends property. Hence, we have defined these properties inside the constructor using this. However, as sayName is defined on the prototype object, it will be shared among all the objects.
 In the above example, the friend’s property of person2 did not change on changing the friends' property of person1.
 
-![](../images/js_prototype_example1.png)
+![](../../images/js_prototype_example1.png)
 
 ### Example: Problem when you replace a prototype
 
@@ -503,7 +503,7 @@ ninja1.pierce(); // Uncaught TypeError: ninja1.pierce is not a function
 ninja2.pierce(); //true
 ```
 
-![](../images/js_redefine_prototype.png)
+![](../../images/js_redefine_prototype.png)
 
 ### instanceof and Constructor property
 
@@ -519,7 +519,7 @@ admin = new Admin();
 admin instanceof Person; // true
 ```
 
-![](../images/js_instance_of_example.png)
+![](../../images/js_instance_of_example.png)
 
 ```js
 > [] instanceof Array

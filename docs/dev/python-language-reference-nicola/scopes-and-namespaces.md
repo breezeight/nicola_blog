@@ -89,8 +89,8 @@ You can also see that there was no previous binding for `spam` before the [`g
 
 ## How scopes and namespaces apply to classes
 
-See Nicola's notes [classes](classes-and-objects.md#how-scopes-and-namespaces-apply-to-classes)
+See Nicola's notes [classes](classes-and-objects.md)
 
 ## How scopes and namespaces apply to functions
 
-See Nicola's notes [functions](functions.md#how-scopes-and-namespaces-apply-to-functions)
+See Nicola's notes [functions](functions.md)

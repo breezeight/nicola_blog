@@ -2651,4 +2651,4 @@ https://go.dev/tour/concurrency/11
 
 ## How to organize your code
 
-{{ abstract("go-organizing-code.md") }}
+{{ abstract("dev/go/go-organizing-code.md") }}

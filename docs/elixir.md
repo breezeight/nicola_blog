@@ -180,7 +180,7 @@ Ref: https://elixirforum.com/t/hot-update-iex-s-mix/18186/4
 The `iex` command is a shell script that use the `elixir` command to load the `IEx.Cli` module:
 https://github.com/elixir-lang/elixir/blob/a304aac97b222d91d1762cf2d6bec26f08a0a720/lib/iex/lib/iex/cli.ex
 
-```
+```elixir
 # The iex script
 exec "$SCRIPT_PATH"/elixir --no-halt --erl "-noshell -user Elixir.IEx.CLI" +iex "$@"
 ```
@@ -264,7 +264,7 @@ iex(17)> ModuleB.module_info :functions
 
 If you have an elixir file; a script or a module and want to load it into the current IEx session, you can use the c/1 method:
 
-```
+```elixir
 iex(1)> c "lib/utils.ex"
 iex(2)> Utils.some_method
 ```
@@ -273,7 +273,7 @@ This will compile and load the module in IEx, and you'll be able to call all of 
 
 For scripts, it will immediately execute the contents of the script:
 
-```
+```elixir
 iex(3)> c "/path/to/my/script.exs"
 Called from within the script!
 ```
@@ -442,8 +442,7 @@ Elixir v1.3 includes improvements to the option parser, including OptionParser.p
 
 For example, invoking mix test –unknown in earlier Elixir versions would silently discard the –unknown option. Now mix test correctly reports such errors:
 
-[source, elixir]
-```
+```elixir
 $ mix test --unknown
 ** (Mix) Could not invoke task "test": 1 error found!
 --unknown : Unknown option
@@ -506,7 +505,7 @@ Elixir’s mix new task automatically creates an application callback module whe
 
 The generated project contains an application callback module in `lib/elixir_app/application.ex`.
 
-```
+```elixir
 defmodule ElixirApp.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
@@ -621,7 +620,7 @@ Some of the resource file keys are taken from the keyword lists returned by the 
 
 To specify the name and version number defined in its project function:
 
-```
+```elixir
 defmodule ElixirApp.MixProject do
   use Mix.Project
 
@@ -636,7 +635,7 @@ end
 
 To specify the Erlang callback module (`:mod` key):
 
-```
+```elixir
 defmodule ElixirApp.MixProject do
   # ...
 
@@ -650,7 +649,7 @@ end
 
 When generating the specification, it includes the callback module. This key points to the application’s callback module, so the VM knows which module to use to start the application.
 
-```
+```elixir
 {application,elixir_app,
              [kernel,stdlib,elixir,logger]([{applications,)},
               {description,"elixir_app"},
@@ -671,7 +670,7 @@ https://hexdocs.pm/mix/master/Mix.Project.html#content
 
 The `project` function defines the application's name, the version of Elixir to be used, and makes a call to deps() that pulls in the necessary project dependencies.
 
-```
+```elixir
 def project do
    [
      app: :romanNumerals,
@@ -1769,8 +1768,7 @@ iex(25)> :io.format("~8.2b~n", :binary.bin_to_list(bin))
 - [ ] come funziona la stampa con :io.format ??? è Erlang…
 - [ ] non ho ben capito come si gestiscono Binaries con più di 8 bit
 
-[source, elixir]
-```
+```elixir
 bin = << 1::size(1), 0::size(8) >>
  <<128, 0::size(1)>>
 ```
@@ -2672,8 +2670,7 @@ There are three different syntax to define a similar maps that can be misleading
 
 > **Warning:** You must look carefully if `:` or `=>` are used
 
-[source, elixir]
-```
+```elixir
 map1 = %{ key: "value" }
 map2 = %{ "key": "value" }
 map3 = %{ "key" => "value" }
@@ -2692,8 +2689,7 @@ both `"key":` and `key:` use an atom as the key, instead in the 3rd case the key
 
 This means that map1 and map2 are equivalent and can be matched agaist the same map but the match with map3 will fail because it uses a string as key:
 
-[source, elixir]
-```
+```elixir
 iex(15)> %{key: value} = map1
 %{key: "value"}
 iex(16)> %{key: value} = map2
@@ -2716,8 +2712,7 @@ iex(19)> %{"key": value} = map3
 
 The reverse is true, a String key does't match a symbol key:
 
-[source, elixir]
-```
+```elixir
 iex(19)> %{"key" => value} = map1
 ** (MatchError) no match of right hand side value: %{key: "value"}
 
@@ -2732,8 +2727,7 @@ iex(19)> %{"key" => value} = map3
 
 As keys you can use: Integers, Tuples, Lists, even maps!
 
-[source, elixir]
-```
+```elixir
 map = %{ 3 => "JB" }
 map = %{ {"hi"} => "foo" }
 map = %{ [1,"hi"] => "JB" }
@@ -2745,8 +2739,7 @@ map = %{ [1,"hi"] => "JB" }
 
 Define a Struct with `defstruct`, with defaults:
 
-[source, elixir]
-```
+```elixir
 defmodule User do
   defstruct name: "John", age: 27  # Keyword list defines what fields the struct will have along with their default values.
 end
@@ -2754,8 +2747,7 @@ end
 
 without defaults, `nil` will be assumed ad default:
 
-[source, elixir]
-```
+```elixir
 defmodule Product do
   defstruct [:name]
 end
@@ -2770,8 +2762,7 @@ To create a User:
 
 To access a User:
 
-[source, elixir]
-```
+```elixir
 john = %User{}
 john.name
 
@@ -2779,8 +2770,7 @@ john.name
 
 To create a new User from existing one ():
 
-[source, elixir]
-```
+```elixir
 john = %User{}                    # %User{age: 27, name: "John"}
 laura = %{john|name: "laura"}     # %User{age: 27, name: "laura"}  NOTE: john don't change value
 ```
@@ -2789,8 +2779,8 @@ Structs VS maps:
 
 * structs are bare maps with a fixed set of fields.
 * bare means that none of the protocols implemented for maps are available for structs.For example, you can neither enumerate nor access a struct:
-[source, elixir]
-```
+
+```elixir
 iex> john = %User{}
 %User{age: 27, name: "John"}
 iex> [:name](john)
@@ -2802,8 +2792,7 @@ iex> Enum.each john, fn({field, value}) -> IO.puts(value) end
 
 But you can use all the function of the [Map Module](https://hexdocs.pm/elixir/Map.html)
 
-[source, elixir]
-```
+```elixir
 iex> kurt = Map.put(%User{}, :name, "Kurt")
 %User{age: 27, name: "Kurt"}
 iex> Map.merge(kurt, %User{name: "Takashi"})
@@ -2819,8 +2808,7 @@ iex> Map.keys(john)
 
 You can also enforce that certain keys have to be specified when creating the struct:
 
-[source, elixir]
-```
+```elixir
 defmodule Car do
   @enforce_keys [:make]
   defstruct [:model, :make]
@@ -2839,8 +2827,7 @@ In many situation we want to implement some protocol like `Enumerable` for a str
 
 `@derive` allows us to dynamically derive implementations for structs based on the implementation for maps.
 
-[source, elixir]
-```
+```elixir
 defmodule User do
   @derive [Enumerable]
   defstruct name: "", age: 0
@@ -2866,8 +2853,7 @@ accessors to make it simpler for developers to traverse nested data structures, 
 
 For instance, given a user with a list of languages, here is how to deeply traverse the map and convert all language names to uppercase:
 
-[source, elixir]
-```
+```elixir
 iex> user = %{name: "john",
 ...>          languages: [%{name: "elixir", type: :functional},
 ...>                      %{name: "c", type: :procedural}]}
@@ -2995,8 +2981,7 @@ Example:
 
 If you have more than one parameters, for example the `String.ends_with?(string, suffixes)` function, this syntax are equivalent:
 
-[source, elixir]
-```
+```elixir
 "elixir" |> String.ends_with?("ixir")
 
 String.ends_with?("Elixir","ixir")
@@ -3014,8 +2999,7 @@ Ref:
 
 A module is a way of organizing a collection of functions into a namespace. A module basically acts as a namespace.
 
-[source, elixir]
-```
+```elixir
 defmodule Calculator do
   def sum(a, b) do
     a+b
@@ -3059,7 +3043,7 @@ The return value of a function is its last expression.
 
 If a function resides in the same module, you can omit the module prefix:
 
-```
+```elixir
 defmodule Geometry do
   def rectangle_area(a, b) do
     a* b
@@ -3090,7 +3074,7 @@ If multiple modules are defined in a single source file, the compiler will produ
 
 Let’s recall how modules are defined:
 
-```
+```elixir
 defmodule Geometry do
   ...
 end
@@ -3098,7 +3082,7 @@ end
 
 Also recall from the discussion about atoms that Geometry is an alias that corresponds to `:"Elixir.Geometry"`, as demonstrated in the following snippet:
 
-```
+```elixir
 iex(1)> Geometry == :"Elixir.Geometry"
 true
 ```
@@ -3111,7 +3095,7 @@ When you run `$ iex my_source.ex` This command compiles the source file and then
 
 Similarly, you can define modules in the shell:
 
-```
+```elixir
 iex(1)> defmodule MyModule do   # In-memory bytecode generation and loading of a module
           def my_fun, do: :ok
         end
@@ -3125,7 +3109,7 @@ Again, the bytecode isn’t saved to the disk in this case.
 
 Kernel.apply/3 can be useful when you need to make a runtime decision about which function to call.
 
-```
+```elixir
 iex(1)> apply(IO, :puts, ["Dynamic function call."])
 ```
 
@@ -3151,7 +3135,7 @@ There are multiple ways of starting BEAM: iex, elixir, mix
 
 Ex:
 
-``` 
+```elixir
 defmodule MyModule do
   def run do
     IO.puts("Called MyModule.run")
@@ -3178,7 +3162,7 @@ A function is uniquely identified by:
 
 Basic example:
 
-```
+```elixir
 defmodule Rectangle do
   def area(a), do: area(a, a)  # Rectangle.area/1
   def area(a, b), do: a * b    # Rectangle.area/2
@@ -3187,7 +3171,7 @@ end
 
 The above example can be refactored using default values:
 
-```
+```elixir
 defmodule Calculator do
   def sum(a, b \\ 0) do
     a + b
@@ -3217,8 +3201,7 @@ In the example [name: name, birthday: bday](`introduction())` you can omit the s
 
 The same happens when you invoke a function: [name: "Nicola", birthday: "01-01-1999"](`Talk.introduction())` and `Talk.introduction(name: "Nicola", birthday: "01-01-1999")` are equivalent
 
-[source, elixir]
-```
+```elixir
 defmodule Talk do
   def introduction(name: name, birthday: bday) do
     IO.puts "Hi my name is #{name} and I was born on #{bday}"
@@ -3248,8 +3231,7 @@ Keyword lists are most often useful for allowing clients to pass an arbitrary nu
 
 For example, the result of the function IO.inspect, which prints a string representation of a term to the console, can be controlled by providing additional options through a keyword list:
 
-[source, elixir]
-```
+```elixir
 iex(7)> [100, 200, 300](IO.inspect(), [width: 3])
 [100,
 200, 300]
@@ -3261,8 +3243,7 @@ In fact, this pattern is so frequent that Elixir allows you to omit the square b
 
 To implement the same behaviour of `IO.inspect/2`, you can accept a keyword list as the last argument of your function, and make that argument default to an empty list:
 
-[source, elixir]
-```
+```elixir
 def my_fun(arg1, arg2, opts \\ []) do
   ...
 end
@@ -3270,8 +3251,7 @@ end
 
 It’s up to you to check the contents in the opts argument and perform some conditional logic. You can use `Keyword.get` to pull out the keys you are interested in if they exist, the third parameter we pass to `Keyword.get/3` is a default value to use if the key’s not found. You can use Module's attributes to make default values more readable.
 
-[source, elixir]
-```
+```elixir
 defmodule Paint do
   @default_color "black"
   @default_shape "circle"
@@ -3286,9 +3266,7 @@ end
 
 An alternative approach is taking advantage of pattern matching to extract values but you have to convert to a map first. You can create the default as a map then merge values from the keyword list passed in.
 
-[source, elixir]
-```
-
+```elixir
 defmodule Paint do
   @defaults %{color: "black", shape: "circle"}
   def draw(options \\ [] ) do
@@ -3302,15 +3280,13 @@ Draw a red Square
 
 iex(2)> Paint.draw(shape: "Square", color: "red")
 Draw a red Square
-
 ```
 
 This solves one of our problems, we can now pass in the arguments in any order we wish.
 
 `Enum.into/2` inserts the given enumerable elements into a collectable, for example:
 
-[source, elixir]
-```
+```elixir
 iex> [1, 2](Enum.into(), [0])        # List element are prefixed to List
 [0, 1, 2]
 
@@ -3335,8 +3311,7 @@ iex(19)> [1, 2](Enum.into(), %{})  # Collectable must be compatible element of t
 
 Nest modules in Elixir is a naming CONVENTION: the `.` is used to organize modules hierarchically. But note that it's only a naming convention; onece the code is compiled, there are no special hierarchical relations between modules. (ex: `Animal.Lion`, `Animal.Tiger` )
 
-[source, elixir]
-```
+```elixir
 defmodule Calculator.Addition do
   def sum(a, b) do
     a+b
@@ -3346,8 +3321,7 @@ end
 
 or
 
-[source, elixir]
-```
+```elixir
 defmodule Calculator do
   defmodule Addition do
     def sum(a, b) do
@@ -3357,8 +3331,7 @@ defmodule Calculator do
 end
 ```
 
-[source, elixir]
-```
+```elixir
 defmodule Example.Greetings do
   def morning(name) do
     "Good morning #{name}."
@@ -3382,8 +3355,7 @@ When you define a function using the `def` macro, the function is made public. T
 * Private functions can only be called from within their own Module
 * Error if you call a private func: `UndefinedFunctionError`
 
-[source, elixir]
-```
+```elixir
 defmodule Math do
   def sum(a, b) do
     do_sum(a, b)
@@ -3398,8 +3370,7 @@ IO.puts Math.sum(1, 2)    #=> 3
 IO.puts Math.do_sum(1, 2) #=> ** (UndefinedFunctionError)
 ```
 
-[source, elixir]
-```
+```elixir
 defmodule Greeting do
   def hello_public
     hello_private
@@ -3428,8 +3399,7 @@ Ref:
 
 Use `import` to avoid prefixing the module
 
-[source, elixir]
-```
+```elixir
 IO.puts "Hello"
 puts  #  ** (CompileError) iex:1: undefined function puts/0
 import IO
@@ -3446,16 +3416,14 @@ Import only selected functions:
 
 Alias a module to add an alternative module name:
 
-[source, elixir]
-```
+```elixir
 IO.puts "Hello"
 alias IO, as: Say
 Say.puts "Hello"
 
 ```
 
-[source, elixir]
-```
+```elixir
 defmodule UseImportRequire do
   alias UseImportRequire.AliasMe
   alias UseImportRequire.AliasMe, as: AnotherName
@@ -3476,8 +3444,7 @@ end
 
 The import macro also allows importing of specific functions or macros. This limits “namespace pollution” and can reduce the chance of ambiguity or confusion. Again, this is common with Ecto.Query - the documentation recommends:
 
-[source, elixir]
-```
+```elixir
 import Ecto.Query, only: [from: 2]
 ```
 
@@ -3487,8 +3454,7 @@ in order to import only the Ecto.Query.from/2 macro.
 
 As I’ve mentioned there are tradeoffs for using alias and import between convenience and clarity. There is another way to help mitigate this tradeoff. The alias and import macros don’t need to be called at the outer module scope as we have been using them. They can, for example, be called from within another function. Here’s an example using import:
 
-[source, ]
-```
+```elixir
 defmodule UseImportRequire.WithScope do
   def scope_test do
     import UseImportRequire.ReferenceMe
@@ -3504,8 +3470,7 @@ end
 
 With `use` developers can inject code into your module. When calling:
 
-[source, elixir]
-```
+```elixir
 use MyModule, some: :options
 ```
 
@@ -3513,8 +3478,7 @@ the `\__using__/1` macro from the MyModule module is invoked with the second arg
 
 Behind the scenes, `use` allow the module to inject some code into the current context. Generally speaking, the following module:
 
-[source, elixir]
-```
+```elixir
 defmodule Example do
   use Feature, option: :value
 end
@@ -3522,8 +3486,7 @@ end
 
 is compiled into
 
-[source, elixir]
-```
+```elixir
 defmodule Example do
   require Feature
   Feature.__using__(option: :value)
@@ -3532,8 +3495,7 @@ end
 
 Here’s an example:
 
-[source, elixir]
-```
+```elixir
 #=> lib/use_import_require/use_me.ex
 defmodule UseImportRequire.UseMe do
   defmacro __using__(_) do
@@ -3548,8 +3510,7 @@ end
 
 and we add this line to UseImportRequire:
 
-[source, elixir]
-```
+```elixir
 defmodule TestLibrary do
   use UseImportRequire.UseMe
 end
@@ -3569,8 +3530,7 @@ The Phoenix framework makes use of use and `__using__/1` to cut down on the need
 
 Here’s an nice and short example from the Ecto.Migration module:
 
-[source, elixir]
-```
+```elixir
 defmacro __using__(_) do
   quote location: :keep do
     import Ecto.Migration
@@ -3603,8 +3563,7 @@ Examples:
 
 Here’s a really nice example of using import:
 
-[source, elixir]
-```
+```elixir
 defmodule Orthrus.Repo.Migrations.CreateUser do
   use Ecto.Migration
 
@@ -3761,8 +3720,7 @@ Elixir provides the `@external_resource` module attribute to handle cases where 
 
 To make small function much more readable you can use this compact syntax:
 
-[source, elixir]
-```
+```elixir
 defmodule Calculator do
   def sum(a, b), do: a + b
 end
@@ -3774,8 +3732,7 @@ http://elixir-lang.github.io/getting-started/modules-and-functions.html#function
 
 You can retrieve a named function as a function type
 
-[source, elixir]
-```
+```elixir
 iex> Math.zero?(0)
 true
 iex> fun = &Math.zero?/1
@@ -3788,8 +3745,7 @@ true
 
 If you want to capture a function from a module, you can do &amp;Module.function():
 
-[source, elixir]
-```
+```elixir
 iex> fun = &List.flatten(&1, &2)
 &List.flatten/2
 iex> [1, [[2](fun.(), 3]], [4, 5])
@@ -3804,8 +3760,7 @@ The capture operator bridges this gap by allowing named functions to be assigned
 
 Shorthand to create anonymous functions
 
-[source, elixir]
-```
+```elixir
 iex> sum = &(&1 + &2)
 iex> sum.(2, 3)
 5
@@ -3822,8 +3777,7 @@ Ref:
 
 Named functions in Elixir also support default arguments:
 
-[source, elixir]
-```
+```elixir
 defmodule Concat do
   def join(a, b, sep \\ " ") do
     a <> sep <> b
@@ -3836,8 +3790,7 @@ IO.puts Concat.join("Hello", "world", "_") #=> Hello_world
 
 > **Note:** If a function with default values has multiple clauses, it is required to create a function head (without an actual body) for declaring defaults:
 
-[source, elixir]
-```
+```elixir
 defmodule Concat do
   def join(a, b \\ nil, sep \\ " ")
 
@@ -3877,8 +3830,7 @@ If we save the code above in a file named “concat.ex” and compile it, Elixir
   this clause cannot match because a previous clause at line 2 always matches
   The compiler is telling us that invoking the join function with two arguments will always choose the first definition of join whereas the second one will only be invoked when three arguments are passed:
 
-[source, elixir]
-```
+```elixir
 $ iex concat.exs
 iex> Concat.join "Hello", "world"
 ***First join
@@ -3923,8 +3875,7 @@ end
 
 This call:
 
-[source, elixir]
-```
+```elixir
 
 Example.foobar do
  IO.puts "first block"
@@ -3947,8 +3898,7 @@ rescue block
 
 Is equivalent to:
 
-[source, elixir]
-```
+```elixir
 [do: IO.puts("true"), else: IO.puts("false"), catch: IO.puts "catch block", after: IO.puts "after block", rescue: IO.puts "rescue block"](Example.foobar())
 
 first block
@@ -3960,8 +3910,7 @@ rescue block
 
 If you are curious, you can inspect a block:
 
-[source, elixir]
-```
+```elixir
 IO.inspect do
  IO.puts "first block"
 else
@@ -3989,8 +3938,7 @@ Closures in Elixir (fn's) are really just closures in Erlang (fun's).
 
 Here's an example in JavaScript and Elixir so you can see the difference:
 
-[source, elixir]
-```
+```elixir
 js> a = 5;
 5
 js> f = function(x) { return x+a };
@@ -4013,8 +3961,7 @@ One of the good things about functional programming is that it makes it easy to 
 
 What about Elixir? This gets closures right:
 
-[source, elixir]
-```
+```elixir
 iex> a = 5
 5
 iex> f = fn(x) -> x + a end
@@ -4233,8 +4180,7 @@ Ref: https://stackoverflow.com/questions/23693173/elixir-pattern-matching-works-
 
 When matching maps though, you can match on one or more keys in the map, the left-side pattern doesn’t need to contain all the keys from the right-side term:
 
-[source, elixir]
-```
+```elixir
 %{a: b} = %{a: :foo, b: :bar}
 ```
 
@@ -4436,9 +4382,6 @@ A more useful example:
 ```elixir
 iex(7)> {_, {hour, _, _}} = date_time = :calendar.local_time()
 iex(8)> date_time
-{{ "{{" }}2018, 11, 11{{ "}}" }}, {{ "{{" }}21, 32, 34{{ "}}" }}
-iex(9)> hour
-21
 ```
 
 ### Assign variables in the function definition: Phoenix controller example
@@ -4449,8 +4392,8 @@ When I first used Phoenix I saw something I found confusing in some method signa
 
 Here’s an example from the show action of a controller:
 
-[source, elixir]
-```
+
+```elixir
 def show(conn, %{“user_id” => user_id} = params) do
   # … show stuff here using variables user_id and params
 end
@@ -4572,8 +4515,7 @@ Guards are a way to augment pattern matching with more complex checks. They are 
 
 This is best illustrated by example. The following code tests whether a given number is positive, negative, or zero.
 
-[source, elixir]
-```
+```elixir
 defmodule TestNum do
   def test(x) when x < 0 do
     :negative
@@ -4598,8 +4540,7 @@ Surprisingly enough, calling this function with a non-number yields strange resu
 
 To fix this, you have to extend the guard by testing whether the argument is a number
 
-[source, elixir]
-```
+```elixir
 defmodule TestNum do
   def test(x) when is_number(x) and x < 0 do
     :negative
@@ -4628,8 +4569,7 @@ You can find the complete up-to-date list at https://hexdocs.pm/elixir/guards.ht
 
 Anonymous functions (lambdas) may also consist of multiple clauses. A lambda can be defined as `double = fn x -> x*2 end`.
 
-[source, elixir]
-```
+```elixir
 fn
   pattern_1, pattern_2 ->
     ... # Executed if pattern_1 matches
@@ -4641,8 +4581,7 @@ end
 
 Let’s see this in action by reimplementing the `test/1` function that inspects whether a number is positive, negative, or zero:
 
-[source, elixir]
-```
+```elixir
 test_num =
   fn
     x when is_number(x) and x < 0 ->
@@ -4665,8 +4604,7 @@ test_num =
 
 #### The case operator
 
-[source, elixir]
-```
+```elixir
 #=> my_case.exs
 defmodule MyCase do
 
@@ -4683,8 +4621,7 @@ end
 
 Then load up the file in iex by running `$ iex my_case.exs.`
 
-[source, elixir]
-```
+```elixir
 iex> MyCase.do_something({:ok, true})
 "The status was :ok!"
 iex> MyCase.do_something({:nope, true})
@@ -4699,7 +4636,7 @@ Occasionally, you’ll need to match against the contents of the variable. This 
 
 For this purpose, the pin operator (^) is provided. This is best explained with an example:
 
-```
+```elixir
 iex(7)> expected_name = "Bob"              # Matches anything and then binds to the variable expected_name
         "Bob"
 iex(8)> {^expected_name, _} = {"Bob", 25}  # Matches to the content of the variable expected_name
@@ -4725,8 +4662,7 @@ Ref : https://stackoverflow.com/questions/21075026/what-is-the-difference-betwee
 
 ### Conditional: if
 
-[source, elixir]
-```
+```elixir
 if condition do
   ...
 else
@@ -4740,8 +4676,7 @@ if condition, do: something, else: another_thing # One line version
 
 If the condition isn’t met and the else clause isn’t specified, the return value is the atom nil:
 
-[source, elixir]
-```
+```elixir
 iex(1)> if 5 > 3, do: :one
 
 iex(2)> if 5 < 3, do: :one
@@ -4759,8 +4694,7 @@ end
 
 It takes a list of expressions and executes the block of the first expression that evaluates to a truthy value:
 
-[source, elixir]
-```
+```elixir
 cond do
   expression_1 ->
   ...
@@ -4770,8 +4704,7 @@ cond do
 end
 ```
 
-[source, elixir]
-```
+```elixir
 def max(a, b) do
   cond do
     a >= b -> a
@@ -4790,8 +4723,7 @@ The term pattern here indicates that it deals with pattern matching. In the case
 
 The first one that matches is executed, and the result of the corre- sponding block (its last expression) is the result of the entire case expression. If no clause matches, an error is raised.
 
-[source, elixir]
-```
+```elixir
 case expression do
   pattern_1 ->
     ...
@@ -4806,8 +4738,7 @@ Default Cluse: You can specify the default clause by using the anonymous variabl
 
 The case-powered version of the max function would then look like this:
 
-[source, elixir]
-```
+```elixir
 defmodule Compare do
   def max(a,b) do
     case a >= b do
@@ -4820,14 +4751,12 @@ end
 
 There are no differences between case and multiclause functions. In fact, the general case syntax can be directly translated into the multiclause approach:
 
-[source, elixir]
-```
+```elixir
 defp fun(pattern_1), do: ...
 defp fun(pattern_2), do: ...
 ```
 
-[source, elixir]
-```
+```elixir
 defmodule Compare do
   def max(a,b) when a>=b do
     a
@@ -4853,8 +4782,7 @@ function test(x){
 
 In Elixir you can use multiclauses:
 
-[source, elixir]
-```
+```elixir
 defmodule TestNum do
         def test(x) when x < 0, do: :negative
         def test(0), do: :zero
@@ -4884,8 +4812,7 @@ end
 
 Problem: if you want to expand your options you will start to add a sequece of if-else-if-else... which is not easly readable. The `cond` statement is for that
 
-[source, elixir]
-```
+```elixir
 cond do
   weather == :raining and not is_weekend ->
     IO.puts "I'm eating apple"
@@ -4902,8 +4829,7 @@ end
 
 If you prefer using pure pattern matching use `case` or multi-clause functions:
 
-[source, elixir]
-```
+```elixir
 defmodule Weather do
   def reaction(weather, weekday) do
     case { weather, weekday } do
@@ -4928,8 +4854,7 @@ end
 
 The same can be refactored in a more readable multi-clause:
 
-[source, elixir]
-```
+```elixir
 defmodule Weather do
   def reaction({weather, _} = { :raining, :weekend }), do: IO.puts "#{weather} : I'm will eat 2 apples!"
   def reaction({weather, _}  = { :raining, _ }), do: IO.puts "#{weather} : I'm eating apple"
@@ -4955,8 +4880,7 @@ Elixir has inherited the tagged tuple error handling convention from Erlang.Let�
 
 Subsequent code can then pattern match on the tag to call the correct behaviour.
 
-[source, elixir]
-```
+```elixir
 case MyModule.flaky_method do
   {:ok, value} -> IO.puts "All good value was: #{value}."
   {:error, reason} -> IO.puts "Uh oh! Failed due to #{reason}."
@@ -4987,8 +4911,7 @@ The pipe operator is great when all functions are acting on a consistent piece o
 
 For example suppose you need to process registration data submitted by a user. The input is a map, with keys being strings (“login”, “email”, and “password”). Here’s an example of one input map:
 
-[source, elixir]
-```
+```elixir
        %{
          "login" => "alice",
          "email" => "some_email",
@@ -5002,8 +4925,7 @@ For example suppose you need to process registration data submitted by a user. T
 Your task is to normalize this map into a map that contains only the fields login, email, and password. Therefore, for the given input, you can return the following structure: `%{login: "alice", email: "some_email", password: "password"}`
 But some required field might not be present in the input map. In this case, you want to report the error.
 
-[source, elixir]
-```
+```elixir
 defmodule Login do
   def extract_user(user) do
     case extract_login(user) do
@@ -5045,8 +4967,7 @@ It allows you to simplify code, replacing nested case calls with a chain of matc
 
 In its simplest form, with has the following shape:
 
-[source, elixir]
-```
+```elixir
 with pattern_1 <- expression_1,
      pattern_2 <- expression_2,
      ...
@@ -5059,8 +4980,7 @@ end
 
 Previously, one would write
 
-[source, elixir]
-```
+```elixir
 case File.read("my_file.ex") do
   {:ok, contents} ->
     case Code.eval_string(contents) do
@@ -5075,8 +4995,7 @@ end
 
 using `with`:
 
-[source, elixir]
-```
+```elixir
 with {:ok, contents} <- File.read("my_file.ex"),
      {res, binding} <- Code.eval_string(contents),
      do: {:ok, res}
@@ -5084,8 +5003,7 @@ with {:ok, contents} <- File.read("my_file.ex"),
 
 the Login example can be refactored:
 
-[source, elixir]
-```
+```elixir
 defmodule Login do
   def extract_user(user) do
     with {:ok, login} <- extract_login(user),
@@ -5111,8 +5029,7 @@ SCOPE:
 * all the variable matched are in scope in the subsequent expressions and in the do block. In the above example we use `login`, `email` and `password` in the `do` block.
 * variables bound inside with/1 won't leak, see this example
 
-[source, elixir]
-```
+```elixir
 width = nil
 opts = %{width: 10, height: 15}
 with {:ok, width} <- Map.fetch(opts, :width),
@@ -5127,8 +5044,7 @@ nil
 
 `Guards` can be used in patterns as well:
 
-[source, elixir]
-```
+```elixir
 users = %{"melany" => "guest", "bob" => :admin}
 with {:ok, role} when not is_binary(role) <- Map.fetch(users, "bob") do
   {:ok, to_string(role)}
@@ -5140,8 +5056,7 @@ In case a match fails, an `else` option can be given to modify what is being ret
 
 Example:
 
-[source, elixir]
-```
+```elixir
 opts = %{width: 10}
 with {:ok, width} <- Map.fetch(opts, :width),
      {:ok, height} <- Map.fetch(opts, :height) do
@@ -5157,8 +5072,7 @@ If an else block is used and there are no matching clauses, a WithClauseError ex
 
 If there is no matching `else` block, then a `WithClauseError` exception is raised.
 
-[source, elixir]
-```
+```elixir
 with ... <- ... ,
     ... <- ... ,
     ... <- ... ,
@@ -5179,8 +5093,7 @@ NOTE that:
 
 Example:
 
-[source, elixir]
-```
+```elixir
 width = nil
 opts = %{width: 10, height: 15}
 with {:ok, width} <- Map.fetch(opts, :width),
@@ -5242,8 +5155,7 @@ TL;DR:  Always use Tail call function with recursion to avoid memory issues
 We will start showing a basic example that demonstrates the basic way of interating.
 The following code implements a function that sums all the elements in a given list:
 
-[source, elixir]
-```
+```elixir
 defmodule ListHelper do
         def sum([]), do: 0
         def [head | tail](sum()) do
@@ -5269,8 +5181,7 @@ Ref:
 
 A recursive function is said to be "tail recursive" if the recursive call is the last thing done by the function.
 
-[source, elixir]
-```
+```elixir
 def original_fun(...) do
   ...
   another_fun(...)  ## <<<---  Tail call
@@ -5295,8 +5206,7 @@ Elixir (or, more precisely, Erlang) treats tail calls in a specific manner by pe
 
 In the next listing, you'll convert the `ListHelper.sum/1` function to the tail-recursive version.
 
-[source, elixir]
-```
+```elixir
 defmodule ListHelper do
   def sum(list) do
     do_sum(0, list)
@@ -5331,8 +5241,7 @@ For example `Enum.each/2` takes a lambda as its input so it’s called a higher-
 
 You can use Enum.each/2 to iterate over enumerable structures without writing the recursion. But Under the hood, Enum.each/2 is powered by recursion: there’s no other way to do loops and iterations in Elixir.
 
-[source, elixir]
-```
+```elixir
 iex(1)> Enum.each(
           [1, 2, 3],
           fn x -> IO.puts(x) end # Passing a function value to another function
@@ -5353,8 +5262,7 @@ Elixir’s standard library provides many other useful iteration helpers in the 
 
 Most functions from the Enum module work on `enumerables`: lists, ranges, maps, and MapSet, etc...  It’s also possible to turn your own data structures into enumerables and thus harness all the features from the Enum module.
 
-[source, elixir]
-```
+```elixir
 iex(1)> Enum.map(
           [1, 2, 3],
           fn x -> 2 * x end
@@ -5376,8 +5284,7 @@ Reducing is best explained with a specific example: you’ll use reduce to sum a
 
 The function has the following shape:
 
-[source, elixir]
-```
+```elixir
 Enum.reduce(
   enumerable,
   initial_acc,    # initial value for the accumulator
@@ -5390,8 +5297,7 @@ Enum.reduce(
 * The lambda’s task is to compute and return the new accumulator value.
 * When the iteration is done, Enum.reduce/3 returns the final accumulator value.
 
-[source, elixir]
-```
+```elixir
 iex(4)> Enum.reduce(
           [1, 2, 3],
           0,          # Sets the initial accumulator value
@@ -5408,8 +5314,7 @@ REFACTOR: you can turnan operator into a lambda by calling &+/2, &*/2, and so on
 
 REFACTOR: The previous example works only if you pass a list that consists exclusively of numbers. If the list contains anything else, an error is raised (because the + operator is defined only for numbers)
 
-[source, elixir]
-```
+```elixir
 Enum.reduce(
   [1, "not a number", 2, :x, 3],
   0,
@@ -5423,8 +5328,7 @@ Enum.reduce(
 
 REFACTOR FOR READABILITY: Personally, I tend to avoid writing elaborate lambdas.  In the following snippet, the lambda code is pushed to a separate private function:
 
-[source, elixir]
-```
+```elixir
 defmodule NumHelper do
   def sum_nums(enumerable) do
     Enum.reduce(enumerable, 0, &add_num/2) # Captures the add_num/2 to lambda
@@ -5450,16 +5354,14 @@ Whilst there’s no benefit other than the syntactic sugar, comprehensions are s
 
 For example, we can map a list of integers into their squared values:
 
-```elxir
-```
+```elixir
 iex> for n <- [1, 2, 3, 4], do: n * n
 [1, 4, 9, 16]
 ```
 
 The same result could be achived with `Enum.map/2`:
 
-```elxir
-```
+```elixir
 iex> [1, 2, 3, 4](Enum.map(), &(&1 * &1))
 [1, 4, 9, 16]
 ```
@@ -5477,8 +5379,7 @@ A comprehension is made of various parts:
 
 More generator examples:
 
-[source, elxir]
-```
+```elixir
 #=> getting the message from a keyword list of responses
 responses = [ok: "Hello World", error: "Server Error", ok: "What up"]
 for {code, msg} <- responses, do: msg
@@ -5495,8 +5396,7 @@ Calling the provided block for each combination of input collections.
 
 Below you can see we iterate through the first list and then iterate through the second list for each element:
 
-```elxir
-```
+```elixir
 for a <- 1..3, b <- 4..6, do: {a, b}
 [{1, 4}, {1, 5}, {1, 6}, {2, 4}, {2, 5}, {2, 6}, {3, 4}, {3, 5}, {3, 6}]
 ```
@@ -5516,8 +5416,7 @@ This will produce the following list: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55
 
 You can also use multiple filters:
 
-```elxir
-```
+```elixir
 import Integer
 
 for n <- 1..100, divisible_by_5?.(n), is_even(n), do: n
@@ -5531,8 +5430,7 @@ If you want to return a different type of data structure you can do that using t
 
 For example, here I’ve got a map where I want to convert each value to begin with an uppercase character:
 
-```elxir
-```
+```elixir
 me = %{first_name: "philip", last_name: "brown"}
 for {k, v} <- me, into: %{}, do: {k, String.capitalize(v)}
 
@@ -5543,8 +5441,7 @@ for {k, v} <- me, into: %{}, do: {k, String.capitalize(v)}
 
 Use Enum.with_index:
 
-```elxir
-```
+```elixir
 iex(1)> for {c, counter} <- ["a", "b"](Enum.with_index()), do: {counter, c}
 [{0, "a"}, {1, "b"}]
 ```
@@ -5607,9 +5504,7 @@ There are three ways to create quoted expressions in Elixir:
 
 > **Note:** `quote` mark off context, this is very important when used with unquote fragments, see <<Compile time code generation: Mime Type Library,Compile time code generation: Mime Type Library>>
 
-.Example
-[source, elixir]
-```
+```elixir
 quote do: 10/2
 {:/, [context: Elixir, import: Kernel], [10, 2]} # <1>
 ```
@@ -5622,8 +5517,7 @@ AST is represented as a series of three element tuples:
 
 [Quote Documentation](https://hexdocs.pm/elixir/Kernel.SpecialForms.html#quote/2)
 
-[source, elixir]
-```
+```elixir
 add = fn a, b -> a + b end
 quote do: add.(1, 2)
 
@@ -5640,8 +5534,7 @@ quote do: add.(1, 2)
 
 `Code.eval_quoted/3` can be used to eval quoted code [Doc](https://hexdocs.pm/elixir/Code.html#eval_quoted/3)
 
-[source, elixir]
-```
+```elixir
 iex(6)> ast = quote do: 5*10
 {:*, [context: Elixir, import: Kernel], [5, 10]}
 
@@ -5698,8 +5591,7 @@ The metadata helps the Elixir compiler perform things like macro hygiene.
 metadata `import`
  the metadata tells the + function exists in the scope that defines the quote as a function imported from the Kernel module.
 
-[source, elixir]
-```
+```elixir
 iex(1)> quote do: 1 + 1
 {:+, [context: Elixir, import: Kernel], [1, 1]}
 
@@ -5750,8 +5642,7 @@ You can think of unquote into a quote blcok as string interpolation (`#{}`) for 
 
 To demonstrate `unquote/1` let’s look at some examples:
 
-[source, elixir]
-```
+```elixir
 multiplier = 2
 #=> 2
 
@@ -5772,8 +5663,7 @@ That’s the purpose of `unquote(...)` - the expression inside parentheses is *i
 
 You evaluate an expression that must be valid in the current context, and inject the result in the expression you’re building (an AST fragment).
 
-[source, elixir]
-```
+```elixir
 multiplier = 2
 #=> 2
 
@@ -5803,8 +5693,7 @@ We already covered the usefulness of unquote/1, but there’s another way to inj
 
 For example, the following blocks of code are equivalent:
 
-[source, elixir]
-```
+```elixir
 quote bind_quoted: [operator: operator, lhs: lhs, rhs: rhs] do
   Assertion.Test.assert(operator, lhs, rhs)
 end
@@ -5816,8 +5705,7 @@ end
 
 To see why using it is good practice, have a look at the folling example:
 
-[source, elixir]
-```
+```elixir
 defmodule Debugger do
   defmacro log(expression) do
     if Application.get_env(:debugger, :log_level) == :debug do
@@ -5851,8 +5739,7 @@ iex>
 
 Let’s fix this by using bind_quoted.
 
-[source, elixir]
-```
+```elixir
 defmodule Debugger do
   defmacro log(expression) do
     if Application.get_env(:debugger, :log_level) == :debug do
@@ -5893,8 +5780,7 @@ Macro fragments allow:
 
 Before macro fragments were implemeted, Elixir always escaped unquoted contents, so if you had a macro that had to define another macro, like this:
 
-[source, elixir]
-```
+```elixir
 defmacro new_macro do
    quote do
      defmacro sample(a) do
@@ -5928,8 +5814,8 @@ A context is the scope of the caller’s:
 * and aliases.
 
 .macros/callers_context.exs
+
 ```elixir
-```
 defmodule Mod do
   defmacro definfo do
     IO.puts "In macro's context (#{__MODULE__})." # <1>
@@ -5949,7 +5835,6 @@ end
 ```
 
 ```elixir
-```
 defmodule MyModule do
   require Mod
   Mod.definfo
@@ -5972,7 +5857,6 @@ Macros are *by default* hygienic: variable bindings, imports and aliases introdu
 For example:
 
 ```elixir
-```
 defmodule Hygiene do
   defmacro no_interference do
     quote do: a = 1   # <1>
@@ -5991,6 +5875,7 @@ end
 HygieneTest.go
 #=> 13
 ```
+
 <1> Within the macro variable `a` is set to 1
 <2> Before calling the macro we set `a` to 13
 <3> After calling the macro `a` is still 1
@@ -6000,7 +5885,6 @@ Most of the time hygiene is exactly what you want, it prevents unexpected implic
 But there are exceptions. Sometimes, you may need to create a variable that is available to the code calling the macro. To achieve this Elixir force you to be explicit, for such purposes you can use `var!` construct, example:
 
 ```elixir
-```
 defmodule NoHygiene do
   defmacro interference do
     quote do: var!(a) = 1   # <1>
@@ -6022,6 +5906,7 @@ NoHygiene.interference #<4>
 a
 #> 1
 ```
+
 <1> The variable `a` is not binded
 <2> We invoke the not hygeniec macro
 <3> Now the variable `a` is binded
@@ -6214,7 +6099,6 @@ Chris McCord - Metaprogramming:
 To stay true to the ancient tradition of making useless example with absolutely no connection to the real world, let’s build a macro that logs the number of Elixir expressions (and sub-expressions) in some given code:
 
 ```elixir
-```
 defmodule UselessExamplesAreFun do
   defmacro log_number_of_expressions(code) do
     {_, counter} = Macro.prewalk code, 0, fn(expr, counter) ->
@@ -6231,7 +6115,6 @@ end
 Let’s walk through the macro. First, we count the expressions and sub-expressions by using Macro.prewalk/3. Then, we print this number: this is our compile time work. Finally, we just return the argument code (which is already an AST). This macro effectively does nothing at runtime: in fact, it won’t leave a trace in the compiled code. This is great for performance because, well, the compile-time logging code just disappears.
 
 ```elixir
-```
 #>in lib/greetings.ex
 import MyApp.Gettext
 gettext "Hello people of Gotham!", "fr"
@@ -6240,7 +6123,6 @@ gettext "Hello people of Gotham!", "fr"
 Running mix gettext.extract results in a .po file with this content:
 
 ```elixir
-```
 #> lib/greetings.ex:2
 msgid "Hello people of Gotham!"
 msgstr ""
@@ -6251,7 +6133,6 @@ What most gettext bindings for other languages (such as Python) do to extract tr
 This is what the definition of gettext roughly looks like (and the [actual implementation](https://github.com/elixir-lang/gettext/blob/v0.6.1/lib/gettext/compiler.ex#L40-L60)):
 
 ```elixir
-```
 defmacro gettext(msgid, locale) do
   extract(msgid)
 
@@ -6271,8 +6152,7 @@ With Elixir, we can access the representation of expressions directly with macro
 
 Code: `~/SRC/ELIXIR/metaprogramming_elixir/macros/math.exs`
 
-[source, elixir]
-```
+```elixir
 defmodule Math do
 
   # {:+, [context: Elixir, import: Kernel], [5, 2]}
@@ -6319,7 +6199,6 @@ ref: http://andrealeopardi.com/posts/compile-time-work-with-elixir-macros/
 José Valim proposed to use this technique while we were building [gettext for Elixir](https://github.com/elixir-lang/gettext). Gettext provides a mix gettext.extract task which is used to extract translations from source files and write them to .po files. Translations are just calls to gettext macros with strings as arguments:
 
 ```elixir
-```
 #> in lib/greetings.ex
 import MyApp.Gettext
 gettext "Hello people of Gotham!", "fr"
@@ -6354,7 +6233,6 @@ ref: http://theerlangelist.com/article/macros_1
 We’ll write a macro that can help us in debugging the code. Here’s how this macro can be used:
 
 ```elixir
-```
 iex(1)> Tracer.trace(1 + 2)
 Result of 1 + 2: 3
 3
@@ -6369,7 +6247,6 @@ The `Tracer.trace` takes a given expression and:
 Initially I thought to implement it like this:
 
 ```elixir
-```
 defmodule Tracer do
   defmacro trace(expression_ast) do
     quote do
@@ -6393,7 +6270,6 @@ Tracer.trace(1 + 2)
 Instead we want to read the AST at compile time and get the string representation:
 
 ```elixir
-```
 defmodule Tracer do
   defmacro trace(expression_ast) do
     string_representation = Macro.to_string(expression_ast)
@@ -6440,7 +6316,6 @@ The reason these languages require methods and functions like this is to ensure 
 On pag 31: Chris show how to proxy out the internal logic to a function on an internal module to avoid pollution of the namespace when the Assertion module is imported:
 
 ```elixir
-```
 defmodule Assertion do
 
   defmacro assert({operator, _, [lhs, rhs]}) do
@@ -6500,7 +6375,6 @@ We will see how unquote binds variables to different contexts (and is not always
 The `Mime` module defines several functions based on type and extension in mimes.txt:
 
 ```elixir
-```
 defmodule Mime do
   for line <- [__DIR__, "mimes.txt"](File.stream!(Path.join()), [], :line) do
     [type, rest] = line |> String.split("\t") |> Enum.map(&String.strip(&1))
@@ -6540,7 +6414,6 @@ In this case there isn't a quote context, to which context are the unquoted vari
 Let's look at a simple example that explain better this example.
 
 ```elixir
-```
 defmodule MyContext do
   a = "mishiro"
   def c1(a) do
@@ -6570,7 +6443,6 @@ end
 We need to add the `__using__` macro:
 
 ```elixir
-```
 defmodule Mime do
   @external_resource @mimes_path [__DIR__, "mimes.txt"](Path.join())
   defmacro __using__(_opt) do                                                   #<1>
@@ -6595,7 +6467,6 @@ end
 We can use `quote` to solve both problems:
 
 ```elixir
-```
 defmodule Mime do
   @external_resource @mimes_path [__DIR__, "mimes.txt"](Path.join())
   defmacro __using__(_opt) do
@@ -6693,8 +6564,7 @@ To match a Struct inside a typespec, use the normal %StructName{} syntax.
 * an empty list is OK
 * unknown keys are rejected.
 
-[source, elixir]
-```
+```elixir
 defmodule TypeSpecDemo do
 
   @spec [bar: String.t, baaz: String.t](hello()) :: {:world, list}
@@ -6726,8 +6596,7 @@ To test it:
 
 The `Range` module defines a Range struct and a type `t`
 
-[source, elixir]
-```
+```elixir
 https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/range.ex#L42
 
 defmodule Range do
@@ -6739,8 +6608,7 @@ defmodule Range do
 
 that can be referred as `Range.t`
 
-[source, elixir]
-```
+```elixir
 defmodule Cashy.Prova do
 
   @spec test_remote_type(Range.t) :: Range.t
@@ -6758,8 +6626,7 @@ end
 
 A `Library.Book` struct that has a single property of `:title`. I’ve then defined a custom type using this struct. I’ve also declared that the :title property should be a string.
 
-[source, elixir]
-```
+```elixir
 defmodule Library.Book do
   defstruct [:title]
 
@@ -6772,8 +6639,7 @@ end
 
 We can now update the specs from earlier to use this new custom book type:
 
-[source, elixir]
-```
+```elixir
 @spec add(Library.Book.t) :: :ok
 @spec all :: list(Library.Book.t)
 ```
@@ -6796,8 +6662,7 @@ Polymorphism:
 
 > **Tip:** You use protocol to print something as a string, without knowing what the thing is.
 
-[source, elixir]
-```
+```elixir
 to_string("Hello World")
 "Hello World"
 
@@ -6826,8 +6691,7 @@ Is impossible for a library developer to know every type the app developer will 
 
 Example:
 
-[source, elixir]
-```
+```elixir
 defprotocol Size do
   @doc "Calculates the size (and not the length!) of a data structure"
   def size(data)
@@ -6836,8 +6700,7 @@ end
 
 The Size protocol expects a function called size that receives one argument (the data structure we want to know the size of) to be implemented. We can now implement this protocol for the data structures that would have a compliant implementation:
 
-[source, elixir]
-```
+```elixir
 defimpl Size, for: BitString do
   def size(string), do: byte_size(string)
 end
@@ -6875,8 +6738,7 @@ Not all collections are collectable. Ranges, for example, cannot have new entrie
 
 The collectable API is pretty low-level, so you’ll typically access it via the `Enum.into/2` and `Stream.into/2` functions; they take advantage of this collectable protocol to insert elements into a collectable. Here's an example:
 
-[source, elixir]
-```
+```elixir
 iex> Enum.into(1..10, [])
 [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 iex> Enum.into(1..10, [5, 4, 3])
@@ -6921,8 +6783,7 @@ The implementations for Collectable for the standard library are for List, BitSt
 
 Let’s start by taking a look at the implementation for Map
 
-[source, elixir]
-```
+```elixir
 defimpl Collectable, for: Map do
   def into(original) do
     {original, fn
@@ -6981,8 +6842,7 @@ In order to accomplish this, we’ll use:
 
 Let’s specify the `init/1` and `perform/2` functions for our workers:
 
-[source, elixir]
-```
+```elixir
 defmodule Example.Worker do
   @callback init(state :: term) :: {:ok, new_state :: term} | {:error, reason :: term}
   @callback perform(args :: term, state :: term) ::
@@ -7085,8 +6945,7 @@ To create a default implementation of behaviour's function you can combine:
 
 A good example is the GenServer behaviour https://github.com/elixir-lang/elixir/blob/v1.5.3/lib/elixir/lib/gen_server.ex#L1
 
-[source, elixir]
-```
+```elixir
 defmodule GenServer do
   @callback init(args :: term) ::
     {:ok, state} |
@@ -7235,8 +7094,7 @@ REF:
 
 We can further examine a process with the `i/3`:
 
-[source, elixir]
-```
+```elixir
 iex(2)> :shell_default.i(0,0,0)
 [
   registered_name: :init,
@@ -7294,8 +7152,10 @@ Ref: https://elixir-lang.org/getting-started/debugging.html#observer
 
 Elixir:
 
+```elixir
 $ iex -S mix
 iex(1)> :observer.start()
+```
 
 ## Process are just memory
 
@@ -7465,8 +7325,7 @@ We have a main app we and additional apps for each team, while each team providi
 
 ## Iterate over an Enumerable ()
 
-[source, elixir]
-```
+```elixir
 Enum.each %{foo: :bar}, fn {k, v} ->
   IO.puts "Got #{k}: #{v}"
 end

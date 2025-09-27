@@ -265,7 +265,7 @@ Additionally, third-party applications typically adhere to the convention of rea
 More in detail the Django community convention is:
 
 * Keep all configuration in one place, the Django Settings Mechanism. To do this a Django project should set all the configurable setting using the **Django Settings Mechanism**.
-* To adhere to the convention all your code and 3rd party code should read the configuration from the Django Settings Mechanism directly or indirectly with some helper functions or wrapper class (Example:[django-rest-framework-example](#django-rest-framework-example),... ).
+* To adhere to the convention all your code and 3rd party code should read the configuration from the Django Settings Mechanism directly or indirectly with some helper functions or wrapper class ,... ).
 * DevOps team and Developers should be able to define all the configuration without changing the code using Django Settings Mechanism. When needed they can **read environment variables** but this should be made from the settings files.
 
 
@@ -824,7 +824,7 @@ def __getattr__(self, name):
     return val
 ```
 
-This method is called when an attribute that **has not yet been defined** gets accessed. This is exactly what happens with the `settings.LOGGING_CONFIG` attribute. When accessed within `init.py`, it hasn’t yet been set ([Learn more about attribute access in python](../python-language-reference-nicola.md#managing-attribute-access-in-python-special-methods-vs-decorators)).
+This method is called when an attribute that **has not yet been defined** gets accessed. This is exactly what happens with the `settings.LOGGING_CONFIG` attribute. When accessed within `init.py`, it hasn't yet been set ([Learn more about attribute access in python](../python-language-reference-nicola.md#managing-attribute-access-in-python-special-methods-vs-decorators)).
 
 Accessing it results in a call to `LazySettings.__getattr__`, which checks if `LazySettings._wrapped` is empty. If so, it calls `LazySettings._setup`, causing all settings to get initialized.
 

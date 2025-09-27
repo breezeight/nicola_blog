@@ -105,7 +105,7 @@ TODO: Understand if ember-cli is still using `es6-module-transpiler`. It looks t
 * http://discuss.emberjs.com/t/working-with-docker-ember-cli-in-development/7658
 
 
-See [Javascript Traspiler](../dev/javascript.md#traspiler) for more details about how different transpilers work.
+See [Javascript Traspiler](../dev/javascript/javascript.md) for more details about how different transpilers work.
 
 ## Resolver
 

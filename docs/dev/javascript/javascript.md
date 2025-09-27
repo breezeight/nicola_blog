@@ -26,8 +26,8 @@ Books:
     - All code in this book may also be considered licensed under an MIT license.
     - [GITHUB](https://github.com/marijnh/Eloquent-JavaScript)
     - License "CC BY-NC 3.0"
-- SOTJSN2nd - Secrets of a Javascript Ninja [ebook](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Secrets_of_the_JavaS.pdf), [website](http://www.manning.com/resig/)
-- [FJS - Functional_JavaScript](/Volumes/ArchiveDisk/Archive/Misc/ebook/javascript/Functional_JavaScript.pdf)
+- SOTJSN2nd - Secrets of a Javascript Ninja Secrets_of_the_JavaS.pdf on drive, [website](http://www.manning.com/resig/)
+- FJS - Functional_JavaScript Functional_JavaScript.pdf
 - [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
   Mozilla Developer Network - Javascript
 - [FLJS](https://github.com/getify/Functional-Light-JS) Functional-Light JavaScript
@@ -1240,7 +1240,7 @@ console.log(Object.getOwnPropertyDescriptor(obj, "p"));
 
 #### Summary
 
-![summary](../images/js_immutability_summary.png)
+![summary](../../images/js_immutability_summary.png)
 
 Note that isExt is short for isExtensible. reassign is whether or not a property can be assigned another value. del is whether or not properties can be deleted. add is whether or not a new property can be added.
 

@@ -524,10 +524,6 @@ pool, when the deploy completes new machine are admitted.
 ref:
 * [Food Fight Show](http://foodfightshow.org/2013/01/application-deployment.html)
 
-# Application Cookbook Developement
-
-see [Develop and Test Chef Cookbooks](/blog/2014/03/10/develop-and-test-chef-cookbooks/)
-
 # Chef resources
 
 * [Resources doc](http://docs.opscode.com/chef/resources.html)

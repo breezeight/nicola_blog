@@ -99,5 +99,4 @@ Bootstrap a Nixos system:
 
 Nix and Docker:
 
-- [Nix and Docker](nix-and-docker.md)
 - [Nix Nixpaks](nix-nixpacks.md)

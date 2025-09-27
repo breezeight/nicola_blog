@@ -31,7 +31,7 @@ Developers can use one of the supported programming languages to define reusable
 * [Stacks](https://docs.aws.amazon.com/cdk/latest/guide/stacks.html)
 * [Apps](https://docs.aws.amazon.com/cdk/latest/guide/apps.html)
 
-![CdkAppStacks](CdkAppStacks.png)
+![CdkAppStacks](cdkappstacks.png)
 
 Composition is THE pattern of CDK.
 

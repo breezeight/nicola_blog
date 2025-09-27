@@ -184,7 +184,7 @@ Benefits:
 - Today, the RSA is the most widely used public-key algorithm for SSH key. But compared to Ed25519, it’s slower and even considered not safe if it’s generated with the key smaller than 2048-bit length.
 - **The Ed25519 public-key is compact.** It only contains 68 characters, compared to RSA 3072 that has 544 characters. Generating the key is also almost as fast as the signing process. It’s also fast to perform batch signature verification with Ed25519. It’s built to be collision resilence. Hash-function collision won’t break the system.
 
-## Best practices for SSH keys {#best-practices-for-ssh-keys}
+## Best practices for SSH keys
 
 Although SSH keys offer excellent security and ease of use, they can be compromised if not used correctly. Following are some best practices that can help.
 
@@ -352,7 +352,7 @@ Once it’s saved, later you can SSH to your target host like this: `ssh awesome
 > [!WARNING]\
 > These part about the ssh-agent are not yet completed. It could be moved to a separate page.
 
-### What is an SSH-Agent? {#what-is-an-ssh-agent?}
+### What is an SSH-Agent?
 
 An ssh-agent is a program that holds your private keys used by ssh for public key authentication. It holds your keys and certificates in memory, unencrypted, and ready for use by `ssh`. It saves you from typing a passphrase every time you connect to a server by caching the key for you and you only need to enter the password when the agent wants to decrypt it.
 
@@ -422,7 +422,7 @@ The agent protocol is so simple that one could write a basic SSH agent in a day 
 
 The `ssh-add` command is your gateway to the SSH agent. It performs all of these operations except for signing.
 
-### SSH-Agent and multiple keys {#ssh-agent-and-multiple-keys}
+### SSH-Agent and multiple keys
 
 Using a key agent also allows using multiple keys easily.\
 Instead of having to specify the path to the key, when using a key agent ssh will try every key in it.
@@ -433,14 +433,14 @@ NOTE:
 - Of course, that's what \~/.ssh/config's IdentityFile option is good for, with or without the agent
 - you can have multiple keys without an agent, but you can also specify in your \~/.ssh/config which key to use for which remote host, so that it knows exactly which one it needs
 
-### SSH-Agent Forwarding {#ssh-agent-forwarding}
+### SSH-Agent Forwarding
 
 SSH agent can be forwarded over SSH. So when you ssh to host A, while forwarding your agent, you can then ssh from A to another host B without needing your key present (not even in encrypted form) on host A.
 
 [Using SSH agent forwarding - GitHub Docs](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/using-ssh-agent-forwarding)\
 [An Illustrated Guide to SSH Agent Forwarding](http://www.unixwiz.net/techtips/ssh-agent-forwarding.html)
 
-### Use SSH-Agent with AWS SSM {#use-ssh-agent-with-aws-ssm}
+### Use SSH-Agent with AWS SSM
 
 <https://alestic.com/2018/12/aws-ssm-parameter-store-git-key/>
 

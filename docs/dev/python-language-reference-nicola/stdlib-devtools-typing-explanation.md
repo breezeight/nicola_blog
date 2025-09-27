@@ -6,11 +6,11 @@ Key highlights include Python’s evolution from dynamic typing to supporting ty
 
 1. [Dynamic Typing in Python](#dynamic-typing-in-python-vs-static-typing-in-other-languages-vs-type-hints-in-python): Python determines variable types at runtime, offering flexibility but risking runtime errors.
 
-2. [Reccomendation in Modern Python](#reccomendation-for-modern-python)
+2. [Reccomendation in Modern Python]
 
-3. [Introduction: Hello Types and Annotations ](#introduction-hello-types-and-annotations)
+3. [Introduction: Hello Types and Annotations ]
 
-4. [Type Alias VS Distinct Types - NewType](#type-aliases-vs-distinct-types---newtype)
+4. [Type Alias VS Distinct Types - NewType]
 
 5.	**Runtime Type Checking Tools**: Libraries like Pydantic, Typeguard, and Runtime Type Checker enforce type validation during execution, aiding error handling and data validation.
 

@@ -12,9 +12,6 @@ categories:
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-Test:
-[Create a vagrant box](/blog/2014/03/15/packer_and_vagrant#create-a-vagrant-box-from-an-ubuntu-image-to-test-opsworks)
-
 # TODO
 
 Q: What happens on autoscaling? What applications are deployed ? Does AWS attempt to deploy every app and its layer's reponsability to select the proper one?
