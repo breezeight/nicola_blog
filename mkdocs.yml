@@ -33,8 +33,7 @@ plugins:
   - search
   - macros
   - gh-admonitions
-  - tags:
-      tags_file: tags.md
+  - tags
 
 extra:
   social:
@@ -60,6 +59,9 @@ markdown_extensions:
 nav:
   - Index: index.md
   - AWS: aws.md
+  - Go Language:
+    - Index: dev/go/go-index.md
+    - Organizing Code: dev/go/go-organizing-code.md
   - Python Reference:
     - Index: dev/python-language-reference-nicola.md
     - Variables, Constants, and Naming: dev/python-language-reference-nicola/variables-constants-and-naming.md
