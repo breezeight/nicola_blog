@@ -4433,8 +4433,7 @@ Parentheses are optional, and many developers omit them in this case: `a = b = 1
 
 A more useful example:
 
-[source, elixir]
-```
+```elixir
 iex(7)> {_, {hour, _, _}} = date_time = :calendar.local_time()
 iex(8)> date_time
 {{ "{{" }}2018, 11, 11{{ "}}" }}, {{ "{{" }}21, 32, 34{{ "}}" }}
