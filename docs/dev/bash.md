@@ -950,6 +950,25 @@ word_count=$( wc -w $(echo * | awk '{print $8}') )
 
 Keep in mind that the substitutions etc are expanded, not literals, so you can use wildcards and other pattern syntaxes in them (for example, the “he*l” below used to strip “hell” from the value).
 
+```bash
+$ echo ${param1:2} llo substring from 2
+$ echo ${param1:2:2} ll substring from 2, len 2
+$ echo ${param1#he} llo strip shortest match from start
+$ echo ${param1#hel*} lo strip shortest match from start
+$ echo ${param1#he*l} lo strip shortest match from start
+$ echo ${param1##he*l} o strip longest match from start
+$ echo ${param1%l*o} hel strip shortest match from end
+$ echo ${param1%%l*o} he strip longest match from end
+$ echo ${param1/l/p} heplo replace as few as possible
+$ echo ${param1//l/p} heppo replace as many as possible
+```
+
+Miscellaneous:
+
+```bash
+$ echo ${!param*} param1 param2 param3 parameter names starting with...
+$ echo ${#param1} 5 # length of parameter value
+```
 
 Example Uses:
 

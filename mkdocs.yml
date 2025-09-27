@@ -35,6 +35,15 @@ plugins:
   - gh-admonitions
   - tags
 
+# Exclude specific files from navigation warnings
+exclude_docs: |
+  elixir_examples/behaviours_defoverridable_example/README.md
+  elixir_examples/behaviours_defoverridable_example/deps/cortex/README.md
+  elixir_examples/behaviours_defoverridable_example/deps/cortex/LICENSE.md
+  elixir_examples/behaviours_defoverridable_example/deps/file_system/README.md
+  elixir_examples/dialyzer_playground/README.md
+  elixir_examples/dialyzer_playground/deps/dialyxir/README.md
+
 extra:
   social:
     - icon: fontawesome/brands/github-alt
@@ -55,23 +64,235 @@ markdown_extensions:
   - meta
   - admonition
 
-# Define only part of the navigation manually
+# Comprehensive navigation structure
 nav:
-  - Index: index.md
-  - AWS: dev/aws.md
-  - Go Language:
-    - Index: dev/go/go-index.md
-    - Organizing Code: dev/go/go-organizing-code.md
-  - Python Reference:
-    - Index: dev/python-language-reference-nicola/python-learning.md
-    - Variables, Constants, and Naming: dev/python-language-reference-nicola/variables-constants-and-naming.md
-    - Data Types and Literals: dev/python-language-reference-nicola/data-types-and-literals.md
-    - Functions and Functional Programming: dev/python-language-reference-nicola/functions-and-functional-programming.md
-    - Expressions and Operators: dev/python-language-reference-nicola/expressions-and-operators.md
-    - Control Flow: dev/python-language-reference-nicola/control-flow.md
-    - Classes and Objects: dev/python-language-reference-nicola/classes-and-objects.md
-    - Modules and Packages: dev/python-language-reference-nicola/modules-and-packages.md
-  - Elixir: elixir.md
-  - Elixir Web Development: elixir_webdev.md
-  - Regex: regex.md
-  - Yoga: yoga.md
+  - Home: index.md
+  - AI & Tools:
+    - Anthropic: ai/anthropic_index.md
+    - Anthropic MCP: ai/anthropic_mcp.md
+    - OpenAI: ai/openai_index.md
+    - Cursor: dev/cursor_index.md
+    - Prompt Engineering: dev/prompt-engineering.md
+  - Programming Languages:
+    - Go:
+      - Index: dev/go/go-index.md
+      - Organizing Code: dev/go/go-organizing-code.md
+    - Python:
+      - Learning Path: dev/python-nicola-personal-learning-path.md
+      - Overview: dev/python-overview-and-learning-paths.md
+      - Official Reference: dev/python-official-language-reference-with-ai.md
+      - Python Learning: dev/python-language-reference-nicola/python-learning.md
+      - Language Reference:
+        - Variables, Constants, and Naming: dev/python-language-reference-nicola/variables-constants-and-naming.md
+        - Data Types and Literals: dev/python-language-reference-nicola/data-types-and-literals.md
+        - Functions and Functional Programming: dev/python-language-reference-nicola/functions-and-functional-programming.md
+        - Expressions and Operators: dev/python-language-reference-nicola/expressions-and-operators.md
+        - Control Flow: dev/python-language-reference-nicola/control-flow.md
+        - Classes and Objects: dev/python-language-reference-nicola/classes-and-objects.md
+        - Modules and Packages: dev/python-language-reference-nicola/modules-and-packages.md
+        - Context Managers: dev/python-language-reference-nicola/context-managers.md
+        - Decorators: dev/python-language-reference-nicola/decorators.md
+        - Exception Handling: dev/python-language-reference-nicola/exception-handling-and-with.md
+        - For, While, Iterables: dev/python-language-reference-nicola/for-while-iterables.md
+        - Functions: dev/python-language-reference-nicola/functions.md
+        - Iterators, Iterables, Generators: dev/python-language-reference-nicola/iterators-iterables-generators.md
+        - Scopes and Namespaces: dev/python-language-reference-nicola/scopes-and-namespaces.md
+        - Type Casting: dev/python-language-reference-nicola/type-casting.md
+        - Celery: dev/python-language-reference-nicola/celery-explanation.md
+        - PyProject Standard: dev/python-language-reference-nicola/pyproject-stardard-explanation.md
+        - Python Packaging: dev/python-language-reference-nicola/python-packaging-explanation.md
+        - Python Web Server: dev/python-language-reference-nicola/python-webserver-explanation.md
+        - Stdlib DevTools Typing: dev/python-language-reference-nicola/stdlib-devtools-typing-explanation.md
+        - Stdlib DevTools Typing Howto: dev/python-language-reference-nicola/stdlib-devtools-typing-howto.md
+        - Stdlib DevTools Typing Reference: dev/python-language-reference-nicola/stdlib-devtools-typing-reference.md
+        - Stdlib DevTools Typing Tutorial: dev/python-language-reference-nicola/stdlib-devtools-typing-tutorial.md
+        - UV: dev/python-language-reference-nicola/uv-explanation.md
+    - JavaScript:
+      - Index: dev/javascript/javascript.md
+      - Asynchronicity: dev/javascript/javascript_asynchronicity.md
+      - Functions: dev/javascript/javascript_functions.md
+      - Modularity: dev/javascript/javascript_modularity.md
+      - Testing: dev/javascript/javascript_testing.md
+    - React: dev/javascript-react/react.md
+    - TypeScript: typescript.md
+    - Ruby:
+      - Index: dev/ruby/ruby.md
+      - Ruby 3: dev/ruby/ruby3.md
+      - Bundler: dev/ruby/ruby_bundler.md
+      - Bundler, Gem, Rubygems: dev/ruby/ruby_bundler_gem_rubygems.md
+      - Crawler: dev/ruby/ruby_crawler.md
+      - Facebook Ads: dev/ruby/ruby_facebook_ads.md
+      - Debug Howto: dev/ruby/ruby_howto_debug_.md
+      - HTTP Client ORM: dev/ruby/ruby_http_client_orm.md
+      - Links Collection: dev/ruby/ruby_links_collection.md
+      - Nginx Passenger: dev/ruby/ruby_nginx_passenger.md
+      - Object Model: dev/ruby/ruby_object_model.md
+      - Patterns: dev/ruby/ruby_patterns.md
+      - Rails: dev/ruby/ruby_rails.md
+      - RSpec: dev/ruby/ruby_rspec.md
+      - Testing Web Services: dev/ruby/ruby_testing_webservices.md
+      - Web Service Client: dev/ruby/ruby_webservice_client.md
+      - YARV: dev/ruby/ruby_yarv.md
+    - Elixir: elixir.md
+    - Elixir Web Development: elixir_webdev.md
+    - C# WP8 W8: dev/c-sharp_wp8_w8.md
+    - DenoJS: dev/denojs.md
+    - Node.js: dev/nodejs.md
+    - Express.js: dev/expressjs.md
+    - Languages Analogies and Differences: dev/languages_analogies_and_differences.md
+  - Web Development:
+    - HTML & CSS: dev/html_css.md
+    - HTML JavaScript Snippets: dev/html_javascript_snippet_collection.md
+    - HTML Less: dev/html_less.md
+    - HTML Middleman: dev/html_middleman.md
+    - Ember CLI: dev/ember_cli.md
+    - Broccoli: dev/broccoli.md
+    - Bower: dev/bower.md
+    - UI/UX: dev/ui_ux.md
+  - Cloud & Infrastructure:
+    - AWS:
+      - Index: dev/aws.md
+      - All Topics: dev/aws-all-to-be-split.md
+      - OpsWorks Introduction: dev/aws-opsworks-introduction.md
+      - Amplify: dev/aws/aws-amplify.md
+      - CDK: dev/aws/aws-cdk.md
+      - CloudWatch: dev/aws/aws-cloudwatch.md
+      - Cognito: dev/aws/aws-cognito.md
+      - DynamoDB: dev/aws/aws-dynamodb.md
+      - EC2: dev/aws/aws-ec2.md
+      - ECR: dev/aws/aws-ecr.md
+      - Elasticsearch/OpenSearch: dev/aws/aws-elasticsearch-opensearch.md
+      - IAM: dev/aws/aws-iam.md
+      - IAM Identity Center: dev/aws/aws-iam-identity-center.md
+      - Organizations: dev/aws/aws-organizations.md
+      - SDK JS: dev/aws/aws-sdk-js.md
+      - SQS: dev/aws/aws-sqs.md
+      - Howto IAM Credentials 1Password: dev/aws/aws-howto-iam-credentials-1password.md
+      - Howto S3 Download Upload Files: dev/aws/aws-howto-s3-download-upload-files.md
+      - New Customer Account Bootstrap SOP: dev/aws/aws-new-customer-account-bootstrap-sop.md
+    - Azure: dev/azure.md
+    - Cloudflare:
+      - Howto Expose SSH Server with Zero Trust: dev/cloudflare/howto-expose-ssh-server-with-zero-trust.md
+    - Heroku: dev/heroku.md
+    - Heroku Buildpack: dev/heroku-buildpack.md
+  - DevOps & Operations:
+    - Ansible:
+      - Index: dev/ansible.md
+      - Tutorials: dev/ansible_tutorials.md
+    - Chef:
+      - Index: dev/chef.md
+      - Cookbooks Develop and Test: dev/chef-cookbooks-develop-and-test.md
+    - Salt Project: dev/salt_project.md
+    - Docker: dev/docker.md
+    - Docker Compose: dev/docker-compose.md
+    - Docker Arg Env Management: dev/docker-and-docker-compose-arg-env-management-in-complex-project.md
+    - Packer and Vagrant: dev/packer_and_vagrant.md
+    - Capistrano 3: dev/capistrano3.md
+    - Continuous Integration: dev/continous_integration.md
+    - Contract Testing: dev/contract_testing.md
+    - Server Management: dev/server_management.md
+    - System Administration:
+      - Linux: dev/linux.md
+      - Alpine: dev/alpine.md
+      - Embedded Distro: dev/embedded_distro.md
+      - Systemd: dev/systemd.md
+      - Upstart: dev/upstart.md
+      - Runit: dev/runit.md
+      - Monit: dev/monit.md
+      - Syslog: dev/syslog.md
+      - Networking: dev/networking.md
+      - Tailscale: dev/tailscale_index.md
+    - Nix:
+      - Index: dev/nix/nix-index.md
+      - Bootstrap NixOS Explanation: dev/nix/nix-bootstrap-nixos-explanation.md
+      - Bootstrap NixOS Howto: dev/nix/nix-bootstrap-nixos-howto.md
+      - Breezeight Config OSX and Linux Overview: dev/nix/nix-breezeight-config-osx-and-linux-overview.md
+      - Darwin Overview: dev/nix/nix-darwin-overview.md
+      - Devenv: dev/nix/nix-devenv.md
+      - Home Manager Configuration Overview: dev/nix/nix-homemanager-configuration-overview-and-options.md
+      - Home Manager Installation: dev/nix/nix-homemanager-installation-explanation.md
+      - Home Manager Nix Darwin Module Docs: dev/nix/nix-homemanager-nix-darwin-module-docs.md
+      - Home Manager Overview: dev/nix/nix-homemanager-overview-explanation.md
+      - Linux Remote Builder VM on OSX Explanation: dev/nix/nix-linux-remote-builder-vm-on-osx-explanation.md
+      - Linux Remote Builder VM on OSX Howto: dev/nix/nix-linux-remote-builder-vm-on-osx-howto.md
+      - Nixpacks: dev/nix/nix-nixpacks.md
+  - Databases:
+    - MySQL: dev/mysql.md
+    - PostgreSQL: dev/postgres.md
+    - InfluxDB: dev/influxdb.md
+    - Druid: dev/druid.md
+  - Security & Cryptography:
+    - Cryptography SSH: dev/cryptography-ssh.md
+    - Cryptography SSH Basic Howto: dev/cryptography-ssh-basic-howto.md
+    - Cryptography SSH Tunneling: dev/cryptography-ssh-tunneling-ssh-port-forwarding.md
+    - Cryptography PGP GPG: dev/cryptography-pgp-gpg.md
+    - Cryptography Passwords Hashing Salting Encryption: dev/cryptography-passwords-hashing-salting-encryption.md
+  - Authentication & Authorization:
+    - Keycloak Explanation: dev/authetication_and_authorization/keycloak-explanation.md
+    - Keycloak Howtos: dev/authetication_and_authorization/keycloak-howtos.md
+    - OAuth2 Explanation: dev/authetication_and_authorization/oauth2-explanation.md
+    - OAuth2 Proxy: dev/authetication_and_authorization/oauth2-proxy.md
+    - OIDC Protocol Explanation: dev/authetication_and_authorization/oidc-protocol-explanation.md
+  - Frameworks & Tools:
+    - Django:
+      - DevOps Best Practices: dev/django/django-devops-best-practices-explanation.md
+      - Settings Best Practices: dev/django/django-settings-best-practices-explanation.md
+    - Development Best Practices:
+      - DevOps and DevSecOps Culture: dev/development_best_practices/devops_and_devsecops_culture_explanation.md
+    - Google App Script: dev/google-app-script.md
+    - Google App Script File System JSON Tutorial: dev/google-app-script-file-system-json-tutorial.md
+    - Google Doc: dev/google_doc.md
+    - Jira: dev/jira.md
+    - Jira Service Management: dev/jira-service-management.md
+    - Markdown Editing Tools: dev/markdown-editing-tools.md
+    - New Unity3D GUI System: dev/new-unity3d-gui-system.md
+    - RSVP: dev/rsvp.md
+    - Tmux: dev/tmux.md
+    - Vim: dev/vim.md
+  - Data & Analytics:
+    - Big Data: dev/bigdata.md
+    - Probability: dev/probability.md
+  - Business & Marketing:
+    - Marketing: dev/marketing.md
+    - Business:
+      - Open Source Business Strategies: dev/business/opensource-business-strategies/opensource-business-strategies-overview.md
+    - Enerlife: dev/enerlife.md
+    - Pitchtarget Codebase: dev/pitchtarget_codebase.md
+  - Utilities & Scripts:
+    - Bash: dev/bash.md
+    - Git: dev/git_index.md
+    - Regex: regex.md
+    - Tags: tags.md
+    - Reor Note Taking: reor_note_takiing.md
+  - Personal & Lifestyle:
+    - Yoga: yoga.md
+    - Yoga Poses:
+      - Vrksasana: yoga_poses/Vrksasana.md
+      - Adho Mukha Svanasana: yoga_poses/adho_mukha_svanasana.md
+      - Adho Mukha Virasana: yoga_poses/adho_mukha_virasana.md
+      - Adho Mukha Vrksasana: yoga_poses/adho_mukha_vrksasana.md
+      - Ardha Chandrasana: yoga_poses/ardha_chandrasana.md
+      - Ardha Matsyendrasana: yoga_poses/ardha_matsyendrasana.md
+      - Chaturanga Dandasana: yoga_poses/chaturanga_dandasana.md
+      - Dandasana: yoga_poses/dandasana.md
+      - Dhanurasana: yoga_poses/dhanurasana.md
+      - Halasana: yoga_poses/halasana.md
+      - Janu Sirsasana: yoga_poses/janu_sirsasana.md
+      - Muktasana: yoga_poses/muktasana.md
+      - Navasana: yoga_poses/navasana.md
+      - Padmasana: yoga_poses/padmasana.md
+      - Paschimottanasana: yoga_poses/paschimottanasana.md
+      - Salamba Shirshasana: yoga_poses/salamba_shirshasana.md
+      - Savasana or Mrtasana: yoga_poses/savasana_or_mrtasana.md
+      - Shirshasana: yoga_poses/shirshasana.md
+      - Swastikasana: yoga_poses/swastikasana.md
+      - Tadasana: yoga_poses/tadasana.md
+      - Trikonasana: yoga_poses/trikonasana.md
+      - Urdhva Dhanurasana: yoga_poses/urdhva_dhanurasana.md
+      - Urdhva Mukha Svanasana: yoga_poses/urdhva_mukha_svanasana.md
+      - Uttanasana: yoga_poses/uttanasana.md
+      - Vajrasana: yoga_poses/vajrasana.md
+      - Virabhadrasana 1: yoga_poses/virabhadrasana1.md
+      - Virabhadrasana 2: yoga_poses/virabhadrasana2.md
+      - Virabhadrasana 3: yoga_poses/virabhadrasana3.md
+      - Virasana: yoga_poses/virasana.md

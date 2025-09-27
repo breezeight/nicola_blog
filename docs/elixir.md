@@ -2379,7 +2379,7 @@ iex> Regex.split(~r/-/, "a-b-c")
 
 `replace` takes in a regex, a string and a replacement, returns a new string where all matches are replaced by the replacement.
 
-[https://hexdocs.pm/elixir/Regex.html#replace/4](Documentation)
+[Documentation](https://hexdocs.pm/elixir/Regex.html#replace/4)
 
 [source, elixir]
 ```
@@ -2592,7 +2592,7 @@ A Syntax SHORTCUT to generate the same list of key value tuples (a KEYWORD LIST)
 Keyword lists are often used for small-size key/value structures, where keys are atoms. Many useful functions are available in the Keyword module (https://hexdocs.pm/ elixir/Keyword.html).
 
 For example, you can use Keyword.get/2 to fetch the value for a key: `Keyword.get(days, :monday)`
-Or Just as with maps, you can use the operator [] to fetch a value: [:tuesday](`days)``
+Or Just as with maps, you can use the operator [] to fetch a value: `[:tuesday](days)`
 
 > **Warning:** the complexity of a lookup operation is O(n), it's a list!
 
@@ -5605,7 +5605,7 @@ iex(3)> quote do: 1 + 1
 In theory you don't need to generate the metadata. It just means you should avoid aliases as well as imports because we won't be able to resolve it in different situations.
 
 For example, see this:
-
+```
 iex(1)> Code.eval_quoted quote do: [1, 2, 3](flatten())
 ** (CompileError) nofile:1: undefined function flatten/1
     (elixir) src/elixir.erl:228: :elixir.quoted_to_erl/3
@@ -5619,7 +5619,7 @@ iex(1)> import List, only: [flatten: 1]
 nil
 iex(2)> Code.eval_quoted quote do: [1, 2, 3](flatten())
 [1, 2, 3]({), []}
-
+```
 Although the AST is the same, the second one will have the import annotated and be able to expand because the context that define the quote has a flatten function imported.
 
 This means that, when you generate a quote with metadata, it will work as in the context that defines the quote, rather than the context the quote is expanded, and that is extremely important.
