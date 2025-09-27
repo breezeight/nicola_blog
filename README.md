@@ -2,16 +2,31 @@
 
 https://www.mkdocs.org/getting-started/
 
+This project uses `uv` for dependency management instead of Poetry.
+
+### Setup
+
+Install dependencies:
+```bash
+uv sync
+```
+
+### Development
 
 Preview your site:
 ```bash
-poetry install
-poetry run mkdocs serve
-poetry run mkdocs serve --dev-addr=0.0.0.0:8001
+uv run mkdocs serve
+uv run mkdocs serve --dev-addr=0.0.0.0:8001
 ```
 
 Open `http://localhost:8000` in your browser
 
+### Building
+
+Build the site:
+```bash
+uv run mkdocs build
+```
 
 ## Markdown Conventions and Editing Tips 
  
