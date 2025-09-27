@@ -824,7 +824,7 @@ def __getattr__(self, name):
     return val
 ```
 
-This method is called when an attribute that **has not yet been defined** gets accessed. This is exactly what happens with the `settings.LOGGING_CONFIG` attribute. When accessed within `init.py`, it hasn't yet been set ([Learn more about attribute access in python](../python-language-reference-nicola.md#managing-attribute-access-in-python-special-methods-vs-decorators)).
+This method is called when an attribute that **has not yet been defined** gets accessed. This is exactly what happens with the `settings.LOGGING_CONFIG` attribute. When accessed within `init.py`, it hasn't yet been set ([Learn more about attribute access in python](../python-language-reference-nicola/classes-and-objects.md#managing-attribute-access-in-python-special-methods-vs-decorators)).
 
 Accessing it results in a call to `LazySettings.__getattr__`, which checks if `LazySettings._wrapped` is empty. If so, it calls `LazySettings._setup`, causing all settings to get initialized.
 

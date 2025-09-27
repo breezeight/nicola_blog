@@ -163,9 +163,9 @@ There are variable that you can use with the syntax `{{ variable_name }}` within
 ```json
     "boot_command": [
       "<esc><esc><enter><wait>",
-      "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-12.04-amd64/preseed.cfg ",
+      "/install/vmlinuz noapic preseed/url=http://&#123;&#123; .HTTPIP &#125;&#125;:&#123;&#123; .HTTPPort &#125;&#125;/ubuntu-12.04-amd64/preseed.cfg ",
       "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
-      "hostname={{ .Name }} ",
+      "hostname=&#123;&#123; .Name &#125;&#125; ",
       "fb=false debconf/frontend=noninteractive ",
       "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false ",
       "initrd=/install/initrd.gz -- <enter>"
@@ -179,7 +179,7 @@ The [shell provisioner](http://www.packer.io/docs/provisioners/shell.html) is us
 ```json
   "provisioners": [{
     "type": "shell",
-    "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+    "execute_command": "echo 'vagrant' | &#123;&#123;.Vars&#125;&#125; sudo -S -E bash '&#123;&#123;.Path&#125;&#125;'",
     "scripts": [
       "scripts/vagrant.sh",
       "scripts/vboxguest.sh",
@@ -218,9 +218,9 @@ Ref: [OpsWorks under the hood](http://www.slideshare.net/AmazonWebServices/aws-o
             "boot_command": [
                 "<esc><esc><enter><wait>",
                 "/install/vmlinuz noapic ",
-                "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+                "preseed/url=http://&#123;&#123; .HTTPIP &#125;&#125;:&#123;&#123; .HTTPPort &#125;&#125;/preseed.cfg ",
                 "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
-                "hostname={{ .Name }} ",
+                "hostname=&#123;&#123; .Name &#125;&#125; ",
                 "fb=false debconf/frontend=noninteractive ",
                 "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
                 "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
@@ -229,8 +229,8 @@ Ref: [OpsWorks under the hood](http://www.slideshare.net/AmazonWebServices/aws-o
             "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
             "disk_size": 10140,
             "vboxmanage": [
-                ["modifyvm", "{{ .Name }}", "--memory", "512"],
-                ["modifyvm", "{{ .Name }}", "--cpus", "1"]
+                ["modifyvm", "&#123;&#123; .Name &#125;&#125;", "--memory", "512"],
+                ["modifyvm", "&#123;&#123; .Name &#125;&#125;", "--cpus", "1"]
             ]
         },
         ....
@@ -257,12 +257,12 @@ Ref: [OpsWorks under the hood](http://www.slideshare.net/AmazonWebServices/aws-o
                 "./vagrant.sh",
                 "./cleanup.sh"
             ],
-            "execute_command": "echo 'vagrant'|{{.Vars}} sudo -E -S bash '{{.Path}}'"
+            "execute_command": "echo 'vagrant'|&#123;&#123;.Vars&#125;&#125; sudo -E -S bash '&#123;&#123;.Path&#125;&#125;'"
         }
     ],
     "post-processors": [{
         "type": "vagrant",
-        "output": "{{.Provider}}/ubuntu1204-opsworks.box"
+        "output": "&#123;&#123;.Provider&#125;&#125;/ubuntu1204-opsworks.box"
     }]
 }
 ```
@@ -468,7 +468,6 @@ cookbook 'addictive-devel-box-cookbook', path: 'addictive-devel-box-cookbook'
 An easy way to add a local application cookbook is `berks cookbook addictive-devel-box-cookbook` and `cookbook 'addictive-devel-box-cookbook', path: 'addictive-devel-box-cookbook'`
 
 NB: the application cookbook is also a nice pattern to override node
-attributes: see Application Pattern in the guide [Develop and Test Chef Cookbooks](/guides/chef-cookbooks-develop-and-test.html)
 
 Example to set the npm attribute of the nodejs cookbook:
 
