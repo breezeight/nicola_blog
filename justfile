@@ -9,8 +9,8 @@ install:
     uv sync
 
 # Start development server
-serve:
-    uv run mkdocs serve --dev-addr=127.0.0.1:8000
+serve port="8000":
+    uv run mkdocs serve --dev-addr=127.0.0.1:{{port}}
 
 # Start development server on all interfaces (for external access)
 serve-external:
@@ -54,7 +54,7 @@ macros:
     uv run python main.py
 
 # Full development workflow: install, generate macros, and serve
-dev:
+dev port="8000":
     uv sync
     uv run python main.py
-    uv run mkdocs serve --dev-addr=127.0.0.1:8000
+    uv run mkdocs serve --dev-addr=127.0.0.1:{{port}}
