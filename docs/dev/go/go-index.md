@@ -1,5 +1,5 @@
 ---
-title: Go Language Reference
+title: Go Lang
 abstract: Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 ---
 
