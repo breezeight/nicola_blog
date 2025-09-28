@@ -1,13 +1,57 @@
 ---
-description: Cross project linking
+description: Cross project linking with dynamic content generation
 globs:
   - 'main.py'
   - 'docs/**/*.md'
+  - 'mkdocs.yml'
 alwaysApply: true
 ---
 
-- Enable MkDocs macros plugin for dynamic content generation
-- Create `main.py` with `abstract` macro for page summaries
-- **Index documents should always link other pages using the `abstract` macro**
+## MkDocs Macros Plugin Configuration
+- Enable MkDocs macros plugin in `mkdocs.yml` with `module_name: main`
+- Configure macros plugin with `on_error_fail: false` and `on_undefined: keep`
+
+## Dynamic Content Generation
+- Create `main.py` with custom macros for enhanced markdown functionality
+- **Index documents should always link other pages using the `link_with_abstract` macro**
 - Use front matter in markdown files with `title` and `abstract` fields
-- Example usage: `{{ abstract(pages["foo.md"]) }}`
+
+## Available Macros
+
+### `link_with_abstract(page_path)`
+Creates a markdown link with page title and abstract from front matter.
+
+**Usage:**
+```markdown
+{{ link_with_abstract("go-organizing-code.md") }}
+{{ link_with_abstract("dev/go/go-index.md") }}
+```
+
+**Output:**
+```markdown
+[Tutorial - Organizing Go Code](go-organizing-code.md): This document demonstrates the development of a simple Go package inside a module and introduces the go tool, the standard way to fetch, build, and install Go modules, packages, and commands.
+```
+
+### `github_code_ref(repo_path, start_line=None, end_line=None, language="c")`
+Creates GitHub code references with optional line highlighting.
+
+**Usage:**
+```markdown
+{{ github_code_ref("/ruby/ruby/blob/v2_2_0_preview2/include/ruby/ruby.h", 771, 774) }}
+```
+
+## Front Matter Requirements
+All markdown files should include:
+```yaml
+---
+title: Page Title
+abstract: >
+  Brief description of the page content that will be used in cross-references.
+---
+```
+
+## Best Practices
+- Use relative paths in `link_with_abstract()` calls
+- Keep abstracts concise but descriptive (1-2 sentences)
+- Index pages should extensively use `link_with_abstract()` to create rich navigation
+- The macro automatically handles path resolution relative to the current page
