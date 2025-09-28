@@ -1,0 +1,31 @@
+# Cursor ignore file for Nicola Blog
+
+# MkDocs build output
+site/
+.mkdocs_cache/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual environments (uv manages these)
+.venv/
+venv/
+env/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

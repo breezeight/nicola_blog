@@ -1,0 +1,27 @@
+# MkDocs Development Rules
+
+## Build Commands
+- **Build**: `uv run mkdocs build`
+- **Serve locally**: `uv run mkdocs serve`
+- **Deploy to GitHub Pages**: `uv run mkdocs gh-deploy`
+
+## Configuration Files
+- Main config: `mkdocs.yml`
+- Dependencies: `pyproject.toml`
+- Macros script: `main.py`
+
+## Content Structure
+- Documentation files in `docs/` directory
+- Static assets in `docs/images/` and other subdirectories
+- Navigation defined in `mkdocs.yml`
+
+## Special Files
+- `docs/regex.md`: Contains regex patterns formatted as code blocks
+- Do not modify the markdown linting disable comment at the top of regex.md
+- Regex patterns are intentionally wrapped in backticks to prevent MkDocs link warnings
+
+## Development Process
+1. Make changes to markdown files in `docs/`
+2. Test locally with `uv run mkdocs serve`
+3. Build with `uv run mkdocs build` to check for errors
+4. Deploy with `uv run mkdocs gh-deploy` when ready

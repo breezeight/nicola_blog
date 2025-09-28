@@ -93,7 +93,8 @@ All the other Nix related docs are indexed in the [Nix Index](dev/nix/nix-index.
 
 ## Go Lang
 
-{{ abstract("dev/go/go-index.md") }}
+{{ link_with_abstract("dev/go/go-index.md") }}
+
 
 ## Python
 

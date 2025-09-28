@@ -495,7 +495,7 @@ PROBLEM: Long regular expressions with lots of groups and backreferences may be 
 
 SOLUTION: Python's re module was the first to offer a solution: named capturing groups and named backreferences.
 
-`(?P<name>group)` captures the match of group into the backreference "name". name must be an alphanumeric sequence starting with a letter. group can be any regular expression. You can reference the contents of the group with the named backreference (?P=name). The question mark, P, angle brackets, and equals signs are all part of the syntax. Though the syntax for the named backreference uses parentheses, it's just a backreference that doesn't do any capturing or grouping. The HTML tags example can be written as [^>](`<(?P<tag>[A-Z][A-Z0-9]*)\b)*>.*?</(?P=tag)>`
+`(?P<name>group)` captures the match of group into the backreference "name". name must be an alphanumeric sequence starting with a letter. group can be any regular expression. You can reference the contents of the group with the named backreference (?P=name). The question mark, P, angle brackets, and equals signs are all part of the syntax. Though the syntax for the named backreference uses parentheses, it's just a backreference that doesn't do any capturing or grouping. The HTML tags example can be written as `[^>](`<(?P<tag>[A-Z][A-Z0-9]*)\b)*>.*?</(?P=tag)>`
 
 ## Relative Backreferences
 
@@ -632,7 +632,7 @@ You could use `[0-9](\b[1-9]){3}\b` to match a number between 1000 and 9999. `[0
 
 Suppose you want to use a regex to match an HTML tag. You know that the input will be a valid HTML file, so the regular expression does not need to exclude any invalid use of sharp brackets. If it sits between sharp brackets, it is an HTML tag.
 
-Most people new to regular expressions will attempt to use <.+>. They will be surprised when they test it on a string like This is a <EM>first</EM> test. You might expect the regex to match <EM> and when continuing after that match, </EM>.
+Most people new to regular expressions will attempt to use `<.+>`. They will be surprised when they test it on a string like This is a <EM>first</EM> test. You might expect the regex to match <EM> and when continuing after that match, </EM>.
 
 But it does not. The regex will match *<EM>first</EM>*. Obviously not what we wanted. The reason is that the plus is greedy. That is, the plus causes the regex engine to repeat the preceding token as often as possible. Only if that causes the entire regex to fail, will the regex engine backtrack. That is, it will go back to the plus, make it give up the last iteration, and proceed with the remainder of the regex.
 
@@ -648,7 +648,7 @@ This tells the regex engine to repeat the dot as few times as possible. The mini
 
 #### An Alternative to Laziness
 
-In this case, there is a better option than making the plus lazy. We can use a greedy plus and a negated character class: [^>](<)+>. The reason why this is better is because of the backtracking. When using the lazy plus, the engine has to backtrack for each character in the HTML tag that it is trying to match. When using the negated character class, no backtracking occurs at all when the string contains valid HTML code. Backtracking slows down the regex engine.
+In this case, there is a better option than making the plus lazy. We can use a greedy plus and a negated character class: `[^>](<)+>`. The reason why this is better is because of the backtracking. When using the lazy plus, the engine has to backtrack for each character in the HTML tag that it is trying to match. When using the negated character class, no backtracking occurs at all when the string contains valid HTML code. Backtracking slows down the regex engine.
 
 ```bash
 # Zero or more letters (star)

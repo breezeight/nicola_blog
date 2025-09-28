@@ -1,8 +1,6 @@
 ---
 title: Go Language Reference
-abstract: >
-  Comprehensive Go language reference covering syntax, packages, functions, variables, 
-  control flow, data structures, concurrency, and best practices for Go development.
+abstract: Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 ---
 
 # Go Lang
@@ -2651,4 +2649,6 @@ https://go.dev/tour/concurrency/11
 
 ## How to organize your code
 
-{{ abstract("dev/go/go-organizing-code.md") }}
+{{ link_with_abstract("go-organizing-code.md") }}
+
+[Organizing Go Code](go-organizing-code.md): This page covers how to organize Go code effectively...
