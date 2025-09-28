@@ -110,7 +110,7 @@ Each and every shell has its own environment.
 
 `export` governs which variables will be available to subshells
 
-```
+```bash
 FOO=1
 export BAR=2
 ./runScript.sh
@@ -121,14 +121,14 @@ then $BAR will be available in the environment of runScript.sh, but $FOO will no
 
 Let say we have this script that print the `name` variable:
 
-```
+```bash
 # print_name.sh
 echo My name is $name
 ```
 
 And we run it:
 
-```
+```bash
 name="nicola"
 echo "My name is $name" # prints "My name is nicola"
 ./print_name.sh         # prints "My name is " beacuse name is local
@@ -141,7 +141,7 @@ export name="nicola"
 
 The following script creates a variable called LIST and assigns the value “/var/opt/bin”. To access the variables, just prefix the variable name with $, which will give you the value stored in that variable.
 
-```
+```bash
 $ cat sample.sh
 #!/bin/bash
 LIST="/var/opt/bin/"
@@ -150,7 +150,7 @@ ls -l $LIST
 
 Execute the above script, which will list the /var/opt/bin in long format as shown below.
 
-```
+```bash
 $ ./sample.sh
 total 8
 drwxrwsr-x 2 bin  bin 4096 Jan 29 06:43 softwares
@@ -159,7 +159,7 @@ drwxr-sr-x 5 root bin 4096 Sep  2  2009 llist
 
 #### Example 2. Blank values in bash variables
 
-```
+```bash
 $ cat var1.sh
 #!/bin/sh
 echo "Variable value is: $VAR1"
@@ -177,7 +177,7 @@ As shown above, initially the variable will have a blank value, after assigning,
 
 Assign a variable with a value in an interactive shell, and try to access the same in your shell script.
 
-```
+```bash
 $ VAR2=LINUX
 
 $ cat var2.sh
@@ -189,7 +189,7 @@ echo "VAR2=$VAR2"
 
 Now, execute the above script as shown below.
 
-```
+```bash
 $ ./var2.sh
 VAR2=
 VAR2=UNIX
@@ -199,7 +199,7 @@ Still you will get blank value for variable VAR2. The shell stores variable VAR2
 
 #### Example 4. Exporting a Bash Variable
 
-```
+```bash
 $ export VAR2=LINUX
 
 $ cat var2.sh
@@ -237,7 +237,7 @@ set -a causes variables defined from now on to be automatically exported. It's a
 
 In POSIX shells, you can also use set -o allexport as a more descriptive alternative way to write it (set +o allexport to unset).
 
-```
+```bash
 set -a
 . ./tmp.txt
 set +a
@@ -246,7 +246,7 @@ set +a
 
 tmp.txt file contains the variables to be exported, for e.g.
 
-```
+```bash
 a=123
 b="hello world"
 c="one more variable"
@@ -270,7 +270,7 @@ c="one more variable"
   * makes the variable name have a visible scope restricted to that function and its children only.
   * syntax is:
 
-```
+```bash 
 function name(){
    local var=$1
 }
@@ -279,7 +279,7 @@ function name(){
 
 Ex of set without local: bash_examples/function_local_vars.sh
 
-```
+```bash
 #!/bin/bash
 
 define_not_local_var ()
@@ -298,7 +298,7 @@ echo "not_local_variable is global: $not_local_variable"
 
 Ex of modify without local: bash_examples/function_local_vars_2.sh
 
-```
+```bash
 #!/bin/bash
 
 not_local_variable="foo"
@@ -322,7 +322,7 @@ echo "not_local_variable is modified by the function: $not_local_variable"
 Ex of modify with local: bash_examples/function_local_vars_3.sh
 
 
-```
+```bash
 #!/bin/bash
 
 my_var="foo"
@@ -358,7 +358,7 @@ Syntax: `declare option variablename`
 
 Examples:
 
-```
+```bash
 declare -r var1=1
 echo $var1   # print: 1
 var1 = 2     # print: bash: declare: var1: readonly variable
@@ -366,7 +366,7 @@ echo $var1   # stil print: 1
 ```
 
 
-```
+```bash
 declare -i number
 # The script will treat subsequent occurrences of "number" as an integer.		
 
@@ -386,7 +386,7 @@ number=3.4 # syntax error: invalid arithmetic operator (error token is ".4")
 * `env`
   * run a program in a modified environment
 
-```
+```bash
 env name=value name2=value2 program and args
 ```
 
@@ -422,7 +422,7 @@ That's your mistake right there. You should define your environment variables in
 
 Some examples: on the other special parameters:
 
-```
+```bash
 franky ~> grep dictionary /usr/share/dict/words
 dictionary
 
@@ -454,7 +454,7 @@ franky ~> echo $?
 
 The positional parameters are the words following the name of a shell script: `$1`, `$2`, etc
 
-```
+```bash
 #!/bin/bash
 
 # positional.sh
@@ -475,7 +475,7 @@ echo "The list of params is: $@"
 
 Upon execution one could give any numbers any arguments:
 
-```
+```bash
 franky ~> positional.sh one two three four five
 one is the first positional parameter, $1.
 two is the second positional parameter, $2.
@@ -485,7 +485,7 @@ The total number of positional parameters is 5.
 The list of params is: one two three four five
 ```
 
-```
+```bash 
 franky ~> positional.sh one two
 one is the first positional parameter, $1.
 two is the second positional parameter, $2.
@@ -581,7 +581,7 @@ REF: http://wiki.bash-hackers.org/syntax/basicgrammar#lists
 
 A list is a sequence of one or more pipelines separated by one of the operators:
 
-``` 
+```bash
 
 ;
 &
@@ -592,7 +592,7 @@ A list is a sequence of one or more pipelines separated by one of the operators:
 
 and optionally terminated by one of
 
-```
+```bash
 ;
 &
 <newline>
@@ -652,7 +652,7 @@ https://stackoverflow.com/questions/31252710/how-does-bash-tokenize-scripts
 
 Why isn't there a space necessary between ] and ;?
 
-```
+```bash 
 if [$x = $y];
 if [ $x = $y ];
 ```
@@ -703,13 +703,13 @@ Quoting can be used to:
 
 The application shall quote the following characters if they are to represent themselves:
 
-```
+```bash
 |  &  ;  <  >  (  )  $  `  \  "  '  <space>  <tab>  <newline>
 ```
 
 and the following may need to be quoted under certain circumstances. That is, these characters may be special depending on conditions described elsewhere in this volume of IEEE Std 1003.1-2001:
 
-```
+```bash
 *   ?   [   #   ˜   =   %
 ```
 
@@ -725,7 +725,7 @@ The various quoting mechanisms are
 
 `\ ` :  is used as an escape character in Bash. It preserves the literal value of the next character that follows, with the exception of newline.
 
-```
+```bash
 franky ~> date=20021226
 
 franky ~> echo $date
@@ -741,14 +741,14 @@ Single quotes ('') are used to preserve the literal value of each character encl
 
 Single quotes protect all characters except the backslash (\).
 
-```
+```bash
 franky ~> echo '$date'
 $date
 ```
 
 A single quote may not occur between single quotes:
 
-```
+```bash
 echo ''$date''
 20021226
 ```
@@ -765,7 +765,7 @@ Double quotes protect all characters except the backslash (\), dollar sign ($) a
 * Backslashes preceding characters that don't have a special meaning are left unmodified for processing by the shell interpreter.
 * A double quote may be quoted within double quotes by preceding it with a backslash.
 
-```
+```bash
 franky ~> echo "$date"
 20021226
 
@@ -786,7 +786,7 @@ franky ~> echo "\\"
 
 For example:
 
-```
+```bash
 $ echo 'Hi "Intro to Unix" Class'
 Hi "Intro to Unix" Class
 
@@ -819,7 +819,7 @@ Syntax: `PREAMBLE{ ... , ... }POSTSCRIPT`
 
 Examples:
 
-```
+```bash
 
 echo \"{These,words,are,quoted}\"   # " prefix and suffix
 # "These" "words" "are" "quoted"
@@ -836,7 +836,7 @@ cp file22.{txt,backup}
 
 Syntax: `{a..z}`
 
-```
+```bash
 echo {a..z} # a b c d e f g h i j k l m n o p q r s t u v w x y z
 # Echoes characters between a and z.
 
@@ -881,7 +881,7 @@ Syntax:
 
 All tokens in the expression undergo parameter expansion, command substitution, and quote removal, Example:
 
-```
+```bash
 echo $( wc -w package.json| awk '{print $1}' ) # packge.json count 169 words
 echo $(( $( wc -w package.json| awk '{print $1}' ) + 1 )) # print 170 add 1 after cmd substitution
 
@@ -895,7 +895,7 @@ echo $[$a*$b]   # 21
 Arithmetic substitutions may be nested:
 
 
-```
+```bash
 echo $(( $(( 3 + 2 )) * 3 )) # prints 15
 ```
 
@@ -921,7 +921,7 @@ The operators are roughly the same as in the C programming language. In order of
 
 Within an expression, shell variables may also be referenced by name without using the parameter expansion syntax:
 
-```
+```bash
 n=4
 echo  $(( 10%n )) # prints 2
 ```
@@ -942,7 +942,7 @@ Syntax: `$(command)` or `command`
 
 NOTE: The `$(...)` form has superseded backticks for command substitution. It permit nesting:
 
-```
+```bash
 word_count=$( wc -w $(echo * | awk '{print $8}') )
 ```
 
@@ -961,13 +961,6 @@ $ echo ${param1%l*o} hel strip shortest match from end
 $ echo ${param1%%l*o} he strip longest match from end
 $ echo ${param1/l/p} heplo replace as few as possible
 $ echo ${param1//l/p} heppo replace as many as possible
-```
-
-Miscellaneous:
-
-```bash
-$ echo ${!param*} param1 param2 param3 parameter names starting with...
-$ echo ${#param1} 5 # length of parameter value
 ```
 
 Example Uses:
@@ -1044,7 +1037,7 @@ PRO:
 
 Example: use redirection and process substitution
 
-```
+```bash
 counter=0
  
 while IFS= read -rN1 _; do
@@ -1088,7 +1081,7 @@ Ref: https://unix.stackexchange.com/questions/26784/understanding-ifs
 
 ### IFS examples
 
-```
+```bash
 while IFS= read -r line
 do    
     echo $line
@@ -1100,7 +1093,7 @@ The first code snippet will put the entire line read, verbatim, into $line, as t
 
 The behaviour if we we change the first line to
 
-```
+```bash
 while read -r line # Use the default IFS value
 ```
 
@@ -1108,7 +1101,7 @@ is: put an exact copy of the input into $line. For example, if there are multipl
 
 The behaviour if we we change the first line to:
 
-```
+```bash
 while IFS=' ' read -r line
 ```
 
@@ -1144,7 +1137,7 @@ NOTE; `set -f` or `set -o noglob`	Disable file name generation using metacharac
 
 http://unix.stackexchange.com/questions/100945/word-splitting-when-parameter-is-used-within-command-substitution
 
-```
+```bash
 file="/home/1_cr/xy z"
 basename $file # prints: xy
 
@@ -1170,7 +1163,7 @@ Ref: http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_11_01.html
 
 Syntax:
 
-```
+```bash
 function function_name { 
   command...
 } 
@@ -1178,7 +1171,7 @@ function function_name {
 
 or (with this syntax parenthesis are needed):
 
-```
+```bash
 function_name () { 
   command... 
 } 
@@ -1203,7 +1196,7 @@ When a function is executed:
 * Positional parameter 0 is unchanged. The Bash variable `FUNCNAME` is set to the name of the function, while it is executing.
 
 
-```
+```bash
 ciao(){ echo $0; echo $FUNCNAME $1; echo $#; true; };
 21:07 ~/SRC/nicola_blog/_guides (master)$ ciao Nicola
 -bash
@@ -1228,7 +1221,7 @@ To return values, you can:
 
 If you only want to return an integer value from a bash function, use `return`:
 
-```
+```bash
 #!/bin/bash
 
 function return_code_test ()
@@ -1248,7 +1241,7 @@ When the `return` built-in is executed in a function:
 
 ### Return: set a global variable with the result
 
-```
+```bash
 function myfunc()
 {
     myresult='some value'
@@ -1264,7 +1257,7 @@ but as we all know, using global variables, particularly in large programs, can 
 
 A better approach is to use local variables in your functions. The problem then becomes how do you get the result to the caller. One mechanism is to use command substitution:
 
-```
+```bash
 function myfunc()
 {
     local  myresult='some value'
@@ -1281,7 +1274,7 @@ Here the result is output to the stdout and the caller uses command substitution
 
 The other way to return a value is to write your function so that it accepts a variable name as part of its command line and then set that variable to the result of the function:
 
-```
+```bash
 function myfunc()
 {
     local  __resultvar=$1
@@ -1295,7 +1288,7 @@ echo $result
 
 When you store the name of the variable passed on the command line, make sure you store it in a local variable with a name that won't be (unlikely to be) used by the caller (which is why I used `__resultvar` rather than just resultvar). If you don't, and the caller happens to choose the same name for their result variable as you use for storing the name, the result variable will not get set. For example, the following does not work:
 
-```
+```bash
 function myfunc()
 {
     local  result=$1
@@ -1313,7 +1306,7 @@ The reason it doesn't work is because when eval does the second interpretation a
 
 For more flexibility, you may want to write your functions so that they combine both result variables and command substitution:
 
-```
+```bash
 function myfunc()
 {
     local  __resultvar=$1
@@ -1335,7 +1328,7 @@ Here, if no variable name is passed to the function, the value is output to the 
 
 ## Functions and variable scope
 
-```
+```bash
 define_local (){
   local local_variable="foo"
 }
@@ -1391,10 +1384,7 @@ The entire match is assigned to `BASH_REMATCH[0]`, the first sub-pattern is assi
 
 TODO: http://www.linuxjournal.com/content/bash-regular-expressions
 
-
-
-
-```
+```bash
 #!/bin/bash
 
 variable="This is a fine mess."
@@ -1413,7 +1403,7 @@ fi
 
 ## Grep Examples
 
-```
+```bash
 grep root /etc/passwd
 root:x:0:0:root:/root:/bin/bash
 operator:x:11:0:operator:/root:/sbin/nologin
@@ -1421,14 +1411,14 @@ operator:x:11:0:operator:/root:/sbin/nologin
 
 we now exclusively want to display lines starting with the string "root":
 
-```
+```bash
 cathy ~> grep ^root /etc/passwd
 root:x:0:0:root:/root:/bin/bash
 ```
 
 If we want to see which accounts have no shell assigned whatsoever, we search for lines ending in ":":
 
-```
+```bash
 cathy ~> grep :$ /etc/passwd
 news:x:9:13:news:/var/spool/news:
 ```
@@ -1436,7 +1426,7 @@ news:x:9:13:news:/var/spool/news:
 To check that PATH is exported in ~/.bashrc, first select "export" lines and then search for lines starting with the string "PATH", so as not to display MANPATH and other possible paths:
 
 
-```
+```bash
 cathy ~> grep export ~/.bashrc | grep '\<PATH'
   export PATH="/bin:/usr/lib/mh:/lib:/usr/bin:/usr/local/bin:/usr/ucb:/usr/dbin:$PATH"
 ```
@@ -1445,7 +1435,7 @@ Similarly, \> matches the end of a word.
 
 If you want to find a string that is a separate word (enclosed by spaces), it is better use the -w, as in this example where we are displaying information for the root partition:
 
-```
+```bash
 cathy ~> grep -w / /etc/fstab
 LABEL=/                 /                       ext3    defaults        1 1
 ```
@@ -1504,20 +1494,20 @@ http://www.bpkg.io/
 An if/then construct tests whether the exit status of a list of commands is 0 (since 0 means "success" by UNIX convention), and if so, executes one or more commands.
 
 
-~~~bash
+```bash
 if [ "foo" = "foo" ]; then
    echo expression evaluated as true
 else
    echo expression evaluated as false
 fi
-~~~
+```
 
 
 To represent multiple conditions: https://stackoverflow.com/questions/3826425/how-to-represent-multiple-conditions-in-a-shell-if-statement
 
 The 'portable shell' guidelines for the autoconf tool or related packages, this notation — using '||' and '&&' — is what they recommend.
 
-```
+```bash
 if [ "$g" -eq 1 ] && [ "$c" = "123" ]
 then echo abc
 elif [ "$g" -eq 2 ] && [ "$c" = "456" ]
@@ -1604,7 +1594,7 @@ REF: http://stackoverflow.com/questions/8888251/understanding-bash-exec-12-comma
 
 Example:
 
-```
+```bash
 function example()
 {
     exec 1>&2  # from this point one stdout will be directed to stderr
@@ -1690,7 +1680,7 @@ http://stackoverflow.com/questions/4434797/read-a-config-file-in-bash-without-us
 
 ref: http://www.ostricher.com/2014/10/the-right-way-to-get-the-directory-of-a-bash-script/
 
-~~~
+```bash
 get_script_dir () {
      SOURCE="${BASH_SOURCE[0]}"
      # While $SOURCE is a symlink, resolve it
@@ -1703,7 +1693,7 @@ get_script_dir () {
      DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
      echo "$DIR"
 }
-~~~
+```
 
 # Command line utilities
 
@@ -1731,36 +1721,35 @@ https://github.com/creationix/nvm
 
 Parameter parsing
 
-```
-      local nobinary
-      nobinary=0
-      local LTS
-      while [ $# -ne 0 ]
-      do
-        case "$1" in
-          -s)
-            shift # consume "-s"
-            nobinary=1
-          ;;
-          -j)
-            shift # consume "-j"
-            nvm_get_make_jobs "$1"
-            shift # consume job count
-          ;;
-          --lts)
-            LTS='*'
-            shift
-          ;;
-          --lts=*)
-            LTS="${1##--lts=}"
-            shift
-          ;;
-          *)
-            break # stop parsing args
-          ;;
-        esac
-      done
-
+```bash
+local nobinary
+nobinary=0
+local LTS
+while [ $# -ne 0 ]
+do
+  case "$1" in
+    -s)
+      shift # consume "-s"
+      nobinary=1
+    ;;
+    -j)
+      shift # consume "-j"
+      nvm_get_make_jobs "$1"
+      shift # consume job count
+    ;;
+    --lts)
+      LTS='*'
+      shift
+    ;;
+    --lts=*)
+      LTS="${1##--lts=}"
+      shift
+    ;;
+    *)
+      break # stop parsing args
+    ;;
+  esac
+done
 ```
 
 ## Common mistakes
