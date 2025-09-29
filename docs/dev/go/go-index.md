@@ -961,25 +961,173 @@ func main() {
 	i, j := 42, 2701
 
 	p := &i         // point to i
-	fmt.Println(*p) // read i through the pointer
-	*p = 21         // set i through the pointer
-	fmt.Println(i)  // see the new value of i
+	fmt.Println(*p) // read i through the pointer // print: 42
+	*p = 21         // set i through the pointer to 21
+	fmt.Println(i)  // see the new value of i     // print: 21
 
 	p = &j         // point to j
 	*p = *p / 37   // divide j through the pointer
-	fmt.Println(j) // see the new value of j
+	fmt.Println(j) // see the new value of j      // print: 73 
 }
+```
 
-// print the result:
-// 42
-// 21
-// 73
+##### Types
+
+Before diving into structs, interfaces, and generics, it's important to understand the `type` keyword.  
+The `type` keyword **binds a name to a type**, letting you:
+
+1. Create **new, distinct types** with their own identity and methods.
+2. Define **aliases**, where two names refer to the exact same type.
+
+This is the foundation for building custom data structures and behaviors in Go.
+
+The basic syntax for a type declaration is:
+
+```go
+// Create an alias
+type NewName = ExistingType
+
+// Create a new distinct type, where UnderlyingType is the existing type
+type NewName UnderlyingType
+```
+Where UnderlyingType is the existing type:
+
+```go
+// Basic types
+type Age int                  // underlying: int
+type Temperature float64      // underlying: float64
+
+// Struct types
+type Point struct{X, Y int}   // underlying: struct{X, Y int}
+type Empty struct{}           // underlying: struct{}
+
+// Interface types
+type Shape interface{Area() float64} // underlying: interface{Area() float64}
+type Any interface{}                 // underlying: interface{}
+
+// Composite types
+type IntList []int             // underlying: []int
+type StringMap map[string]int  // underlying: map[string]int
+type ChanInt chan int          // underlying: chan int
+type ReadOnly <-chan string    // underlying: <-chan string
+type Array3 [3]float64         // underlying: [3]float64
+
+// Function types
+type Adder func(int, int) int  // underlying: func(int, int) int
+type Predicate func(string) bool // underlying: func(string) bool
+
+// Pointer types
+type PtrInt *int               // underlying: *int
+type PtrStruct *struct{X int}  // underlying: *struct{X int}
+
+// Generic types (Go 1.18+)
+type Box[T any] []T                  // underlying: []T
+type Pair[K, V any] struct{K K; V V} // underlying: struct{K K; V V}
+type Mapper[K comparable, V any] map[K]V // underlying: map[K]V
+type PredicateT[T any] func(T) bool  // underlying: func(T) bool
+
+// Indirect / recursive named types
+type ID int                 // underlying: int
+type UserID ID              // underlying: int (via ID)
 ```
 
 
+
+You can group multiple type declarations together:
+
+```go
+type (
+    Name1 = ExistingType
+    Name2 UnderlyingType
+)
+```
+
+##### Alias Declaration (`=`)
+
+* **Syntax**:
+
+  ```go
+  type NewName = ExistingType
+  ```
+* **Purpose**: Create an alternate name for an existing type.
+* **Behavior**: `NewName` and `ExistingType` are **identical** and interchangeable.
+
+**Example:**
+
+```go
+type MyInt = int
+type StringList = []string
+
+var a MyInt = 5
+var b int = a // OK: identical types
+```
+
+---
+
+##### Type Definition (no `=`)
+
+* **Syntax**:
+
+  ```go
+  type NewName UnderlyingType
+  ```
+* **Purpose**: Create a **new, distinct type**, even if its structure matches another type.
+* **Behavior**:
+
+  * Adds **type safety**.
+  * Lets you **attach methods** to the new type.
+
+**Example:**
+
+```go
+type Celsius float64
+
+func (c Celsius) ToFahrenheit() float64 {
+    return float64(c)*1.8 + 32
+}
+
+var temp Celsius = 25
+// var f float64 = temp // ERROR: different types
+var f float64 = float64(temp) // explicit conversion needed
+```
+
+Here, `Celsius` is not interchangeable with `float64`.
+
+
+Why `type` Is Important ? Everything in Go builds on `type`:
+
+* **Structs** define custom data structures.
+* **Interfaces** define shared behaviors.
+* **Generics** allow reusable, type-safe code.
+* **Composite types** like slices, maps, and channels can be customized.
+
+In the next sections, we will explore each of these in detail, starting with structs and interfaces.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ##### Structs
-https://go.dev/tour/moretypes/2
-https://go.dev/tour/moretypes/3
+[GoTour](https://go.dev/tour/moretypes/2)
 
 A struct is a collection of fields.
 
