@@ -1,0 +1,389 @@
+---
+description: when required to update the theme
+alwaysApply: false
+---
+# MkDocs Material Theme Customization
+
+## Overview
+This rule covers how to customize the Material for MkDocs theme using CSS, JavaScript, and theme extensions.
+
+## Adding Assets
+
+### Additional CSS
+For small tweaks to colors, spacing, or element styling:
+
+1. **Create CSS file structure:**
+   ```
+   docs/
+   └─ stylesheets/
+      └─ extra.css
+   ```
+
+2. **Add to mkdocs.yml:**
+   ```yaml
+   extra_css:
+     - stylesheets/extra.css
+   ```
+
+### Additional JavaScript
+For custom logic or third-party integrations:
+
+1. **Create JavaScript file structure:**
+   ```
+   docs/
+   └─ javascripts/
+      └─ extra.js
+   ```
+
+2. **Add to mkdocs.yml:**
+   ```yaml
+   extra_javascript:
+     - javascripts/extra.js
+   ```
+
+3. **Use document$ observable for page load events:**
+   ```javascript
+   document$.subscribe(function() {
+     console.log("Initialize third-party libraries here")
+   })
+   ```
+
+## Theme Extension
+
+### Setup
+For HTML source modifications (add/remove parts):
+
+1. **Enable theme extension in mkdocs.yml:**
+   ```yaml
+   theme:
+     name: material
+     custom_dir: overrides
+   ```
+
+2. **Create overrides directory structure:**
+   ```
+   overrides/
+   ├─ partials/
+   │  ├─ footer.html
+   │  ├─ header.html
+   │  └─ ...
+   ├─ main.html
+   └─ base.html
+   ```
+
+### Overriding Partials
+Replace any partial by creating a file with the same name and location:
+- `overrides/partials/footer.html` replaces the original footer
+- `overrides/partials/header.html` replaces the original header
+
+### Overriding Blocks (Recommended)
+Use `main.html` to override template blocks:
+
+```html
+{% extends "base.html" %}
+
+{% block htmltitle %}
+  <title>Custom Title</title>
+{% endblock %}
+
+{% block scripts %}
+  <!-- Add scripts before -->
+  {{ super() }}
+  <!-- Add scripts after -->
+{% endblock %}
+```
+
+### Available Template Blocks
+| Block | Purpose |
+|-------|---------|
+| `analytics` | Google Analytics integration |
+| `announce` | Announcement bar |
+| `config` | JavaScript application config |
+| `container` | Main content container |
+| `content` | Main content |
+| `extrahead` | Custom meta tags |
+| `fonts` | Font definitions |
+| `footer` | Footer with navigation |
+| `header` | Fixed header bar |
+| `hero` | Hero teaser |
+| `htmltitle` | `<title>` tag |
+| `libs` | JavaScript libraries (header) |
+| `outdated` | Version warning |
+| `scripts` | JavaScript application (footer) |
+| `site_meta` | Meta tags in document head |
+| `site_nav` | Site navigation and TOC |
+| `styles` | Style sheets |
+| `tabs` | Tabs navigation |
+
+## Best Practices
+
+### CSS Customization
+- Use `!important` sparingly and only when necessary
+- Target specific selectors for better specificity
+- Test changes across different screen sizes
+- Use CSS custom properties for theme colors
+
+### JavaScript Integration
+- Always use `document$.subscribe()` for page load events
+- Handle instant loading properly (no page refresh)
+- Test with and without instant loading enabled
+
+### Theme Extension
+- Mirror the original theme structure exactly
+- Use `{{ super() }}` to extend rather than replace blocks
+- Keep overrides minimal to ease theme updates
+
+## Common Customizations
+
+### Content Width
+```css
+.md-content__inner {
+    max-width: none !important;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+```
+
+### Sidebar Adjustments
+```css
+.md-sidebar {
+    width: 200px !important;
+    padding: 0 0.5rem !important;
+}
+
+.md-sidebar--primary,
+.md-sidebar--secondary {
+    width: 200px !important;
+}
+```
+
+### Color Scheme
+```css
+:root {
+    --md-primary-fg-color: #your-color;
+    --md-accent-fg-color: #your-accent;
+}
+```
+
+### Navigation and TOC Customization
+
+#### Overview
+The Material theme provides comprehensive CSS classes to customize the navigation sidebar and table of contents (TOC) panes. You can make them more compact, reduce font sizes, and adjust spacing.
+
+#### Navigation Sidebar Classes
+
+**Main Navigation Container:**
+```css
+.md-nav {
+  font-size: 12px; /* Default: 14px */
+}
+
+.md-nav__link {
+  padding: 6px 8px; /* Default: 12px 16px */
+  margin-top: 0.4em; /* Default: 0.625em */
+}
+```
+
+**Primary Navigation (Desktop/Drawer):**
+```css
+.md-nav--primary .md-nav__title,
+.md-nav--primary .md-nav__item {
+  font-size: 14px; /* Default: 16px */
+  line-height: 1.3; /* Default: 1.5 */
+}
+
+.md-nav--primary .md-nav__link {
+  padding: 8px 12px; /* Default: 12px 16px */
+}
+```
+
+**Navigation Icons:**
+```css
+.md-nav--primary .md-nav__icon {
+  width: 18px; /* Default: 24px */
+  height: 18px; /* Default: 24px */
+  font-size: 18px; /* Default: typography/24px */
+}
+```
+
+#### Sidebar Width & Spacing
+```css
+.md-sidebar {
+  width: 200px; /* Default: 242px */
+  padding: 12px 0; /* Default: 24px 0 */
+}
+
+.md-sidebar__scrollwrap {
+  margin: 0 2px; /* Default: 0 4px */
+}
+```
+
+#### Table of Contents (TOC) Classes
+
+**TOC Navigation Container:**
+```css
+.md-nav--secondary {
+  font-size: 12px; /* Inherits from .md-nav */
+}
+
+.md-nav--secondary .md-nav__list {
+  padding-inline-start: 6px; /* Default: 12px */
+  padding-bottom: 4px; /* Default: 8px */
+}
+
+.md-nav--secondary .md-nav__item > .md-nav__link {
+  margin-inline-end: 4px; /* Default: 8px */
+}
+```
+
+**Nested TOC Links (Level 2-6):**
+```css
+.md-nav--secondary .md-nav .md-nav__link {
+  padding-inline-start: 14px; /* Default: 28px for level 3 */
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav__link {
+  padding-inline-start: 20px; /* Default: 40px for level 4 */
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav .md-nav__link {
+  padding-inline-start: 26px;
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav .md-nav .md-nav__link {
+  padding-inline-start: 32px;
+}
+```
+
+#### Tree-like Navigation (Desktop)
+```css
+.md-nav--primary .md-nav__list {
+  padding-inline-start: 6px; /* Default: 12px */
+  padding-bottom: 4px; /* Default: 8px */
+}
+
+.md-nav--primary .md-nav__item > .md-nav__link {
+  margin-inline-end: 4px; /* Default: 8px */
+}
+```
+
+#### Complete CSS Override Example
+
+Add to `docs/stylesheets/extra.css`:
+
+```css
+/* Compact Navigation */
+.md-nav {
+  font-size: 12px;
+}
+
+.md-nav__link {
+  padding: 6px 8px;
+  margin-top: 0.4em;
+}
+
+/* Compact Primary Navigation */
+.md-nav--primary .md-nav__title,
+.md-nav--primary .md-nav__item {
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.md-nav--primary .md-nav__link {
+  padding: 8px 12px;
+}
+
+.md-nav--primary .md-nav__icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+/* Compact Sidebar */
+.md-sidebar {
+  width: 200px;
+  padding: 12px 0;
+}
+
+.md-sidebar__scrollwrap {
+  margin: 0 2px;
+}
+
+/* Compact TOC */
+.md-nav--secondary .md-nav__list {
+  padding-inline-start: 6px;
+  padding-bottom: 4px;
+}
+
+.md-nav--secondary .md-nav__item > .md-nav__link {
+  margin-inline-end: 4px;
+}
+
+/* Reduce nested TOC indentation */
+.md-nav--secondary .md-nav .md-nav__link {
+  padding-inline-start: 14px;
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav__link {
+  padding-inline-start: 20px;
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav .md-nav__link {
+  padding-inline-start: 26px;
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav .md-nav .md-nav__link {
+  padding-inline-start: 32px;
+}
+
+/* Tree-like Navigation */
+.md-nav--primary .md-nav__list {
+  padding-inline-start: 6px;
+  padding-bottom: 4px;
+}
+
+.md-nav--primary .md-nav__item > .md-nav__link {
+  margin-inline-end: 4px;
+}
+```
+
+Configure in `mkdocs.yml`:
+```yaml
+extra_css:
+  - stylesheets/extra.css
+```
+
+This configuration makes both the navigation sidebar and table of contents more compact with smaller fonts and reduced spacing while maintaining the theme's functionality and accessibility.
+
+## Development Workflow
+
+1. **Make changes** to CSS/JS files in `docs/`
+2. **Test locally** with `uv run mkdocs serve --dev-addr=127.0.0.1:8001`
+3. **Check browser console** for any JavaScript errors
+4. **Validate** changes work across different pages
+5. **Build** with `uv run mkdocs build` to check for errors
+6. **Deploy** when ready
+
+## Troubleshooting
+
+### CSS Not Loading
+- Check `extra_css` path in `mkdocs.yml`
+- Verify file exists in correct location
+- Restart MkDocs server after changes
+- Check browser network tab for 404 errors
+
+### JavaScript Issues
+- Use `document$.subscribe()` for page events
+- Check browser console for errors
+- Test with instant loading disabled
+
+### Theme Extension Problems
+- Ensure `custom_dir` points to correct directory
+- Verify file structure matches original theme
+- Check for syntax errors in HTML templates
+- Use `{{ super() }}` when extending blocks
+
+## References
+- [Material for MkDocs Customization](https://squidfunk.github.io/mkdocs-material/customization/)
+- [MkDocs Configuration](https://www.mkdocs.org/user-guide/configuration/)
+- [Jinja2 Template Documentation](https://jinja.palletsprojects.com/)

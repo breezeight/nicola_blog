@@ -69,6 +69,9 @@ extra:
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/YOUR_LINKEDIN_USERNAME
 
+extra_css:
+  - stylesheets/extra.css
+
 copyright: Copyright &copy; 2023 Your Name
 
 # Comprehensive navigation structure

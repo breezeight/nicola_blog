@@ -22,3 +22,4 @@ venv.bak/
 
 # Poetry (legacy)
 poetry.lock
+.playwright-mcp

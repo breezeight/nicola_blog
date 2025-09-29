@@ -1,0 +1,257 @@
+/* Custom CSS to maximize content width */
+
+/* Override Material theme's default max-width constraints */
+.md-content__inner {
+    max-width: none !important;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Make the main content area take up more space */
+.md-main__inner {
+    max-width: none !important;
+}
+
+/* Adjust the grid layout to give more space to content */
+.md-grid {
+    max-width: none !important;
+}
+
+/* Fix the main grid layout to accommodate resized sidebars */
+.md-main__inner.md-grid {
+    max-width: none !important;
+    display: grid !important;
+    grid-template-columns: 10rem 1fr 9rem !important;
+    gap: 0.5rem !important;
+}
+
+/* Ensure content area takes remaining space */
+.md-main__inner.md-grid .md-content {
+    grid-column: 2 !important;
+    min-width: 0 !important;
+}
+
+/* Ensure the content area uses full available width */
+.md-content {
+    max-width: none !important;
+}
+
+/* Adjust navigation sidebar width and reduce margins */
+.md-sidebar {
+    width: 10rem !important;
+    padding: 0.3rem 0 !important;
+    max-width: 10rem !important;
+}
+
+/* Reduce margins on navigation elements */
+.md-nav {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    line-height: 1.0 !important;
+    font-size: 0.7rem !important;
+}
+
+.md-nav__link {
+    padding: 0.2rem 0.3rem !important;
+    margin-top: 0.05rem !important;
+}
+
+.md-nav--secondary {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    line-height: 1.1 !important;
+}
+
+/* Reduce spacing between navigation items */
+.md-nav__item {
+    margin: 0 !important;
+}
+
+/* Reduce line spacing in primary navigation */
+.md-nav--primary .md-nav__item {
+    margin: 0 !important;
+}
+
+.md-nav--primary .md-nav__link {
+    line-height: 1.0 !important;
+    padding: 0.2rem 0.4rem !important;
+    font-size: 0.7rem !important;
+}
+
+/* Ultra-compact navigation icons */
+.md-nav--primary .md-nav__icon {
+    width: 14px !important;
+    height: 14px !important;
+    font-size: 14px !important;
+}
+
+/* Force sidebar to be more compact */
+.md-sidebar--primary {
+    width: 10rem !important;
+    max-width: 10rem !important;
+}
+
+.md-sidebar--secondary {
+    width: 9rem !important;
+    max-width: 9rem !important;
+}
+
+/* Make TOC more compact */
+.md-nav--secondary .md-nav__item {
+    margin: 0 !important;
+}
+
+.md-nav--secondary .md-nav__link {
+    padding: 0.2rem 0.3rem !important;
+    font-size: 0.7rem !important;
+    line-height: 1.0 !important;
+    margin: 0 !important;
+}
+
+/* Adjust TOC title */
+.md-nav--secondary .md-nav__title {
+    padding: 0.2rem 0.3rem !important;
+    font-size: 0.75rem !important;
+    line-height: 1.0 !important;
+}
+
+/* Reduce TOC nested indentation */
+.md-nav--secondary .md-nav .md-nav__link {
+    padding-inline-start: 0.8rem !important;
+    padding: 0.15rem 0.3rem !important;
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav__link {
+    padding-inline-start: 1.2rem !important;
+    padding: 0.15rem 0.3rem !important;
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav .md-nav__link {
+    padding-inline-start: 1.6rem !important;
+    padding: 0.15rem 0.3rem !important;
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav .md-nav .md-nav__link {
+    padding-inline-start: 2rem !important;
+    padding: 0.15rem 0.3rem !important;
+}
+
+/* Reduce general sidebar scroll margins */
+.md-sidebar__scrollwrap {
+    margin: 0 1px !important;
+}
+
+/* Ultra-compact navigation lists */
+.md-nav__list {
+    padding-inline-start: 0.3rem !important;
+    padding-bottom: 0.2rem !important;
+}
+
+/* Reduce space between navigation sections */
+.md-nav__title {
+    padding: 0.2rem 0.3rem !important;
+    font-size: 0.7rem !important;
+    margin: 0 !important;
+}
+
+/* Minimal spacing for active navigation items */
+.md-nav__item--active > .md-nav__link {
+    padding: 0.15rem 0.3rem !important;
+}
+
+/* Make sure the content area expands properly */
+.md-content__inner > * {
+    max-width: none !important;
+}
+
+/* Ensure tables and code blocks can use full width */
+.md-typeset table {
+    width: 100%;
+    max-width: none;
+}
+
+.md-typeset pre {
+    max-width: none;
+}
+
+/* Adjust for different screen sizes */
+@media screen and (min-width: 76.25em) {
+    .md-content__inner {
+        padding: 0 2rem;
+    }
+}
+
+@media screen and (min-width: 100em) {
+    .md-content__inner {
+        padding: 0 3rem;
+    }
+}
+
+/* Ensure proper spacing on very wide screens */
+@media screen and (min-width: 120em) {
+    .md-content__inner {
+        padding: 0 4rem;
+    }
+}
+
+/* Primary color palette for headings */
+:root {
+    --md-primary-fg-color: #1976d2;
+    --md-primary-fg-color--light: #42a5f5;
+    --md-primary-fg-color--dark: #1565c0;
+    --md-accent-fg-color: #ff4081;
+}
+
+/* Heading styles with primary color palette */
+.md-typeset h1 {
+    color: var(--md-primary-fg-color) !important;
+    border-bottom: 2px solid var(--md-primary-fg-color--light);
+    padding-bottom: 0.5rem;
+}
+
+.md-typeset h2 {
+    color: var(--md-primary-fg-color--dark) !important;
+    border-bottom: 1px solid var(--md-primary-fg-color--light);
+    padding-bottom: 0.3rem;
+}
+
+.md-typeset h3 {
+    color: var(--md-primary-fg-color) !important;
+}
+
+.md-typeset h4 {
+    color: var(--md-primary-fg-color--dark) !important;
+}
+
+.md-typeset h5 {
+    color: var(--md-primary-fg-color) !important;
+}
+
+.md-typeset h6 {
+    color: var(--md-primary-fg-color--dark) !important;
+}
+
+/* Accent color for special elements */
+.md-typeset a {
+    color: var(--md-accent-fg-color) !important;
+}
+
+.md-typeset a:hover {
+    color: var(--md-primary-fg-color) !important;
+}
+
+/* Code blocks with primary color accents */
+.md-typeset code {
+    background-color: rgba(25, 118, 210, 0.1);
+    color: var(--md-primary-fg-color--dark);
+}
+
+/* Inline code with primary color */
+.md-typeset :not(pre) > code {
+    background-color: rgba(25, 118, 210, 0.1);
+    color: var(--md-primary-fg-color--dark);
+    padding: 0.1em 0.3em;
+    border-radius: 0.2em;
+}
