@@ -17,7 +17,7 @@ theme:
     #- navigation.tabs
     #- navigation.sections
     
-    - toc.follow #https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#anchor-following
+    - toc.integrate #https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#table-of-contents-integration
     - search.suggest
     - search.highlight
     - content.tabs.link
