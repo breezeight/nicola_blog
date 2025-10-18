@@ -1,4 +1,11 @@
 
+---
+title: JavaScript Modularity
+abstract: >
+  Complete guide to JavaScript modularity covering modules, prototypes, inheritance, 
+  object-oriented patterns, and modern module systems.
+---
+
 # Modularity in JS
 
 In JS we achive modularity with:

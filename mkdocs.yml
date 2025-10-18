@@ -118,12 +118,13 @@ nav:
         - Stdlib DevTools Typing Tutorial: dev/python-language-reference-nicola/stdlib-devtools-typing-tutorial.md
         - UV: dev/python-language-reference-nicola/uv-explanation.md
     - JavaScript:
-      - Index: dev/javascript/javascript.md
+      - Index: dev/javascript/javascript-typescript-index.md
+      - Main Reference: dev/javascript/javascript.md
       - Asynchronicity: dev/javascript/javascript_asynchronicity.md
       - Functions: dev/javascript/javascript_functions.md
       - Modularity: dev/javascript/javascript_modularity.md
       - Testing: dev/javascript/javascript_testing.md
-    - React: dev/javascript-react/react.md
+    - React: dev/javascript/react/react-index.md
     - TypeScript: typescript.md
     - Ruby:
       - Index: dev/ruby/ruby.md

@@ -1,4 +1,11 @@
 
+---
+title: JavaScript Functions
+abstract: >
+  Deep dive into JavaScript functions covering function definitions, closures, 
+  functional programming patterns, and advanced function concepts.
+---
+
 # Functions
 
 A function is a procedure, a collection of statements that can be invoked one or more times, may be provided some inputs, and may give back one or more outputs.

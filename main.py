@@ -23,8 +23,9 @@ def define_env(env):
             with open(full_path, 'r', encoding='utf-8') as f:
                 content = f.read()
             
-            # Check if file starts with frontmatter
-            if not content.startswith('---'):
+            # Check if file starts with frontmatter (allow for leading whitespace)
+            content_stripped = content.strip()
+            if not content_stripped.startswith('---'):
                 return {}, content
             
             # Find the end of frontmatter

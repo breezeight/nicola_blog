@@ -4,6 +4,9 @@ title: "Javascript"
 date: 2014-04-20 09:31:50 +0200
 comments: true
 categories: ["javascript"]
+abstract: >
+  Comprehensive JavaScript reference covering core concepts, modern ES6+ features, 
+  best practices, and essential resources for web development.
 ---
 
 

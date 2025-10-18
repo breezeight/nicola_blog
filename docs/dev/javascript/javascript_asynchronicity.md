@@ -1,4 +1,11 @@
 
+---
+title: JavaScript Asynchronicity
+abstract: >
+  Comprehensive guide to asynchronous JavaScript programming covering callbacks, 
+  promises, async/await, and modern asynchronous patterns.
+---
+
 # JavaScript Asynchronicity
 
 Ref:

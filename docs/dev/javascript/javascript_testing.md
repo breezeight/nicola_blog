@@ -1,3 +1,10 @@
+---
+title: JavaScript Testing
+abstract: >
+  Complete JavaScript testing guide covering Jest fundamentals, unit testing, 
+  integration testing, mocking strategies, and testing best practices.
+---
+
 # Testing
 
 Refs:
