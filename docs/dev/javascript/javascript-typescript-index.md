@@ -9,6 +9,10 @@ abstract: >
 
 This index provides organized access to all JavaScript and TypeScript resources, from fundamental concepts to advanced topics and practical implementation guides.
 
+## Learning Paths
+
+{{ link_with_abstract("javascript-typescript-learningpaths.md") }}
+
 ## Core JavaScript Resources
 
 {{ link_with_abstract("javascript.md") }}
@@ -33,7 +37,7 @@ This index provides organized access to all JavaScript and TypeScript resources,
 
 ## TypeScript
 
-TypeScript resources are currently maintained in external documentation. For the most up-to-date TypeScript guides and references, please refer to the official TypeScript documentation and community resources.
+{{ link_with_abstract("typescript.md") }}
 
 ## Learning Paths
 
