@@ -124,8 +124,10 @@ nav:
       - Functions: dev/javascript/javascript_functions.md
       - Modularity: dev/javascript/javascript_modularity.md
       - Testing: dev/javascript/javascript_testing.md
+      - Learning Paths: dev/javascript/javascript-typescript-learningpaths.md
     - React: dev/javascript/react/react-index.md
-    - TypeScript: typescript.md
+    - TypeScript:
+      - Advanced Guide: dev/javascript/typescript.md
     - Ruby:
       - Index: dev/ruby/ruby.md
       - Ruby 3: dev/ruby/ruby3.md
@@ -138,6 +140,7 @@ nav:
       - Links Collection: dev/ruby/ruby_links_collection.md
       - Nginx Passenger: dev/ruby/ruby_nginx_passenger.md
       - Object Model: dev/ruby/ruby_object_model.md
+      - OpenProject: dev/ruby/openproject-index.md
       - Patterns: dev/ruby/ruby_patterns.md
       - Rails: dev/ruby/ruby_rails.md
       - RSpec: dev/ruby/ruby_rspec.md

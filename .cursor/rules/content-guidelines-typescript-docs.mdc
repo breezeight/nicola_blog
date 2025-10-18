@@ -1,0 +1,119 @@
+# TypeScript Advanced Guide Rules
+
+## File Structure & Organization
+
+### Document Purpose
+- **Advanced resource** for experienced developers collecting best practices, conventions, and insights
+- **Hub linking to learning resources** for newcomers with brief summaries to help evaluate what's worth exploring
+- Follows **Diátaxis framework** principles, primarily taking the form of **explanation**
+- Focus on clarifying **how and why** TypeScript behaves as it does, not just syntax listing
+- Connect **core TypeScript concepts** to **practical use cases and frameworks** (React, Next.js, library authoring)
+
+### Content Organization Patterns
+
+#### Section Headers
+- Use descriptive headers with emojis for visual organization: `## 📘 Purpose & Scope`
+- Use clear hierarchy: `#`, `##`, `####` for main topics, subtopics, and specific concepts
+- Include practical examples and code snippets immediately after explanations
+
+#### Code Examples
+- Always include **runnable TypeScript examples** with proper syntax highlighting
+- Use `[Try]` links to TypeScript Playground when available
+- Show both **correct usage** and **common errors** with explanations
+- Include **before/after** examples to demonstrate concepts
+- Use `// COMPILE ERROR` and `// RUNTIME ERROR` comments to highlight issues
+
+#### Reference Management
+- Include **Ref:** sections with external links to official documentation
+- Link to relevant sections: `[Ref: TS Handbook](https://...)`
+- Use `TODO:` markers for incomplete sections
+- Include video timestamps for tutorial references: `[(29:00)](https://youtu.be/...)`
+
+### Writing Style Guidelines
+
+#### Technical Explanations
+- Start with **"Why"** before explaining **"How"**
+- Use **bold text** for key concepts and important terms
+- Include **TL;DR** sections for complex topics
+- Use **🔥** emojis to highlight critical concepts or warnings
+- Use **💥** for important warnings about common mistakes
+
+#### Code Documentation
+- Explain **what each code example demonstrates**
+- Include **hover behavior** descriptions for IDE features
+- Show **type inference** examples with comments
+- Demonstrate **error messages** with explanations
+
+#### Cross-References
+- Use `{{ link_with_abstract("filename.md") }}` macro for internal links
+- Include **anchor links** for direct navigation within the document
+- Reference related sections with `⏭️ [see here to understand how it works](#bookmark=...)`
+
+### Content Patterns
+
+#### Concept Introduction
+1. **Purpose/Why** - Explain the problem it solves
+2. **Definition** - Clear, concise explanation
+3. **Examples** - Practical code demonstrations
+4. **Common Pitfalls** - What to avoid
+5. **Best Practices** - Recommended approaches
+
+#### Type System Documentation
+- Always explain **structural typing** concepts
+- Show **type inference** vs **explicit annotation** examples
+- Include **union types** and **narrowing** techniques
+- Demonstrate **utility types** with practical use cases
+
+#### Advanced Topics
+- **Generics** - Focus on practical applications, not just syntax
+- **Utility Types** - Show real-world scenarios
+- **Type Manipulation** - Explain the "why" behind complex types
+- **Compiler Behavior** - Document how TypeScript actually works
+
+### Maintenance Guidelines
+
+#### Keeping Content Current
+- Update **version numbers** and compatibility information
+- Review **external links** regularly for broken references
+- Add **troubleshooting sections** for common issues
+- Include **migration strategies** for major version changes
+
+#### Code Quality
+- Ensure all **code examples compile** without errors
+- Test **TypeScript Playground** links regularly
+- Verify **IDE behavior** descriptions are accurate
+- Update **best practices** based on community consensus
+
+### Special Sections
+
+#### Learning Paths
+- Link to **beginner resources** with brief evaluations
+- Provide **progression recommendations** from basic to advanced
+- Include **time estimates** for learning different concepts
+
+#### Practical Applications
+- Connect abstract concepts to **real frameworks** (React, Next.js)
+- Show **library authoring** patterns and techniques
+- Include **team collaboration** considerations
+
+#### Tool Integration
+- Document **VSCode integration** features
+- Explain **TSServer** capabilities and benefits
+- Include **compiler configuration** best practices
+
+### Quality Standards
+
+#### Accuracy
+- All code examples must be **syntactically correct**
+- TypeScript behavior descriptions must be **verified**
+- External links must be **functional and relevant**
+
+#### Clarity
+- Use **simple language** for complex concepts
+- Provide **multiple examples** for difficult topics
+- Include **visual cues** (emojis, formatting) for better readability
+
+#### Completeness
+- Cover **both basic and advanced** aspects of each topic
+- Include **common use cases** and **edge cases**
+- Provide **practical guidance** for real-world applications

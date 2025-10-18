@@ -1,0 +1,322 @@
+---
+globs: docs/dev/**/*.md
+alwaysApply: false
+---
+# General Project Rules — Diátaxis Framework (Integrated MDC Rule)
+
+## 📚 Repository Purpose
+This repository is a **personal knowledge base** structured using the **Diátaxis Documentation Framework**, created by [Daniele Procida](https://vurt.eu/work-in-documentation/).  
+It organizes Markdown documents into four cognitive types — **Tutorials 📝**, **How-To Guides 🛠️**, **Explanations 💡**, and **Reference Materials 📖** — to ensure each document serves a clear educational purpose.
+
+### Cognition
+*Cognition* refers to the **mental action or process of acquiring knowledge and understanding**.  
+The Diátaxis Framework is built on this principle: different kinds of documentation support different cognitive needs — doing, applying, understanding, or recalling.
+
+---
+
+## 🎯 Purpose of This Rule
+This MDC Rule defines how to:
+- Classify, write, and maintain documents according to Diátaxis principles.  
+- Use Markdown consistently across all files.  
+- Instruct and constrain an **LLM Assistant** to enforce structural and tonal integrity during document creation or revision.
+
+We are **not rigidly strict**.  
+A document must have one **primary Diátaxis type**, but may include small, labeled cross-type sections (for example, an “Explanation Box 💡” inside a How-To guide).  
+The goal is **clarity, classification, and cognitive coherence**, not dogmatic purity.
+
+---
+
+## 🧩 The Diátaxis Framework Overview
+
+### What It Is
+The **Diátaxis Framework** is a strategic system for structuring *educational documentation*.  
+It is not suitable for every kind of writing (e.g., contracts, invoices).  
+It is designed for materials that:
+- Help people **learn** something new (tutorials or explanations).  
+- Help people **do** something (how-to guides).  
+- Help people **find** or **verify** something (reference materials).
+
+By clearly separating these intents, documentation becomes easier to:
+- Write and maintain ✍️  
+- Navigate and learn from 👥  
+- Reuse and extend ⚙️  
+
+Source: [https://diataxis.fr](https://diataxis.fr)
+
+---
+
+## 🧱 Document Types
+
+### Tutorials 📝 — *Learning by Doing*
+**Goal:** Guide learners through a practical experience to build confidence and skill.  
+**Audience:** Beginners learning something for the first time.  
+**Tone:** Supportive, narrative, and confidence-building.  
+
+**Style Principles:**
+- Use first-person plural (“we”) to create a shared experience.  
+- Keep steps concrete, specific, and success-oriented.  
+- Provide reassurance and pacing (“You should now see…”, “Don’t worry if this doesn’t make sense yet.”).  
+- Avoid abstraction, theory, or deep explanation.  
+- Focus on **doing**, not knowing.
+
+**Structure Template:**
+```yaml
+---
+title: "Exact title of the tutorial"
+abstract: "Brief description of the content of the document and the diataxis type, proportionally to the content of the document"
+type: "tutorial"
+---
+````
+
+```markdown
+# <same as title>
+## 📘 Purpose & Scope
+Introduce what we will build or achieve and why.
+```
+
+Steps should follow a guided narrative flow.
+End with:
+
+```markdown
+## References
+List related resources and next steps.
+```
+
+**Best Practices (from Django Tutorial Analysis):**
+
+* Remove background explanations from tutorials.
+* Focus on immediate, actionable relevance.
+* Simplify language (“Go to” instead of “Please head over”).
+* State assumptions clearly (“We assume you have Django installed”).
+* Reassure users through expected outcomes and validation steps.
+* Move conceptual material to Explanations or Reference sections.
+* Keep tutorials achievable and repeatable.
+
+---
+
+### How-To Guides 🛠️ — *Task-Oriented Action*
+
+**Goal:** Provide clear steps to achieve a specific task or solve a problem.
+**Audience:** Competent users applying knowledge in practice.
+**Tone:** Imperative, direct, concise.
+
+**Style Principles:**
+
+* Instructional, not educational: “To achieve this, do that.”
+* Focus only on steps and results.
+* Avoid explanations or theoretical detours.
+* Optional: include a small “💡 Explanation Box” linking to conceptual material.
+
+**Structure Template:**
+
+```yaml
+---
+title: "How to <task>"
+description: "Concise summary of the task"
+abstract: "One-sentence summary of the outcome"
+type: "how-to"
+---
+```
+
+```markdown
+# <same as title>
+## 📘 Purpose & Scope
+State what this guide accomplishes.
+```
+
+Follow with ordered steps.
+End with:
+
+```markdown
+## References
+```
+
+**Analogy:**
+A How-To is a *recipe*: action-oriented, complete, repeatable. It tells the reader *what to do*, not *why it works*.
+
+---
+
+### Explanations 💡 — *Understanding and Context*
+
+**Goal:** Provide insight, meaning, and rationale.
+**Audience:** Anyone seeking to understand the “why” behind systems or practices.
+**Tone:** Thoughtful, reflective, and conceptual.
+
+**Style Principles:**
+
+* Discuss background, reasons, alternatives, or trade-offs.
+* Explore *theory*, *history*, and *connections*.
+* Avoid procedural instructions.
+* Encourage curiosity and comprehension.
+
+**Structure Template:**
+
+```yaml
+---
+title: "Concept or topic name"
+description: "What is being explained and why"
+abstract: "Summary of key insight"
+type: "explanation"
+---
+```
+
+```markdown
+# <same as title>
+## 📘 Purpose & Scope
+Explain what the reader will understand by the end.
+```
+
+Follow with conceptual exposition and context.
+End with:
+
+```markdown
+## References
+```
+
+**Philosophical Context:**
+Programming involves both **intention (will)** and **attention (presence)** — concepts explored by Daniele Procida in *The Attentive Programmer* (PyCon Italia).
+Programming as intention is active — about commanding and creating.
+Programming as attention is receptive — about observing and understanding what already exists.
+Effective documentation balances both.
+
+---
+
+### Reference 📖 — *Information and Precision*
+
+**Goal:** Provide complete, authoritative technical facts.
+**Audience:** Users applying or verifying information during work.
+**Tone:** Neutral, objective, factual.
+
+**Style Principles:**
+
+* Be exhaustive, not persuasive.
+* Use structured organization (tables, lists, sections).
+* Reflect the internal architecture of the system or topic.
+* Avoid narrative or conceptual framing.
+* References are *consulted*, not read.
+
+**Structure Template:**
+
+```yaml
+---
+title: "Reference title"
+description: "Summary of scope"
+abstract: "Concise factual abstract"
+type: "reference"
+---
+```
+
+```markdown
+# <same as title>
+## 📘 Purpose & Scope
+Explain what the reference covers.
+```
+
+Follow with factual content and structured lists.
+End with:
+
+```markdown
+## References
+```
+
+---
+
+## ⚖️ Overlaps and Tensions
+
+Overlap between Diátaxis types is natural but must remain intentional:
+
+* **Tutorials ↔ How-To Guides:** Both action-oriented, but tutorials teach; guides execute.
+* **How-To Guides ↔ Reference:** Both work-oriented; guides act, references inform.
+* **Reference ↔ Explanation:** Both theoretical; reference states facts, explanations interpret them.
+* **Explanations ↔ Tutorials:** Both study-oriented; explanations explore meaning, tutorials practice skill.
+
+**Maintain Distinctions:**
+Blending types too much leads to confusion, cognitive overload, and maintenance friction.
+Clear separation ensures that documentation is easier to navigate, maintain, and expand.
+
+---
+
+## 🧱 Common Structural Rules
+
+### File Format and Headers
+
+* Use **YAML** front matter.
+* Required fields: `title`, `description`, `abstract`, `type`.
+* The filename, `title`, and only `#` header must match exactly.
+* Only one `#` H1 per file.
+* Always begin with `## 📘 Purpose & Scope`.
+* Always end with `## References`.
+* Review and update abstracts on major edits.
+
+### Markdown Code Style
+
+* Use consistent formatting.
+* Wrap regex patterns in backticks.
+* Maintain valid Markdown syntax for links and code blocks.
+* Follow header hierarchy (H1 → H2 → H3).
+* Use fenced code blocks with syntax highlighting.
+* Use tables for structured information.
+* Add images and diagrams as needed.
+* Add manual anchors only when MkDocs does not auto-generate them.
+
+### File Organization
+
+* Store all docs under `docs/`.
+* Recommended directories:
+
+  * `docs/tutorials/`
+  * `docs/how-to/`
+  * `docs/explanations/`
+  * `docs/reference/`
+  * `docs/images/`
+  * `docs/downloads/`
+* Use lowercase filenames with hyphens.
+* Group related topics in subdirectories (e.g., `docs/dev/python/`).
+
+### Git Workflow
+
+* Commit frequently with descriptive, conventional messages.
+* Test MkDocs build before committing.
+* Branch naming: `feature/`, `fix/`, `update/`.
+
+---
+
+## 🧠 LLM Enforcement Rule
+
+When assisting a writer, the **LLM must:**
+
+1. **Ask** the writer to confirm the intended document type (tutorial, how-to, explanation, reference).
+2. **Enforce** structure, tone, and content based on that classification.
+3. **Allow limited cross-type boxes** (e.g., “💡 Explanation Box”) only when clearly marked and contextually justified.
+4. **Ensure** all documents contain:
+
+   * YAML front matter.
+   * Matching `title`, filename, and H1.
+   * `## 📘 Purpose & Scope` section.
+   * `## References` section.
+   * Updated `abstract` after major edits.
+5. **Ask confirmation before final output**, for example:
+
+   > “You indicated this is a Tutorial. Shall I enforce a supportive, guided tone and remove explanatory sections beyond small linked boxes?”
+
+The LLM must never mix document styles unless explicitly confirmed by the writer.
+
+---
+
+## 🔗 Resources and References
+
+* **Framework:** [https://diataxis.fr](https://diataxis.fr)
+* **Author:** [Daniele Procida](https://vurt.eu/work-in-documentation/)
+* **Talks:**
+
+  * *What You Need to Know About Your Documentation* – DjangoCon 2020
+  * *Let’s Become Confident About Django Documentation* – Djangonaut Space
+* **Key Concepts:**
+
+  * *Cognition:* understanding as a process of knowledge acquisition.
+  * *Intention vs. Attention:* programming as will vs. awareness.
+* **Design Resources:** [Figma Curriculum Architecture Board](https://www.figma.com/board/gti4lEiDBNFwHgjBZS7Dlk/Curriculum-and-Course-Architecture?node-id=0-1&p=f&t=FBuVCzsMc9kNqCFG-0)
+* **CustomGPT Diátaxis Assistant:** [https://chatgpt.com/g/g-X89iyVxj6-diataxis-gpt](https://chatgpt.com/g/g-X89iyVxj6-diataxis-gpt)
+* **Example Prompt:** [Prompt Share](https://chatgpt.com/share/365d69ed-613c-45c8-a6b8-cd45238070c9)
+* **Assistant Backend:** [Notion Database](https://daisy-vegetarian-bf4.notion.site/Di-taxis-GPT-db71d5aa4fa942febb4db93695933453?pvs=4)
+

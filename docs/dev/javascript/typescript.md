@@ -3,23 +3,40 @@ title: TypeScript Advanced Guide
 abstract: >
   Comprehensive advanced guide to TypeScript covering learning paths, best practices, 
   core concepts, and practical implementation strategies for modern web development.
+type: explanation
 ---
 
+# TypeScript Advanced Guide
 
-## Scope of the document
+## 📘 Purpose & Scope
 
-This document wants to be an advanced guide to Typescript, collecting all the information and best practices we decide to adopt in coherent way.
+This is a practical, evolving guide to TypeScript that we maintain as a team. It focuses on how the type system behaves in real-world code, how we use it effectively, and how we integrate it with tools like VSCode.
 
-In the “Learning paths” section we collect learning materials for who is new to TS. We feasible we create and brief summary of the content provided by each resource.
+Our goal is to document what’s useful in practice, clarify how TypeScript behaves in everyday scenarios, and provide a shared reference for the patterns, setups, and decisions we adopt — all in one coherent place.
 
-# Links and Documentation
+This guide serves as:
+
+- an **advanced resource** for experienced developers, collecting the best practices, conventions, and insights we choose to follow;
+- a hub that **links to learning resources** for those new to TypeScript, with brief summaries to help evaluate what’s worth exploring.
+
+We follow the principles of the [**Diátaxis framework**](https://diataxis.fr), and this guide primarily takes the form of **explanation**:
+it focuses on clarifying how and why TypeScript behaves as it does — rather than simply listing syntax, procedures, or tutorials.
+
+We also link to relevant **tutorials** and **how-to guides** for hands-on tasks, tool setup, and onboarding — especially when others have already covered those areas effectively.
+
+Where possible, we connect **core TypeScript concepts** to **practical use cases and frameworks** we actually encounter — such as React, Next.js, or library authoring — to ground abstract ideas in real scenarios.
+
+✍️ We use this guide to align how we write, think about, and teach TypeScript — and to continuously improve our collective understanding over time.
+
+
+## References
 
 [Nicola's Typescript MindMap](https://drive.mindmup.com/map/1uicYTMNK7U71-HbLoRRtGa7ntRHBwXbI) 
 
 ({{ link_with_abstract("javascript-typescript-learningpaths.md") }})
 
 
-# Why does Typescript exists? \=\> Be a TypeChecker for JS 
+## Why does Typescript exists? ==> it is a TypeChecker for JS 
 
 Ref:
 
@@ -30,11 +47,10 @@ The most common kinds of errors that programmers write can be described as type 
 The goal of TypeScript are:
 
 *  to **be a static typechecker for JavaScript programs**  
-  *  in other words, a tool that runs before your code runs (static) and ensures that the types of the program are correct (typechecked). ([Ref](https://www.typescriptlang.org/docs/handbook/intro.html))  
-  * Types have proven ability to enhance code quality and understandability  
-  * Types increase your agility when doing refactoring  
-  * Types are one of the best forms of documentation you can have. The function signature is a theorem and the function body is the proof.  
-  *   
+    *  in other words, a tool that runs before your code runs (static) and ensures that the types of the program are correct (typechecked). ([Ref](https://www.typescriptlang.org/docs/handbook/intro.html))  
+    * Types have proven ability to enhance code quality and understandability  
+    * Types increase your agility when doing refactoring  
+    * Types are one of the best forms of documentation you can have. The function signature is a theorem and the function body is the proof.  
 * Provide planned features from future JavaScript editions to current JavaScript engines
 
 **Your JavaScript is TypeScript** ➡️TypeScript is a **superset of javascript**:
@@ -46,7 +62,7 @@ TypeScript provides compile time type safety for your JavaScript code. This is n
 
 The core of TS it’s the **Type System**, ⏭️ [see here to understand how it works](#bookmark=id.7h89pm2d6b35)
 
-# VS Code \+ TypeScript
+## VS Code \+ TypeScript
 
 Basically VSCode is very well integrated with TS by design and to do most of the things that you need you need only the standard setup.
 
@@ -108,7 +124,7 @@ function restOfPath(path: string) {
 } // when you hover over the restOfPath function, you will see that it is of type (path: string) => string
 ```
 
-# Configure Projects for TypeScript
+## Configure Projects for TypeScript
 
 Ref: [https://basarat.gitbook.io/typescript/proj](https://basarat.gitbook.io/typescript/proj)	
 
@@ -125,7 +141,7 @@ The TypeScript compiler, which performs this compilation, is called \`**tsc**\`.
 
 tsconfig.json is a configuration file that is used to define the TypeScript compiler options for a project. It is used to specify the options that control how TypeScript files are compiled to JavaScript. This file is typically located at the root of a project and is used to configure the TypeScript compiler when you build your project.
 
-## Initialize a new project
+### Initialize a new project
 
 Many high level frameworks like KeystoneJS, NextJS, ReactJS can set up a project that uses TypeScript out of the box.
 
@@ -134,13 +150,13 @@ If you are looking for a way to setup a basic project just to make some experime
 * Very basic, good for beginner: [How To Set Up a New TypeScript Project | DigitalOcean](https://www.digitalocean.com/community/tutorials/typescript-new-project)  ⏱️5 min  
 * Or this that uses TS-Node, more advanced: [The fastest way to start a typescript project (in 30 seconds)](https://www.mailslurp.com/blog/fastest-way-to-start-a-typescript-project/) 
 
-## Compilation Context \- tsconfig.js
+### Compilation Context - tsconfig.js
 
 Ref: [TypeScript: Documentation \- What is a tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) 
 
 Compilation Context is:
 
-* The list of files that TypeScript will parse, analyze and compile to JS (\`include\` and \`exclude\`)  
+* The list of files that TypeScript will parse, analyze and compile to JS (`include` and `exclude`)  
 * A set of compiler options (ex: which ES7 )
 
 tsconfig.json define our Compilation Context, includes options such as:
@@ -180,7 +196,7 @@ But it is not recommended as you have to keep updating it. Instead use include t
 
 Read More here about best practices and consideration here: [https://docs.google.com/document/d/1fj1SDPrC81yDFbELpQ\_QRou-nNOyjZ1uaocja-KnkwE/edit\#bookmark=id.nnmxfbl9vw99](https://docs.google.com/document/d/1fj1SDPrC81yDFbELpQ_QRou-nNOyjZ1uaocja-KnkwE/edit#bookmark=id.nnmxfbl9vw99)	 
 
-# Declaration Spaces
+## Declaration Spaces
 
 TL;DR:
 
@@ -209,21 +225,21 @@ The reason why it says `cannot find name` is because the name `Bar` *is not defi
 
 More here: [https://basarat.gitbook.io/typescript/project/declarationspaces](https://basarat.gitbook.io/typescript/project/declarationspaces) 
 
-# Type System
+## Type System
 
 REF: [Nicola's Typescript MindMap](https://drive.mindmup.com/map/1uicYTMNK7U71-HbLoRRtGa7ntRHBwXbI) : TYPE SYSTEM node is well documented
 
 The **type system in TypeScript** is a way of adding type information to JavaScript code, which allows the TypeScript compiler to perform type checking and catch errors before the code is run:
 
-* With the type system, you can specify the expected types for variables, function arguments, and return values, and the TypeScript compiler will validate that the code adheres to these types (this process is called “type annotation”).   
-* This helps to catch errors and prevent unintended behavior, especially in large codebases where it can be difficult to keep track of the data types being used throughout the code.
+- With the type system, you can specify the expected types for variables, function arguments, and return values, and the TypeScript compiler will validate that the code adheres to these types (this process is called “type annotation”).   
+- This helps to catch errors and prevent unintended behavior, especially in large codebases where it can be difficult to keep track of the data types being used throughout the code.
 
 TypeScript supports a variety of types including:
 
-* primitive types (such as number, string, and boolean),  
-* complex types (such as arrays and objects),   
-* special types (any, unknow, void, never)  
-* and user-defined types (such as classes and interfaces). 
+- primitive types (such as number, string, and boolean),  
+- complex types (such as arrays and objects),   
+- special types (any, unknow, void, never)  
+- and user-defined types (such as classes and interfaces). 
 
 **Your JavaScript is TypeScript** ➡️TypeScript is a **superset of javascript**:
 
@@ -234,7 +250,7 @@ TypeScript supports a variety of types including:
 
 Your JavaScript code .js file can be renamed to a .ts file and TypeScript will still give you back valid .js equivalent to the original JavaScript file. TypeScript is *intentionally* and strictly a superset of JavaScript with optional Type checking.
 
-### What is typescript annotation?
+#### What is typescript annotation?
 
 TypeScript annotations are a way to add type information to JavaScript code. They allow developers to specify the type of variables, function parameters, and return values, making the code more predictable and easier to debug. This also allows the TypeScript compiler to catch type errors before the code is run, which can save time and effort during development. 
 
@@ -260,7 +276,7 @@ In TypeScript, various elements of code can be annotated with types. Here are so
 
 These are just a few examples of the many elements of code that can be annotated with types in TypeScript. In general, any element that can be assigned a value can have a type annotation.
 
-### Type Annotations on Variables
+#### Type Annotations on Variables
 
 Ref: [https://www.typescriptlang.org/docs/handbook/2/everyday-types.html\#type-annotations-on-variables](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-annotations-on-variables) 
 
@@ -283,7 +299,7 @@ let myName = "Alice";
 
 For the most part you don’t need to explicitly learn the rules of inference. If you’re starting out, try using fewer type annotations than you think - you might be surprised how few you need for TypeScript to fully understand what’s going on.
 
-### Type Annotations on Functions
+#### Type Annotations on Functions
 
 Ref: [https://www.typescriptlang.org/docs/handbook/2/everyday-types.html\#functions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#functions) 
 
@@ -350,7 +366,7 @@ This process is called **contextual typing** because the context that the functi
 
 Similar to the inference rules, you don’t need to explicitly learn how this happens, but understanding that it does happen can help you notice when type annotations aren’t needed. Later, we’ll see more examples of how the context that a value occurs in can affect its type.
 
-### [Types can be Implicit or Explicit](https://basarat.gitbook.io/typescript/getting-started/why-typescript#types-can-be-implicit)
+#### [Types can be Implicit or Explicit](https://basarat.gitbook.io/typescript/getting-started/why-typescript#types-can-be-implicit)
 
 Implicit
 
@@ -366,7 +382,7 @@ var foo: number = 123;
 var foo: number = '123'; // Error: cannot assign a 'string' to a 'number'
 ```
 
-### [Types are structural](https://basarat.gitbook.io/typescript/getting-started/why-typescript#types-are-structural)
+#### [Types are structural](https://basarat.gitbook.io/typescript/getting-started/why-typescript#types-are-structural)
 
 This means that duck typing is a first class language construct. 
 
@@ -390,13 +406,13 @@ iTakePoint2D(point3D); // extra information okay
 iTakePoint2D({ x: 0 }); // Error: missing information `y`
 ```
 
-### [Type errors do not prevent JavaScript emit](https://basarat.gitbook.io/typescript/getting-started/why-typescript#type-errors-do-not-prevent-javascript-emit)
+#### [Type errors do not prevent JavaScript emit](https://basarat.gitbook.io/typescript/getting-started/why-typescript#type-errors-do-not-prevent-javascript-emit)
 
 To make it easy for you to migrate your JavaScript code to TypeScript, even if there are compilation errors, by default TypeScript will emit valid JavaScript
 
 TODO Rileggere questo [https://basarat.gitbook.io/typescript/getting-started/why-typescript\#types-can-be-ambient](https://basarat.gitbook.io/typescript/getting-started/why-typescript#types-can-be-ambient)
 
-### Type Categories
+#### Type Categories
 
 Types in TS are categorized in:
 
@@ -405,7 +421,7 @@ Types in TS are categorized in:
 * Built-in Special Types  
 * Custom Types
 
-### Primitive Types
+#### Primitive Types
 
 Ref:
 
@@ -423,7 +439,7 @@ JavaScript has three very commonly used [primitives](https://developer.mozilla.o
 * **undefined**  
 * **null**
 
-### ⭐Complex Types and Custom Type ⭐
+#### ⭐Complex Types and Custom Type ⭐
 
 Why is a type considered complex in typescript?
 
@@ -442,7 +458,7 @@ For example, an array type `number[]` represents a collection of numbers, while 
 
 Complex types in TypeScript provide more flexibility and power when working with data structures in your code. They allow you to describe the structure and shape of the data you are working with, which helps to catch errors early and improve the maintainability of your code.
 
-### Special types
+#### Special types
 
 * **any** [https://basarat.gitbook.io/typescript/type-system\#any](https://basarat.gitbook.io/typescript/type-system#any)  
   * you can use it whenever you don’t want a particular value to cause type checking errors.  
@@ -473,14 +489,14 @@ const n: number = obj;
 * **never**  
   * represents values that never occur.
 
-### Array Type
+#### Array Type
 
 An array is a complex type that is used to represent a collection of values.
 
 To specify the type of an array like \[1, 2, 3\], you can use the syntax number\[\]; this syntax works for any type (e.g. string\[\] is an array of strings, and so on). You may also see this written as Array\<number\>, which means the same thing. We’ll learn more about the syntax T\<U\> when we cover generics.  
 Note that \[number\] is a different thing; refer to the section on [Tuples](https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types).
 
-### Object Types
+#### Object Types
 
 To define an object type, we simply list its properties and their types.
 
@@ -499,7 +515,7 @@ Here, we annotated the parameter with a type with two properties \- x and y \- w
 
 The type part of each property is also optional. If you don’t specify a type, it will be assumed to be any.
 
-#### Optional Properties
+##### Optional Properties
 
 [https://www.typescriptlang.org/docs/handbook/2/everyday-types.html\#optional-properties](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#optional-properties)  
 Object types can also specify that some or all of their properties are optional. To do this, add a ? after the property name ( [Try](https://www.typescriptlang.org/play?#code/GYVwdgxgLglg9mABABwE4zFAcgQwLYCmAFHAEYBWAXIgN6LAyoDOU1L6YA5gNyIA2OFgH42UDp0QBfAJS0AsAChEiAPQrEAOi2LJitYgBCcKAAtEAeQDSitBmz5idBs1aIAREdJup07jY72hEROjCzUbgCCfDAQBG4ANPyCrpHRTEwI3jLcQA) ):
@@ -531,7 +547,7 @@ printName({ first: "James"})
 printName({ first: "James", last: "Kirk"})
 ```
 
-### Union Type
+#### Union Type
 
 [https://camchenry.com/blog/typescript-union-type](https://camchenry.com/blog/typescript-union-type) 
 
@@ -551,7 +567,7 @@ printId("202"); // OK
 printId({ myID: 22342 }); // <<< Error Argument of type '{ myID: number; }' is not assignable to parameter of type 'string | number'.
 ```
 
-#### Working with Union Types \- Narrowing \- Type Guards
+##### Working with Union Types \- Narrowing \- Type Guards
 
 It’s easy to provide a value matching a union type \- simply provide a type matching any of the union’s members. If you have a value of a union type, how do you work with it?  
 TypeScript will only allow an operation if it is valid for every member of the union. 
@@ -613,9 +629,9 @@ function getFirstThree(x: number[] | string) {
 }
 ```
 
-### TypeScript Union of Literal Types
+#### TypeScript Union of Literal Types
 
-**Literal Type**  
+##### **Literal Type**  
 [Ref: TS Handbook](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types) : In addition to the general types string and number, we can refer to specific strings and numbers in type positions. In the example below because constantString can only represent 1 possible string, it has a literal type representation.  
 
 ```typescript
@@ -677,7 +693,7 @@ Although union types are an excellent modeling tool, there are legitimate reason
 
 These are just a few common reasons to not use a union type, but there are others as well. If you are interested in knowing the comprehensive difference between union types and other language features, check out my article on [the differences between union types, enums, and objects](https://camchenry.com/blog/typescript-union-vs-enum-vs-object).
 
-### Type Aliases
+#### Type Aliases
 
 [https://www.typescriptlang.org/docs/handbook/2/everyday-types.html\#type-aliases](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-aliases) 
 
@@ -722,7 +738,7 @@ let userInput = sanitizeInput(getInput());
 userInput = "new input";
 ```
 
-### Interfaces \- Structurally typed type system
+#### Interfaces \- Structurally typed type system
 
 [https://www.typescriptlang.org/docs/handbook/2/everyday-types.html\#interfaces](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#interfaces) 
 
@@ -744,7 +760,7 @@ printCoord({ x: 100, y: 100 });
 
 Just like when we used a type alias above, the example works just as if we had used an anonymous object type.🔥 TypeScript is only concerned with the structure of the value we passed to printCoord \- it only cares that it has the expected properties. 🔥Being concerned only with the structure and capabilities of types is why we call TypeScript a **structurally typed type system**.
 
-### Differences Between Type Aliases and Interfaces
+#### Differences Between Type Aliases and Interfaces
 
 [https://www.typescriptlang.org/docs/handbook/2/everyday-types.html\#differences-between-type-aliases-and-interfaces](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces)
 
@@ -762,7 +778,7 @@ the key distinction is that:
 
 For the most part, **you can choose based on personal preference**, and TypeScript will tell you if it needs something to be the other kind of declaration. If you would like a heuristic, use interface until you need to use features from type.
 
-#### Extending Declarations
+##### Extending Declarations
 
 **Interfaces** can be extended using the `extends` keyword:
 
@@ -796,7 +812,7 @@ bear.name;
 bear.honey;
 ```
 
-#### Modifying Existing Declarations - adding new properties
+##### Modifying Existing Declarations - adding new properties
 
 **Interfaces** can be extended multiple times (interface merging). You can extend an existing interface by declaring it multiple times. TypeScript merges the declarations:
 
@@ -834,7 +850,7 @@ type User = {
 // Error: Duplicate identifier 'User'.
 ```
 
-### Type Assertions - AS
+#### Type Assertions - AS
 
 [https://www.typescriptlang.org/docs/handbook/2/everyday-types.html\#type-assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) 
 
@@ -869,7 +885,7 @@ Sometimes this rule can be too conservative and will disallow more complex coerc
 const a = (expr as any) as T;
 ```
 
-### Literal inference - `as` and `as const`
+#### Literal inference - `as` and `as const`
 
 Ref: [https://www.typescriptlang.org/docs/handbook/2/everyday-types.html\#literal-inference](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-inference) 
 
@@ -902,7 +918,7 @@ handleRequest(req.url, req.method);
 
 The `as const` suffix acts like `const` but for the type system, ensuring that all properties are assigned the literal type instead of a more general version like string or number.
 
-### Discriminated Union Type or "distinguished union" or "tagged union"
+#### Discriminated Union Type or "distinguished union" or "tagged union"
 
 [https://camchenry.com/blog/typescript-union-type\#what-is-a-discriminated-union](https://camchenry.com/blog/typescript-union-type#what-is-a-discriminated-union) 
 
@@ -945,9 +961,9 @@ Example (by Popock): use discriminated union to give special property ("role" in
 
 Application: [(44:02)](https://youtu.be/tDT214cE6Lo?list=PLj6YeMhvp2S40Q-TEPEKOeypLvTVd5uME&t=2638) Conditional params that are dependent on the value of another param, for example: myObj.prop2 is required only if myObj.prop1 is true. \-\> Use discriminated Union
 
-### Utility Types
+#### Utility Types
 
-#### Union and Extract / Exclude
+##### Union and Extract / Exclude
 
 Tutorial: [Everything You Need To Know About TypeScript Union Types](https://camchenry.com/blog/typescript-union-type#how-to-get-a-single-type-from-a-union-type)   
 Reference:
@@ -986,7 +1002,7 @@ type Weekend = Extract<DayOfWeek, "Saturday" | "Sunday">;  // => "Saturday" | "S
 
 This might seem redundant, but the advantage is that we are deriving types based on our DayOfWeek type. So, if the base type ever changes, we can be sure that all of our types are still valid.
 
-### null and undefined
+#### null and undefined
 
 JavaScript has two primitive values used to signal absent or uninitialized value: null and undefined.
 
@@ -1050,13 +1066,13 @@ greet(null);
 greet(undefined);  
 ```
 
-### Non-null Assertion Operator (Postfix \!)
+#### Non-null Assertion Operator (Postfix \!)
 
 TODO: [https://www.typescriptlang.org/docs/handbook/2/everyday-types.html\#non-null-assertion-operator-postfix-](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-) 
 
 TODO con calma, non ne vedo tanto l'utilità al momento....
 
-### Optional Chaining .?
+#### Optional Chaining .?
 
 [Optional Chaining](https://youtu.be/d56mG7DezGs?t=3555)  
 See here: [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional\_chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
@@ -1077,11 +1093,11 @@ Ref:
 
 - [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical\_AND](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND) 
 
-### Enum Type
+#### Enum Type
 
 [https://www.typescriptlang.org/docs/handbook/enums.html](https://www.typescriptlang.org/docs/handbook/enums.html)
 
-## Narrowing Techniques 
+### Narrowing Techniques 
 
 [https://www.typescriptlang.org/docs/handbook/2/narrowing.html](https://www.typescriptlang.org/docs/handbook/2/narrowing.html) 
 
@@ -1123,7 +1139,7 @@ There are several techniques for narrowing types in TypeScript, including type g
 - The never type  
 - Exhaustiveness checking
 
-### typeof guards
+#### typeof guards
 
 As we’ve seen, JavaScript supports a typeof operator which can give very basic information about the type of values we have at runtime. TypeScript expects this to return a certain set of strings:
 
@@ -1142,7 +1158,7 @@ In TypeScript, checking against the value returned by typeof is a **type guard**
 
 Because TypeScript encodes how typeof operates on different values, it knows about some of its quirks in JavaScript. For example, notice that in the list above, typeof doesn’t return the string null. Check out the following example: [https://www.typescriptlang.org/docs/handbook/2/narrowing.html\#typeof-type-guards](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#typeof-type-guards) 
 
-### Truthiness narrowing
+#### Truthiness narrowing
 
 It's especially useful for guarding against values like null or undefined.  
 See example here [https://www.typescriptlang.org/docs/handbook/2/narrowing.html\#truthiness-narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#truthiness-narrowing) 
@@ -1158,11 +1174,11 @@ In JavaScript, constructs like `if` first “coerce” their conditions to `bool
 
 all coerce to `false`, and other values get coerced to `true`.
 
-### Equality Narrowing
+#### Equality Narrowing
 
 see [https://www.typescriptlang.org/docs/handbook/2/narrowing.html\#equality-narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#equality-narrowing)
 
-### The in operator narrowing
+#### The in operator narrowing
 
 [https://www.typescriptlang.org/docs/handbook/2/narrowing.html\#the-in-operator-narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-in-operator-narrowing) 
 
@@ -1181,7 +1197,7 @@ function move(animal: Fish | Bird) {
 }
 ```
 
-### instanceof narrowing
+#### instanceof narrowing
 
 [https://www.typescriptlang.org/docs/handbook/2/narrowing.html\#instanceof-narrowing](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#instanceof-narrowing) 
 
@@ -1207,7 +1223,7 @@ function logValue(x: Date | string) {
 }
 ```
 
-### Assignments
+#### Assignments
 
 When we assign to any variable, TypeScript looks at the right side of the assignment and narrows the left side appropriately. In [this example](https://www.typescriptlang.org/play?#code/DYUwLgBAdgrgtgIxAJwPoHs0GczIJZQDmEAXNPEshAD4Q75EQC8EAjANwCwAUDwMbooWdKAB0wdIQAUYAJ4AHEOgBm5RCgzZcBQgEoIAegMQARLHXITPHucqbU9Hc1PC44ABY6Th4wHkA0hBg6BAAhlhYeIRQYXTajEh8oTBYIBAA7mkgAB7ywHh8eGDAshAAJiB8wKHIIGVB7mkAbjV4oQigYVhhMTBQeIJBCiDW3AJCIiDikjLDKmp2mA7xej4uK1a83KCQgiWotijOHKPjwmIS0nKK83uyBxQo+kamh5ajdw8WziauHl4QQEvAAqAE0AAoAUQgkIASrDfLCADQNNJ4OB5ArlSrVZChMADGKnQTnKaXWY3VSfN7PYy-DZAA) the variable only\_number is implicitly defined by the RHV
 
@@ -1218,7 +1234,7 @@ only_number = "something"   // TYPE ERROR, the implic declaration
 console.log(typeof only_number) // "string"
 ```
 
-### Control flow analysis
+#### Control flow analysis
 
 [https://www.typescriptlang.org/docs/handbook/2/narrowing.html\#control-flow-analysis](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#control-flow-analysis)
 
@@ -1239,16 +1255,16 @@ padLeft returns from within its first if block. TypeScript was able to analyze t
 
 This analysis of code based on reachability is called **control flow analysis**, and TypeScript uses this flow analysis to narrow types as it encounters type guards and assignments. When a variable is analyzed, control flow can split off and re-merge over and over again, and that variable can be observed to have a different type at each point.
 
-### Using type predicates
+#### Using type predicates
 
 [https://www.typescriptlang.org/docs/handbook/2/narrowing.html\#using-type-predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)   
 TODO: Using type predicates ??????????
 
-### The never type
+#### The never type
 
 [https://www.typescriptlang.org/docs/handbook/2/narrowing.html\#the-never-type](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-never-type)
 
-### Exhaustiveness checking
+#### Exhaustiveness checking
 
 [https://www.typescriptlang.org/docs/handbook/2/narrowing.html\#exhaustiveness-checking](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking) 
 
@@ -1265,7 +1281,7 @@ What’s surprising is that these two behaviors are entirely independent of one 
 
 This has some surprising implications and should inform your expectations about what TypeScript can and cannot do for you.
 
-### JS Code Downleveling
+#### JS Code Downleveling
 
 [https://www.typescriptlang.org/docs/handbook/2/basic-types.html\#downleveling](https://www.typescriptlang.org/docs/handbook/2/basic-types.html#downleveling) 
 
@@ -1302,17 +1318,17 @@ greet("Maddison", new Date());
    
 Our template string was rewritten from in the first case, because template string \`... \` are not available in ES5, they was introduced in ES6.
 
-### Code with Type Errors Can Produce Output
+#### Code with Type Errors Can Produce Output
 
 * You can think of all TypeScript errors as being similar to warnings in those languages  
 * as your TypeScript is valid JavaScript (and often even if it isn’t), the TypeScript compiler will produce output.  
 * If you want to disable output on errors, you can use the noEmitOnError option in tsconfig.json
 
-### You Cannot Check TypeScript Types at Runtime
+#### You Cannot Check TypeScript Types at Runtime
 
 …. Vedi Effective TS
 
-### Type Operations Cannot Affect Runtime Values
+#### Type Operations Cannot Affect Runtime Values
 
 Suppose you have a value that could be a string or a number and you’d like to normalize it so that it’s always a number. Here’s a misguided attempt that the type checker accepts:
 
@@ -1338,7 +1354,7 @@ function asNumber(val: number | string): number {
 }
 ```
 
-### 💥💥💥Runtime Types May Not Be the Same as Declared Types
+#### 💥💥💥Runtime Types May Not Be the Same as Declared Types
 
 Could this function ever hit the final console.log?
 
@@ -1375,7 +1391,7 @@ TODO: 🔥🔥TypeScript can get quite confusing when your runtime types don’t
 
 But be aware that it’s possible for a value to have types other than the ones you’ve declared.
 
-### You Cannot Overload a Function Based on TypeScript Types
+#### You Cannot Overload a Function Based on TypeScript Types
 
 Languages like C++ allow you to define multiple versions of a function that differ only in the types of their parameters. This is called “function overloading.”
 
@@ -1402,7 +1418,7 @@ const twelve = add('1', '2'); // Type is string
 
 The first two declarations of add only provide type information. When TypeScript produces JavaScript output, they are removed, and only the implementation remains. (If you use this style of overloading, take a look at Item 50 first. There are some subtleties to be aware of.)
 
-### TypeScript Types Have No Effect on Runtime Performance
+#### TypeScript Types Have No Effect on Runtime Performance
 
 Because types and type operations are erased when you generate JavaScript, they cannot have an effect on runtime performance. TypeScript’s static types are truly zero cost.
 
@@ -1414,7 +1430,7 @@ There are two caveats to this:
 
 ## Type Manipulation
 
-### Creating Types from Types
+#### Creating Types from Types
 
 [https://www.typescriptlang.org/docs/handbook/2/types-from-types.html](https://www.typescriptlang.org/docs/handbook/2/types-from-types.html)   
 TypeScript’s type system is very powerful because it allows expressing types in terms of other types.  
@@ -1471,7 +1487,7 @@ Libraries authors use generics a lot, for example the XState lib makes a heavy u
   But as you start writing code that's a layer of abstraction to empower other Devs to build more things. You've found a common pattern and people are gonna wrap all their code with this thing that adds something. Then suddenly you have this deeper need to accommodate people who are gonna do arbitrary stuff. And you want to support that without making them do a bunch of extra lifting.  
 * Generics allow you to avoid the use of  any when you don’t know in advance what type you are going to use, for example if you are a lib author you can create a structure but let the lib user finalize types using generics.
 
-#### Generic \- Syntax
+##### Generic \- Syntax
 
 Generics appear in TypeScript code inside angle brackets, in the format \<T\>, where **T represents a passed-in type**. 
 
@@ -1484,7 +1500,7 @@ Generics can appear in functions, types, classes, and interfaces.
 | 📔 Note \<T\> Convention: By convention, programmers usually use a single letter to name a generic type. This is not a syntax rule, and you can name generics like any other type in TypeScript, but this convention helps to immediately convey to those reading your code that a generic type does not require a specific type. |
 | :---- |
 
-#### Hello World of Generics
+##### Hello World of Generics
 
 To start off, let’s do the “hello world” of generics: the identity function. The identity function is a function that will return back whatever is passed in. You can think of this in a similar way to the echo command.  
 Without generics, we would either have to give the identity function a specific type ([Try](https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABDAJgUzLKBPAFAQwCcBzALkTBAFsAjNQgSnMtvsQG8AoRRQtKEISRFiAbk4BfIA)):
@@ -1536,7 +1552,7 @@ let output = identity("myString");
 
 Notice that we didn’t have to explicitly pass the type in the angle brackets (\<\>); the compiler just looked at the value "myString", and set Type to its type. While type argument inference can be a helpful tool to keep code shorter and more readable, you may need to explicitly pass in the type arguments as we did in the previous example when the compiler fails to infer the type, as may happen in more complex examples.
 
-#### Working with Generic Type Variables
+##### Working with Generic Type Variables
 
 When you begin to use generics, you’ll notice that when you create generic functions like identity, the compiler will enforce that you use any generically typed parameters in the body of the function correctly. That is, that you actually treat these parameters as if they could be any and all types.
 
@@ -1581,7 +1597,7 @@ function loggingIdentity<Type>(arg: Array<Type>): Array<Type> {
 
 You may already be familiar with this style of type from other languages. In the next section, we’ll cover how you can create your own generic types like **Array\<Type\>**.
 
-#### Generic Types
+##### Generic Types
 
 In previous sections, we created generic identity functions that worked over a range of types. In this section, we’ll explore the type of the functions themselves and how to create **generic interfaces**.
 
@@ -1681,7 +1697,7 @@ Just as with interface, putting the type parameter on the class itself lets us m
 
 As we cover in [our section on classes](https://www.typescriptlang.org/docs/handbook/2/classes.html), a class has two sides to its type: the static side and the instance side. Generic classes are only generic over their instance side rather than their static side, so when working with classes, static members can not use the class’s type parameter.
 
-# [Getting started] Add TypeScript to an npm project
+### [Getting started] Add TypeScript to an npm project
 
 like so:  
 
@@ -1732,7 +1748,7 @@ npm start
 
 We are going to return to this test-app later. For now, kill the server by pressing Ctrl C in the terminal.
 
-# Modules
+### Modules
 
 Modules https://basarat.gitbook.io/typescript/project/modules  
 apparentemente si applicano le stesse regole di JS
@@ -1743,9 +1759,9 @@ apparentemente si applicano le stesse regole di JS
 
  	
 
-# Compiler Flag considerations
+### Compiler Flag considerations
 
-## \[Best Practive\] strict: true
+#### [Best Practive] strict: true
 
 📔 NextJS enable it by default  
 See effective TS pag 7
@@ -1764,4 +1780,4 @@ These strict checks and settings can help to **catch common errors**, such as us
 
 It's important to note that enabling "strict: true" may require you to make changes to your existing code in order to pass the stricter type checks and settings. But, it will also help you to write more robust and safer code in the long run.
 
-# \[JOB\] Strategies for Moving existing code bases from JS to TS
+### [JOB] Strategies for Moving existing code bases from JS to TS
