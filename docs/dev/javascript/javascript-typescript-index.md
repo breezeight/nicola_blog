@@ -39,6 +39,18 @@ This index provides organized access to all JavaScript and TypeScript resources,
 
 {{ link_with_abstract("typescript.md") }}
 
+### Setup Guides
+
+{{ link_with_abstract("how-to-configure-vscode-typescript.md") }}
+
+{{ link_with_abstract("how-to-configure-vite-typescript.md") }}
+
+{{ link_with_abstract("how-to-configure-typescript-project.md") }}
+
+### Tutorials
+
+{{ link_with_abstract("tutorial-typescript-compilation.md") }}
+
 ## Learning Paths
 
 ### Beginner to Intermediate
