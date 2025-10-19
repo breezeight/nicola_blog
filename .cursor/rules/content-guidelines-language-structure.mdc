@@ -1,0 +1,217 @@
+---
+alwaysApply: true
+description: Maintain standardized language documentation structure across all programming language files
+---
+
+# Language Documentation Structure Rules
+
+## Overview
+This rule enforces the standardized 18-section structure for all programming language documentation files to maintain consistency and enable cross-language comparison.
+
+**Related Rules:**
+- [content-guidelines-diataxis.mdc](mdc:.cursor/rules/content-guidelines-diataxis.mdc) - Diátaxis framework compliance
+- [content-guidelines-master.mdc](mdc:.cursor/rules/content-guidelines-master.mdc) - Master coordination and cross-language comparison rules
+
+## Diátaxis Framework Compliance
+
+### Document Type Requirements
+All language index files must follow Diátaxis framework principles as defined in [content-guidelines-diataxis.mdc](mdc:.cursor/rules/content-guidelines-diataxis.mdc):
+
+- **Type**: Must be classified as `reference` documents
+- **Tone**: Factual, objective, structured organization
+- **Purpose**: Designed for consultation, not sequential reading
+- **Content**: Exhaustive coverage of language features
+
+### Cross-Type Integration
+- **Reference documents** (language indexes) link to **Explanation documents** (comparison document)
+- **Explanation documents** link back to **Reference documents** for detailed information
+- Maintain proper separation between factual reference and conceptual explanation
+
+### Language Index vs Language Explanation
+- **Language Index** (`*-index.md`): Reference document with factual language information
+- **Language Explanation** (`languages-concept-comparison.md`): Explanation document with comparative analysis
+- **Clear separation**: Indexes provide facts, explanations provide context and comparison
+
+## Structure Requirements
+
+### Required File Structure
+All language index files must follow this exact structure:
+
+1. **Overview & Philosophy**
+2. **Type Systems**
+3. **Functions and Closures**
+4. **Variables and Scoping**
+5. **Data Types and Literals**
+6. **Control Flow**
+7. **Error Handling**
+8. **Object-Oriented Programming**
+9. **Asynchronous Programming**
+10. **Modules and Packages**
+11. **Memory Management**
+12. **Pattern Matching**
+13. **Metaprogramming**
+14. **Standard Library Highlights**
+15. **Compilation and Runtime**
+16. **Testing and Debugging**
+17. **Best Practices and Idioms**
+18. **Language-Specific Features**
+
+### Required Front Matter
+All language documentation files must include:
+
+```yaml
+---
+title: "[Language] Reference"
+abstract: >
+  Comprehensive reference covering [language]'s type system, async model, error handling, 
+  and core programming concepts for experienced developers.
+type: reference
+---
+```
+
+### Required Section Format
+Each section must follow this format:
+
+```markdown
+## [Section Number]. [Section Name]
+
+[2-3 paragraph explanation of the concept]
+
+**[Language] approach:**
+- Key characteristic 1
+- Key characteristic 2
+- Key characteristic 3
+
+**Compare with:**
+- [Other Language's approach](link-to-other-language-section)
+
+**Learn more:** {{ link_with_abstract("detailed-file.md") }}
+```
+
+## Cross-Reference Requirements
+
+### Mandatory Cross-References
+Every section must include "Compare with" links to equivalent sections in other language documents:
+- Python: [python-index.md](mdc:docs/dev/python/python-index.md)
+- TypeScript: [typescript-index.md](mdc:docs/dev/javascript/typescript-index.md)
+- Go: [go-index.md](mdc:docs/dev/go/go-index.md)
+- Ruby: [ruby-index.md](mdc:docs/dev/ruby/ruby-index.md)
+- Elixir: [elixir-index.md](mdc:docs/dev/elixir/elixir-index.md)
+
+### Link Format
+Use this format for cross-references:
+```markdown
+**Compare with:**
+- [Python's [concept]](python-language-index.md#[section-number]-[section-name])
+- [Go's [concept]](go-index.md#[section-number]-[section-name])
+- [TypeScript's [concept]](typescript.md#[section-number]-[section-name])
+```
+
+## Content Guidelines
+
+### Section Content Requirements
+- **2-3 paragraphs** explaining the concept
+- **3-5 bullet points** describing the language's approach
+- **Cross-references** to other languages
+- **Links to detailed content** using `link_with_abstract()` macro
+
+### Language-Specific Features Section
+Must include 3-5 unique features with:
+- Brief explanation
+- Link to detailed documentation
+- Example usage (if applicable)
+
+## File Organization Rules
+
+### Directory Structure
+```
+docs/dev/
+├── languages-concept-comparison.md          # Cross-language comparison
+├── python/python-index.md                   # Main Python index
+├── javascript/typescript-index.md           # Main TypeScript index
+├── go/go-index.md                           # Main Go index
+├── ruby/ruby-index.md                       # Main Ruby index
+└── elixir/elixir-index.md                  # Main Elixir index
+```
+
+### Naming Conventions
+- Language index files: `[language]-index.md` or `[language].md`
+- Detailed content files: `[language]-[concept].md`
+- Use lowercase with hyphens for all filenames
+
+## Validation Checklist
+
+When adding or modifying language documentation:
+
+- [ ] All 18 sections are present and in correct order
+- [ ] Front matter includes required fields
+- [ ] Each section has cross-references to other languages
+- [ ] Links use correct anchor format (#section-number-section-name)
+- [ ] Language-specific features section includes 3-5 unique features
+- [ ] All `link_with_abstract()` calls reference existing files
+- [ ] Navigation in [mkdocs.yml](mdc:mkdocs.yml) is updated
+- [ ] Build passes with `just build`
+
+## Enforcement Rules
+
+### For New Language Documentation
+1. **Must follow** the 18-section structure exactly
+2. **Must include** cross-references to existing languages
+3. **Must use** the standard front matter format
+4. **Must link** to detailed content using `link_with_abstract()`
+
+### For Existing Language Documentation Updates
+1. **Maintain** the 18-section structure
+2. **Update** cross-references when adding new sections
+3. **Preserve** existing detailed content through linking
+4. **Ensure** consistency with other language documents
+
+### For New Concepts
+1. **Determine** which of the 18 sections the concept belongs to
+2. **Add** the concept to the appropriate section
+3. **Update** cross-references in other language documents
+4. **Create** detailed documentation files if needed
+5. **Link** from the main index using `link_with_abstract()`
+
+## Examples
+
+### Adding a New Concept to Type Systems
+```markdown
+## 2. Type Systems
+
+[Existing content...]
+
+**[Language] approach:**
+- Existing characteristic 1
+- Existing characteristic 2
+- NEW: Advanced type manipulation with [new concept]
+
+**Learn more:** {{ link_with_abstract("type-system-details.md") }}
+```
+
+### Adding a New Language-Specific Feature
+```markdown
+## 18. [Language] Specific Features
+
+### [Existing Feature 1]
+[Existing content...]
+
+### NEW: [New Feature Name]
+[Brief explanation of the new feature]
+
+**Learn more:** {{ link_with_abstract("new-feature-details.md") }}
+```
+
+## Maintenance Guidelines
+
+### Regular Updates
+- **Review** cross-references quarterly
+- **Update** links when files are moved or renamed
+- **Validate** all `link_with_abstract()` calls monthly
+- **Test** build process after any structural changes
+
+### Quality Assurance
+- **Consistency**: All languages should have similar detail levels
+- **Accuracy**: Cross-references must point to correct sections
+- **Completeness**: All 18 sections must be present
+- **Usability**: Navigation should be intuitive and logical

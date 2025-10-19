@@ -33,7 +33,7 @@ The **Diátaxis Framework** is a strategic system for structuring *educational d
 It is not suitable for every kind of writing (e.g., contracts, invoices).  
 It is designed for materials that:
 - Help people **learn** something new (tutorials or explanations).  
-- Help people **do** something (how-to guides).  
+- Help people **do** something (howto guides).  
 - Help people **find** or **verify** something (reference materials).
 
 By clearly separating these intents, documentation becomes easier to:
@@ -102,10 +102,10 @@ List related resources and next steps.
 
 **Style Principles:**
 
-* Instructional, not educational: “To achieve this, do that.”
+* Instructional, not educational: "To achieve this, do that."
 * Focus only on steps and results.
 * Avoid explanations or theoretical detours.
-* Optional: include a small “💡 Explanation Box” linking to conceptual material.
+* Optional: include a small "💡 Explanation Box" linking to conceptual material.
 
 **Structure Template:**
 
@@ -114,7 +114,7 @@ List related resources and next steps.
 title: "How to <task>"
 description: "Concise summary of the task"
 abstract: "One-sentence summary of the outcome"
-type: "how-to"
+type: "howto"
 ---
 ```
 
@@ -262,16 +262,19 @@ Clear separation ensures that documentation is easier to navigate, maintain, and
 ### File Organization
 
 * Store all docs under `docs/`.
+* **Document type is determined by front matter `type` field and filename conventions, NOT directory structure.**
+* Use descriptive filenames that indicate content and type:
+  * `*-index.md` for **language index** documents (always `type: reference`)
+  * `*-explanation.md` for explanation documents  
+  * `*-tutorial.md` for tutorial documents
+  * `*-howto.md` for how-to guides
+* Use lowercase filenames with hyphens.
+* Group related topics in subdirectories (e.g., `docs/dev/python/`, `docs/dev/go/`).
 * Recommended directories:
-
-  * `docs/tutorials/`
-  * `docs/how-to/`
-  * `docs/explanations/`
-  * `docs/reference/`
   * `docs/images/`
   * `docs/downloads/`
-* Use lowercase filenames with hyphens.
-* Group related topics in subdirectories (e.g., `docs/dev/python/`).
+  * `docs/dev/` (development topics)
+  * `docs/ai/` (AI-related topics)
 
 ### Git Workflow
 
@@ -285,19 +288,24 @@ Clear separation ensures that documentation is easier to navigate, maintain, and
 
 When assisting a writer, the **LLM must:**
 
-1. **Ask** the writer to confirm the intended document type (tutorial, how-to, explanation, reference).
+1. **Identify** the intended document type from the front matter `type` field and filename conventions.
 2. **Enforce** structure, tone, and content based on that classification.
-3. **Allow limited cross-type boxes** (e.g., “💡 Explanation Box”) only when clearly marked and contextually justified.
+3. **Allow limited cross-type boxes** (e.g., "💡 Explanation Box") only when clearly marked and contextually justified.
 4. **Ensure** all documents contain:
 
-   * YAML front matter.
+   * YAML front matter with correct `type` field.
    * Matching `title`, filename, and H1.
    * `## 📘 Purpose & Scope` section.
    * `## References` section.
    * Updated `abstract` after major edits.
-5. **Ask confirmation before final output**, for example:
+5. **Verify** filename conventions match the document type:
+   * `*-index.md` for **language index** documents (always `type: reference`)
+   * `*-explanation.md` for explanation documents (`type: explanation`)
+   * `*-tutorial.md` for tutorial documents (`type: tutorial`)
+   * `*-howto.md` for how-to guides (`type: howto`)
+6. **Ask confirmation before final output**, for example:
 
-   > “You indicated this is a Tutorial. Shall I enforce a supportive, guided tone and remove explanatory sections beyond small linked boxes?”
+   > "This document has `type: reference` and filename `go-index.md`. Shall I enforce a factual, structured tone appropriate for a reference document?"
 
 The LLM must never mix document styles unless explicitly confirmed by the writer.
 

@@ -8,8 +8,11 @@
 
 [Tmux](dev/tmux.md)
 
-
-
+[Task Management](https://docs.google.com/document/d/1pqpudk1zsh2APZGZ1RjIKj6W_vMg4-Tz-MH9IX70F4g/edit?tab=t.0#heading=h.2et92p0):
+- OpenProject
+- Calendar
+- Cal 
+- Doodle
 
 
 ## Yoga
@@ -91,12 +94,35 @@ Home Manager Day by Day Usage:
 
 All the other Nix related docs are indexed in the [Nix Index](dev/nix/nix-index.md) folder.
 
-## Go Lang
+## Programming Languages ⭐⭐⭐
+
+This section provides comprehensive documentation about programming languages, structured using the Diátaxis framework for optimal learning and reference.
+
+### Cross-Language Comparison
+{{ link_with_abstract("dev/cross-languages-concept-comparison.md") }}
+
+### Documentation Structure
+Our language documentation follows the Diátaxis framework with:
+- **Reference documents** (`*-index.md`): Comprehensive language facts and features
+- **Explanation documents** (`*-explanation.md`): Comparative analysis and conceptual understanding
+- **Cross-language comparison**: Side-by-side concept comparisons
+
+**Related Rules:**
+- [Language Documentation Structure Rules](mdc:.cursor/rules/content-guidelines-language-structure.mdc) - 18-section standardized structure for language indexes
+- [Cross-Language Comparison Rules](mdc:.cursor/rules/content-guidelines-cross-language.mdc) - Requirements for comparison tables and consistency
+- [Diátaxis Framework Rules](mdc:.cursor/rules/content-guidelines-diataxis.mdc) - Document type classification and naming conventions
+
+### JavaScript and TypeScript
+
+- {{ link_with_abstract("dev/javascript/javascript-typescript-index.md") }}
+- {{ link_with_abstract("dev/javascript/typescript-index.md") }}
+- learning paths: [JavaScript and TypeScript Learning Paths](dev/javascript/javascript-typescript-learningpaths.md)
+
+### Go Lang
 
 {{ link_with_abstract("dev/go/go-index.md") }}
 
-
-## Python
+### Python
 
 [NICOLA's LEGACY GOOGLE docs](https://drive.google.com/drive/u/1/folders/1E5SPSk__OBUlzkI0crqYYpp00ZtX702W):
 
@@ -109,7 +135,7 @@ All the other Nix related docs are indexed in the [Nix Index](dev/nix/nix-index.
 - [[GUIDE] Python Learning Path](https://drive.google.com/open?id=1EHLEXq6bvdgOrvUPGygXsUeAf4azMKYuHaaZWxbDeNw&usp=drive_copy)
 - [Django Learning Materials](https://drive.google.com/open?id=1aAuy55LzI5xI1RF8Fv67TBJOc1ArRFGm&usp=drive_copy)
 
-### Learning Python Language and Standard Library
+#### Learning Python Language and Standard Library
 
 [🌟 SEE NICOLA'S NOTES about python language and standard library 🌟](dev/python-language-reference-nicola/python-learning.md)
 
@@ -119,7 +145,7 @@ These links are tentative of make AI summarize the python language reference. TH
 
 - [python-official-language-reference-with-ai](dev/python-official-language-reference-with-ai.md): this is tentative of make AI summarize the python language reference. THE PROBLEM is that the original text is meant to be read by developers of the core of language, so it **is too technical**.
 
-### Pythons Devops - Packaging - Dependencies management
+#### Pythons Devops - Packaging - Dependencies management
 
 - [Python Devops](https://docs.google.com/document/d/1ieHAj7gzka9vSHhiSwOkyuyq_4UpAheN9QjJKQTiQ_8/edit?tab=t.0#heading=h.v1qbc2g302w8)
 
@@ -131,20 +157,20 @@ Specific tools:
 
 - [uv explanation](dev/python-language-reference-nicola/uv-explanation.md)
 
-### Python Webserver
+#### Python Webserver
 
 - [Python Webserver Explanation](dev/python-language-reference-nicola/python-webserver-explanation.md)
 
-### Django
+#### Django
 
 - [Django](dev/django/django-settings-best-practices-explanation.md)
 - [Django Celery](dev/python-language-reference-nicola/celery-explanation.md)
 
-### Distributed Systems
+#### Distributed Systems
 
 - [Django Celery](dev/python-language-reference-nicola/celery-explanation.md)
 
-### Python Type Hints
+#### Python Type Hints
 
 - [Python Type Hints Explanation](dev/python-language-reference-nicola/stdlib-devtools-typing-explanation.md): this is a high level explanation of type hints, a good starting point to understand the big picture.
 - [Python Type Hints HOWTO](dev/python-language-reference-nicola/stdlib-devtools-typing-howto.md): how to use type hints in practice.

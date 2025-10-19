@@ -1,0 +1,318 @@
+---
+alwaysApply: true
+description: Master rule coordinating all language documentation guidelines including cross-language comparison
+---
+
+# Language Documentation Master Rules
+
+## Overview
+This master rule coordinates all language documentation guidelines to ensure consistency, quality, and maintainability across the entire language documentation system.
+
+## Rule System Architecture
+
+### Core Rules Hierarchy
+```
+content-guidelines-language-structure.mdc (Structure)
+├── content-guidelines-diataxis.mdc (Framework)
+└── content-guidelines-master.mdc (Master + Cross-Language)
+```
+
+### Rule Responsibilities
+
+#### 1. **Structure Rule** ([content-guidelines-language-structure.mdc](mdc:.cursor/rules/content-guidelines-language-structure.mdc))
+- **Scope**: All language index files (`*-index.md`, `typescript-index.md`)
+- **Purpose**: Enforce 18-section standardized structure
+- **Dependencies**: References Diátaxis and Cross-Language rules
+
+#### 2. **Diátaxis Rule** ([content-guidelines-diataxis.mdc](mdc:.cursor/rules/content-guidelines-diataxis.mdc))
+- **Scope**: All documentation files
+- **Purpose**: Ensure proper document type classification and tone
+- **Dependencies**: Foundation for all other rules
+
+#### 3. **Master Rule** ([content-guidelines-master.mdc](mdc:.cursor/rules/content-guidelines-master.mdc))
+- **Scope**: Cross-language comparison document (`languages-concept-comparison.md`) + coordination
+- **Purpose**: Maintain comparison table consistency and coordinate all rules
+- **Dependencies**: References Structure and Diátaxis rules
+
+## Integration Requirements
+
+### Cross-Rule Dependencies
+- **Structure → Diátaxis**: Language indexes must follow Reference type principles
+- **Structure → Master**: All 18 sections must have comparison tables
+- **Master → Structure**: New concepts must be added to all language indexes
+- **Master → Diátaxis**: Comparison document follows Explanation type principles
+
+### Validation Chain
+1. **Diátaxis compliance** checked first (document type and tone)
+2. **Structure compliance** checked second (sections and format)
+3. **Cross-reference consistency** checked third (links and terminology)
+
+## File Coverage Matrix
+
+| File Pattern | Structure Rule | Diátaxis Rule | Master Rule |
+|--------------|----------------|---------------|-------------|
+| `*-index.md` | ✅ Always | ✅ Always (Reference) | ❌ Never |
+| `typescript-index.md` | ✅ Always | ✅ Always (Reference) | ❌ Never |
+| `languages-concept-comparison.md` | ❌ Never | ✅ Always (Explanation) | ✅ Always |
+| Other docs | ❌ Never | ✅ Always | ❌ Never |
+
+## Document Type Separation
+
+### Language Index Files (Reference Type)
+- **Purpose**: Factual language information for consultation
+- **Content**: Structured facts, syntax, features, characteristics
+- **Tone**: Objective, neutral, comprehensive
+- **Usage**: Look up specific language information
+
+### Cross-Language Comparison (Explanation Type)
+- **Purpose**: Comparative analysis and conceptual understanding
+- **Content**: Comparisons, trade-offs, decision guidance, context
+- **Tone**: Thoughtful, analytical, insightful
+- **Usage**: Understand differences and choose appropriate language
+
+## Separation Principles
+
+### Why Maintain Clear Separation
+- **Cognitive clarity**: Different document types serve different mental needs
+- **Maintenance efficiency**: Easier to update facts vs. analysis separately
+- **User experience**: Users know where to find what they need
+- **Diátaxis compliance**: Proper framework implementation
+
+### What Goes Where
+- **Language Index**: "What does Python's type system look like?"
+- **Cross-Language Comparison**: "Why choose Python over Go for this project?"
+- **No duplication**: Comparison links to indexes, doesn't repeat facts
+- **Clear boundaries**: Each document type has distinct purpose and content
+
+## Quality Assurance Workflow
+
+### When Adding New Language Documentation
+1. **Apply Structure Rule**: Ensure 18-section format
+2. **Apply Diátaxis Rule**: Verify Reference type compliance
+3. **Update Cross-Language Rule**: Add comparison tables
+4. **Validate Integration**: Check cross-references
+
+### When Adding New Concepts
+1. **Determine Section**: Which of 18 sections does it belong to?
+2. **Update All Languages**: Add concept to all language indexes
+3. **Update Comparison**: Add comparison table row
+4. **Validate Consistency**: Ensure terminology matches across all files
+
+### When Modifying Existing Content
+1. **Check Structure Impact**: Does change affect section organization?
+2. **Check Diátaxis Impact**: Does change affect document type or tone?
+3. **Check Cross-Reference Impact**: Do links need updating?
+4. **Validate Build**: Ensure `just build` still works
+
+## Maintenance Guidelines
+
+### Regular Reviews
+- **Monthly**: Check cross-reference consistency
+- **Quarterly**: Review structure compliance across all languages
+- **Annually**: Validate Diátaxis framework adherence
+
+### Update Triggers
+- **New language added**: Apply all three rules
+- **New concept added**: Update structure and comparison rules
+- **Diátaxis framework updated**: Review all rules for compliance
+
+## Examples
+
+### Adding New Language (e.g., Rust)
+1. **Create** `rust-index.md` following Structure Rule
+2. **Ensure** Diátaxis Reference type compliance
+3. **Add** Rust columns to all comparison tables
+4. **Update** cross-references in existing languages
+
+### Adding New Concept (e.g., "Memory Safety")
+1. **Determine** it belongs in "Memory Management" section
+2. **Add** to all 5 language indexes (Python, TypeScript, Go, Ruby, Elixir)
+3. **Add** row to Memory Management comparison table
+4. **Update** cross-references and links
+
+### Modifying Existing Content
+1. **Check** if change affects structure (section organization)
+2. **Check** if change affects Diátaxis compliance (tone/type)
+3. **Check** if change affects cross-references (links/terminology)
+4. **Validate** build still works
+
+## Success Metrics
+
+### Structure Consistency
+- [ ] All language indexes have exactly 18 sections
+- [ ] All sections follow required format
+- [ ] All cross-references work correctly
+
+### Diátaxis Compliance
+- [ ] All documents properly classified (Reference/Explanation)
+- [ ] Appropriate tone maintained for each type
+- [ ] Cross-type integration works correctly
+
+### Cross-Language Consistency
+- [ ] All comparison tables include all 5 languages
+- [ ] Terminology consistent across all documents
+- [ ] New concepts reflected everywhere
+
+## Troubleshooting
+
+### Common Issues
+- **Missing sections**: Check Structure Rule compliance
+- **Wrong tone**: Check Diátaxis Rule compliance
+- **Broken links**: Check Cross-Language Rule consistency
+- **Build failures**: Validate all three rules together
+
+### Resolution Process
+1. **Identify** which rule(s) are violated
+2. **Apply** corrective action per rule requirements
+3. **Validate** integration with other rules
+4. **Test** build process
+5. **Document** resolution for future reference
+
+## Cross-Language Comparison Document Rules
+
+### Document Structure Requirements
+
+#### Required Front Matter
+```yaml
+---
+title: "Programming Languages Concept Comparison"
+abstract: >
+  Side-by-side comparison of key programming concepts across Python, TypeScript, Go, Ruby, and Elixir 
+  to help experienced developers understand differences and similarities.
+type: explanation
+---
+```
+
+#### Required Section Structure
+1. **Purpose & Scope** - Document introduction
+2. **References** - Links to all language index files
+3. **Concept Comparison Tables** - One table per major concept
+4. **Language-Specific Strengths** - Use cases and strengths
+5. **Choosing the Right Language** - Decision guidance
+6. **References** - Links to all language documents
+
+### Comparison Table Requirements
+
+#### Table Format
+Each comparison table must include all 5 languages:
+- Python
+- TypeScript  
+- Go
+- Ruby
+- Elixir
+
+#### Required Table Columns
+```markdown
+| Concept | Python | TypeScript | Go | Ruby | Elixir |
+|---------|--------|------------|----|----- |--------|
+```
+
+#### Content Requirements
+- **Concise descriptions** (1-2 sentences per cell)
+- **Consistent terminology** across languages
+- **Key differences highlighted**
+- **No empty cells** - use "N/A" or "Not applicable" if needed
+
+### Required Comparison Tables
+
+#### Core Concept Tables
+1. **Type Systems Comparison**
+2. **Error Handling Comparison**
+3. **Concurrency and Async Programming**
+4. **Object-Oriented Programming**
+5. **Memory Management**
+6. **Functions and Closures**
+7. **Pattern Matching**
+8. **Metaprogramming**
+9. **Standard Library Highlights**
+10. **Compilation and Runtime**
+11. **Testing and Debugging**
+12. **Best Practices and Idioms**
+
+#### Table Content Guidelines
+- **Focus on differences** rather than similarities
+- **Use consistent language** (e.g., "Static typing" not "Static type system")
+- **Include key characteristics** that distinguish each language
+- **Reference specific features** when relevant
+
+### Adding New Concepts
+
+#### Process for New Concepts
+1. **Determine** if concept applies to all 5 languages
+2. **Add** new comparison table following required format
+3. **Update** "Key Differences" section with new concept
+4. **Cross-reference** with individual language documents
+5. **Update** "Choosing the Right Language" section if relevant
+
+#### Concept Evaluation Criteria
+- **Universal applicability** - Must be relevant to most languages
+- **Significant differences** - Should show meaningful variation
+- **Practical importance** - Should help with language selection
+- **Clear categorization** - Must fit into existing structure
+
+### Language-Specific Strengths Section
+
+#### Required Format
+```markdown
+### [Language Name]
+- **Use case 1**: Brief description
+- **Use case 2**: Brief description  
+- **Use case 3**: Brief description
+- **Use case 4**: Brief description
+```
+
+#### Content Requirements
+- **4-5 specific use cases** per language
+- **Concrete examples** rather than vague descriptions
+- **Industry context** when relevant
+- **Performance characteristics** where applicable
+
+### Choosing the Right Language Section
+
+#### Required Format
+```markdown
+### Use [Language] when:
+- Specific condition 1
+- Specific condition 2
+- Specific condition 3
+- Specific condition 4
+```
+
+#### Content Guidelines
+- **Decision criteria** based on project requirements
+- **Performance considerations**
+- **Ecosystem factors**
+- **Team expertise factors**
+- **Scalability requirements**
+
+### Cross-Reference Requirements
+
+#### Links to Language Documents
+Must include links to all language index files:
+- [Python Reference](mdc:docs/dev/python/python-index.md)
+- [TypeScript Reference](mdc:docs/dev/javascript/typescript-index.md)
+- [Go Reference](mdc:docs/dev/go/go-index.md)
+- [Ruby Reference](mdc:docs/dev/ruby/ruby-index.md)
+- [Elixir Reference](mdc:docs/dev/elixir/elixir-index.md)
+
+#### Link Format
+Use consistent link format:
+```markdown
+- {{ link_with_abstract("language-index.md") }}
+```
+
+## 🎯 Diátaxis Type Summary
+
+The rules correctly implement the four Diátaxis document types:
+
+1. **`reference`** - Language index files (factual, structured, consultative)
+2. **`explanation`** - Cross-language comparison (conceptual, comparative, insightful)  
+3. **`tutorial`** - Learning-focused documents (not used in current language docs)
+4. **`howto`** - Task-oriented guides (not used in current language docs)
+
+The language documentation system properly follows Diátaxis principles with:
+- **Reference documents** for factual language information
+- **Explanation documents** for comparative analysis and understanding
+- **Cross-references** between the two types for complete coverage
+
+All the rules are correctly configured with the proper Diátaxis type values!

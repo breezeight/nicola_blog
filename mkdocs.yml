@@ -84,10 +84,12 @@ nav:
     - Cursor: dev/cursor_index.md
     - Prompt Engineering: dev/prompt-engineering.md
   - Programming Languages:
+    - Language Comparison: dev/languages-concept-comparison.md
     - Go:
-      - Index: dev/go/go-index.md
+      - Reference: dev/go/go-index.md
       - Organizing Code: dev/go/go-organizing-code.md
     - Python:
+      - Reference: dev/python-language-index.md
       - Learning Path: dev/python-nicola-personal-learning-path.md
       - Overview: dev/python-overview-and-learning-paths.md
       - Official Reference: dev/python-official-language-reference-with-ai.md
@@ -127,9 +129,10 @@ nav:
       - Learning Paths: dev/javascript/javascript-typescript-learningpaths.md
     - React: dev/javascript/react/react-index.md
     - TypeScript:
-      - Advanced Guide: dev/javascript/typescript.md
+      - Reference: dev/javascript/typescript.md
     - Ruby:
-      - Index: dev/ruby/ruby.md
+      - Reference: dev/ruby/ruby-index.md
+      - Original Index: dev/ruby/ruby.md
       - Ruby 3: dev/ruby/ruby3.md
       - Bundler: dev/ruby/ruby_bundler.md
       - Bundler, Gem, Rubygems: dev/ruby/ruby_bundler_gem_rubygems.md
@@ -147,8 +150,10 @@ nav:
       - Testing Web Services: dev/ruby/ruby_testing_webservices.md
       - Web Service Client: dev/ruby/ruby_webservice_client.md
       - YARV: dev/ruby/ruby_yarv.md
-    - Elixir: elixir.md
-    - Elixir Web Development: elixir_webdev.md
+    - Elixir:
+      - Reference: dev/elixir-index.md
+      - Original Index: elixir.md
+      - Web Development: elixir_webdev.md
     - C# WP8 W8: dev/c-sharp_wp8_w8.md
     - DenoJS: dev/denojs.md
     - Node.js: dev/nodejs.md
