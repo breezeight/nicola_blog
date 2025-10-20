@@ -1,8 +1,7 @@
 ---
-description: run mkdocs serve
-alwaysApply: true
+description: Use uv for Python packages, justfile for commands, and follow MkDocs development workflow
+alwaysApply: false
 ---
-
 # MkDocs Development Rules
 
 ## Package Management & Command Rules
