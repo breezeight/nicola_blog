@@ -1,0 +1,63 @@
+# ClickUp Integration Configuration
+
+## Overview
+This project is configured to use ClickUp for task management via the MCP server. The default ClickUp list/folder is configured in `.cursor/clickup-config.json`.
+
+## Configuration File
+The ClickUp configuration is stored in `.cursor/clickup-config.json` with the following structure:
+- `default_workspace`: Workspace name (defaults to "Nicola Personal")
+- `default_space`: Space name within the workspace
+- `default_folder`: Optional folder name or ID
+- `default_list`: List name or ID where tasks should be created
+
+## Finding the List in ClickUp UI
+
+To locate the configured list ("Nicola Nix Config") in the ClickUp web interface:
+
+1. **Navigate to the workspace**: Open ClickUp and select the "Nicola Personal" workspace
+2. **Go to the space**: Click on the "Nicola Personal" space in the left sidebar
+3. **Find the list**: Look for the list named "Nicola Nix Config" in the space
+   - The list may be at the space level (not inside a folder)
+   - Use the search function in ClickUp (Cmd/Ctrl + K) and search for "Nicola Nix Config"
+4. **Direct link**: You can also access it directly via: https://app.clickup.com/2194902/v/l/li/901519282810
+
+**Current Configuration:**
+- **List Name**: Nicola Nix Config
+- **List ID**: 901519282810
+- **Space**: Nicola Personal
+- **Workspace**: Nicola Personal
+
+## Usage Guidelines
+
+### When Creating Tasks
+1. **Check the configuration**: Read `.cursor/clickup-config.json` to get the default list/folder
+2. **Resolve list/folder IDs**: Use `clickup_get_list` or `clickup_get_folder` to resolve names to IDs if needed
+3. **Create tasks**: Use `clickup_create_task` with the configured `list_id`
+4. **Ask user if unsure**: If no default is configured, ask the user which list/folder to use
+
+### Available ClickUp Spaces
+From the workspace hierarchy, available spaces include:
+- **Nicola Personal**: Personal tasks and projects
+  - Learning folder: For learning-related tasks
+  - Personal Productivity folder: For productivity tasks
+  - Various project folders
+
+### Best Practices
+- **Always ask before creating tasks**: Confirm with the user which list to use, especially if no default is configured
+- **Use list names when possible**: The MCP server can resolve list names to IDs automatically
+- **Document task context**: Include relevant project information in task descriptions
+- **Link to documentation**: When creating tasks related to documentation, include links to relevant docs
+
+## Example Workflow
+
+1. User requests: "Create a task to update the Python documentation"
+2. Read `.cursor/clickup-config.json` to check for default list
+3. If default_list is set, use it; otherwise ask user
+4. Create task using `clickup_create_task` with appropriate `list_id`
+5. Include relevant details like links to the documentation file
+
+## Configuration Updates
+To change the default list/folder:
+1. Update `.cursor/clickup-config.json`
+2. Set `default_list` to the list name or ID
+3. Optionally set `default_folder` if tasks should be organized in a folder

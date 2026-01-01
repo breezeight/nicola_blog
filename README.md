@@ -2,31 +2,52 @@
 
 https://www.mkdocs.org/getting-started/
 
-This project uses `uv` for dependency management instead of Poetry.
+### Quick Start
 
-### Setup
+Install dependencies and start the development server:
 
-Install dependencies:
 ```bash
-uv sync
-```
-
-### Development
-
-Preview your site:
-```bash
-uv run mkdocs serve
-uv run mkdocs serve --dev-addr=0.0.0.0:8001
+just install
+just serve
 ```
 
 Open `http://localhost:8000` in your browser
 
-### Building
+### Development
 
-Build the site:
-```bash
-uv run mkdocs build
-```
+TODO review the development guide
+
+## Task Management
+
+This project uses ClickUp for task management via the MCP server. Tasks are automatically created in the configured ClickUp list. The default list and integration settings are configured in [`.cursor/clickup-config.json`](.cursor/clickup-config.json). For details on how the ClickUp integration works, see [`.cursor/rules/clickup-integration.mdc`](.cursor/rules/clickup-integration.mdc).
+
+### Finding Tasks in ClickUp
+
+To locate tasks created for this project in the ClickUp web interface:
+
+1. Navigate to the **"Nicola Personal"** workspace
+2. Open the **"Nicola Personal"** space
+3. Find the list named **"Nicola Nix Config"** (or use ClickUp search: Cmd/Ctrl + K)
+4. **Direct link**: [https://app.clickup.com/2194902/v/l/li/901519282810](https://app.clickup.com/2194902/v/l/li/901519282810)
+
+## Content Guidelines
+
+SEE [CONTENT GUIDELINES](CONTENT.md) for more details.
+
+This project follows structured content guidelines to maintain consistency and quality across all documentation:
+
+### Core Guidelines
+- **[Content Guidelines - Diátaxis Framework](.cursor/rules/content-guidelines-diataxis.mdc)** - Document classification and structure using the Diátaxis framework
+- **[Content Guidelines - Cross-Language](.cursor/rules/content-guidelines-cross-language.mdc)** - Rules for cross-language documentation and comparison tables
+- **[Content Guidelines - Language Structure](.cursor/rules/content-guidelines-language-structure.mdc)** - Standardized structure for programming language documentation
+
+### Specialized Guidelines
+- **[Content Guidelines - Linking](.cursor/rules/content-guidelines-linking.mdc)** - Dynamic content generation and cross-project linking with MkDocs macros
+- **[Content Guidelines - TypeScript Docs](.cursor/rules/content-guidelines-typescript-docs.mdc)** - Specific guidelines for TypeScript documentation
+
+### Development Guidelines
+- **[MkDocs Development](.cursor/rules/mkdocs.mdc)** - Development workflow with uv package management and justfile commands
+- **[MkDocs Theme Customization](.cursor/rules/mkdocs-theme-customization.mdc)** - Theme customization and styling guidelines
 
 ## Markdown Conventions and Editing Tips 
  
