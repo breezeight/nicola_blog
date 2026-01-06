@@ -83,6 +83,8 @@ to:
 
    **The solution:** Plugins unlock opinionated, constrained flows with guardrails around output shape and scope. Fixed sequences (analyse → plan → diff → verify) provide structure while AI handles the intelligent execution.
 
+   **Think of it as "AI on Rails":** Just as Ruby on Rails provides conventions and structure for web development, plugins provide **conventions and guardrails for AI workflows**. The "rails" keep AI on track — ensuring consistent outputs, enforcing verification steps, and maintaining reliability — while still allowing AI's intelligence to adapt to context and handle edge cases.
+
    **AI becomes a workflow executor, not just a text generator.**
 
    **Comparison with other approaches:**
