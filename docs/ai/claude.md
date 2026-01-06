@@ -108,7 +108,7 @@ Key points of the Anthropic Agent Skills video ("Don't Build Agents, Build Skill
 
 ```mermaid
 flowchart TD
-    Skills["<b>Applications, etc</b><br/><small>becomes ==> Skills, Commands & Hooks</small><br/><br/><small>Reusable capabilities encoding expertise<br/>Custom shortcuts and workflow triggers</small>"]
+    Skills["<b>Applications</b><br/><small>becomes ==> Skills, Commands & Hooks</small><br/><br/><small>Reusable capabilities encoding expertise<br/>Custom shortcuts and workflow triggers</small>"]
     Agents["<b>Operating Systems</b><br/><small>becomes ==> Agents</small><br/><br/><small>Agent runtimes that<br/>orchestrate workflows</small>"]
     Models["<b>Processors</b><br/><small>becomes ==> Models</small><br/><br/><small>LLMs that process<br/>and generate content</small>"]
     
