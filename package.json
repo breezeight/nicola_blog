@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "@beads/bd": "^0.47.1",
+    "beads-ui": "^0.9.1"
+  },
+  "scripts": {
+    "bd": "bd",
+    "bd:ready": "bd ready",
+    "bd:sync": "bd sync",
+    "bdui": "bdui start --open"
+  }
+}
