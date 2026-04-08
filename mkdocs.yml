@@ -168,6 +168,9 @@ nav:
     - Broccoli: dev/broccoli.md
     - Bower: dev/bower.md
     - UI/UX: dev/ui_ux.md
+  - Mobile:
+    - Fairphone Explanation: dev/mobile/fairphone-explanation.md
+    - Fairphone, Murena, and /e/OS: dev/mobile/fairphone-murena-eos-explanation.md
   - Cloud & Infrastructure:
     - AWS:
       - Index: dev/aws.md
