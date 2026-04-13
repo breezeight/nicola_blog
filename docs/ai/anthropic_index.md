@@ -73,6 +73,17 @@ Anthropic has produced several **groundbreaking** pieces of AI safety research t
 
 These contributions have helped move AI safety from abstract discussion toward concrete, technical, and policy-ready solutions.
 
+### Key points of Constitutional AI
+
+- A method developed by Anthropic to align AI models using a written “constitution” of principles instead of heavy human feedback
+- Core idea: the AI learns to critique and revise its own outputs based on explicit rules
+- Uses a two-stage process: supervised critique/revision followed by Reinforcement Learning from AI Feedback (RLAIF)
+- Makes alignment more scalable, transparent, and less dependent on human labelers
+- Reduces evasiveness while improving harmlessness and honesty
+- Forms the foundation of safety training for all modern Claude models
+- Has significantly influenced open-source tools and other AI labs’ alignment approaches
+
+
 ### Open-Source Projects Based On or Inspired By Anthropic’s Research
 
 Several **practical open-source projects** let end-users and developers apply ideas from Anthropic’s papers (especially **Constitutional AI**) for **prompt tuning** and **context tuning**. These tools let you create self-critique loops, enforce rules, and improve how models handle long or complex context — no training required.
