@@ -7,21 +7,158 @@
 ## Claude Code
 
 ### Slash commands
-https://code.claude.com/docs/en/slash-commands
 
-[Official documentation](https://code.claude.com/docs/en/common-workflows#create-custom-slash-commands)
+* [Official documentation: Reference Slash commands](https://code.claude.com/docs/en/slash-commands)
+* [Official documentation: Create custom slash commands howto](https://code.claude.com/docs/en/common-workflows#create-custom-slash-commands)
 
-Problem that they solve: you have a bunch of prompts that you constantly use using copy/paste but you want to be able to use them with a single command. So you can use them with a single command.
+#### Built-in slash commands
 
+* For full list of built-in slash commands, see [Official documentation: Built-in slash commands](https://code.claude.com/docs/en/slash-commands#built-in-slash-commands)
+
+
+
+#### Custom slash commands
+
+**Problem that they solve:** you have a bunch of prompts that you constantly use using copy/paste but you want to be able to use them with a single command. So you can use them with a single command.
+
+Custom slash commands:
+* allow you to define frequently used prompts as Markdown files that Claude Code can execute.
+* Commands are organized by scope (project-specific `<PROJECT_ROOT>/.claude/commands/` or personal `<HOME>/.claude/commands/`). Use /help slash-commands to see the list of commands in your scope (cycle to the "custom commands" section).
+* and support namespacing through directory structures.
+* can installed by plugins
+
+##### Namespacing
+
+[Official documentation: Namespacing](https://code.claude.com/docs/en/slash-commands#namespacing)
+
+To namespace a command, create a subdirectory with the command name and put the command file inside it:
+
+* `<PROJECT_ROOT>/.claude/commands/frontend/component.md` creates `/component` with description `(project:frontend)`
+* `<HOME>/.claude/commands/frontend/component.md` creates `/component` with description `(user:frontend)`
+
+As you can check with the `/help slash-commands` command:
+
+```bash
+ Claude Code v2.0.76  general   commands   custom-commands  (tab to cycle)
+
+ Browse custom commands:
+
+ ❯ /command           Review this code for security vulnerabilities: (user)
+   /frontend:command  Review this code for security vulnerabilities: (project)
+```
+
+> [!WARNING]
+> If a project command and user command share the same name, the project command takes precedence and the user command is silently ignored. For example, if both `<PROJECT_ROOT>/.claude/commands/deploy.md` and `<HOME>/.claude/commands/deploy.md` exist, `/deploy` runs the project version.
+
+##### Templating in Claude Command Markdown Definitions
+
+Claude Code slash commands use a lightweight templating system to construct the final prompt before it is sent to the model.
+
+Templating happens at command invocation time, before the model runs, and consists of static text expansion plus optional shell output injection. There is no runtime logic, branching, or execution model beyond this expansion step.
+
+At a high level, three templating mechanisms are available:
+
+- Argument substitution ($ARGUMENTS)
+- Bash output injection (!-prefixed shell commands)
+- File references (@<file-path>)
+
+Both are resolved before Claude processes the command.
+
+
+###### Templating Command Example
+
+```bash
+# Command definition
+cat > .claude/commands/inspect.md <<'EOF'
+---
+description: Inspect repository state with optional focus text
+allowed-tools: Bash(git status:*)
+---
+
+## Focus (from args)
+
+$ARGUMENTS
+
+## Repository status (from bash)
+
+!`git status --short`
+EOF
+```
+
+If you invoke the command from claude code terminal with the arguments: `/inspect Authentication refactor`
+
+The result will be similar to:
+
+
+```markdown
+## Focus (from args)
+
+Authentication refactor
+
+## Repository status (from bash)
+
+M src/auth/login.ts
+A src/auth/token.ts
+```
+
+Explanation:
+
+* `$ARGUMENTS` is replaced with the text passed to the command
+* !`git status --short` executes the `git status --short` bash command and injects its stdout into the prompt
+* The model only sees the fully expanded text above, no runtime logic is applied.
+
+###### Arguments
+
+Syntax: `/<command-name> [arguments]`
+
+The `$ARGUMENTS` placeholder captures all arguments passed to the command. In the example below markdown command file, the `$ARGUMENTS` becomes: `123 high-priority`.
+
+```
+> /fix-issue 123 high-priority
+```
+
+Individual arguments with `$1`, `$2`, etc. are also supported, example:
+
+```bash
+# Command definition  
+echo 'Review PR #$1 with priority $2 and assign to $3' > .claude/commands/review-pr.md
+
+# Usage
+> /review-pr 456 high alice
+# $1 becomes "456", $2 becomes "high", $3 becomes "alice"
+```
+
+###### Bash commands execution
+
+https://code.claude.com/docs/en/slash-commands#bash-command-execution
+
+As you can see in the [Templating example](#templating-example), you can use "!`<bash-command>`" shell commands to inject the output of the command into the prompt.
+
+It's important that allowed tools are set in the command definition file, example:
+
+```yaml
+---
+allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*)
+description: Create a git commit
+---
+```
+
+###### File References
+
+In the command definition file, you can reference files using the `@<file-path>` syntax:
+
+```md
+Compare @src/old-version.js with @src/new-version.js
+```
+
+###### Thinking mode
+Slash commands can trigger extended thinking by including extended thinking keywords.
+
+To learn more, see [Official documentation: Use extended thinking (thinking mode)](https://code.claude.com/docs/en/common-workflows#use-extended-thinking-thinking-mode)
 
 ### Agents Skills
 
 Some concepts are explained in the [Agent Skills](#agent-skills) section because agents skills are a concept that is related not only to cloud code. In this section, we will focus on the concepts that are specific to Claude Code.
-
-
-
-
-
 
 ## Agent Skills
 
@@ -136,3 +273,10 @@ If you want, I can compress this into a **single-screen summary**, or map it dir
 
 SEE [Claude - create a skill - howto](claude-create-skill-howto.md)
 
+
+
+## Intergrations with other tools
+
+### Google Workspace
+
+SEE [Claude - Google Workspace integration](claude/claude-google-workspace-integration.md)
