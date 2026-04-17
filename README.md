@@ -19,16 +19,12 @@ TODO review the development guide
 
 ## Task Management
 
-This project uses ClickUp for task management via the MCP server. Tasks are automatically created in the configured ClickUp list. The default list and integration settings are configured in [`.cursor/clickup-config.json`](.cursor/clickup-config.json). For details on how the ClickUp integration works, see [`.cursor/rules/clickup-integration.mdc`](.cursor/rules/clickup-integration.mdc).
+TMP additive:
+https://linear.app/addictivedev/settings/teams/NBP
 
-### Finding Tasks in ClickUp
+TODO create a personal linear and migrate the tasks there
 
-To locate tasks created for this project in the ClickUp web interface:
-
-1. Navigate to the **"Nicola Personal"** workspace
-2. Open the **"Nicola Personal"** space
-3. Find the list named **"Nicola Nix Config"** (or use ClickUp search: Cmd/Ctrl + K)
-4. **Direct link**: [https://app.clickup.com/2194902/v/l/li/901519282810](https://app.clickup.com/2194902/v/l/li/901519282810)
+TODO: migrate the clickup tasks to linear https://app.clickup.com/2194902/v/l/6-901519460495-1
 
 ## Content Guidelines
 
