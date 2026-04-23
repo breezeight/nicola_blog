@@ -1,8 +1,56 @@
-**OpenID Connect (OIDC)** is an authentication protocol that builds on the OAuth 2.0 framework, enabling secure and standardized user authentication across various applications and services: it utilizes the authorization and authentication mechanisms of OAuth 2.0.
+
+## Overview
+
+**OpenID Connect (OIDC)** is an authentication protocol that builds on the OAuth 2.0 framework, enabling secure and standardized user authentication across various applications and services: it utilizes the authorization mechanisms of OAuth 2.0.
+
+At a practical level, that statement means:
+
+1. OAuth 2.0 answers: “Can this application access this resource?” Example:
+
+- You click “Connect Google Drive” in an app
+- You log in with Google
+- The app gets an access token
+- That token lets the app read your files
+
+But here’s the key limitation: 👉 The app still does not formally know who you are. It only has permission to access resources.
+
+2. OIDC adds: “Who is the user that just logged in?”
+
+OpenID Connect extends OAuth 2.0 by adding identity information in a standardized way.
+
+It introduces a new token: **ID Token (JWT)** → contains verified user identity. Typical contents:
+
+- user ID (sub)
+- email
+- name
+- authentication time
+
+So now 👉 The app can say:“User nik@example.com, just authenticated successfully.”
+
+
+As a real-world analogy, Think of it like this:
+
+- OAuth 2.0 = a **keycard** that opens doors (it proves permission)
+- OIDC = a **passport** + **keycard** (it proves who you are + what you can access)
+
+Why people say **OIDC is an identity layer on top of OAuth 2.0.**?  
+
+OIDC doesn’t replace OAuth 2.0—it reuses it:
+
+- Same flows (Authorization Code, etc.)
+- Same endpoints (/authorize, /token)
+- Same access tokens
+- Then it adds identity on top:
+  - ID Token
+  - UserInfo endpoint
+  - standardized claims
+
+So “layer” literally means **OIDC = OAuth 2.0 + identity semantics**
+
 
 While [OAuth 2.0 is an authorization protocol](oauth2-explanation.md), OIDC is an identity authentication protocol and may be used to verify the identity of a user to a client service, also called **Relying Party**. In addition, users' claims like, for example, name, email address, etc., may also be shared on request.
 
-An OIDC provider (often referred to as an **OpenID Provider** or **Identity Provider**, **IdP**) is the entity responsible for authenticating users and issuing identity tokens that confirm their identity to client applications, also known as **Relying Parties** (**RPs**).
+An OIDC provider (often referred to as an **OpenID Provider** or **Identity Provider**, **IdP**) is the entity responsible for authenticating users and issuing identity tokens that confirm their identity to client applications - **Relying Parties** (**RPs**).
 
 ```mermaid
 %% OpenID Connect (OIDC) Authentication Flow - Activity Diagram with Steps Numbered

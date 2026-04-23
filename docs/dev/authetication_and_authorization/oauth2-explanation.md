@@ -1,127 +1,298 @@
+---
+layout: post
+title: "OAuth 2.0"
+date: 2026-04-21 00:00:00 +0200
+comments: true
+categories: ["Authentication", "Authorization"]
+---
 
-## What is OAuth 2.0?
+# OAuth 2.0
 
-OAuth 2.0 is an **authorization framework** that enables applications to obtain limited access to user accounts on an HTTP service without sharing user credentials. It allows users to grant third-party applications access to their resources on other services, like social media or cloud storage, while maintaining control over their data. OAuth 2.0 operates through the issuance of access tokens by an authorization server, which the client application can use to access protected resources from a resource server
+*A Practical Beginner's Guide (2026)*
 
-Refs: [Ory](https://www.ory.sh/docs/oauth2-oidc/overview/oauth2-concepts), [Wikipedia](https://en.wikipedia.org/wiki/OAuth), [Postman](https://blog.postman.com/what-is-oauth-2-0/).
+This guide is written for developers, product teams, and anyone who wants to **understand OAuth 2.0 from zero** using modern, secure practices. It proposes a practical mental model + a few concrete rules of thumb you can use while reading any OAuth RFC or vendor docs.
+From here are linked some valuable resources that you can use to learn more about OAuth 2.0 (ex: OIDC, some legacy flows, some vendor-specific documentation and examples).
 
+### What you will learn
+- Why OAuth 2.0 exists and how it protects user passwords
+- The essential concepts (roles, scopes, tokens, grants, and flows)
+- In 2026, **Authorization Code + PKCE** is the default and recommended OAuth flow for almost all user-facing apps — but other scenarios (machine-to-machine communication, input-limited devices) call for different grant types, and this guide covers those too
+- How consent screen and token exchange actually work the real-world with concrete examples that you can easily test (some tutorials are linked here)
 
-## Key Features of OAuth 2.0
+### What this guide is *not*
+It is **not** a rewrite of the RFCs (but technical specification language is used) nor an implementation manual.
+We focus only on the core ideas and the most common real-world patterns.
+More advanced or niche topics (such as token introspection, DPoP, or legacy flows) are mentioned briefly and/or linked for further reading.
 
--   **Delegated Access**: Users can authorize applications to access their data without sharing passwords.
--   **Access Tokens**: Applications receive tokens that represent granted permissions, allowing them to perform actions on behalf of the user.
--   **Scopes**: OAuth defines scopes that specify the level of access granted, enabling fine-grained control over what resources can be accessed.
+By the end of this guide you'll have a clear mental model of OAuth 2.x and feel confident reading, discussing, and working with it in modern applications.
 
-Refs: [Ory](https://www.ory.sh/docs/oauth2-oidc/overview/oauth2-concepts), [DigitalOcean](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2), [Postman](https://blog.postman.com/what-is-oauth-2-0/).
+## What is OAuth 2.x?
 
+**OAuth 2.0** and it's extensions (ex: OAuth 2.1 draft, ... ) are a secure **authorization framework** that lets third-party applications access a user's data on another service **without ever needing the user's credentials** (typically username and password). 
 
-## Main Differences Between OAuth 2.0 and OIDC
+Imagine you want to let a time-management app automatically add focus-time blocks to your Google Calendar —  **but without ever giving it your Google password.**
 
-| Feature | OAuth 2.0 | OpenID Connect |
-| --- |  --- |  --- |
-| **Purpose** | Authorization (access control) | Authentication (identity verification) |
-| --- |  --- |  --- |
-| **Token Types** | Issues access tokens for resource access | Issues ID tokens for user identity |
-| **User Info Endpoint** | Not defined | Provides a standard endpoint for user info |
-| **Scope Definition** | Customizable scopes for resource access | Predefined scopes like `openid` for authentication[1](https://www.ory.sh/docs/oauth2-oidc/overview/oauth2-concepts)[3](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2)[4](https://blog.postman.com/what-is-oauth-2-0/) |
+**OAuth 2.x** is the secure, modern way to make that possible.
 
-In summary, OAuth 2.0 focuses on granting access to resources securely without exposing user credentials, while OpenID Connect extends this functionality by adding authentication features that allow applications to confirm user identities securely.
+Instead of sharing your username and password (the old, risky way), OAuth lets you safely grant an app **limited and temporary access** to your data. You decide exactly what the app can do, how long it can do it, and you can revoke that permission at any time.
 
-Refs: [Ory](https://www.ory.sh/docs/oauth2-oidc/overview/oauth2-concepts), [DigitalOcean](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2), [Postman](https://blog.postman.com/what-is-oauth-2-0/).
+### How the Google Calendar example works (user perspective)
+The following steps are the user perspective of the flow in one of the most common user experience:
 
+1. You’re on a third‑party website (not Google), and you see a button like “Connect Google Calendar”. You click it to let that app access your calendar.
+2. The browser **redirects** to the service that store the resources (The Google Calendar, in the example) using a **special authorization URL**.
+   This URL contains all the details the Google Calendar service needs to identify the app. We will explain them in detail later in this document the meaning of each parameter. These are the more common ones:
+   - `client_id` → identifies the app
+   - `redirect_uri` → where to send you back after approval
+   - `scope` → exactly which resources/permissions the app wants (e.g. `calendar.events.read calendar.events.create`)
+  
+3. If you are not already logged in, you log into the service (Google in this example), then see a **consent form/screen** that clearly lists the exact permissions the app is requesting.  
+   **Typical consent form looks like this:**
+   - App name + logo  
+   - “This app would like to:”  
+     • View your calendar events  
+     • Create and edit events in your calendar  
+     • See your email address  
+   - “Do you want to allow this app to do these things?”  
+   - **[Allow]** **[Cancel]** buttons  
+   After you click **Allow**, Google redirects your browser back to the app with all the information that the app needs to get gain accesss the your Calendar.
+4. The app’s backend swaps the above information for an **access_token**, then uses the token to call the **Resource Server** (the API interface for the Google Calendar).
 
-## Understanding Claims in OAuth 2.0
-
-In OAuth 2.0, **claims** are used to provide additional context within tokens, though they are not a core part of the original specification. OAuth 2.0 primarily focuses on **authorization** rather than **authentication**, so claims are implemented in a flexible, often implementation-specific way.
-
-In the context of identity and access management (like OAuth 2.0 and OpenID Connect), a **claim** is a statement about an entity (usually the user or token holder), typically expressed as a **key-value pair**. Claims are **embedded within tokens** (e.g., JSON Web Tokens) and provide structured information that can be used by applications and APIs to make authorization and authentication decisions.
-
-### Claims in OAuth 2.0 Access Tokens
-
-Access tokens in OAuth 2.0 **may contain claims**, particularly when they are formatted as **JSON Web Tokens (JWTs)**. Claims within these tokens provide structured information that allows APIs to make authorization decisions about users or systems. Typically you get access tokens with a response in the following format:
-
-```json
-{
-  "access_token":"ya29a0AeDClZCPG8d_0nbikLgl08fbbAYGi_7yhrc3BmX74lrw-Su7XCK1-AWPF4t8xxJ_8K4nYyLvZ3jpMjgUaDXHOtlGM0s259S9GSn5BqLfDt0EAFUeNOzygv3ZNNleONqRFjLqVmyLxxKsY8dA39p3D0wNWuV14CYFQNKEpqLmaCgYKAQ0SARESFQHGX2Mi31dp1pdg2fcOwhxrBMfVSw0175", 
-  "scope":"https://www.googleapis.com/auth/youtubepartner https://www.googleapis.com/auth/sitemaps", 
-  "token_type":"Bearer", 
-  "expires_in":3599, 
-  "refresh_token": "1//04XqEBsQXBrydCgYIARAAGAQSNwF-L9Ir5p1jAE6jSfKf3zqUADFY4R6ben3hcF-RxijRSz1YmMlVpqJNUDl_3XASLY9p53ljDwk"
-}
-```
-
-In the case above the `access_token` is NOT a JWT access token. But if it was, it would contain claims like the following:
-
-- **Standard Claims in JWT Access Tokens**: JWT access tokens often include common claims like:
-  - `sub` (subject): The unique identifier for the user or entity the token represents.
-  - `iss` (issuer): The entity that issued the token.
-  - `exp` (expiration): The token’s expiration time, after which it becomes invalid.
-  - `aud` (audience): The intended audience of the token, often an API or service.
-  - `scope`: The permissions granted, often represented as a list of authorized actions.
-
-These claims help the API receiving the token to verify its validity and understand the context around the access request.
-
-### Custom Claims in OAuth 2.0
-
-OAuth 2.0 allows for **custom claims** to be included in JWT access tokens. These custom claims can be tailored to the needs of the specific application or API being accessed. For example, an access token for an API dealing with user data could include a `role` claim to specify the user’s authorization level within the application.
-
-- **Adding Custom Claims**: Custom claims are flexible but should be designed thoughtfully to avoid conflicts with standard claims. Using a namespaced format for custom claims can help prevent such collisions, especially when tokens may be used across multiple systems.
-
-### Purpose of Claims in OAuth 2.0
-
-In OAuth 2.0, claims support **authorization decisions** by conveying essential information about the token holder and token validity. While claims are not required by the OAuth 2.0 protocol itself, they are widely used when access tokens are structured as JWTs, providing a convenient and secure way to pass metadata within the token.
-
-### Summary
-
-In summary, while OAuth 2.0 does not explicitly define claims, they are a useful tool for enhancing the context within access tokens, particularly when JWTs are used. Claims enable APIs to make informed decisions on access control, supporting flexible, granular authorization.
-
-
-## The OAuth 2.0 Protocol Flow
-
-Refs: [DigitalOcean](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2#application-registration)
-
-### OAuth Roles
-
-OAuth defines four roles:
-
--   **Resource Owner**: The resource owner is the *user* who authorizes an *application* to access their account. The application's access to the user's account is limited to the scope of the authorization granted (e.g. read or write access)
--   **Client**: The client is the *application* that wants to access the *user*'s account. Before it may do so, it must be authorized by the user, and the authorization must be validated by the API.
--   **Resource Server**: The resource server hosts the protected user accounts.
--   **Authorization Server**: The authorization server verifies the identity of the *user* then issues access tokens to the *application*.
-
-### Abstract Protocol Flow
-
-Now that you have an idea of what the OAuth roles are, let’s look at a diagram of how they generally interact with each other in high-level abstract way:
+Behind the scenes, the flow, called **Authorization Code Flow**, is more complex and we will explain it in detail later in this document. Here is a high-level overview of the flow:
 
 ```mermaid
 sequenceDiagram
-    participant User as User (Resource Owner)
-    participant Client as Application (Client)
-    participant AuthServer as Authorization Server
-    participant ResourceServer as Resource Server
+    participant User as User
+    participant Browser as Browser
+    participant App as Third-party App (Server)
+    participant Auth as Google (Authorization Server)
+    participant API as Google Calendar API (Resource Server)
 
-    Client ->> User: 1. Authorization Request
-    User -->> Client: 2. Authorization Grant
-    Client ->> AuthServer: 3. Authorization Grant
-    AuthServer -->> Client: 4. Access Token
-    Client ->> ResourceServer: 5. Access Token
-    ResourceServer -->> Client: 6. Protected Resource
+    Note over App,API: OAuth 2.0 Authorization Code Flow ("Connect with Google")
+
+    User->>Browser: 0. Visits the third-party app
+    Browser->>App: 1. Loads the app (HTML/JS)
+    App-->>Browser: 2. App loads in the browser
+
+    User->>Browser: 3. Clicks "Connect Google Calendar"
+    Browser->>App: 4. Starts the OAuth login/connect flow
+    App-->>Browser: 5. Redirect to Google /authorize<br/>client_id + redirect_uri + scope + response_type=code + state
+    Browser->>Auth: 6. Opens Google /authorize
+    Auth-->>Browser: 7. Login (if needed) + consent screen
+    User->>Browser: 8. Approves
+    Browser-->>App: 9. Redirect back to redirect_uri<br/>with one-time code + state
+
+    Note over App,Auth: Code is exchanged server-to-server
+    App->>Auth: 10. POST /token with the code<br/>(+ client_secret or PKCE)
+    Auth-->>App: 11. Returns Access Token (+ optional Refresh Token)
+
+    App->>API: 12. Calls Calendar API with Authorization: Bearer ACCESS_TOKEN
+    API-->>App: 13. Returns calendar data / success response
+    App-->>Browser: 14. Returns data and updates the UI
 ```
 
-> [!Note]: The actual flow of this process will differ depending on the authorization grant type in use, but this is the general idea. We will explore different grant types in a later section.
+## Key Benefits of OAuth 2.0
 
-Refs: [DigitalOcean](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2#application-registration)
+- **No password sharing**: The app gets permission without ever seeing your password.
+- **Limited access**: Users can limit what the app can do (scopes) and revoke access later.
+- **Standard approach**: It’s widely used across major services.
 
-Here is a more detailed explanation of the steps in the diagram:
+## WARNING Recent Changes in OAuth 2.1 (Draft)
 
-1.  The *application* requests authorization to access service resources from the *user*
-2.  If the *user* authorized the request, the *application* receives an authorization grant
-3.  The *application* requests an access token from the *authorization server* (API) by presenting authentication of its own identity, and the authorization grant
-4.  If the application identity is authenticated and the authorization grant is valid, the *authorization server* (API) issues an access token to the application. Authorization is complete.
-5.  The *application* requests the resource from the *resource server* (API) and presents the access token for authentication
-6.  If the access token is valid, the *resource server* (API) serves the resource to the *application*
+> [!WARNING] 
+> There are some changes in OAuth 2.1 (Draft) that are not yet implemented by all major OAuth 2.0 providers.
 
-The actual flow of this process will differ depending on the authorization grant type in use, but this is the general idea. We will explore different grant types in a later section.
+This section is placed here to warn you about the changes in OAuth 2.1 (Draft) that are not yet implemented by all major OAuth 2.0 providers. If it's the first time you are reading this guide focus on the main concepts and come back here later to read the details.
+
+The bottom line: it doesn't introduce new functionality — **it removes risky patterns** and makes previously optional best practices mandatory [WorkOS](https://workos.com/blog/oauth-2-1-vs-oauth-2-0).
+
+- **PKCE is required** for Authorization Code flow (not optional anymore).
+- **Implicit flow is removed** (no more `response_type=token`).
+- **Password flow (ROPC) is removed** (apps should not collect user passwords).
+- **Redirect URIs must match exactly** (no wildcards).
+- **Access tokens must not be put in URLs** (for example, not in query strings).
+- **Refresh tokens must be safer** (rotation or sender-constrained tokens).
+
+Notable: Anthropic adopted OAuth 2.1 as the foundation for MCP’s authorization spec ([WorkOS](https://workos.com/blog/oauth-2-1-vs-oauth-2-0)).
+
+Sources:
+
+* https://oauth.net/2.1/
+* https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/ (draft-15)
+* https://stytch.com/blog/oauth-2-1-vs-2-0/
+
+## Main Concepts
+
+Now let’s quickly understand more formally the **key building blocks** of OAuth 2.0. Think of these as the basic “ingredients” you’ll see in every OAuth interaction.
+
+### The Four Roles
+
+OAuth always involves four different **actors**:
+
+- **Resource Owner**: An entity capable of granting access to a protected resource, tipically the end-user.
+- **Client**: An application making protected resource requests on behalf of the resource owner and with its authorization.  
+- **Resource Server**: The server hosting the protected resources, capable of accepting and responding to protected resource requests using access tokens.
+- **Authorization Server**: The server issuing access tokens to the client after successfully authenticating the resource owner and obtaining authorization.
+
+### Authorization Grant – The user’s “yes”
+
+When the user clicks **Allow** on the consent screen, they are giving the app an **authorization grant**.  
+
+In simple terms:  
+The grant is the **temporary permission** the user just approved.  
+In the most common flow, this permission is first delivered as a short-lived **authorization code** that the app can later exchange for a real access token.
+
+### Scopes – “What exactly are you allowed to do?”
+
+Usually, users don’t give the app **full** access to their account.  
+Instead, users choose **specific permissions** called **scopes**.
+
+Examples:
+- `calendar.read` → only read the user's events
+- `calendar.events.create` → can create new events in the user's calendar
+- `email.read` → can read the user's email address
+
+Users see these listed clearly on the consent screen. They can always revoke or change them later.
+
+### Access Token – The “temporary key”
+
+After the user clicks **Allow**, the app receives a special key called an **access token**.  
+This token acts like a temporary digital key that lets the app talk to the API **on your behalf**.
+
+- It is **short-lived** (usually 1 hour or less)
+- It only works for the scopes you approved
+- The app must send this token with every API request
+
+### Refresh Token – The “long-term spare key”
+
+When the access token expires, the app can use a **refresh token** to get a brand-new access token **without asking the user to log in again**.
+
+- Stored securely on the app’s server
+- Much longer-lived (days, weeks, or months)
+- Can be revoked by the user at any time
+
+### Client ID and Client Secret
+
+Every app must register with the service (Google, GitHub, etc.) first.  
+After registration, the service gives the app two pieces of information:
+- **Client ID** → like a public username for the app (safe to show in browser)
+- **Client Secret** → like a password for the app (must stay secret on the server)
+These are used to prove the app is legitimate.
+
+### Flows – The different ways OAuth happens
+
+A **flow** is the complete step-by-step recipe that shows how all the pieces above work together.
+
+There are several possible flows, but they are **not** all equally safe. In 2026 the **most modern and secure flow** for most applications is: **Authorization Code Flow + PKCE**
+
+This is the modern, secure standard used by Google, GitHub, Microsoft, and almost every major service.
+
+The other older flows (like Implicit or Password) are now considered insecure and have been removed from the latest OAuth 2.1 rules.
+
+## A more formal definition of what OAuth is from the RFC
+
+OAuth introduces an authorization layer by **separating the role of the client from that of the resource owner**. In OAuth, the client requests access to resources controlled by the resource owner and hosted by the resource server, and is issued a **different set of credentials* than those of the resource owner**.
+
+Instead of using the resource owner's credentials to access protected resources, the client obtains an **access token** -- a string denoting a specific scope, lifetime, and other access attributes. Access tokens are issued to third-party clients by an authorization server with the approval of the resource owner. The client uses the access token to access the protected resources hosted by the resource server.
+
+[RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749)
+
+## The OAuth 2.0 Protocol Flows
+A **flow** is a formally defined interaction pattern **between actors (client, authorization server, resource owner, resource server)**, consisting of ordered protocol steps, each bound to specific endpoints, parameters, and security guarantees, involving:
+
+1. HTTP requests to specific endpoints
+2. HTTP responses carrying protocol artifacts (codes, tokens)
+3. User interactions when required (authentication, consent)
+4. A set of **state transitions and security constraints**.
+
+### What composes a flow
+
+* **Endpoints (protocol surface)**, typical ones:
+
+* `/authorize` → front-channel (browser redirect)
+* `/token` → back-channel (server-to-server)
+* `/introspect`, `/revocation` (optional)
+* `/userinfo` → identity retrieval (in the case of OIDC extensions)
+
+* **Messages (requests/responses)**, each step has:
+  * required parameters (`client_id`, `redirect_uri`, `scope`, etc.)
+  * response artifacts (`code`, `access_token`, `id_token`)
+
+* **User interactions (optional but critical)**, only present in **user-centric flows**:
+  * login (authentication)
+  * consent (authorization)
+
+* **State & correlation**, flows are not just “calls”—they maintain integrity via:
+  * `state` (CSRF protection)
+  * `nonce` (OIDC replay protection)
+  * `code_verifier` / `code_challenge` (PKCE)
+
+* **Channel separation (very important)**, a modern flow explicitly separates:
+  * **Front-channel** (via browser)
+    * redirects
+    * user interaction
+    * less trusted
+  * **Back-channel** (direct HTTP)
+    * token exchange
+    * trusted server communication
+  * NOTE: This distinction is core to why Authorization Code flow is secure.
+
+
+To make it concrete, a simplified overview of the “Authorization Code Flow + PKCE” flow is this sequence:
+
+1. Browser → `/authorize` (front-channel)
+2. User logs in (interaction)
+3. Redirect → client with `code`
+4. Client → `/token` (back-channel)
+5. Receive tokens
+
+What a flow is **not**:
+
+* Not just “a diagram”
+* Not just “a grant type”
+* Not just “a set of endpoints”.
+
+A **grant type** defines *how a token is obtained*, while a **flow** defines *the full interaction pattern to achieve it*.
+
+A **grant type** defines *how a token is obtained*, while a **flow** defines *the full interaction pattern to achieve it*.
+
+When you design or review a system, treat a flow as:
+
+* a **state machine**
+* executed over HTTP
+* involving both:
+
+  * user agent (browser)
+  * backend channels
+* with explicit **security invariants**
+
+---
+
+If you want, I can formalize one flow (e.g., Auth Code + PKCE) as a strict step-by-step state machine with inputs/outputs per step.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Difference Between OAuth 2.0 Flow and Grant
 
@@ -133,7 +304,7 @@ A **flow**, on the other hand, refers to the entire process or sequence of steps
 
 In essence, a **grant** is the permission or method of authorization, while a **flow** describes the specific sequence of interactions to obtain and use that grant. Although these terms are sometimes used interchangeably, technically, the grant is just one component of the larger flow.
 
-### Application Registration
+## Application Registration
 
 Before using OAuth with your application, you must register your application with the service. This is done through a registration form in the **developer** or **API** portion of the service's website, where you will provide the following information (and probably details about your application):
 
@@ -143,11 +314,11 @@ Before using OAuth with your application, you must register your application wit
 
 The redirect URI is where the service will redirect the user after they authorize (or deny) your application, and therefore the part of your application that will handle authorization codes or access tokens.
 
-### Client ID and Client Secret
+## Client ID and Client Secret
 
-Once your application is registered, the service will issue *client credentials* in the form of a *client identifier* and a *client secret*. The Client ID is a publicly exposed string that is used by the service API to identify the application, and is also used to build authorization URLs that are presented to users. The Client Secret is used to authenticate the identity of the application to the service API when the application requests to access a user's account, and must be kept private between the application and the API.
+Once your application is registered, the service will issue *client credentials* in the form of a **client identifier** and a **client secret**. The Client ID is a publicly exposed string that is used by the service API to identify the application, and is also used to build authorization URLs that are presented to users. The Client Secret is used to authenticate the identity of the application to the service API when the application requests to access a user's account, and must be kept private between the application and the API.
 
-### Authorization Grant
+## Authorization Grant
 
 In the Abstract Protocol Flow [outlined previously](#abstract-protocol-flow), the first four steps cover obtaining an authorization grant and access token. The **authorization grant type** depends on the method used by the application to request authorization, and the grant types supported by the API. OAuth 2 defines three primary grant types, each of which is useful in different cases:
 
@@ -283,7 +454,7 @@ The authorization endpoint records the code challenge and the transformation met
 
 Upon receiving the code verifier, the authorization server **hashes it with the specified algorithm (e.g., SHA-256) to recreate the code challenge**. It compares this recreated code challenge with the one initially sent by the client. **If they don’t match, the authorization server denies access,** preventing the completion of the authorization flow.
 
-In short, PKCE protects against authorization code interception by requiring a *code verifier*, which only the original client possesses. When a client sends an authorization request, it includes a **hashed version of the code verifier (the *code challenge*)**. Later, to complete the exchange, the client provides **the original code verifier (without hashing it again)**, allowing the authorization server to hash it and verify its authenticity. This verification ensures that
+In short, PKCE protects against authorization code interception by requiring a *code verifier*, which only the original client possesses. When a client sends an authorization request, it includes a **hashed version of the code verifier (the *code challenge*)**. Later, to complete the exchange, the client provides **the original code verifier (without hashing it again)**, allowing the authorization server to hash it and verify its authenticity. This verification ensures that only the original client that initiated the authorization request can exchange the code for an access token, effectively preventing authorization code interception attacks.
 
 > [!Note]: It's recommended that every client use the PKCE extension for improved security.
 
@@ -439,6 +610,52 @@ If the user approves the request, though, the access endpoint will return an aut
 
 **Note**: Again, DigitalOcean does not currently support the device code grant type, so the link in this example points to an imaginary authorization server at `oauth.example.com`.
 
+## Claims in OAuth 2.0
+
+In OAuth 2.0, **claims** are used to provide additional context within tokens, though they are not a core part of the original specification. OAuth 2.0 primarily focuses on **authorization** rather than **authentication**, so claims are implemented in a flexible, often implementation-specific way.
+
+In the context of identity and access management (like OAuth 2.0 and OpenID Connect), a **claim** is a statement about an entity (usually the user or token holder), typically expressed as a **key-value pair**. Claims are **embedded within tokens** (e.g., JSON Web Tokens) and provide structured information that can be used by applications and APIs to make authorization and authentication decisions.
+
+### Claims in OAuth 2.0 Access Tokens
+
+Access tokens in OAuth 2.0 **may contain claims**, particularly when they are formatted as **JSON Web Tokens (JWTs)**. Claims within these tokens provide structured information that allows APIs to make authorization decisions about users or systems. Typically you get access tokens with a response in the following format:
+
+```json
+{
+  "access_token":"ya29a0AeDClZCPG8d_0nbikLgl08fbbAYGi_7yhrc3BmX74lrw-Su7XCK1-AWPF4t8xxJ_8K4nYyLvZ3jpMjgUaDXHOtlGM0s259S9GSn5BqLfDt0EAFUeNOzygv3ZNNleONqRFjLqVmyLxxKsY8dA39p3D0wNWuV14CYFQNKEpqLmaCgYKAQ0SARESFQHGX2Mi31dp1pdg2fcOwhxrBMfVSw0175", 
+  "scope":"https://www.googleapis.com/auth/youtubepartner https://www.googleapis.com/auth/sitemaps", 
+  "token_type":"Bearer", 
+  "expires_in":3599, 
+  "refresh_token": "1//04XqEBsQXBrydCgYIARAAGAQSNwF-L9Ir5p1jAE6jSfKf3zqUADFY4R6ben3hcF-RxijRSz1YmMlVpqJNUDl_3XASLY9p53ljDwk"
+}
+```
+
+In the case above the `access_token` is NOT a JWT access token. But if it was, it would contain claims like the following:
+
+- **Standard Claims in JWT Access Tokens**: JWT access tokens often include common claims like:
+  - `sub` (subject): The unique identifier for the user or entity the token represents.
+  - `iss` (issuer): The entity that issued the token.
+  - `exp` (expiration): The token’s expiration time, after which it becomes invalid.
+  - `aud` (audience): The intended audience of the token, often an API or service.
+  - `scope`: The permissions granted, often represented as a list of authorized actions.
+
+These claims help the API receiving the token to verify its validity and understand the context around the access request.
+
+### Custom Claims in OAuth 2.0
+
+OAuth 2.0 allows for **custom claims** to be included in JWT access tokens. These custom claims can be tailored to the needs of the specific application or API being accessed. For example, an access token for an API dealing with user data could include a `role` claim to specify the user’s authorization level within the application.
+
+- **Adding Custom Claims**: Custom claims are flexible but should be designed thoughtfully to avoid conflicts with standard claims. Using a namespaced format for custom claims can help prevent such collisions, especially when tokens may be used across multiple systems.
+
+### Purpose of Claims in OAuth 2.0
+
+In OAuth 2.0, claims support **authorization decisions** by conveying essential information about the token holder and token validity. While claims are not required by the OAuth 2.0 protocol itself, they are widely used when access tokens are structured as JWTs, providing a convenient and secure way to pass metadata within the token.
+
+### Summary
+
+In summary, while OAuth 2.0 does not explicitly define claims, they are a useful tool for enhancing the context within access tokens, particularly when JWTs are used. Claims enable APIs to make informed decisions on access control, supporting flexible, granular authorization.
+
+
 ## Example Access Token Usage
 
 Once the application has an access token, it may use the token to access the user's account via the API, limited to the scope of access, until the token expires or is revoked.
@@ -473,3 +690,9 @@ If you want to learn more about OAuth 2, check out these valuable resources:
 -   [How To Use the DigitalOcean API v2](https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-api-v2)
 -   [DigitalOcean OAuth API Reference Documentation](https://docs.digitalocean.com/reference/api/oauth-api/)
 -   [The OAuth 2.0 Authorization Framework](https://datatracker.ietf.org/doc/html/rfc6749)
+
+
+
+## OIDC
+
+OpenID Connect extends OAuth 2.0 by adding identity information in a standardized way, see [OIDC Protocol Explanation](oidc-protocol-explanation.md).
