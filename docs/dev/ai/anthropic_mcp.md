@@ -349,6 +349,10 @@ These features are expected to be critical for:
 
 The roadmap includes better **protocol-level support** for secure authentication and access control, making MCP more suitable for professional and production use cases.
 
+## Related Documentation
+
+- {{ link_with_abstract("local-ai/local-ai.md") }} - Guide to running AI models locally with Ollama, LocalAI, and other solutions. MCP can be used to connect to local models for privacy and cost control.
+
 ## Next Step
 
 Would you like to begin with:
