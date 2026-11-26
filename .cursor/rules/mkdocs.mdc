@@ -33,7 +33,7 @@ The site is built with [Zensical](https://zensical.org/), which reads `mkdocs.ym
 - **Show dependencies**: `just deps`
 - **Clean build artifacts**: `just clean`
 - **Check configuration**: `just check` (non-strict) or `just check-strict`
-- **Deploy to GitHub Pages**: `just deploy`
+- **Deploy**: GitHub Actions deploys `main` to Cloudflare Pages; `just deploy` for a manual preview
 - **Full dev workflow**: `just dev` (install + serve)
 
 ### Development Workflow
@@ -59,7 +59,7 @@ The site is built with [Zensical](https://zensical.org/), which reads `mkdocs.ym
 ## Zensical Build Commands
 - **Build**: `uv run zensical build --clean`
 - **Serve locally**: `uv run zensical serve --dev-addr=127.0.0.1:8000`
-- **Deploy to GitHub Pages**: `just deploy` (Zensical has no `gh-deploy`; the recipe builds and pushes `site/` with `ghp-import`)
+- **Deploy to Cloudflare Pages**: push to `main` (GitHub Actions), or `just deploy` for a manual preview
 
 ## Configuration Files
 - Main config: `mkdocs.yml` (read by Zensical)
