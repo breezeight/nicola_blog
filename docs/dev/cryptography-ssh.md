@@ -354,7 +354,14 @@ Once it’s saved, later you can SSH to your target host like this: `ssh awesome
 
 ### What is an SSH-Agent?
 
-An ssh-agent is a program that holds your private keys used by ssh for public key authentication. It holds your keys and certificates in memory, unencrypted, and ready for use by `ssh`. It saves you from typing a passphrase every time you connect to a server by caching the key for you and you only need to enter the password when the agent wants to decrypt it.
+An ssh-agent is a program that holds your private keys used by ssh for public key authentication. It holds your keys and certificates in memory, unencrypted, and ready for use by `ssh clients` (e.g. `ssh`, `scp`, `sftp`, `rsync`, `Git`). It saves you from typing a passphrase every time you connect to a server by caching the key for you and you only need to enter the password when the agent wants to decrypt it.
+
+There are many ssh-agents available, each with its own features and capabilities:
+
+- `ssh-agent`: the default agent on most linux box. Exposes only the keys added with the `ssh-add` command (you need to decrypt the key with the passphrase only when you add the key to the agent).
+- `1Password Agent`: the agent used by 1Password. Exposes all the keys stored in 1Password following the [1Password Agent documentation](https://developer.1password.com/docs/ssh/agent) configuration.
+- `GNOME Keyring`: the agent used by GNOME. Exposes all the keys stored in GNOME Keyring following the [GNOME Keyring documentation](https://wiki.gnome.org/Projects/GnomeKeyring).
+- `KDE Wallet`: the agent used by KDE. Exposes all the keys stored in KDE Wallet following the [KDE Wallet documentation](https://docs.kde.org/stable5/en/ksecrets/index.html).
 
 > [!WARNING]\
 > If your private RSA key is not encrypted with a passphrase, then ssh-agent is not necessary. BUT you should never use a private key without a passphrase!.

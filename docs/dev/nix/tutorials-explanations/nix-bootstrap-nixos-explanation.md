@@ -22,7 +22,7 @@ Related documentation:
 
 ## Remote Bootstrap of a NixOS Physical Machine (laptop)
 
-This section is the explanation of the process: [Nix Bootstrap NixOS](nix-bootstrap-nixos-howto.md)
+This section is the explanation of the process: [Nix Bootstrap NixOS](../nix-bootstrap-nixos-howto.md)
 
 As stated in the introduction, this procedure is based on `nixos-anywhere` and which is usefult both to bootstrap remote servers and laptop.
 

@@ -226,7 +226,7 @@ nav:
       - Tailscale: dev/tailscale_index.md
     - Nix:
       - Index: dev/nix/nix-index.md
-      - Bootstrap NixOS Explanation: dev/nix/nix-bootstrap-nixos-explanation.md
+      - Bootstrap NixOS Explanation: dev/nix/tutorials-explanations/nix-bootstrap-nixos-explanation.md
       - Bootstrap NixOS Howto: dev/nix/nix-bootstrap-nixos-howto.md
       - Breezeight Config OSX and Linux Overview: dev/nix/nix-breezeight-config-osx-and-linux-overview.md
       - Darwin Overview: dev/nix/nix-darwin-overview.md
@@ -234,7 +234,7 @@ nav:
       - Home Manager Configuration Overview: dev/nix/nix-homemanager-configuration-overview-and-options.md
       - Home Manager Installation: dev/nix/nix-homemanager-installation-explanation.md
       - Home Manager Nix Darwin Module Docs: dev/nix/nix-homemanager-nix-darwin-module-docs.md
-      - Home Manager Overview: dev/nix/nix-homemanager-overview-explanation.md
+      - Home Manager Overview: dev/nix/tutorials-explanations/nix-homemanager-overview-explanation.md
       - Linux Remote Builder VM on OSX Explanation: dev/nix/nix-linux-remote-builder-vm-on-osx-explanation.md
       - Linux Remote Builder VM on OSX Howto: dev/nix/nix-linux-remote-builder-vm-on-osx-howto.md
       - Nixpacks: dev/nix/nix-nixpacks.md

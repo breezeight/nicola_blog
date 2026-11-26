@@ -270,6 +270,7 @@ Clear separation ensures that documentation is easier to navigate, maintain, and
   * `*-howto.md` for how-to guides
 * Use lowercase filenames with hyphens.
 * Group related topics in subdirectories (e.g., `docs/dev/python/`, `docs/dev/go/`).
+* **For folders containing multiple related documents, the main file should be named after the folder (e.g., `local-ai/local-ai.md`), not `index.md`.**
 * Recommended directories:
   * `docs/images/`
   * `docs/downloads/`

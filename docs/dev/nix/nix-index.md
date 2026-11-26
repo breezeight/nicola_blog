@@ -1,8 +1,83 @@
 # Nix Index
 
+## Nix has 3 core meanings
+
+- **1) Nix language**  
+  Declarative DSL used to describe packages, environments, and system configurations.
+
+- **2) Nix package manager**  
+  Cross-platform (Linux, macOS) tool to build and manage packages reproducibly.
+
+- **3) NixOS**  
+  Linux distribution where the entire system is defined using Nix.
+
+---
+
+## Composability (the real power)
+
+Nix components are **orthogonal and composable**, not mutually exclusive.  
+You combine them depending on your needs:
+
+### Base layer
+- Nix package manager  
+  → usable alone on any OS
+
+### System layer
+- NixOS  
+  → full system managed declaratively
+- `nix-darwin`  
+  → Nix-style system config on macOS
+
+### User layer
+- Home Manager  
+  → declarative user environment (dotfiles, CLI tools, etc.)
+
+---
+
+## Common combinations
+
+- **Nix (standalone)**
+  - Just the package manager
+  - Imperative or light declarative usage
+
+- **Nix + Home Manager (standalone)**
+  - Declarative user environment
+  - Works on any Linux/macOS
+
+- **Nix + nix-darwin**
+  - Declarative macOS system config
+
+- **Nix + nix-darwin + Home Manager**
+  - Full macOS setup (system + user)
+
+- **NixOS (built-in Nix)**
+  - Fully declarative OS
+
+- **NixOS + Home Manager (as module)**
+  - Single unified config for system + user
+
+---
+
+## Key idea
+
+There is no single “Nix setup”:
+
+> You choose how far you go on the spectrum  
+> from **package manager → user config → full OS**
+
+
+This flexibility is what creates many valid setups.
+
+## Learning Resources
+
+* Lesson 0: [Intro to Nix Course](tutorials-explanations/intro-to-nix-course.md)
+
+## OTHERS
+
 Breezeight NixOS Config on OSX:
 
 - [**Breezeight Nix Config**](nix-breezeight-config-osx-and-linux-overview.md)
+
 - [Nix Darwin Overview](nix-darwin-overview.md)
 
 Home Manager Day by Day Usage:
@@ -44,7 +119,7 @@ Nix Language and generic explanations:
 
 Home Manager Explanations and introductions:
 
-- [Home Manager Overview](nix-homemanager-overview-explanation.md): good to explain the big picture and to undestand the usage context, good for new users.
+- [Home Manager Overview](tutorials-explanations/nix-homemanager-overview-explanation.md): good to explain the big picture and to undestand the usage context, good for new users.
 - [GOOGLE DOC : Home Manager Configuration Overview and Options](https://docs.google.com/document/d/1UN77X-g7uTlgCRNU03Tnw4ao74hmc1oUxqYR-4kH6SA/edit?tab=t.0):
   - Document Overview
   - Installation
@@ -94,7 +169,7 @@ Remote Linux Builders:
 Bootstrap a Nixos system:
 
 - [Nix Bootstrap NixOS](nix-bootstrap-nixos-howto.md)
-- [Nix Bootstrap NixOS Explanation](nix-bootstrap-nixos-explanation.md)
+- [Nix Bootstrap NixOS Explanation](tutorials-explanations/nix-bootstrap-nixos-explanation.md)
 
 
 Nix and Docker:

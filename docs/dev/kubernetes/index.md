@@ -882,3 +882,137 @@ For practical examples: [k8s-registry-auth-howto.md](k8s-registry-auth-howto.md)
 
 > If Docker answers *“how does this image run?”*  
 > Kubernetes answers *“when, where, and under what guarantees does this image run?”*
+
+### Workloads
+
+A workload is an application running on Kubernetes. Kubernetes wraps your containers in **Pods**, and provides higher-level abstractions (**workload resources**) that manage Pods for you — handling replication, rolling updates, scheduling, and failure recovery.
+
+You rarely create Pods directly. Instead, you use workload resources, and their controllers create and manage the Pods.
+
+Official documentation: [Workloads](https://kubernetes.io/docs/concepts/workloads/)
+
+#### Pods
+
+A **Pod** is the smallest deployable unit in Kubernetes — a group of one or more containers that share networking and storage. Every container in a Pod gets the same IP and can reach the others via `localhost`.
+
+You typically don't manage Pods directly; workload resources do that for you.
+
+- [Pods overview](https://kubernetes.io/docs/concepts/workloads/pods/)
+- [Pod lifecycle](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/)
+- [Init containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)
+- [Disruptions](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/)
+
+#### Workload Resources
+
+| Resource | What it does | When to use it |
+|----------|-------------|----------------|
+| **Deployment** | Manages a set of identical (stateless) Pods with rolling updates and rollbacks | Stateless apps (web servers, APIs) |
+| **ReplicaSet** | Ensures a specified number of Pod replicas are running at all times | Rarely used directly — Deployments manage ReplicaSets for you |
+| **StatefulSet** | Like a Deployment, but gives each Pod a stable identity, persistent storage, and ordered startup/teardown | Databases, distributed systems (Kafka, ZooKeeper) |
+| **DaemonSet** | Ensures one Pod runs on every node (or a subset of nodes) | Node-level agents (log collectors, monitoring, kube-proxy) |
+| **Job** | Runs Pods to completion, then stops | Batch processing, migrations, one-off scripts |
+| **CronJob** | Creates Jobs on a schedule | Periodic tasks (nightly backups, report generation) |
+
+Official documentation for each:
+
+- [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+- [ReplicaSets](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)
+- [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
+- [DaemonSets](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)
+- [Jobs](https://kubernetes.io/docs/concepts/workloads/controllers/job/)
+- [CronJobs](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)
+
+#### How they relate
+
+```
+CronJob → creates → Job → creates → Pod
+Deployment → manages → ReplicaSet → creates → Pod
+StatefulSet → creates → Pod (with stable identity)
+DaemonSet → creates → Pod (one per node)
+```
+
+The mental model: **you tell Kubernetes the desired state at the workload resource level, and controllers continuously reconcile Pods to match it.**
+
+### Services, Load Balancing, and Networking
+
+Networking in Kubernetes addresses four distinct communication challenges:
+
+| Challenge | How Kubernetes solves it |
+|-----------|------------------------|
+| **Container-to-Container** (inside a Pod) | Shared network namespace — containers talk over `localhost` |
+| **Pod-to-Pod** (same or different nodes) | Flat network with IP-per-Pod — every Pod gets a unique IP, no NAT required |
+| **Service-to-Pod** | Services provide a stable virtual IP that routes to healthy Pods |
+| **External-to-Service** | NodePort, LoadBalancer, or Ingress expose Services outside the cluster |
+
+Official documentation: [Services, Load Balancing, and Networking](https://kubernetes.io/docs/concepts/services-networking/)
+
+#### The Kubernetes Network Model
+
+Kubernetes assigns every Pod a unique IP address (**IP-per-Pod**). All containers in a Pod share that IP and can reach each other over `localhost`; from outside the Pod, they're distinguished by port.
+
+Fundamental rules:
+- Pods can communicate with all other Pods on any node **without NAT**
+- Agents on a node can communicate with all Pods on that node
+- Each Pod sees itself with the same IP that others see it with
+
+Practical consequences:
+- From **inside** the Pod: containers reach each other via `localhost:port`
+- From **outside** the Pod: reach containers via `podIP:port`
+- Port coordination matters: two containers in the same Pod can't both use `:8080`
+
+Source: [Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/)
+
+#### Services
+
+Pods are ephemeral — they get new IPs when rescheduled. A **Service** provides a **stable virtual IP + port** that routes traffic to whichever healthy Pods match its selector.
+
+Under the hood, **kube-proxy** writes iptables/IPVS rules on each node that forward traffic from the Service IP to the Pod IPs.
+
+The mental model: a Service is the **front desk with a permanent phone number** — you always call the same number, and it routes you to whoever's currently on shift.
+
+##### Service types
+
+| Type | What it does | Accessible from |
+|------|-------------|----------------|
+| **ClusterIP** (default) | Exposes the Service on a cluster-internal IP | Inside the cluster only |
+| **NodePort** | Exposes the Service on each node's IP at a static port | Outside the cluster, via `<NodeIP>:<NodePort>` |
+| **LoadBalancer** | Provisions an external load balancer (cloud provider) | Outside the cluster, via a public IP |
+| **ExternalName** | Maps the Service to a DNS name (CNAME), no proxying | DNS-level alias to an external service |
+
+- [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
+- [Service types](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+
+#### Ingress
+
+An **Ingress** is an API object that manages external HTTP/HTTPS access to Services. It provides host- and path-based routing, TLS termination, and name-based virtual hosting — all behind a single external IP.
+
+An Ingress requires an **Ingress Controller** (e.g., NGINX, Traefik, HAProxy) to actually implement the rules.
+
+- [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+- [Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
+
+#### Gateway API
+
+The **Gateway API** is the successor to Ingress — more expressive, role-oriented, and extensible. It splits concerns across `GatewayClass`, `Gateway`, and `HTTPRoute` resources.
+
+- [Gateway API](https://kubernetes.io/docs/concepts/services-networking/gateway/)
+
+#### DNS for Services and Pods
+
+Kubernetes runs a cluster DNS (typically CoreDNS) that automatically creates DNS records for Services and Pods. A Service named `my-svc` in namespace `my-ns` is reachable at `my-svc.my-ns.svc.cluster.local`.
+
+- [DNS for Services and Pods](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/)
+
+#### Network Policies
+
+By default, all Pods can talk to all other Pods. A **NetworkPolicy** lets you restrict traffic at the Pod level — controlling which Pods can communicate with each other based on labels, namespaces, and IP blocks.
+
+Requires a CNI plugin that supports NetworkPolicy (e.g., Calico, Cilium).
+
+- [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+
+#### EndpointSlices
+
+EndpointSlices track the IP addresses of Pods backing a Service. They replace the older Endpoints resource, scaling better for large clusters.
+
+- [EndpointSlices](https://kubernetes.io/docs/concepts/services-networking/endpoint-slices/)

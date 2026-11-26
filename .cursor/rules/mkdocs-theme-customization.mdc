@@ -1,5 +1,5 @@
 ---
-description: when required to update the theme
+description: apply when required to update the mkdocs theme
 alwaysApply: false
 ---
 # MkDocs Material Theme Customization

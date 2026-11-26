@@ -1,3 +1,7 @@
+---
+render_macros: false
+---
+
 ## What is a Helm chart? Minimal mental model
 
 A Helm chart is a parameterized Kubernetes manifest generator with lifecycle management.
@@ -5,6 +9,98 @@ A Helm chart is a parameterized Kubernetes manifest generator with lifecycle man
 A **Helm chart** is a **packaged, parameterized set of Kubernetes manifests**.
 
 Conceptually: `Helm Chart = Kubernetes YAML + values + templating + release management`
+
+## Core Concepts
+- **Chart**: A Helm package (application definition).
+- **Release**: A running instance of a chart in a cluster.
+- **Repository**: A collection of charts.
+
+## Helm Commands
+
+[All commands](https://helm.sh/docs/v3/helm/)
+
+
+Quick reference of the most used commands
+
+```bash
+# -------------------------------------------------------------------
+# Display Helm client and server version information.
+# Useful for verifying compatibility with your Kubernetes cluster.
+helm version
+
+# -------------------------------------------------------------------
+# Add a Helm chart repository.
+# - "bitnami" is the local name used to reference the repository.
+# - The URL points to the remote index.yaml containing chart metadata.
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# -------------------------------------------------------------------
+# Synchronize local repository cache with remote repositories.
+# This ensures Helm knows about the latest chart versions.
+helm repo update
+
+# -------------------------------------------------------------------
+# Search all configured repositories for charts matching "nginx".
+# Helps identify available charts and versions before installation.
+helm search repo nginx
+
+# -------------------------------------------------------------------
+# Install a chart into the cluster.
+# - "my-nginx" is the release name (unique per namespace).
+# - "bitnami/nginx" specifies <repo>/<chart>.
+# - --namespace (-n) sets the Kubernetes namespace for the release.
+# - --create-namespace creates the namespace if it does not exist.
+helm install my-nginx bitnami/nginx \
+  --namespace demo \
+  --create-namespace
+
+# -------------------------------------------------------------------
+# List all Helm releases.
+# - -A (or --all-namespaces) shows releases across every namespace.
+helm list -A
+
+# -------------------------------------------------------------------
+# Display detailed status information for a release.
+# Includes deployment state, resources created, and notes from the chart.
+# - -n specifies the namespace where the release is installed.
+helm status my-nginx -n demo
+
+# -------------------------------------------------------------------
+# Show the values applied to the release.
+# By default, only user-supplied values are shown.
+# - -n specifies the namespace.
+helm get values my-nginx -n demo
+
+# -------------------------------------------------------------------
+# Upgrade an existing release.
+# - Reuses the same release name.
+# - -f values.yaml provides a custom values file to override defaults.
+# - -n specifies the namespace of the existing release.
+helm upgrade my-nginx bitnami/nginx \
+  --namespace demo \
+  -f values.yaml
+
+# -------------------------------------------------------------------
+# Display the revision history of a release.
+# Each upgrade or rollback creates a new revision number.
+helm history my-nginx -n demo
+
+# -------------------------------------------------------------------
+# Roll back a release to a previous revision.
+# - "1" is the target revision number from `helm history`.
+# - -n specifies the namespace.
+helm rollback my-nginx 1 -n demo
+
+# -------------------------------------------------------------------
+# Remove a release from the cluster.
+# This deletes all Kubernetes resources created by the chart.
+# - -n specifies the namespace where the release exists.
+helm uninstall my-nginx -n demo
+```
+
+### Add a repository
+
+
 
 
 ### Typical Helm chart directory structure

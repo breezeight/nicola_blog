@@ -1,6 +1,6 @@
 ## HOWTO: Remote Bootstrap of a NixOS Physical Machine (laptop)
 > [!NOTE] 
-> Explanation of the process: can be found [here](nix-bootstrap-nixos-explanation.md)
+> Explanation of the process: can be found [here](tutorials-explanations/nix-bootstrap-nixos-explanation.md)
 
 Definitions:
 

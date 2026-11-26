@@ -9,7 +9,7 @@ This document explains the scope of the homemanager and the main ideas behind it
 
 ### Installation
 
-* [nix-homemanager-installation-explanation.md](nix-homemanager-installation-explanation.md): more about the different installation options available.
+* [nix-homemanager-installation-explanation.md](../nix-homemanager-installation-explanation.md): more about the different installation options available.
 
 
 ## What is home-manager ? Why and where is it useful?

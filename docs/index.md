@@ -1,5 +1,24 @@
 ## Intro
 
+## Content Guidelines
+
+> [!WARNING]
+> This project follows structured content guidelines to maintain consistency and quality across all documentation.
+> Content guidelines are described in the `CONTENT.md` file at the repository root.
+
+## Nicola's Routines (daily, weekly, monthly and yearly) ⭐⭐⭐
+
+- {{ link_with_abstract("nicola-routines/nicola-routines.md") }} - Reference: All routines
+- {{ link_with_abstract("nicola-routines/nicola-routines-explanation.md") }} - Explanation: Routine rationale
+- {{ link_with_abstract("nicola-routines/nicola-routines-architecture.md") }} - Explanation: System architecture
+- {{ link_with_abstract("nicola-routines/nicola-routines-principles.md") }} - Explanation: Core principles
+- {{ link_with_abstract("nicola-routines/nicola-routines-personas.md") }} - Reference: Persona definitions
+- {{ link_with_abstract("nicola-routines/nicola-routines-entry-points.md") }} - Reference: Entry point catalog
+- {{ link_with_abstract("nicola-routines/nicola-routines-howto-define-routine.md") }} - Howto: Define routines
+- {{ link_with_abstract("nicola-routines/nicola-routines-howto-activate-persona.md") }} - Howto: Activate personas
+- {{ link_with_abstract("nicola-routines/nicola-routines-howto-configure-entry-point.md") }} - Howto: Configure entry points
+- {{ link_with_abstract("nicola-routines/nicola-routines-howto-review-routines.md") }} - Howto: Review routines
+
 ## Nicola's Day by Day Usage ⭐⭐⭐
 
 [Personal NixOS Config](https://github.com/breezeight/breezeight-nix-darwin-config/blob/main/README.md):
@@ -13,6 +32,18 @@
 - Calendar
 - Cal 
 - Doodle
+
+Personal Routines:
+- {{ link_with_abstract("nicola-routines/nicola-routines.md") }} - Reference: All routines
+- {{ link_with_abstract("nicola-routines/nicola-routines-explanation.md") }} - Explanation: Routine rationale
+- {{ link_with_abstract("nicola-routines/nicola-routines-architecture.md") }} - Explanation: System architecture
+- {{ link_with_abstract("nicola-routines/nicola-routines-principles.md") }} - Explanation: Core principles
+- {{ link_with_abstract("nicola-routines/nicola-routines-personas.md") }} - Reference: Persona definitions
+- {{ link_with_abstract("nicola-routines/nicola-routines-entry-points.md") }} - Reference: Entry point catalog
+- {{ link_with_abstract("nicola-routines/nicola-routines-howto-define-routine.md") }} - Howto: Define routines
+- {{ link_with_abstract("nicola-routines/nicola-routines-howto-activate-persona.md") }} - Howto: Activate personas
+- {{ link_with_abstract("nicola-routines/nicola-routines-howto-configure-entry-point.md") }} - Howto: Configure entry points
+- {{ link_with_abstract("nicola-routines/nicola-routines-howto-review-routines.md") }} - Howto: Review routines
 
 
 ## Yoga

@@ -442,6 +442,17 @@ They can then test your local services even if you’re on NAT.
 
 ---
 
+### Apps
+
+TODO See PDB usecase
+
+### Kubernetes Cluster Access
+
+#### Kubernetes Operator and Tailscale Gateway
+
+- [Kubernetes Operator](https://tailscale.com/kb/1236/kubernetes-operator)
+- [Tailscale Gateway](https://rajsinghtech.github.io/tailscale-gateway/)
+
 ### 🧙‍♂️ MagicDNS
 
 **MagicDNS** replaces numeric IPs and complex `.ts.net` hostnames with short, meaningful names.
