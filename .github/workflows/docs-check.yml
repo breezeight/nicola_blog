@@ -56,4 +56,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy site --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT || 'nicola-blog' }} --branch=main
+          command: pages deploy site --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT || 'nik-kh' }} --branch=main

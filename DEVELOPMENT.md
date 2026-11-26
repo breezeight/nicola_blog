@@ -144,18 +144,18 @@ Do these steps in order. The site must be protected before the first deployment.
 1. **Create the Pages project** (direct upload, no Git integration: GitHub Actions does the build):
    ```bash
    npx wrangler login
-   npx wrangler pages project create nicola-blog --production-branch main
+   npx wrangler pages project create nik-kh --production-branch main
    ```
-   Production URL: `https://nicola-blog.pages.dev`.
+   Production URL: `https://nik-kh.pages.dev`.
 2. **Set up Cloudflare Zero Trust**: in the dashboard open *Zero Trust*, pick a team name and the Free plan (up to 50 users).
 3. **Protect the site with Access**: *Zero Trust → Access → Applications → Add an application → Self-hosted*.
-   - Destinations: `nicola-blog.pages.dev` and `*.nicola-blog.pages.dev` (the wildcard covers preview deployments).
+   - Destinations: `nik-kh.pages.dev` and `*.nik-kh.pages.dev` (the wildcard covers preview deployments).
    - Policy: action *Allow*, include *Emails* with the addresses allowed to read the site.
    - Login method: *One-time PIN* (code by email) works out of the box; GitHub or Google can be added under *Settings → Authentication*.
 4. **Create an API token**: *My Profile → API Tokens → Create Token → Custom token*, permission *Account → Cloudflare Pages → Edit*.
 5. **Add GitHub secrets and variables** (*Settings → Secrets and variables → Actions*):
    - Secret `CLOUDFLARE_API_TOKEN`: the token from step 4.
    - Secret `CLOUDFLARE_ACCOUNT_ID`: shown in the dashboard under *Workers & Pages*.
-   - Variable `CLOUDFLARE_PAGES_PROJECT`: optional, defaults to `nicola-blog`.
+   - Variable `CLOUDFLARE_PAGES_PROJECT`: optional, defaults to `nik-kh`.
    - Variable `CLOUDFLARE_PAGES_DEPLOY` = `true`: set this last, after checking step 3.
-6. **Deploy**: merge `develop` into `main` and push. Then open `https://nicola-blog.pages.dev` in a private window: it must ask for the Cloudflare Access login.
+6. **Deploy**: merge `develop` into `main` and push. Then open `https://nik-kh.pages.dev` in a private window: it must ask for the Cloudflare Access login.

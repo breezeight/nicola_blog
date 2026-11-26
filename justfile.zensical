@@ -45,7 +45,7 @@ check-strict:
 
 # Manual deploy to Cloudflare Pages (normally GitHub Actions deploys from main).
 # Requires `npx wrangler login` once. Deploys as a preview unless branch=main.
-deploy branch="preview" project="nicola-blog":
+deploy branch="preview" project="nik-kh":
     uv run zensical build --clean --strict
     npx --yes wrangler@4 pages deploy site --project-name={{project}} --branch={{branch}}
 
