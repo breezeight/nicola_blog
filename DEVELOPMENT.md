@@ -147,11 +147,27 @@ Do these steps in order. The site must be protected before the first deployment.
    npx wrangler pages project create nik-kh --production-branch main
    ```
    Production URL: `https://nik-kh.pages.dev`.
-2. **Set up Cloudflare Zero Trust**: in the dashboard open *Zero Trust*, pick a team name and the Free plan (up to 50 users).
-3. **Protect the site with Access**: *Zero Trust → Access → Applications → Add an application → Self-hosted*.
-   - Destinations: `nik-kh.pages.dev` and `*.nik-kh.pages.dev` (the wildcard covers preview deployments).
-   - Policy: action *Allow*, include *Emails* with the addresses allowed to read the site.
-   - Login method: *One-time PIN* (code by email) works out of the box; GitHub or Google can be added under *Settings → Authentication*.
+2. **Set up Cloudflare Zero Trust**: in the dashboard open *Zero Trust*, pick a team name (ours: `brisotto`, login page `brisotto.cloudflareaccess.com`) and the Free plan (up to 50 users). Then add the *One-time PIN* login method (code by email): *Zero Trust → Integrations → Identity providers → Add new identity provider → One-time PIN*. New organizations do not have it by default.
+3. **Protect the site with Access**, using the [`cf` CLI](https://developers.cloudflare.com/cf/). The dashboard form for self-hosted applications only lists domains in your own zones, so it cannot select `*.pages.dev`; the API accepts it.
+   ```bash
+   npx cf auth login                               # separate login from wrangler
+   npx cf zero-trust identity-providers list       # note the id of the "onetimepin" provider
+
+   # Reusable Allow policy: who may read the site
+   npx cf zero-trust access policies create --body '{
+     "name": "nik-kh: allow Nicola", "decision": "allow", "session_duration": "24h",
+     "include": [{"email": {"email": "nicola@brisotto.me"}}]}'
+
+   # One application for production and every preview deployment
+   npx cf zero-trust access applications create --body '{
+     "name": "nik-kh", "type": "self_hosted", "domain": "nik-kh.pages.dev",
+     "destinations": [{"type": "public", "uri": "nik-kh.pages.dev"},
+                      {"type": "public", "uri": "*.nik-kh.pages.dev"}],
+     "allowed_idps": ["<one-time-pin id>"], "auto_redirect_to_identity": true,
+     "session_duration": "24h", "policies": [{"id": "<policy id>", "precedence": 1}]}'
+   ```
+   To allow more people, add `{"email": {"email": "..."}}` entries to the policy with `npx cf zero-trust access policies update`.
+   Check: `curl -sI https://nik-kh.pages.dev` must answer `302` to `brisotto.cloudflareaccess.com`.
 4. **Create an API token**: *My Profile → API Tokens → Create Token → Custom token*, permission *Account → Cloudflare Pages → Edit*.
 5. **Add GitHub secrets and variables** (*Settings → Secrets and variables → Actions*):
    - Secret `CLOUDFLARE_API_TOKEN`: the token from step 4.
