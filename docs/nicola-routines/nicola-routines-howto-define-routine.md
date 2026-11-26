@@ -9,7 +9,7 @@ type: howto
 # How to Define a Routine
 
 > [!NOTE]
-> For context and rationale behind routine definition, see {{ link_with_abstract("nicola-routines-principles.md") }}. For system architecture, see {{ link_with_abstract("nicola-routines-architecture.md") }}.
+> For context and rationale behind routine definition, see [Nicola's Routines Core Principles](nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals.. For system architecture, see [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles..
 
 ## 📘 Purpose & Scope
 
@@ -17,10 +17,10 @@ This guide provides step-by-step instructions for defining a new routine in Nico
 
 ## Prerequisites
 
-- Understanding of persona model (see {{ link_with_abstract("nicola-routines-personas.md") }})
-- Understanding of entry point system (see {{ link_with_abstract("nicola-routines-entry-points.md") }})
-- Access to routine reference document (see {{ link_with_abstract("nicola-routines.md") }})
-- Understanding of core principles (see {{ link_with_abstract("nicola-routines-principles.md") }})
+- Understanding of persona model (see [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona.)
+- Understanding of entry point system (see [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines.)
+- Access to routine reference document (see [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes.)
+- Understanding of core principles (see [Nicola's Routines Core Principles](nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals.)
 
 ## Step 1: Identify Routine Need
 
@@ -45,7 +45,7 @@ This guide provides step-by-step instructions for defining a new routine in Nico
 **Action**: Determine which persona(s) this routine belongs to.
 
 **Process**:
-1. Review persona definitions in {{ link_with_abstract("nicola-routines-personas.md") }}
+1. Review persona definitions in [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona.
 2. Identify which persona's context this routine fits
 3. Consider if routine belongs to multiple personas
 4. Assign primary persona and any secondary personas
@@ -68,9 +68,9 @@ This guide provides step-by-step instructions for defining a new routine in Nico
 **Action**: Identify what triggers this routine.
 
 **Process**:
-1. Review entry point catalog in {{ link_with_abstract("nicola-routines-entry-points.md") }}
+1. Review entry point catalog in [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines.
 2. Identify existing entry points that could trigger this routine
-3. If no suitable entry point exists, plan to create new one (see {{ link_with_abstract("nicola-routines-howto-configure-entry-point.md") }})
+3. If no suitable entry point exists, plan to create new one (see [How to Configure Entry Points](nicola-routines-howto-configure-entry-point.md): Step-by-step guide for configuring entry points in Nicola's routines system, including notification system setup, trigger configuration, and integration with external systems.)
 4. Assign entry point(s) to routine
 
 **Entry Point Types**:
@@ -222,7 +222,7 @@ Add to CEO Persona Daily Routines table:
 
 **Process**:
 1. Check if entry point already exists
-2. If new entry point needed, create it (see {{ link_with_abstract("nicola-routines-howto-configure-entry-point.md") }})
+2. If new entry point needed, create it (see [How to Configure Entry Points](nicola-routines-howto-configure-entry-point.md): Step-by-step guide for configuring entry points in Nicola's routines system, including notification system setup, trigger configuration, and integration with external systems.)
 3. Update entry point catalog with routine reference
 4. Update entry point by persona section
 
@@ -295,17 +295,17 @@ Add to CEO Persona Daily Routines table:
 
 After defining a routine:
 
-1. **Review Routine**: Schedule regular review (see {{ link_with_abstract("nicola-routines-howto-review-routines.md") }})
+1. **Review Routine**: Schedule regular review (see [How to Review and Update Routines](nicola-routines-howto-review-routines.md): Step-by-step guide for reviewing and updating routines in Nicola's routines system, including effectiveness evaluation, usage analysis, and change management.)
 2. **Monitor Execution**: Track routine execution and outcomes
 3. **Gather Feedback**: Collect feedback on routine effectiveness
 4. **Iterate**: Improve routine based on experience
 
 ## References
 
-- {{ link_with_abstract("nicola-routines-principles.md") }} - Core principles for routine definition
-- {{ link_with_abstract("nicola-routines-architecture.md") }} - System architecture
-- {{ link_with_abstract("nicola-routines.md") }} - Routine reference document
-- {{ link_with_abstract("nicola-routines-personas.md") }} - Persona definitions
-- {{ link_with_abstract("nicola-routines-entry-points.md") }} - Entry point catalog
-- {{ link_with_abstract("nicola-routines-howto-configure-entry-point.md") }} - How to configure entry points
-- {{ link_with_abstract("nicola-routines-howto-review-routines.md") }} - How to review routines
+- [Nicola's Routines Core Principles](nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals. - Core principles for routine definition
+- [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. - System architecture
+- [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. - Routine reference document
+- [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona. - Persona definitions
+- [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. - Entry point catalog
+- [How to Configure Entry Points](nicola-routines-howto-configure-entry-point.md): Step-by-step guide for configuring entry points in Nicola's routines system, including notification system setup, trigger configuration, and integration with external systems. - How to configure entry points
+- [How to Review and Update Routines](nicola-routines-howto-review-routines.md): Step-by-step guide for reviewing and updating routines in Nicola's routines system, including effectiveness evaluation, usage analysis, and change management. - How to review routines

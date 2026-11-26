@@ -212,7 +212,7 @@ Some entry points have conditional logic that determines when they trigger:
 
 ## References
 
-- {{ link_with_abstract("nicola-routines-architecture.md") }} - System architecture including entry point system
-- {{ link_with_abstract("nicola-routines.md") }} - Routines organized by entry point
-- {{ link_with_abstract("nicola-routines-personas.md") }} - Personas organized by entry point
-- {{ link_with_abstract("nicola-routines-howto-configure-entry-point.md") }} - How to configure entry points
+- [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. - System architecture including entry point system
+- [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. - Routines organized by entry point
+- [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona. - Personas organized by entry point
+- [How to Configure Entry Points](nicola-routines-howto-configure-entry-point.md): Step-by-step guide for configuring entry points in Nicola's routines system, including notification system setup, trigger configuration, and integration with external systems. - How to configure entry points

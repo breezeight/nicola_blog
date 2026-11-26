@@ -351,7 +351,7 @@ The roadmap includes better **protocol-level support** for secure authentication
 
 ## Related Documentation
 
-- {{ link_with_abstract("local-ai/local-ai.md") }} - Guide to running AI models locally with Ollama, LocalAI, and other solutions. MCP can be used to connect to local models for privacy and cost control.
+- [local-ai/local-ai.md](local-ai/local-ai.md) - Guide to running AI models locally with Ollama, LocalAI, and other solutions. MCP can be used to connect to local models for privacy and cost control.
 
 ## Next Step
 

@@ -27,9 +27,9 @@ This document provides a complete reference of all personas in Nicola's routines
 - Task notifications from company projects
 - Manual activation for strategic work
 
-**Routines**: See {{ link_with_abstract("nicola-routines.md") }} for CEO persona routines
+**Routines**: See [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. for CEO persona routines
 
-**Entry Points**: See {{ link_with_abstract("nicola-routines-entry-points.md") }} for CEO persona entry points
+**Entry Points**: See [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. for CEO persona entry points
 
 **Priority Level**: High
 
@@ -67,9 +67,9 @@ This document provides a complete reference of all personas in Nicola's routines
 - Calendar events indicating project meetings
 - Manual activation for project work
 
-**Routines**: See {{ link_with_abstract("nicola-routines.md") }} for PM persona routines
+**Routines**: See [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. for PM persona routines
 
-**Entry Points**: See {{ link_with_abstract("nicola-routines-entry-points.md") }} for PM persona entry points
+**Entry Points**: See [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. for PM persona entry points
 
 **Priority Level**: Medium
 
@@ -109,9 +109,9 @@ This document provides a complete reference of all personas in Nicola's routines
 - Time-based triggers for personal routines
 - Manual activation for personal activities
 
-**Routines**: See {{ link_with_abstract("nicola-routines.md") }} for Personal persona routines
+**Routines**: See [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. for Personal persona routines
 
-**Entry Points**: See {{ link_with_abstract("nicola-routines-entry-points.md") }} for Personal persona entry points
+**Entry Points**: See [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. for Personal persona entry points
 
 **Priority Level**: Medium
 
@@ -149,9 +149,9 @@ This document provides a complete reference of all personas in Nicola's routines
 - Manual activation for practice
 - Time-based triggers for regular practice
 
-**Routines**: See {{ link_with_abstract("nicola-routines.md") }} for Yoga Teacher persona routines
+**Routines**: See [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. for Yoga Teacher persona routines
 
-**Entry Points**: See {{ link_with_abstract("nicola-routines-entry-points.md") }} for Yoga Teacher persona entry points
+**Entry Points**: See [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. for Yoga Teacher persona entry points
 
 **Priority Level**: Low
 
@@ -235,8 +235,8 @@ When multiple personas could activate routines:
 
 ## References
 
-- {{ link_with_abstract("nicola-routines-architecture.md") }} - System architecture including persona model
-- {{ link_with_abstract("nicola-routines.md") }} - Routines organized by persona
-- {{ link_with_abstract("nicola-routines-entry-points.md") }} - Entry points organized by persona
-- {{ link_with_abstract("nicola-routines-principles.md") }} - Persona-specific principles
-- {{ link_with_abstract("nicola-routines-howto-activate-persona.md") }} - How to activate personas
+- [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. - System architecture including persona model
+- [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. - Routines organized by persona
+- [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. - Entry points organized by persona
+- [Nicola's Routines Core Principles](nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals. - Persona-specific principles
+- [How to Activate a Persona](nicola-routines-howto-activate-persona.md): Step-by-step guide for activating personas in Nicola's routines system, including automatic and manual activation, context switching, and multi-persona handling. - How to activate personas

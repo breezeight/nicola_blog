@@ -293,10 +293,10 @@ Processes notifications from external systems:
 
 ## References
 
-- {{ link_with_abstract("nicola-routines-principles.md") }} - Core principles that guide the system
-- {{ link_with_abstract("nicola-routines.md") }} - Reference document with all routines
-- {{ link_with_abstract("nicola-routines-personas.md") }} - Detailed persona definitions
-- {{ link_with_abstract("nicola-routines-entry-points.md") }} - Entry point catalog
-- {{ link_with_abstract("nicola-routines-howto-define-routine.md") }} - How to define new routines
-- {{ link_with_abstract("nicola-routines-howto-activate-persona.md") }} - How to activate personas
-- {{ link_with_abstract("nicola-routines-howto-configure-entry-point.md") }} - How to configure entry points
+- [Nicola's Routines Core Principles](nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals. - Core principles that guide the system
+- [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. - Reference document with all routines
+- [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona. - Detailed persona definitions
+- [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. - Entry point catalog
+- [How to Define a Routine](nicola-routines-howto-define-routine.md): Step-by-step guide for defining new routines in Nicola's routines system, including persona assignment, entry point configuration, and metadata requirements. - How to define new routines
+- [How to Activate a Persona](nicola-routines-howto-activate-persona.md): Step-by-step guide for activating personas in Nicola's routines system, including automatic and manual activation, context switching, and multi-persona handling. - How to activate personas
+- [How to Configure Entry Points](nicola-routines-howto-configure-entry-point.md): Step-by-step guide for configuring entry points in Nicola's routines system, including notification system setup, trigger configuration, and integration with external systems. - How to configure entry points

@@ -11,7 +11,7 @@ type: explanation
 
 ## 📘 Purpose & Scope
 
-This page explains **Fairphone** as a hardware maker and what “buying a Fairphone” usually means in practice: modularity, repair, and which operating systems you might run. It stays conceptual rather than procedural. For how **Murena**, the **e Foundation**, **/e/OS**, and **Fairphone** fit together (warranty, pricing, preinstalls), see {{ link_with_abstract("fairphone-murena-eos-explanation.md") }}.
+This page explains **Fairphone** as a hardware maker and what “buying a Fairphone” usually means in practice: modularity, repair, and which operating systems you might run. It stays conceptual rather than procedural. For how **Murena**, the **e Foundation**, **/e/OS**, and **Fairphone** fit together (warranty, pricing, preinstalls), see [Fairphone, Murena, and /e/OS Explanation](fairphone-murena-eos-explanation.md): Clarifies /e/OS (open OS), Murena (commercial distribution and services), the e Foundation (nonprofit host of the project), and Fairphone (hardware)—including partnership, US sales, warranty, and community vs preinstalled builds..
 
 ## What is Fairphone?
 
@@ -37,6 +37,6 @@ For a concise comparison of **Murena vs self-installed /e/OS** on Fairphone hard
 
 ## References
 
-- {{ link_with_abstract("fairphone-murena-eos-explanation.md") }}
+- [Fairphone, Murena, and /e/OS Explanation](fairphone-murena-eos-explanation.md): Clarifies /e/OS (open OS), Murena (commercial distribution and services), the e Foundation (nonprofit host of the project), and Fairphone (hardware)—including partnership, US sales, warranty, and community vs preinstalled builds.
 - [Fairphone — official site](https://fairphone.com/)
 - [Fairphone Support](https://support.fairphone.com/)

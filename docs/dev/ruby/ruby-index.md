@@ -16,7 +16,7 @@ This reference provides a structured overview of Ruby's core concepts, designed 
 
 - [Official Ruby Documentation](http://www.ruby-doc.org/)
 - [Ruby Forum](https://www.ruby-forum.com/)
-- {{ link_with_abstract("ruby_object_model.md") }}
+- [MRI Ruby internals and the Ruby Object Model](ruby_object_model.md)
 
 ---
 
@@ -168,7 +168,7 @@ Ruby is a pure object-oriented language where everything is an object, including
 - [Go's OOP](go-index.md#8-object-oriented-programming)
 - [TypeScript's OOP](typescript.md#8-object-oriented-programming)
 
-**Learn more:** {{ link_with_abstract("ruby_object_model.md") }}
+**Learn more:** [MRI Ruby internals and the Ruby Object Model](ruby_object_model.md)
 
 ---
 
@@ -320,7 +320,7 @@ Ruby has excellent testing support through frameworks like RSpec, Minitest, and 
 - [Go's testing](go-index.md#16-testing-and-debugging)
 - [TypeScript's testing](typescript.md#16-testing-and-debugging)
 
-**Learn more:** {{ link_with_abstract("ruby_rspec.md") }}
+**Learn more:** [Ruby: RSpec](ruby_rspec.md)
 
 ---
 
@@ -358,17 +358,17 @@ Ruby's extensive metaprogramming capabilities allow for dynamic code modificatio
 ### Mixins and Modules
 Ruby's module system provides a powerful way to share code through mixins, avoiding the complexity of multiple inheritance.
 
-**Learn more:** {{ link_with_abstract("ruby_object_model.md") }}
+**Learn more:** [MRI Ruby internals and the Ruby Object Model](ruby_object_model.md)
 
 ### RubyGems
 Ruby's package management system provides a simple way to distribute and install Ruby libraries and applications.
 
-**Learn more:** {{ link_with_abstract("ruby_bundler_gem_rubygems.md") }}
+**Learn more:** [Ruby: Bundler, gem and Rubygems](ruby_bundler_gem_rubygems.md)
 
 ### Rails Framework
 Ruby on Rails is a popular web application framework that demonstrates Ruby's capabilities for rapid application development.
 
-**Learn more:** {{ link_with_abstract("ruby_rails.md") }}
+**Learn more:** [Ruby: Ruby On Rails](ruby_rails.md)
 
 ---
 
@@ -376,4 +376,4 @@ Ruby on Rails is a popular web application framework that demonstrates Ruby's ca
 
 - [Official Ruby Documentation](http://www.ruby-doc.org/)
 - [Ruby Learning Resources](ruby_links_collection.md)
-- {{ link_with_abstract("languages-concept-comparison.md") }}
+- [languages-concept-comparison.md](languages-concept-comparison.md)

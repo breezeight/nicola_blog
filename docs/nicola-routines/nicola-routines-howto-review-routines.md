@@ -9,7 +9,7 @@ type: howto
 # How to Review and Update Routines
 
 > [!NOTE]
-> For routine review rules and schedules, see {{ link_with_abstract("nicola-routines-architecture.md") }}. For core principles, see {{ link_with_abstract("nicola-routines-principles.md") }}.
+> For routine review rules and schedules, see [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles.. For core principles, see [Nicola's Routines Core Principles](nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals..
 
 ## 📘 Purpose & Scope
 
@@ -17,8 +17,8 @@ This guide provides step-by-step instructions for reviewing and updating routine
 
 ## Prerequisites
 
-- Understanding of routine system (see {{ link_with_abstract("nicola-routines.md") }})
-- Understanding of core principles (see {{ link_with_abstract("nicola-routines-principles.md") }})
+- Understanding of routine system (see [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes.)
+- Understanding of core principles (see [Nicola's Routines Core Principles](nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals.)
 - Access to routine execution data and history
 
 ## Review Schedule
@@ -381,8 +381,8 @@ This guide provides step-by-step instructions for reviewing and updating routine
 
 ## References
 
-- {{ link_with_abstract("nicola-routines.md") }} - Routine reference document
-- {{ link_with_abstract("nicola-routines-principles.md") }} - Core principles for routine review
-- {{ link_with_abstract("nicola-routines-architecture.md") }} - System architecture including review process
-- {{ link_with_abstract("nicola-routines-howto-define-routine.md") }} - How to define routines
-- {{ link_with_abstract("nicola-routines-entry-points.md") }} - Entry point catalog
+- [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. - Routine reference document
+- [Nicola's Routines Core Principles](nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals. - Core principles for routine review
+- [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. - System architecture including review process
+- [How to Define a Routine](nicola-routines-howto-define-routine.md): Step-by-step guide for defining new routines in Nicola's routines system, including persona assignment, entry point configuration, and metadata requirements. - How to define routines
+- [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. - Entry point catalog

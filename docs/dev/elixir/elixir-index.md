@@ -376,4 +376,4 @@ Mix is Elixir's build tool that handles compilation, testing, and dependency man
 
 - [Official Elixir Documentation](https://elixir-lang.org/docs.html)
 - [Elixir Learning Resources](elixir.md)
-- {{ link_with_abstract("languages-concept-comparison.md") }}
+- [languages-concept-comparison.md](languages-concept-comparison.md)
