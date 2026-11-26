@@ -45,7 +45,7 @@
 - Demonstrate **error messages** with explanations
 
 #### Cross-References
-- Use `{{ link_with_abstract("filename.md") }}` macro for internal links
+- Use relative Markdown links for internal pages (`[Title](filename.md): abstract`)
 - Include **anchor links** for direct navigation within the document
 - Reference related sections with `⏭️ [see here to understand how it works](#bookmark=...)`
 

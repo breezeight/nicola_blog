@@ -1,5 +1,6 @@
-# MkDocs Commands
-# Commands for building and serving the documentation site
+# Zensical Commands
+# Commands for building and serving the documentation site.
+# Zensical reads mkdocs.yml directly.
 
 # Install dependencies
 install:
@@ -7,20 +8,15 @@ install:
 
 # Start development server
 serve port="8000":
-    uv run mkdocs serve --dev-addr=127.0.0.1:{{port}}
+    uv run zensical serve --dev-addr=127.0.0.1:{{port}}
 
 # Start development server on all interfaces (for external access)
 serve-external:
-    uv run mkdocs serve --dev-addr=0.0.0.0:8001
+    uv run zensical serve --dev-addr=0.0.0.0:8001
 
-# Build the documentation site
+# Build the documentation site (clean cache)
 build:
-    uv run mkdocs build --clean
-
-# Build and serve (useful for testing production build)
-build-serve:
-    uv run mkdocs build --clean
-    uv run mkdocs serve --dev-addr=127.0.0.1:8001
+    uv run zensical build --clean
 
 # Update dependencies to latest versions
 update:
@@ -32,26 +28,22 @@ deps:
 
 # Clean build artifacts
 clean:
-    rm -rf site/
+    rm -rf site/ .cache/
 
-# Format and validate configuration (non-strict)
+# Build and report warnings (broken links, missing anchors)
 check:
-    uv run mkdocs build
+    uv run zensical build --clean
 
-# Strict validation (shows all warnings and errors)
+# Strict validation (aborts the build on warnings)
 check-strict:
-    uv run mkdocs build --strict
+    uv run zensical build --clean --strict
 
-# Deploy to GitHub Pages (if configured)
+# Deploy to GitHub Pages: build, then push site/ to the gh-pages branch
 deploy:
-    uv run mkdocs gh-deploy
+    uv run zensical build --clean
+    uv run --with ghp-import ghp-import --no-jekyll --push --force site
 
-# Run macros to generate dynamic content
-macros:
-    uv run python main.py
-
-# Full development workflow: install, generate macros, and serve
+# Full development workflow: install and serve
 dev port="8000":
     uv sync
-    uv run python main.py
-    uv run mkdocs serve --dev-addr=127.0.0.1:{{port}}
+    uv run zensical serve --dev-addr=127.0.0.1:{{port}}

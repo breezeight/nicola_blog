@@ -25,3 +25,6 @@ venv.bak/
 # Poetry (legacy)
 poetry.lock
 .playwright-mcp
+
+# Zensical build cache
+.cache/

@@ -358,10 +358,10 @@ This configuration makes both the navigation sidebar and table of contents more 
 ## Development Workflow
 
 1. **Make changes** to CSS/JS files in `docs/`
-2. **Test locally** with `uv run mkdocs serve --dev-addr=127.0.0.1:8001`
+2. **Test locally** with `just serve`
 3. **Check browser console** for any JavaScript errors
 4. **Validate** changes work across different pages
-5. **Build** with `uv run mkdocs build` to check for errors
+5. **Build** with `just build` to check for errors
 6. **Deploy** when ready
 
 ## Troubleshooting

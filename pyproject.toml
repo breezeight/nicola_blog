@@ -5,12 +5,9 @@ description = "Nicola's personal blog and documentation site"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "mkdocs>=1.6.1,<2.0",
-    "mkdocs-material>=9.6.20,<10.0",
     "jinja2>=3.1.4",
-    "mkdocs-macros-plugin>=1.0.5,<2.0",
-    "mkdocs-github-admonitions-plugin>=0.0.3,<1.0",
     "ad-docs @ file:///Users/nicolabrisotto/SRC/ADDICTIVE/ad-internal-docs-cli",
+    "zensical>=0.1.3",
 ]
 
 [build-system]
