@@ -11,7 +11,7 @@ This documentation site is built with [Zensical](https://zensical.org/), the suc
 ## Setup
 
 ```bash
-just install   # same as: uv sync
+just install   # uv sync + enable the git hooks
 ```
 
 ## Running the Site
@@ -32,7 +32,14 @@ just check-strict   # build with --strict (aborts on warnings)
 just clean          # remove site/ and .cache/
 ```
 
-Run `just check` after moving or renaming pages: it reports every link whose target page or anchor no longer exists. `just check-strict` fails on any warning, which the site can't pass yet because of older broken links.
+Run `just check` after moving or renaming pages: it reports every link whose target page or anchor no longer exists. `just check-strict` fails on any warning.
+
+## Automatic Checks
+
+The same strict build (`zensical build --clean --strict`) runs in two places, so broken links and missing anchors can't land:
+
+- **Pre-commit hook** — [.githooks/pre-commit](.githooks/pre-commit) runs when a commit touches `docs/`, `mkdocs.yml` or `main.py`, and blocks the commit if the build has warnings. Enable it once per clone with `just install-hooks` (`just install` does it too); it sets `git config core.hooksPath .githooks`. Skip it for a single commit with `git commit --no-verify`.
+- **GitHub Actions** — [.github/workflows/docs-check.yml](.github/workflows/docs-check.yml) runs on pushes to `develop` and `main`, on every pull request, and on demand. Because `pyproject.toml` contains a local-path dependency (`ad-docs`) that only exists on the author's machine, CI doesn't run `uv sync`: it installs only Zensical, at the version pinned in `uv.lock`.
 
 ## Available Just Commands
 
@@ -40,7 +47,8 @@ The root `justfile` imports `justfile.zensical`, which holds the site recipes. R
 
 | Command | What it does |
 |---------|--------------|
-| `just install` | Install Python dependencies (`uv sync`) |
+| `just install` | Install Python dependencies (`uv sync`) and enable the git hooks |
+| `just install-hooks` | Enable the git hooks only |
 | `just serve [port]` | Start the development server |
 | `just serve-external` | Start the server on all interfaces |
 | `just build` | Build the site into `site/` |

@@ -2,9 +2,14 @@
 # Commands for building and serving the documentation site.
 # Zensical reads mkdocs.yml directly.
 
-# Install dependencies
+# Install dependencies and enable the git hooks
 install:
     uv sync
+    git config core.hooksPath .githooks
+
+# Enable the git hooks in .githooks/ (pre-commit: strict site build)
+install-hooks:
+    git config core.hooksPath .githooks
 
 # Start development server
 serve port="8000":

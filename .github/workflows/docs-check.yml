@@ -1,0 +1,27 @@
+name: Docs check
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      # pyproject.toml has a local-path dependency (ad-docs) that only exists on
+      # the author's machine, so install just Zensical at the version in uv.lock.
+      - name: Read Zensical version from uv.lock
+        id: zensical
+        run: |
+          version=$(awk '/^name = "zensical"$/ {getline; gsub(/version = |"/, ""); print; exit}' uv.lock)
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Build site (strict, fails on broken links)
+        run: uv run --no-project --python 3.12 --with "zensical==${{ steps.zensical.outputs.version }}" zensical build --clean --strict

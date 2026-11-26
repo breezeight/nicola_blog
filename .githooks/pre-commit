@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Pre-commit hook: build the site in strict mode when docs or site config change.
+# Fails the commit on broken links or missing anchors.
+# Enable with: just install-hooks   (sets core.hooksPath to .githooks)
+# Skip once with: git commit --no-verify
+set -euo pipefail
+
+if ! git diff --cached --name-only --diff-filter=ACMRD | grep -qE '^(docs/|mkdocs\.yml$|main\.py$)'; then
+  exit 0
+fi
+
+log=$(mktemp)
+trap 'rm -f "$log"' EXIT
+echo "pre-commit: checking site build (zensical --strict)..."
+if ! uv run zensical build --clean --strict > "$log" 2>&1; then
+  # Show the warnings, not the Python traceback that follows "Aborted because --strict".
+  sed '/^Traceback/,$d' "$log" | grep -v -e '^\[macros' -e '^Build started' | tail -60
+  echo
+  echo "pre-commit: build failed. Fix the warnings above, or commit with --no-verify to skip."
+  exit 1
+fi
+echo "pre-commit: site build OK"
