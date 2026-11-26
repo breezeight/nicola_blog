@@ -57,7 +57,7 @@ The root `justfile` imports `justfile.zensical`, which holds the site recipes. R
 | `just deps` | Show installed Python packages |
 | `just clean` | Remove build artifacts |
 | `just dev [port]` | Install and serve |
-| `just deploy` | Build and push `site/` to the `gh-pages` branch |
+| `just deploy [branch]` | Manual deploy to Cloudflare Pages (preview by default; `main` = production) |
 
 ## Configuration
 
@@ -131,8 +131,47 @@ Follow the content guidelines listed in [CONTENT.md](CONTENT.md). In short:
 
 ## Deployment
 
-```bash
-just deploy
-```
+The site is deployed to [Cloudflare Pages](https://developers.cloudflare.com/pages/) and protected with [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/applications/), so only allowed people can open it.
 
-Zensical has no `gh-deploy` command. The recipe builds the site and pushes `site/` to the `gh-pages` branch with [ghp-import](https://github.com/c-w/ghp-import), fetched on demand by `uv run --with`. The repository has no `gh-pages` branch yet, so the first run creates it; GitHub Pages must then be enabled for that branch.
+- **Production branch:** `main`. GitHub Actions builds the site and, on every push to `main`, uploads `site/` with `wrangler pages deploy` (job `deploy` in [.github/workflows/docs-check.yml](.github/workflows/docs-check.yml)).
+- **Safety switch:** the deploy job runs only when the repository variable `CLOUDFLARE_PAGES_DEPLOY` is `true`. Turn it on only after Access protects the domain, so the site is never published unprotected.
+- **Manual deploy:** `just deploy` publishes a preview (`just deploy main` publishes production). It needs `npx wrangler login` once.
+
+### One-time setup
+
+Do these steps in order. The site must be protected before the first deployment.
+
+1. **Create the Pages project** (direct upload, no Git integration: GitHub Actions does the build):
+   ```bash
+   npx wrangler login
+   npx wrangler pages project create nik-kh --production-branch main
+   ```
+   Production URL: `https://nik-kh.pages.dev`.
+2. **Set up Cloudflare Zero Trust**: in the dashboard open *Zero Trust*, pick a team name (ours: `brisotto`, login page `brisotto.cloudflareaccess.com`) and the Free plan (up to 50 users). Then add the *One-time PIN* login method (code by email): *Zero Trust → Integrations → Identity providers → Add new identity provider → One-time PIN*. New organizations do not have it by default.
+3. **Protect the site with Access**, using the [`cf` CLI](https://developers.cloudflare.com/cf/). The dashboard form for self-hosted applications only lists domains in your own zones, so it cannot select `*.pages.dev`; the API accepts it.
+   ```bash
+   npx cf auth login                               # separate login from wrangler
+   npx cf zero-trust identity-providers list       # note the id of the "onetimepin" provider
+
+   # Reusable Allow policy: who may read the site
+   npx cf zero-trust access policies create --body '{
+     "name": "nik-kh: allow Nicola", "decision": "allow", "session_duration": "24h",
+     "include": [{"email": {"email": "nicola@brisotto.me"}}]}'
+
+   # One application for production and every preview deployment
+   npx cf zero-trust access applications create --body '{
+     "name": "nik-kh", "type": "self_hosted", "domain": "nik-kh.pages.dev",
+     "destinations": [{"type": "public", "uri": "nik-kh.pages.dev"},
+                      {"type": "public", "uri": "*.nik-kh.pages.dev"}],
+     "allowed_idps": ["<one-time-pin id>"], "auto_redirect_to_identity": true,
+     "session_duration": "24h", "policies": [{"id": "<policy id>", "precedence": 1}]}'
+   ```
+   To allow more people, add `{"email": {"email": "..."}}` entries to the policy with `npx cf zero-trust access policies update`.
+   Check: `curl -sI https://nik-kh.pages.dev` must answer `302` to `brisotto.cloudflareaccess.com`.
+4. **Create an API token**: *My Profile → API Tokens → Create Token → Custom token*, permission *Account → Cloudflare Pages → Edit*.
+5. **Add GitHub secrets and variables** (*Settings → Secrets and variables → Actions*):
+   - Secret `CLOUDFLARE_API_TOKEN`: the token from step 4.
+   - Secret `CLOUDFLARE_ACCOUNT_ID`: shown in the dashboard under *Workers & Pages*.
+   - Variable `CLOUDFLARE_PAGES_PROJECT`: optional, defaults to `nik-kh`.
+   - Variable `CLOUDFLARE_PAGES_DEPLOY` = `true`: set this last, after checking step 3.
+6. **Deploy**: merge `develop` into `main` and push. Then open `https://nik-kh.pages.dev` in a private window: it must ask for the Cloudflare Access login.

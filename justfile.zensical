@@ -43,10 +43,11 @@ check:
 check-strict:
     uv run zensical build --clean --strict
 
-# Deploy to GitHub Pages: build, then push site/ to the gh-pages branch
-deploy:
-    uv run zensical build --clean
-    uv run --with ghp-import ghp-import --no-jekyll --push --force site
+# Manual deploy to Cloudflare Pages (normally GitHub Actions deploys from main).
+# Requires `npx wrangler login` once. Deploys as a preview unless branch=main.
+deploy branch="preview" project="nik-kh":
+    uv run zensical build --clean --strict
+    npx --yes wrangler@4 pages deploy site --project-name={{project}} --branch={{branch}}
 
 # Full development workflow: install and serve
 dev port="8000":

@@ -1,4 +1,4 @@
-name: Docs check
+name: Docs check and deploy
 
 on:
   push:
@@ -25,3 +25,35 @@ jobs:
 
       - name: Build site (strict, fails on broken links)
         run: uv run --no-project --python 3.12 --with "zensical==${{ steps.zensical.outputs.version }}" zensical build --clean --strict
+
+      - name: Upload site
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: site/
+          retention-days: 7
+
+  # Deploys only from main, and only after the repository variable
+  # CLOUDFLARE_PAGES_DEPLOY is set to "true". Set it once Cloudflare Access
+  # protects the Pages domain, so the site is never published unprotected.
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.CLOUDFLARE_PAGES_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: site
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy site --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT || 'nik-kh' }} --branch=main
