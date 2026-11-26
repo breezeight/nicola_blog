@@ -28,3 +28,6 @@ poetry.lock
 
 # Zensical build cache
 .cache/
+
+# Wrangler local state
+.wrangler/
