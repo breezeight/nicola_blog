@@ -14,11 +14,11 @@ This document provides side-by-side comparisons of key programming concepts acro
 
 ## References
 
-- [python-language-index.md](python-language-index.md)
-- [typescript.md](typescript.md)
-- [go-index.md](go-index.md)
-- [ruby-index.md](ruby-index.md)
-- [elixir-index.md](elixir-index.md)
+- [python-language-index.md](python/python-index.md)
+- [typescript.md](javascript/typescript-index.md)
+- [go-index.md](go/go-index.md)
+- [ruby-index.md](ruby/ruby-index.md)
+- [elixir-index.md](elixir/elixir-index.md)
 
 ---
 
@@ -350,8 +350,8 @@ This document provides side-by-side comparisons of key programming concepts acro
 
 ## References
 
-- [python-language-index.md](python-language-index.md)
-- [typescript.md](typescript.md)
-- [go-index.md](go-index.md)
-- [ruby-index.md](ruby-index.md)
-- [elixir-index.md](elixir-index.md)
+- [python-language-index.md](python/python-index.md)
+- [typescript.md](javascript/typescript-index.md)
+- [go-index.md](go/go-index.md)
+- [ruby-index.md](ruby/ruby-index.md)
+- [elixir-index.md](elixir/elixir-index.md)

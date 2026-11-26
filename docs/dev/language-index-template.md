@@ -29,9 +29,9 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - Characteristic 3
 
 **Compare with:**
-- [Python's philosophy](python-language-index.md#1-overview--philosophy)
-- [Go's philosophy](go-index.md#1-overview--philosophy)
-- [TypeScript's philosophy](typescript.md#1-overview--philosophy)
+- [Python's philosophy](python-language-index.md#1-overview-philosophy)
+- [Go's philosophy](go-index.md#1-overview-philosophy)
+- [TypeScript's philosophy](typescript.md#1-overview-philosophy)
 
 **Learn more:** [[language]-overview.md]([language]-overview.md)
 

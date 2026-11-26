@@ -121,7 +121,7 @@ TypeScript also provides:
 The heart of TypeScript is its **type system**.
 Understanding it is key to using TypeScript effectively — not just writing `.ts` files.
 
-➡️ [Next: How the Type System Works →](#bookmark=id.7h89pm2d6b35)
+➡️ Next: How the Type System Works →
 
 ## Typescript compilation
 

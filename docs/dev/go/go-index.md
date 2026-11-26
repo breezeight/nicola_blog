@@ -32,9 +32,9 @@ Go is a statically typed, compiled programming language designed by Google for b
 - Simple syntax with minimal keywords
 
 **Compare with:**
-- [Python's philosophy](python/python-index.md#1-overview--philosophy)
-- [TypeScript's philosophy](javascript/typescript-index.md#1-overview--philosophy)
-- [Ruby's philosophy](ruby/ruby-index.md#1-overview--philosophy)
+- [Python's philosophy](../python/python-index.md#1-overview-philosophy)
+- [TypeScript's philosophy](../javascript/typescript-index.md#1-overview-philosophy)
+- [Ruby's philosophy](../ruby/ruby-index.md#1-overview-philosophy)
 
 **Learn more:** [Go Learning Roadmap](https://roadmap.sh/golang)
 
@@ -51,9 +51,9 @@ Go uses static typing with type inference, providing compile-time safety while r
 - Built-in types: int, float64, string, bool, complex64/128
 
 **Compare with:**
-- [Python's type system](python-language-index.md#2-type-systems)
-- [TypeScript's type system](typescript.md#2-type-systems)
-- [Ruby's type system](ruby-index.md#2-type-systems)
+- [Python's type system](../python/python-index.md#2-type-systems)
+- [TypeScript's type system](../javascript/typescript-index.md#2-type-systems)
+- [Ruby's type system](../ruby/ruby-index.md#2-type-systems)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -71,9 +71,9 @@ Go treats functions as first-class citizens with support for closures, anonymous
 - Methods with receiver syntax
 
 **Compare with:**
-- [Python's functions](python-language-index.md#3-functions-and-closures)
-- [TypeScript's functions](typescript.md#3-functions-and-closures)
-- [Ruby's functions](ruby-index.md#3-functions-and-closures)
+- [Python's functions](../python/python-index.md#3-functions-and-closures)
+- [TypeScript's functions](../javascript/typescript-index.md#3-functions-and-closures)
+- [Ruby's functions](../ruby/ruby-index.md#3-functions-and-closures)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -91,9 +91,9 @@ Go uses lexical scoping with block-level scope. Variables can be declared with `
 - Variable shadowing discouraged
 
 **Compare with:**
-- [Python's scoping](python-language-index.md#4-variables-and-scoping)
-- [TypeScript's scoping](typescript.md#4-variables-and-scoping)
-- [Ruby's scoping](ruby-index.md#4-variables-and-scoping)
+- [Python's scoping](../python/python-index.md#4-variables-and-scoping)
+- [TypeScript's scoping](../javascript/typescript-index.md#4-variables-and-scoping)
+- [Ruby's scoping](../ruby/ruby-index.md#4-variables-and-scoping)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -111,9 +111,9 @@ Go provides a rich set of built-in types including numeric types, strings, boole
 - String literals with backticks for raw strings
 
 **Compare with:**
-- [Python's data types](python-language-index.md#5-data-types-and-literals)
-- [TypeScript's data types](typescript.md#5-data-types-and-literals)
-- [Ruby's data types](ruby-index.md#5-data-types-and-literals)
+- [Python's data types](../python/python-index.md#5-data-types-and-literals)
+- [TypeScript's data types](../javascript/typescript-index.md#5-data-types-and-literals)
+- [Ruby's data types](../ruby/ruby-index.md#5-data-types-and-literals)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -131,9 +131,9 @@ Go provides standard control flow constructs including if/else, switch statement
 - goto statement (rarely used)
 
 **Compare with:**
-- [Python's control flow](python-language-index.md#6-control-flow)
-- [TypeScript's control flow](typescript.md#6-control-flow)
-- [Ruby's control flow](ruby-index.md#6-control-flow)
+- [Python's control flow](../python/python-index.md#6-control-flow)
+- [TypeScript's control flow](../javascript/typescript-index.md#6-control-flow)
+- [Ruby's control flow](../ruby/ruby-index.md#6-control-flow)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -151,9 +151,9 @@ Go uses explicit error handling with the `error` interface type. Functions typic
 - Error wrapping with `fmt.Errorf` and `errors.Wrap`
 
 **Compare with:**
-- [Python's error handling](python-language-index.md#7-error-handling)
-- [TypeScript's error handling](typescript.md#7-error-handling)
-- [Ruby's error handling](ruby-index.md#7-error-handling)
+- [Python's error handling](../python/python-index.md#7-error-handling)
+- [TypeScript's error handling](../javascript/typescript-index.md#7-error-handling)
+- [Ruby's error handling](../ruby/ruby-index.md#7-error-handling)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -171,9 +171,9 @@ Go doesn't have classes or inheritance, but provides object-oriented features th
 - No access modifiers (public/private determined by capitalization)
 
 **Compare with:**
-- [Python's OOP](python-language-index.md#8-object-oriented-programming)
-- [TypeScript's OOP](typescript.md#8-object-oriented-programming)
-- [Ruby's OOP](ruby-index.md#8-object-oriented-programming)
+- [Python's OOP](../python/python-index.md#8-object-oriented-programming)
+- [TypeScript's OOP](../javascript/typescript-index.md#8-object-oriented-programming)
+- [Ruby's OOP](../ruby/ruby-index.md#8-object-oriented-programming)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -191,9 +191,9 @@ Go's concurrency model is built around goroutines (lightweight threads) and chan
 - No async/await syntax
 
 **Compare with:**
-- [Python's async programming](python-language-index.md#9-asynchronous-programming)
-- [TypeScript's async programming](typescript.md#9-asynchronous-programming)
-- [Ruby's async programming](ruby-index.md#9-asynchronous-programming)
+- [Python's async programming](../python/python-index.md#9-asynchronous-programming)
+- [TypeScript's async programming](../javascript/typescript-index.md#9-asynchronous-programming)
+- [Ruby's async programming](../ruby/ruby-index.md#9-asynchronous-programming)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -211,9 +211,9 @@ Go uses modules for dependency management and packages for code organization. Mo
 - Package-level visibility (capitalized = public)
 
 **Compare with:**
-- [Python's modules](python-language-index.md#10-modules-and-packages)
-- [TypeScript's modules](typescript.md#10-modules-and-packages)
-- [Ruby's modules](ruby-index.md#10-modules-and-packages)
+- [Python's modules](../python/python-index.md#10-modules-and-packages)
+- [TypeScript's modules](../javascript/typescript-index.md#10-modules-and-packages)
+- [Ruby's modules](../ruby/ruby-index.md#10-modules-and-packages)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -231,9 +231,9 @@ Go uses garbage collection for automatic memory management. The garbage collecto
 - Heap allocation for escaped variables
 
 **Compare with:**
-- [Python's memory management](python-language-index.md#11-memory-management)
-- [TypeScript's memory management](typescript.md#11-memory-management)
-- [Ruby's memory management](ruby-index.md#11-memory-management)
+- [Python's memory management](../python/python-index.md#11-memory-management)
+- [TypeScript's memory management](../javascript/typescript-index.md#11-memory-management)
+- [Ruby's memory management](../ruby/ruby-index.md#11-memory-management)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -251,9 +251,9 @@ Go doesn't have traditional pattern matching like functional languages, but prov
 - Switch statements for control flow
 
 **Compare with:**
-- [Python's pattern matching](python-language-index.md#12-pattern-matching)
-- [TypeScript's pattern matching](typescript.md#12-pattern-matching)
-- [Ruby's pattern matching](ruby-index.md#12-pattern-matching)
+- [Python's pattern matching](../python/python-index.md#12-pattern-matching)
+- [TypeScript's pattern matching](../javascript/typescript-index.md#12-pattern-matching)
+- [Ruby's pattern matching](../ruby/ruby-index.md#12-pattern-matching)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -271,9 +271,9 @@ Go has limited metaprogramming capabilities compared to dynamic languages. It pr
 - Explicit code generation preferred
 
 **Compare with:**
-- [Python's metaprogramming](python-language-index.md#13-metaprogramming)
-- [TypeScript's metaprogramming](typescript.md#13-metaprogramming)
-- [Ruby's metaprogramming](ruby-index.md#13-metaprogramming)
+- [Python's metaprogramming](../python/python-index.md#13-metaprogramming)
+- [TypeScript's metaprogramming](../javascript/typescript-index.md#13-metaprogramming)
+- [Ruby's metaprogramming](../ruby/ruby-index.md#13-metaprogramming)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -291,9 +291,9 @@ Go's standard library is comprehensive and well-designed, providing excellent su
 - Cryptography and security packages
 
 **Compare with:**
-- [Python's standard library](python-language-index.md#14-standard-library-highlights)
-- [TypeScript's standard library](typescript.md#14-standard-library-highlights)
-- [Ruby's standard library](ruby-index.md#14-standard-library-highlights)
+- [Python's standard library](../python/python-index.md#14-standard-library-highlights)
+- [TypeScript's standard library](../javascript/typescript-index.md#14-standard-library-highlights)
+- [Ruby's standard library](../ruby/ruby-index.md#14-standard-library-highlights)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -311,9 +311,9 @@ Go is a compiled language that compiles to native machine code. The Go compiler 
 - Cross-compilation support
 
 **Compare with:**
-- [Python's compilation](python-language-index.md#15-compilation-and-runtime)
-- [TypeScript's compilation](typescript.md#15-compilation-and-runtime)
-- [Ruby's compilation](ruby-index.md#15-compilation-and-runtime)
+- [Python's compilation](../python/python-index.md#15-compilation-and-runtime)
+- [TypeScript's compilation](../javascript/typescript-index.md#15-compilation-and-runtime)
+- [Ruby's compilation](../ruby/ruby-index.md#15-compilation-and-runtime)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -331,9 +331,9 @@ Go has excellent built-in support for testing with the `testing` package. It pro
 - Debugging support with Delve
 
 **Compare with:**
-- [Python's testing](python-language-index.md#16-testing-and-debugging)
-- [TypeScript's testing](typescript.md#16-testing-and-debugging)
-- [Ruby's testing](ruby-index.md#16-testing-and-debugging)
+- [Python's testing](../python/python-index.md#16-testing-and-debugging)
+- [TypeScript's testing](../javascript/typescript-index.md#16-testing-and-debugging)
+- [Ruby's testing](../ruby/ruby-index.md#16-testing-and-debugging)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 
@@ -351,9 +351,9 @@ Go has established idioms and best practices that are widely followed in the com
 - "Go way" of doing things
 
 **Compare with:**
-- [Python's best practices](python-language-index.md#17-best-practices-and-idioms)
-- [TypeScript's best practices](typescript.md#17-best-practices-and-idioms)
-- [Ruby's best practices](ruby-index.md#17-best-practices-and-idioms)
+- [Python's best practices](../python/python-index.md#17-best-practices-and-idioms)
+- [TypeScript's best practices](../javascript/typescript-index.md#17-best-practices-and-idioms)
+- [Ruby's best practices](../ruby/ruby-index.md#17-best-practices-and-idioms)
 
 **Learn more:** [Go Lang](go-explanation.md): Comprehensive Go language reference covering syntax, packages, functions, variables, control flow, data structures, concurrency, and best practices for Go development.
 

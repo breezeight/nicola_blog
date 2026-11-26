@@ -60,7 +60,7 @@ Very important ⭐⭐⭐:
 
 - [Contract Testing](dev/contract_testing.md) - General guide about contract testing
 
-- [Elixir Testing](elixir.md) - Testing with ExUnit, doctests, and property-based testing
+- [Elixir Testing](dev/elixir/elixir.md) - Testing with ExUnit, doctests, and property-based testing
 
 - [JavaScript Testing](dev/javascript/javascript_testing.md) - Testing with Jest and other JavaScript testing tools
 

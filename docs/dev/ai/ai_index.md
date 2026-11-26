@@ -31,4 +31,4 @@ Learn more here: [aiad-vs-vibe-coding.md](aiad-vs-vibe-coding.md)
 
 Learn how to run AI models locally for privacy, cost control, and offline access. Covers hardware considerations (laptop vs server), OS limitations, and practical solutions like Ollama and LocalAI.
 
-Learn more here: [local-ai/local-ai.md](local-ai/local-ai.md)
+Learn more here: local AI notes (TODO: `local-ai/` page not written yet)

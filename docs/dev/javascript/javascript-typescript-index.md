@@ -37,7 +37,7 @@ This index provides organized access to all JavaScript and TypeScript resources,
 
 ## TypeScript
 
-[typescript.md](typescript.md)
+[typescript.md](typescript-index.md)
 
 ### Setup Guides
 

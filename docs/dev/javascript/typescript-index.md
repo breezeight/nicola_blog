@@ -31,9 +31,9 @@ TypeScript is a statically typed superset of JavaScript that compiles to plain J
 - Strong tooling support with IntelliSense
 
 **Compare with:**
-- [Python's philosophy](python/python-index.md#1-overview--philosophy)
-- [Go's philosophy](go/go-index.md#1-overview--philosophy)
-- [Ruby's philosophy](ruby/ruby-index.md#1-overview--philosophy)
+- [Python's philosophy](../python/python-index.md#1-overview-philosophy)
+- [Go's philosophy](../go/go-index.md#1-overview-philosophy)
+- [Ruby's philosophy](../ruby/ruby-index.md#1-overview-philosophy)
 
 **Learn more:** [JavaScript and TypeScript Index](javascript-typescript-learningpaths.md): Comprehensive learning paths for JavaScript and TypeScript, covering beginner to advanced topics and practical implementation guides.
 
@@ -51,9 +51,9 @@ TypeScript provides a sophisticated type system that includes static typing, typ
 - Union and intersection types
 
 **Compare with:**
-- [Python's type system](python-language-index.md#2-type-systems)
-- [Go's type system](go-index.md#2-type-systems)
-- [Ruby's type system](ruby-index.md#2-type-systems)
+- [Python's type system](../python/python-index.md#2-type-systems)
+- [Go's type system](../go/go-index.md#2-type-systems)
+- [Ruby's type system](../ruby/ruby-index.md#2-type-systems)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -71,9 +71,9 @@ TypeScript functions support all JavaScript features plus additional type annota
 - Rest parameters and spread syntax
 
 **Compare with:**
-- [Python's functions](python-language-index.md#3-functions-and-closures)
-- [Go's functions](go-index.md#3-functions-and-closures)
-- [Ruby's functions](ruby-index.md#3-functions-and-closures)
+- [Python's functions](../python/python-index.md#3-functions-and-closures)
+- [Go's functions](../go/go-index.md#3-functions-and-closures)
+- [Ruby's functions](../ruby/ruby-index.md#3-functions-and-closures)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -91,9 +91,9 @@ TypeScript follows JavaScript's scoping rules with `var`, `let`, and `const` dec
 - Immutable references with `const`
 
 **Compare with:**
-- [Python's scoping](python-language-index.md#4-variables-and-scoping)
-- [Go's scoping](go-index.md#4-variables-and-scoping)
-- [Ruby's scoping](ruby-index.md#4-variables-and-scoping)
+- [Python's scoping](../python/python-index.md#4-variables-and-scoping)
+- [Go's scoping](../go/go-index.md#4-variables-and-scoping)
+- [Ruby's scoping](../ruby/ruby-index.md#4-variables-and-scoping)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -111,9 +111,9 @@ TypeScript extends JavaScript's type system with additional primitive types, obj
 - Literal types and template literal types
 
 **Compare with:**
-- [Python's data types](python-language-index.md#5-data-types-and-literals)
-- [Go's data types](go-index.md#5-data-types-and-literals)
-- [Ruby's data types](ruby-index.md#5-data-types-and-literals)
+- [Python's data types](../python/python-index.md#5-data-types-and-literals)
+- [Go's data types](../go/go-index.md#5-data-types-and-literals)
+- [Ruby's data types](../ruby/ruby-index.md#5-data-types-and-literals)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -131,9 +131,9 @@ TypeScript supports all JavaScript control flow constructs with additional type 
 - Control flow analysis for type narrowing
 
 **Compare with:**
-- [Python's control flow](python-language-index.md#6-control-flow)
-- [Go's control flow](go-index.md#6-control-flow)
-- [Ruby's control flow](ruby-index.md#6-control-flow)
+- [Python's control flow](../python/python-index.md#6-control-flow)
+- [Go's control flow](../go/go-index.md#6-control-flow)
+- [Ruby's control flow](../ruby/ruby-index.md#6-control-flow)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -151,9 +151,9 @@ TypeScript uses JavaScript's exception-based error handling with `try/catch/fina
 - Promise rejection handling
 
 **Compare with:**
-- [Python's error handling](python-language-index.md#7-error-handling)
-- [Go's error handling](go-index.md#7-error-handling)
-- [Ruby's error handling](ruby-index.md#7-error-handling)
+- [Python's error handling](../python/python-index.md#7-error-handling)
+- [Go's error handling](../go/go-index.md#7-error-handling)
+- [Ruby's error handling](../ruby/ruby-index.md#7-error-handling)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -171,9 +171,9 @@ TypeScript provides comprehensive OOP support with classes, interfaces, inherita
 - Static members and properties
 
 **Compare with:**
-- [Python's OOP](python-language-index.md#8-object-oriented-programming)
-- [Go's OOP](go-index.md#8-object-oriented-programming)
-- [Ruby's OOP](ruby-index.md#8-object-oriented-programming)
+- [Python's OOP](../python/python-index.md#8-object-oriented-programming)
+- [Go's OOP](../go/go-index.md#8-object-oriented-programming)
+- [Ruby's OOP](../ruby/ruby-index.md#8-object-oriented-programming)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -191,9 +191,9 @@ TypeScript supports JavaScript's async/await syntax with additional type safety.
 - Event loop and concurrency model
 
 **Compare with:**
-- [Python's async programming](python-language-index.md#9-asynchronous-programming)
-- [Go's async programming](go-index.md#9-asynchronous-programming)
-- [Ruby's async programming](ruby-index.md#9-asynchronous-programming)
+- [Python's async programming](../python/python-index.md#9-asynchronous-programming)
+- [Go's async programming](../go/go-index.md#9-asynchronous-programming)
+- [Ruby's async programming](../ruby/ruby-index.md#9-asynchronous-programming)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -211,9 +211,9 @@ TypeScript supports ES6 modules with additional type information. It provides mo
 - Module augmentation
 
 **Compare with:**
-- [Python's modules](python-language-index.md#10-modules-and-packages)
-- [Go's modules](go-index.md#10-modules-and-packages)
-- [Ruby's modules](ruby-index.md#10-modules-and-packages)
+- [Python's modules](../python/python-index.md#10-modules-and-packages)
+- [Go's modules](../go/go-index.md#10-modules-and-packages)
+- [Ruby's modules](../ruby/ruby-index.md#10-modules-and-packages)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -231,9 +231,9 @@ TypeScript inherits JavaScript's garbage collection and memory management. It do
 - Memory profiling tools
 
 **Compare with:**
-- [Python's memory management](python-language-index.md#11-memory-management)
-- [Go's memory management](go-index.md#11-memory-management)
-- [Ruby's memory management](ruby-index.md#11-memory-management)
+- [Python's memory management](../python/python-index.md#11-memory-management)
+- [Go's memory management](../go/go-index.md#11-memory-management)
+- [Ruby's memory management](../ruby/ruby-index.md#11-memory-management)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -251,9 +251,9 @@ TypeScript doesn't have traditional pattern matching but provides discriminated 
 - No algebraic data types
 
 **Compare with:**
-- [Python's pattern matching](python-language-index.md#12-pattern-matching)
-- [Go's pattern matching](go-index.md#12-pattern-matching)
-- [Ruby's pattern matching](ruby-index.md#12-pattern-matching)
+- [Python's pattern matching](../python/python-index.md#12-pattern-matching)
+- [Go's pattern matching](../go/go-index.md#12-pattern-matching)
+- [Ruby's pattern matching](../ruby/ruby-index.md#12-pattern-matching)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -271,9 +271,9 @@ TypeScript provides limited metaprogramming capabilities through decorators, con
 - Advanced type manipulation
 
 **Compare with:**
-- [Python's metaprogramming](python-language-index.md#13-metaprogramming)
-- [Go's metaprogramming](go-index.md#13-metaprogramming)
-- [Ruby's metaprogramming](ruby-index.md#13-metaprogramming)
+- [Python's metaprogramming](../python/python-index.md#13-metaprogramming)
+- [Go's metaprogramming](../go/go-index.md#13-metaprogramming)
+- [Ruby's metaprogramming](../ruby/ruby-index.md#13-metaprogramming)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -291,9 +291,9 @@ TypeScript provides type definitions for JavaScript's standard library and brows
 - Built-in utility types
 
 **Compare with:**
-- [Python's standard library](python-language-index.md#14-standard-library-highlights)
-- [Go's standard library](go-index.md#14-standard-library-highlights)
-- [Ruby's standard library](ruby-index.md#14-standard-library-highlights)
+- [Python's standard library](../python/python-index.md#14-standard-library-highlights)
+- [Go's standard library](../go/go-index.md#14-standard-library-highlights)
+- [Ruby's standard library](../ruby/ruby-index.md#14-standard-library-highlights)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -311,9 +311,9 @@ TypeScript compiles to JavaScript and runs in JavaScript engines. The TypeScript
 - Incremental compilation
 
 **Compare with:**
-- [Python's compilation](python-language-index.md#15-compilation-and-runtime)
-- [Go's compilation](go-index.md#15-compilation-and-runtime)
-- [Ruby's compilation](ruby-index.md#15-compilation-and-runtime)
+- [Python's compilation](../python/python-index.md#15-compilation-and-runtime)
+- [Go's compilation](../go/go-index.md#15-compilation-and-runtime)
+- [Ruby's compilation](../ruby/ruby-index.md#15-compilation-and-runtime)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -331,9 +331,9 @@ TypeScript supports all JavaScript testing frameworks with additional type safet
 - Debugging tools integration
 
 **Compare with:**
-- [Python's testing](python-language-index.md#16-testing-and-debugging)
-- [Go's testing](go-index.md#16-testing-and-debugging)
-- [Ruby's testing](ruby-index.md#16-testing-and-debugging)
+- [Python's testing](../python/python-index.md#16-testing-and-debugging)
+- [Go's testing](../go/go-index.md#16-testing-and-debugging)
+- [Ruby's testing](../ruby/ruby-index.md#16-testing-and-debugging)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
@@ -351,9 +351,9 @@ TypeScript has established best practices for type safety, code organization, an
 - Consistent code style
 
 **Compare with:**
-- [Python's best practices](python-language-index.md#17-best-practices-and-idioms)
-- [Go's best practices](go-index.md#17-best-practices-and-idioms)
-- [Ruby's best practices](ruby-index.md#17-best-practices-and-idioms)
+- [Python's best practices](../python/python-index.md#17-best-practices-and-idioms)
+- [Go's best practices](../go/go-index.md#17-best-practices-and-idioms)
+- [Ruby's best practices](../ruby/ruby-index.md#17-best-practices-and-idioms)
 
 **Learn more:** [TypeScript Advanced Guide](typescript-explanation.md): Comprehensive advanced guide to TypeScript covering learning paths, best practices, core concepts, and practical implementation strategies for modern web development.
 
