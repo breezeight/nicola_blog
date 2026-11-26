@@ -1,37 +1,22 @@
-## Task Management with Beads
+## Session completion
 
-This project uses **bd** (beads) for issue tracking.
+**When ending a work session**, complete the steps below. Work is not complete until `git push` succeeds.
 
-> **Source of Truth:** Complete workflow rules are in `.cursor/rules/beads-workflow/RULE.md` and are automatically applied in Cursor IDE.
+**Workflow:**
 
-For More Information, see:
-
-- **Complete workflow rules**: `.cursor/rules/beads-workflow/RULE.md` (automatically applied in Cursor IDE)
-- **Decision rationale**: `.cursor/rules/beads-workflow-explanation/RULE.md`
-- **Beads documentation**: https://github.com/steveyegge/beads
-
-## Landing the Plane (Session Completion)
-
-**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
-
-**MANDATORY WORKFLOW:**
-
-1. **File issues for remaining work** - Create issues for anything that needs follow-up
-2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **PUSH TO REMOTE** - This is MANDATORY:
+1. **File follow-ups** — Note anything that needs a later pass (issues, todos, or your tracker of choice).
+2. **Run quality gates** (if code or tooling changed) — Tests, linters, builds as applicable.
+3. **PUSH TO REMOTE**:
    ```bash
    git pull --rebase
-   bd sync
    git push
-   git status  # MUST show "up to date with origin"
+   git status  # should show "up to date with origin"
    ```
-5. **Clean up** - Clear stashes, prune remote branches
-6. **Verify** - All changes committed AND pushed
-7. **Hand off** - Provide context for next session
+4. **Clean up** — Clear stashes, prune remote branches if you use that workflow.
+5. **Verify** — Changes committed and pushed.
+6. **Hand off** — Short context for the next session if someone else continues the work.
 
-**CRITICAL RULES:**
-- Work is NOT complete until `git push` succeeds
-- NEVER stop before pushing - that leaves work stranded locally
-- NEVER say "ready to push when you are" - YOU must push
-- If push fails, resolve and retry until it succeeds
+**Rules:**
+
+- Do not stop before `git push` when the goal was to land work on the remote.
+- If push fails, fix and retry until it succeeds or you have a deliberate reason to stop.

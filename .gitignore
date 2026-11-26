@@ -1,8 +1,5 @@
 node_modules/
 
-#beats
-.bv/
-
 _site
 .idea
 .sass-cache
