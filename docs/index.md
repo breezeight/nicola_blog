@@ -8,16 +8,16 @@
 
 ## Nicola's Routines (daily, weekly, monthly and yearly) ⭐⭐⭐
 
-- {{ link_with_abstract("nicola-routines/nicola-routines.md") }} - Reference: All routines
-- {{ link_with_abstract("nicola-routines/nicola-routines-explanation.md") }} - Explanation: Routine rationale
-- {{ link_with_abstract("nicola-routines/nicola-routines-architecture.md") }} - Explanation: System architecture
-- {{ link_with_abstract("nicola-routines/nicola-routines-principles.md") }} - Explanation: Core principles
-- {{ link_with_abstract("nicola-routines/nicola-routines-personas.md") }} - Reference: Persona definitions
-- {{ link_with_abstract("nicola-routines/nicola-routines-entry-points.md") }} - Reference: Entry point catalog
-- {{ link_with_abstract("nicola-routines/nicola-routines-howto-define-routine.md") }} - Howto: Define routines
-- {{ link_with_abstract("nicola-routines/nicola-routines-howto-activate-persona.md") }} - Howto: Activate personas
-- {{ link_with_abstract("nicola-routines/nicola-routines-howto-configure-entry-point.md") }} - Howto: Configure entry points
-- {{ link_with_abstract("nicola-routines/nicola-routines-howto-review-routines.md") }} - Howto: Review routines
+- [Nicola's Routines](nicola-routines/nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. - Reference: All routines
+- [Nicola's Routines - Explanation](nicola-routines/nicola-routines-explanation.md): Explanation of the rationale behind personal routines, workflow patterns, and the strategic thinking behind daily, weekly, monthly, and yearly habits. - Explanation: Routine rationale
+- [Nicola's Routines System Architecture](nicola-routines/nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. - Explanation: System architecture
+- [Nicola's Routines Core Principles](nicola-routines/nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals. - Explanation: Core principles
+- [Nicola's Routines Personas Reference](nicola-routines/nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona. - Reference: Persona definitions
+- [Nicola's Routines Entry Points Catalog](nicola-routines/nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. - Reference: Entry point catalog
+- [How to Define a Routine](nicola-routines/nicola-routines-howto-define-routine.md): Step-by-step guide for defining new routines in Nicola's routines system, including persona assignment, entry point configuration, and metadata requirements. - Howto: Define routines
+- [How to Activate a Persona](nicola-routines/nicola-routines-howto-activate-persona.md): Step-by-step guide for activating personas in Nicola's routines system, including automatic and manual activation, context switching, and multi-persona handling. - Howto: Activate personas
+- [How to Configure Entry Points](nicola-routines/nicola-routines-howto-configure-entry-point.md): Step-by-step guide for configuring entry points in Nicola's routines system, including notification system setup, trigger configuration, and integration with external systems. - Howto: Configure entry points
+- [How to Review and Update Routines](nicola-routines/nicola-routines-howto-review-routines.md): Step-by-step guide for reviewing and updating routines in Nicola's routines system, including effectiveness evaluation, usage analysis, and change management. - Howto: Review routines
 
 ## Nicola's Day by Day Usage ⭐⭐⭐
 
@@ -34,16 +34,16 @@
 - Doodle
 
 Personal Routines:
-- {{ link_with_abstract("nicola-routines/nicola-routines.md") }} - Reference: All routines
-- {{ link_with_abstract("nicola-routines/nicola-routines-explanation.md") }} - Explanation: Routine rationale
-- {{ link_with_abstract("nicola-routines/nicola-routines-architecture.md") }} - Explanation: System architecture
-- {{ link_with_abstract("nicola-routines/nicola-routines-principles.md") }} - Explanation: Core principles
-- {{ link_with_abstract("nicola-routines/nicola-routines-personas.md") }} - Reference: Persona definitions
-- {{ link_with_abstract("nicola-routines/nicola-routines-entry-points.md") }} - Reference: Entry point catalog
-- {{ link_with_abstract("nicola-routines/nicola-routines-howto-define-routine.md") }} - Howto: Define routines
-- {{ link_with_abstract("nicola-routines/nicola-routines-howto-activate-persona.md") }} - Howto: Activate personas
-- {{ link_with_abstract("nicola-routines/nicola-routines-howto-configure-entry-point.md") }} - Howto: Configure entry points
-- {{ link_with_abstract("nicola-routines/nicola-routines-howto-review-routines.md") }} - Howto: Review routines
+- [Nicola's Routines](nicola-routines/nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. - Reference: All routines
+- [Nicola's Routines - Explanation](nicola-routines/nicola-routines-explanation.md): Explanation of the rationale behind personal routines, workflow patterns, and the strategic thinking behind daily, weekly, monthly, and yearly habits. - Explanation: Routine rationale
+- [Nicola's Routines System Architecture](nicola-routines/nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. - Explanation: System architecture
+- [Nicola's Routines Core Principles](nicola-routines/nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals. - Explanation: Core principles
+- [Nicola's Routines Personas Reference](nicola-routines/nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona. - Reference: Persona definitions
+- [Nicola's Routines Entry Points Catalog](nicola-routines/nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. - Reference: Entry point catalog
+- [How to Define a Routine](nicola-routines/nicola-routines-howto-define-routine.md): Step-by-step guide for defining new routines in Nicola's routines system, including persona assignment, entry point configuration, and metadata requirements. - Howto: Define routines
+- [How to Activate a Persona](nicola-routines/nicola-routines-howto-activate-persona.md): Step-by-step guide for activating personas in Nicola's routines system, including automatic and manual activation, context switching, and multi-persona handling. - Howto: Activate personas
+- [How to Configure Entry Points](nicola-routines/nicola-routines-howto-configure-entry-point.md): Step-by-step guide for configuring entry points in Nicola's routines system, including notification system setup, trigger configuration, and integration with external systems. - Howto: Configure entry points
+- [How to Review and Update Routines](nicola-routines/nicola-routines-howto-review-routines.md): Step-by-step guide for reviewing and updating routines in Nicola's routines system, including effectiveness evaluation, usage analysis, and change management. - Howto: Review routines
 
 
 ## Yoga
@@ -60,7 +60,7 @@ Very important ⭐⭐⭐:
 
 - [Contract Testing](dev/contract_testing.md) - General guide about contract testing
 
-- [Elixir Testing](elixir.md) - Testing with ExUnit, doctests, and property-based testing
+- [Elixir Testing](dev/elixir/elixir.md) - Testing with ExUnit, doctests, and property-based testing
 
 - [JavaScript Testing](dev/javascript/javascript_testing.md) - Testing with Jest and other JavaScript testing tools
 
@@ -130,7 +130,7 @@ All the other Nix related docs are indexed in the [Nix Index](dev/nix/nix-index.
 This section provides comprehensive documentation about programming languages, structured using the Diátaxis framework for optimal learning and reference.
 
 ### Cross-Language Comparison
-{{ link_with_abstract("dev/cross-languages-concept-comparison.md") }}
+[Programming Languages Concept Comparison](dev/cross-languages-concept-comparison.md): Side-by-side comparison of key programming concepts across Python, TypeScript, Go, Ruby, and Elixir to help experienced developers understand differences and similarities.
 
 ### Documentation Structure
 Our language documentation follows the Diátaxis framework with:
@@ -145,13 +145,13 @@ Our language documentation follows the Diátaxis framework with:
 
 ### JavaScript and TypeScript
 
-- {{ link_with_abstract("dev/javascript/javascript-typescript-index.md") }}
-- {{ link_with_abstract("dev/javascript/typescript-index.md") }}
+- [JavaScript and TypeScript Index](dev/javascript/javascript-typescript-index.md): Comprehensive index of JavaScript and TypeScript resources, covering core concepts, advanced topics, testing, and practical guides for modern web development.
+- [TypeScript Reference](dev/javascript/typescript-index.md): Comprehensive reference covering TypeScript's type system, async model, error handling, and core programming concepts for experienced developers.
 - learning paths: [JavaScript and TypeScript Learning Paths](dev/javascript/javascript-typescript-learningpaths.md)
 
 ### Go Lang
 
-{{ link_with_abstract("dev/go/go-index.md") }}
+[Go Reference](dev/go/go-index.md): Comprehensive reference covering Go's type system, concurrency model, error handling, and core programming concepts for experienced developers.
 
 ### Python
 

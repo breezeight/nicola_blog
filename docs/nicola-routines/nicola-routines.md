@@ -10,7 +10,7 @@ type: reference
 
 ## 📘 Purpose & Scope
 
-This document serves as a complete reference for all routines in Nicola's routines system. Routines are organized by {{ link_with_abstract("nicola-routines-personas.md") }}, frequency, and {{ link_with_abstract("nicola-routines-entry-points.md") }}, with complete metadata including priority, estimated time, dependencies, and outcomes. For more context on the system design, see {{ link_with_abstract("nicola-routines-architecture.md") }} and {{ link_with_abstract("nicola-routines-principles.md") }}.
+This document serves as a complete reference for all routines in Nicola's routines system. Routines are organized by [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona., frequency, and [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines., with complete metadata including priority, estimated time, dependencies, and outcomes. For more context on the system design, see [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. and [Nicola's Routines Core Principles](nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals..
 
 ## Routine Metadata Schema
 
@@ -18,8 +18,8 @@ Each routine includes the following metadata:
 
 - **ID**: Unique identifier (e.g., R001, R002)
 - **Name**: Human-readable name
-- **Persona**: One or more {{ link_with_abstract("nicola-routines-personas.md") }} this routine belongs to
-- **Entry Points**: One or more {{ link_with_abstract("nicola-routines-entry-points.md") }} that trigger this routine
+- **Persona**: One or more [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona. this routine belongs to
+- **Entry Points**: One or more [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. that trigger this routine
 - **Frequency**: Daily, Weekly, Monthly, Yearly, or On-Demand
 - **Estimated Time**: Expected duration
 - **Priority**: High, Medium, or Low
@@ -27,11 +27,11 @@ Each routine includes the following metadata:
 - **Outcomes**: Measurable outcomes or success criteria
 - **Status**: Active, Inactive, or Deprecated
 
-To define new routines, see {{ link_with_abstract("nicola-routines-howto-define-routine.md") }}.
+To define new routines, see [How to Define a Routine](nicola-routines-howto-define-routine.md): Step-by-step guide for defining new routines in Nicola's routines system, including persona assignment, entry point configuration, and metadata requirements..
 
 ## Routines by Persona
 
-Routines are organized by {{ link_with_abstract("nicola-routines-personas.md") }}. To activate a persona, see {{ link_with_abstract("nicola-routines-howto-activate-persona.md") }}.
+Routines are organized by [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona.. To activate a persona, see [How to Activate a Persona](nicola-routines-howto-activate-persona.md): Step-by-step guide for activating personas in Nicola's routines system, including automatic and manual activation, context switching, and multi-persona handling..
 
 ### CEO Persona Routines
 
@@ -187,7 +187,7 @@ Routines are organized by {{ link_with_abstract("nicola-routines-personas.md") }
 
 ## Routines by Entry Point
 
-For complete details on entry points, see {{ link_with_abstract("nicola-routines-entry-points.md") }}. To configure entry points, see {{ link_with_abstract("nicola-routines-howto-configure-entry-point.md") }}.
+For complete details on entry points, see [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines.. To configure entry points, see [How to Configure Entry Points](nicola-routines-howto-configure-entry-point.md): Step-by-step guide for configuring entry points in Nicola's routines system, including notification system setup, trigger configuration, and integration with external systems..
 
 ### Time-Based Routines
 
@@ -284,11 +284,11 @@ For complete details on entry points, see {{ link_with_abstract("nicola-routines
 
 ### On-Demand Routines
 
-All routines can be triggered on-demand via manual entry points or conditional logic. See {{ link_with_abstract("nicola-routines-howto-configure-entry-point.md") }} for configuration details.
+All routines can be triggered on-demand via manual entry points or conditional logic. See [How to Configure Entry Points](nicola-routines-howto-configure-entry-point.md): Step-by-step guide for configuring entry points in Nicola's routines system, including notification system setup, trigger configuration, and integration with external systems. for configuration details.
 
 ## Routine Dependencies
 
-Understanding routine dependencies helps ensure proper execution order. For more on the rationale behind routine design, see {{ link_with_abstract("nicola-routines-explanation.md") }}.
+Understanding routine dependencies helps ensure proper execution order. For more on the rationale behind routine design, see [Nicola's Routines - Explanation](nicola-routines-explanation.md): Explanation of the rationale behind personal routines, workflow patterns, and the strategic thinking behind daily, weekly, monthly, and yearly habits..
 
 ### Dependency Graph
 
@@ -326,7 +326,7 @@ R027 (Yoga Practice)
 
 ## Routine Statistics
 
-To review and update routines, see {{ link_with_abstract("nicola-routines-howto-review-routines.md") }}.
+To review and update routines, see [How to Review and Update Routines](nicola-routines-howto-review-routines.md): Step-by-step guide for reviewing and updating routines in Nicola's routines system, including effectiveness evaluation, usage analysis, and change management..
 
 | Persona     | Daily | Weekly | Monthly | Yearly | Total |
 | ----------- | ----- | ------ | ------- | ------ | ----- |
@@ -338,12 +338,12 @@ To review and update routines, see {{ link_with_abstract("nicola-routines-howto-
 
 ## References
 
-- {{ link_with_abstract("nicola-routines-explanation.md") }} - Explanation: Routine rationale
-- {{ link_with_abstract("nicola-routines-architecture.md") }} - Explanation: System architecture
-- {{ link_with_abstract("nicola-routines-principles.md") }} - Explanation: Core principles
-- {{ link_with_abstract("nicola-routines-personas.md") }} - Reference: Persona definitions
-- {{ link_with_abstract("nicola-routines-entry-points.md") }} - Reference: Entry point catalog
-- {{ link_with_abstract("nicola-routines-howto-define-routine.md") }} - Howto: Define routines
-- {{ link_with_abstract("nicola-routines-howto-activate-persona.md") }} - Howto: Activate personas
-- {{ link_with_abstract("nicola-routines-howto-configure-entry-point.md") }} - Howto: Configure entry points
-- {{ link_with_abstract("nicola-routines-howto-review-routines.md") }} - Howto: Review routines
+- [Nicola's Routines - Explanation](nicola-routines-explanation.md): Explanation of the rationale behind personal routines, workflow patterns, and the strategic thinking behind daily, weekly, monthly, and yearly habits. - Explanation: Routine rationale
+- [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. - Explanation: System architecture
+- [Nicola's Routines Core Principles](nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals. - Explanation: Core principles
+- [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona. - Reference: Persona definitions
+- [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. - Reference: Entry point catalog
+- [How to Define a Routine](nicola-routines-howto-define-routine.md): Step-by-step guide for defining new routines in Nicola's routines system, including persona assignment, entry point configuration, and metadata requirements. - Howto: Define routines
+- [How to Activate a Persona](nicola-routines-howto-activate-persona.md): Step-by-step guide for activating personas in Nicola's routines system, including automatic and manual activation, context switching, and multi-persona handling. - Howto: Activate personas
+- [How to Configure Entry Points](nicola-routines-howto-configure-entry-point.md): Step-by-step guide for configuring entry points in Nicola's routines system, including notification system setup, trigger configuration, and integration with external systems. - Howto: Configure entry points
+- [How to Review and Update Routines](nicola-routines-howto-review-routines.md): Step-by-step guide for reviewing and updating routines in Nicola's routines system, including effectiveness evaluation, usage analysis, and change management. - Howto: Review routines

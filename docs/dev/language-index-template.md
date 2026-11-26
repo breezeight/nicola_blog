@@ -15,7 +15,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 ## References
 
 - [Official [Language] Documentation](https://example.com)
-- {{ link_with_abstract("[language]-specific-file.md") }}
+- [[language]-specific-file.md]([language]-specific-file.md)
 
 ---
 
@@ -29,11 +29,11 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - Characteristic 3
 
 **Compare with:**
-- [Python's philosophy](python-language-index.md#1-overview--philosophy)
-- [Go's philosophy](go-index.md#1-overview--philosophy)
-- [TypeScript's philosophy](typescript.md#1-overview--philosophy)
+- [Python's philosophy](python-language-index.md#1-overview-philosophy)
+- [Go's philosophy](go-index.md#1-overview-philosophy)
+- [TypeScript's philosophy](typescript.md#1-overview-philosophy)
 
-**Learn more:** {{ link_with_abstract("[language]-overview.md") }}
+**Learn more:** [[language]-overview.md]([language]-overview.md)
 
 ---
 
@@ -51,7 +51,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's type system](go-index.md#2-type-systems)
 - [TypeScript's type system](typescript.md#2-type-systems)
 
-**Learn more:** {{ link_with_abstract("[language]-type-system.md") }}
+**Learn more:** [[language]-type-system.md]([language]-type-system.md)
 
 ---
 
@@ -69,7 +69,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's functions](go-index.md#3-functions-and-closures)
 - [TypeScript's functions](typescript.md#3-functions-and-closures)
 
-**Learn more:** {{ link_with_abstract("[language]-functions.md") }}
+**Learn more:** [[language]-functions.md]([language]-functions.md)
 
 ---
 
@@ -87,7 +87,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's scoping](go-index.md#4-variables-and-scoping)
 - [TypeScript's scoping](typescript.md#4-variables-and-scoping)
 
-**Learn more:** {{ link_with_abstract("[language]-variables.md") }}
+**Learn more:** [[language]-variables.md]([language]-variables.md)
 
 ---
 
@@ -105,7 +105,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's data types](go-index.md#5-data-types-and-literals)
 - [TypeScript's data types](typescript.md#5-data-types-and-literals)
 
-**Learn more:** {{ link_with_abstract("[language]-data-types.md") }}
+**Learn more:** [[language]-data-types.md]([language]-data-types.md)
 
 ---
 
@@ -123,7 +123,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's control flow](go-index.md#6-control-flow)
 - [TypeScript's control flow](typescript.md#6-control-flow)
 
-**Learn more:** {{ link_with_abstract("[language]-control-flow.md") }}
+**Learn more:** [[language]-control-flow.md]([language]-control-flow.md)
 
 ---
 
@@ -141,7 +141,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's error handling](go-index.md#7-error-handling)
 - [TypeScript's error handling](typescript.md#7-error-handling)
 
-**Learn more:** {{ link_with_abstract("[language]-error-handling.md") }}
+**Learn more:** [[language]-error-handling.md]([language]-error-handling.md)
 
 ---
 
@@ -159,7 +159,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's OOP](go-index.md#8-object-oriented-programming)
 - [TypeScript's OOP](typescript.md#8-object-oriented-programming)
 
-**Learn more:** {{ link_with_abstract("[language]-oop.md") }}
+**Learn more:** [[language]-oop.md]([language]-oop.md)
 
 ---
 
@@ -177,7 +177,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's concurrency](go-index.md#9-asynchronous-programming)
 - [TypeScript's async model](typescript.md#9-asynchronous-programming)
 
-**Learn more:** {{ link_with_abstract("[language]-async.md") }}
+**Learn more:** [[language]-async.md]([language]-async.md)
 
 ---
 
@@ -195,7 +195,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's packages](go-index.md#10-modules-and-packages)
 - [TypeScript's modules](typescript.md#10-modules-and-packages)
 
-**Learn more:** {{ link_with_abstract("[language]-modules.md") }}
+**Learn more:** [[language]-modules.md]([language]-modules.md)
 
 ---
 
@@ -213,7 +213,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's memory management](go-index.md#11-memory-management)
 - [TypeScript's memory management](typescript.md#11-memory-management)
 
-**Learn more:** {{ link_with_abstract("[language]-memory.md") }}
+**Learn more:** [[language]-memory.md]([language]-memory.md)
 
 ---
 
@@ -231,7 +231,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's pattern matching](go-index.md#12-pattern-matching)
 - [TypeScript's pattern matching](typescript.md#12-pattern-matching)
 
-**Learn more:** {{ link_with_abstract("[language]-pattern-matching.md") }}
+**Learn more:** [[language]-pattern-matching.md]([language]-pattern-matching.md)
 
 ---
 
@@ -249,7 +249,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's metaprogramming](go-index.md#13-metaprogramming)
 - [TypeScript's metaprogramming](typescript.md#13-metaprogramming)
 
-**Learn more:** {{ link_with_abstract("[language]-metaprogramming.md") }}
+**Learn more:** [[language]-metaprogramming.md]([language]-metaprogramming.md)
 
 ---
 
@@ -267,7 +267,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's standard library](go-index.md#14-standard-library-highlights)
 - [TypeScript's standard library](typescript.md#14-standard-library-highlights)
 
-**Learn more:** {{ link_with_abstract("[language]-stdlib.md") }}
+**Learn more:** [[language]-stdlib.md]([language]-stdlib.md)
 
 ---
 
@@ -285,7 +285,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's compilation](go-index.md#15-compilation-and-runtime)
 - [TypeScript's compilation](typescript.md#15-compilation-and-runtime)
 
-**Learn more:** {{ link_with_abstract("[language]-compilation.md") }}
+**Learn more:** [[language]-compilation.md]([language]-compilation.md)
 
 ---
 
@@ -303,7 +303,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's testing](go-index.md#16-testing-and-debugging)
 - [TypeScript's testing](typescript.md#16-testing-and-debugging)
 
-**Learn more:** {{ link_with_abstract("[language]-testing.md") }}
+**Learn more:** [[language]-testing.md]([language]-testing.md)
 
 ---
 
@@ -321,7 +321,7 @@ This reference provides a structured overview of [Language]'s core concepts, des
 - [Go's best practices](go-index.md#17-best-practices-and-idioms)
 - [TypeScript's best practices](typescript.md#17-best-practices-and-idioms)
 
-**Learn more:** {{ link_with_abstract("[language]-best-practices.md") }}
+**Learn more:** [[language]-best-practices.md]([language]-best-practices.md)
 
 ---
 
@@ -330,17 +330,17 @@ This reference provides a structured overview of [Language]'s core concepts, des
 ### [Unique Feature 1]
 [Brief explanation of language-specific feature]
 
-**Learn more:** {{ link_with_abstract("[language]-feature1.md") }}
+**Learn more:** [[language]-feature1.md]([language]-feature1.md)
 
 ### [Unique Feature 2]
 [Brief explanation of another language-specific feature]
 
-**Learn more:** {{ link_with_abstract("[language]-feature2.md") }}
+**Learn more:** [[language]-feature2.md]([language]-feature2.md)
 
 ### [Unique Feature 3]
 [Brief explanation of third language-specific feature]
 
-**Learn more:** {{ link_with_abstract("[language]-feature3.md") }}
+**Learn more:** [[language]-feature3.md]([language]-feature3.md)
 
 ---
 
@@ -348,4 +348,4 @@ This reference provides a structured overview of [Language]'s core concepts, des
 
 - [Official [Language] Documentation](https://example.com)
 - [Language Learning Paths]([language]-learning-paths.md)
-- {{ link_with_abstract("languages-concept-comparison.md") }}
+- [languages-concept-comparison.md](languages-concept-comparison.md)

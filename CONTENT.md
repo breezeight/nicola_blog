@@ -12,5 +12,5 @@ This project follows structured content guidelines to maintain consistency and q
 - **[Content Guidelines - TypeScript Docs](.cursor/rules/content-guidelines-typescript-docs.mdc)** - Specific guidelines for TypeScript documentation
 
 ### Development Guidelines
-- **[MkDocs Development](.cursor/rules/mkdocs.mdc)** - Development workflow with uv package management and justfile commands
+- **[Site Development (Zensical)](.cursor/rules/mkdocs.mdc)** - Development workflow with uv package management and justfile commands
 - **[MkDocs Theme Customization](.cursor/rules/mkdocs-theme-customization.mdc)** - Theme customization and styling guidelines

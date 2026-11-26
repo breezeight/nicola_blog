@@ -321,7 +321,7 @@ By combining **clean imports**, **well-managed exports**, and **tidy modules**, 
 
 #### Tutorial: Organizing Go Code
 
-{{ link_with_abstract("go-organizing-code.md") }}
+[Tutorial – Organizing Go Code](go-organizing-code.md): In this tutorial, you'll build your first Go program inside a module, organize your code into packages, and use the `go` tool to build, run, and test your code. By the end, you'll have a working program, a custom package, and tests — all organized using Go's module system.
 
 
 #### Functions
@@ -3088,4 +3088,4 @@ https://go.dev/tour/concurrency/11
 
 ## How to organize your code
 
-{{ link_with_abstract("go-organizing-code.md") }}
+[Tutorial – Organizing Go Code](go-organizing-code.md): In this tutorial, you'll build your first Go program inside a module, organize your code into packages, and use the `go` tool to build, run, and test your code. By the end, you'll have a working program, a custom package, and tests — all organized using Go's module system.

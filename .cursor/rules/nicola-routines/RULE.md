@@ -311,8 +311,8 @@ This rule file defines the architecture and management rules for Nicola's routin
 
 ## References
 
-- {{ link_with_abstract("docs/nicola-routines/nicola-routines-architecture.md") }} - System architecture
-- {{ link_with_abstract("docs/nicola-routines/nicola-routines-principles.md") }} - Core principles
-- {{ link_with_abstract("docs/nicola-routines/nicola-routines.md") }} - Routine reference
-- {{ link_with_abstract("docs/nicola-routines/nicola-routines-personas.md") }} - Persona definitions
-- {{ link_with_abstract("docs/nicola-routines/nicola-routines-entry-points.md") }} - Entry point catalog
+- [nicola-routines-architecture.md](mdc:docs/nicola-routines/nicola-routines-architecture.md) - System architecture
+- [nicola-routines-principles.md](mdc:docs/nicola-routines/nicola-routines-principles.md) - Core principles
+- [nicola-routines.md](mdc:docs/nicola-routines/nicola-routines.md) - Routine reference
+- [nicola-routines-personas.md](mdc:docs/nicola-routines/nicola-routines-personas.md) - Persona definitions
+- [nicola-routines-entry-points.md](mdc:docs/nicola-routines/nicola-routines-entry-points.md) - Entry point catalog

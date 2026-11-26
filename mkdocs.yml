@@ -49,10 +49,11 @@ plugins:
       module_name: main
       on_error_fail: false
       on_undefined: keep
-      verbose: true
+      verbose: false
 
 # Exclude specific files from navigation warnings
 exclude_docs: |
+  dev/language-index-template.md
   elixir_examples/behaviours_defoverridable_example/README.md
   elixir_examples/behaviours_defoverridable_example/deps/cortex/README.md
   elixir_examples/behaviours_defoverridable_example/deps/cortex/LICENSE.md

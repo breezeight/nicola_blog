@@ -298,7 +298,7 @@ Must include links to all language index files:
 #### Link Format
 Use consistent link format:
 ```markdown
-- {{ link_with_abstract("language-index.md") }}
+- [Language Reference](language-index.md): one-line abstract of the page
 ```
 
 ## 🎯 Diátaxis Type Summary

@@ -1,0 +1,54 @@
+# Zensical Commands
+# Commands for building and serving the documentation site.
+# Zensical reads mkdocs.yml directly.
+
+# Install dependencies and enable the git hooks
+install:
+    uv sync
+    git config core.hooksPath .githooks
+
+# Enable the git hooks in .githooks/ (pre-commit: strict site build)
+install-hooks:
+    git config core.hooksPath .githooks
+
+# Start development server
+serve port="8000":
+    uv run zensical serve --dev-addr=127.0.0.1:{{port}}
+
+# Start development server on all interfaces (for external access)
+serve-external:
+    uv run zensical serve --dev-addr=0.0.0.0:8001
+
+# Build the documentation site (clean cache)
+build:
+    uv run zensical build --clean
+
+# Update dependencies to latest versions
+update:
+    uv sync --upgrade
+
+# Show dependency information
+deps:
+    uv pip list
+
+# Clean build artifacts
+clean:
+    rm -rf site/ .cache/
+
+# Build and report warnings (broken links, missing anchors)
+check:
+    uv run zensical build --clean
+
+# Strict validation (aborts the build on warnings)
+check-strict:
+    uv run zensical build --clean --strict
+
+# Deploy to GitHub Pages: build, then push site/ to the gh-pages branch
+deploy:
+    uv run zensical build --clean
+    uv run --with ghp-import ghp-import --no-jekyll --push --force site
+
+# Full development workflow: install and serve
+dev port="8000":
+    uv sync
+    uv run zensical serve --dev-addr=127.0.0.1:{{port}}

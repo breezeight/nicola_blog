@@ -284,8 +284,8 @@ This document explains the core principles that guide how routines are defined, 
 
 ## References
 
-- {{ link_with_abstract("nicola-routines-architecture.md") }} - System architecture that implements these principles
-- {{ link_with_abstract("nicola-routines.md") }} - Reference document with routines following these principles
-- {{ link_with_abstract("nicola-routines-personas.md") }} - Persona definitions with persona-specific principles
-- {{ link_with_abstract("nicola-routines-howto-define-routine.md") }} - How to apply these principles when defining routines
-- {{ link_with_abstract("nicola-routines-howto-review-routines.md") }} - How to review routines against these principles
+- [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. - System architecture that implements these principles
+- [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. - Reference document with routines following these principles
+- [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona. - Persona definitions with persona-specific principles
+- [How to Define a Routine](nicola-routines-howto-define-routine.md): Step-by-step guide for defining new routines in Nicola's routines system, including persona assignment, entry point configuration, and metadata requirements. - How to apply these principles when defining routines
+- [How to Review and Update Routines](nicola-routines-howto-review-routines.md): Step-by-step guide for reviewing and updating routines in Nicola's routines system, including effectiveness evaluation, usage analysis, and change management. - How to review routines against these principles

@@ -16,7 +16,7 @@ This reference provides a structured overview of Ruby's core concepts, designed 
 
 - [Official Ruby Documentation](http://www.ruby-doc.org/)
 - [Ruby Forum](https://www.ruby-forum.com/)
-- {{ link_with_abstract("ruby_object_model.md") }}
+- [MRI Ruby internals and the Ruby Object Model](ruby_object_model.md)
 
 ---
 
@@ -31,9 +31,9 @@ Ruby is a dynamic, object-oriented programming language designed for programmer 
 - Elegant syntax with minimal punctuation
 
 **Compare with:**
-- [Python's philosophy](python-language-index.md#1-overview--philosophy)
-- [Go's philosophy](go-index.md#1-overview--philosophy)
-- [TypeScript's philosophy](typescript.md#1-overview--philosophy)
+- [Python's philosophy](../python/python-index.md#1-overview-philosophy)
+- [Go's philosophy](../go/go-index.md#1-overview-philosophy)
+- [TypeScript's philosophy](../javascript/typescript-index.md#1-overview-philosophy)
 
 **Learn more:** [Official Ruby Documentation](http://www.ruby-doc.org/)
 
@@ -50,9 +50,9 @@ Ruby uses dynamic typing with duck typing principles. There are no explicit type
 - Type checking through method calls
 
 **Compare with:**
-- [Python's type system](python-language-index.md#2-type-systems)
-- [Go's type system](go-index.md#2-type-systems)
-- [TypeScript's type system](typescript.md#2-type-systems)
+- [Python's type system](../python/python-index.md#2-type-systems)
+- [Go's type system](../go/go-index.md#2-type-systems)
+- [TypeScript's type system](../javascript/typescript-index.md#2-type-systems)
 
 **Learn more:** [Type System section below](#2-type-systems)
 
@@ -69,9 +69,9 @@ Ruby treats methods as first-class objects and supports closures through blocks,
 - Metaprogramming for dynamic method definition
 
 **Compare with:**
-- [Python's functions](python-language-index.md#3-functions-and-closures)
-- [Go's functions](go-index.md#3-functions-and-closures)
-- [TypeScript's functions](typescript.md#3-functions-and-closures)
+- [Python's functions](../python/python-index.md#3-functions-and-closures)
+- [Go's functions](../go/go-index.md#3-functions-and-closures)
+- [TypeScript's functions](../javascript/typescript-index.md#3-functions-and-closures)
 
 **Learn more:** [Functions section below](#3-functions-and-closures)
 
@@ -88,9 +88,9 @@ Ruby uses lexical scoping with different variable types having different scoping
 - Closure variable capture
 
 **Compare with:**
-- [Python's scoping](python-language-index.md#4-variables-and-scoping)
-- [Go's scoping](go-index.md#4-variables-and-scoping)
-- [TypeScript's scoping](typescript.md#4-variables-and-scoping)
+- [Python's scoping](../python/python-index.md#4-variables-and-scoping)
+- [Go's scoping](../go/go-index.md#4-variables-and-scoping)
+- [TypeScript's scoping](../javascript/typescript-index.md#4-variables-and-scoping)
 
 **Learn more:** [Variables section below](#4-variables-and-scoping)
 
@@ -107,9 +107,9 @@ Ruby provides a rich set of built-in data types including numbers, strings, symb
 - Custom types through class definition
 
 **Compare with:**
-- [Python's data types](python-language-index.md#5-data-types-and-literals)
-- [Go's data types](go-index.md#5-data-types-and-literals)
-- [TypeScript's data types](typescript.md#5-data-types-and-literals)
+- [Python's data types](../python/python-index.md#5-data-types-and-literals)
+- [Go's data types](../go/go-index.md#5-data-types-and-literals)
+- [TypeScript's data types](../javascript/typescript-index.md#5-data-types-and-literals)
 
 **Learn more:** [Data Types section below](#5-data-types-and-literals)
 
@@ -126,9 +126,9 @@ Ruby provides standard control flow constructs including if/else, case statement
 - Block-based iteration with `each`
 
 **Compare with:**
-- [Python's control flow](python-language-index.md#6-control-flow)
-- [Go's control flow](go-index.md#6-control-flow)
-- [TypeScript's control flow](typescript.md#6-control-flow)
+- [Python's control flow](../python/python-index.md#6-control-flow)
+- [Go's control flow](../go/go-index.md#6-control-flow)
+- [TypeScript's control flow](../javascript/typescript-index.md#6-control-flow)
 
 **Learn more:** [Control Flow section below](#6-control-flow)
 
@@ -145,9 +145,9 @@ Ruby uses exceptions for error handling with begin/rescue/ensure blocks. The lan
 - Custom exception definition
 
 **Compare with:**
-- [Python's error handling](python-language-index.md#7-error-handling)
-- [Go's error handling](go-index.md#7-error-handling)
-- [TypeScript's error handling](typescript.md#7-error-handling)
+- [Python's error handling](../python/python-index.md#7-error-handling)
+- [Go's error handling](../go/go-index.md#7-error-handling)
+- [TypeScript's error handling](../javascript/typescript-index.md#7-error-handling)
 
 **Learn more:** [Error Handling section below](#7-error-handling)
 
@@ -164,11 +164,11 @@ Ruby is a pure object-oriented language where everything is an object, including
 - Metaprogramming for dynamic class modification
 
 **Compare with:**
-- [Python's OOP](python-language-index.md#8-object-oriented-programming)
-- [Go's OOP](go-index.md#8-object-oriented-programming)
-- [TypeScript's OOP](typescript.md#8-object-oriented-programming)
+- [Python's OOP](../python/python-index.md#8-object-oriented-programming)
+- [Go's OOP](../go/go-index.md#8-object-oriented-programming)
+- [TypeScript's OOP](../javascript/typescript-index.md#8-object-oriented-programming)
 
-**Learn more:** {{ link_with_abstract("ruby_object_model.md") }}
+**Learn more:** [MRI Ruby internals and the Ruby Object Model](ruby_object_model.md)
 
 ---
 
@@ -183,9 +183,9 @@ Ruby's traditional concurrency model is based on threads, though the Global Inte
 - Fiber-based cooperative multitasking
 
 **Compare with:**
-- [Python's async model](python-language-index.md#9-asynchronous-programming)
-- [Go's concurrency](go-index.md#9-asynchronous-programming)
-- [TypeScript's async model](typescript.md#9-asynchronous-programming)
+- [Python's async model](../python/python-index.md#9-asynchronous-programming)
+- [Go's concurrency](../go/go-index.md#9-asynchronous-programming)
+- [TypeScript's async model](../javascript/typescript-index.md#9-asynchronous-programming)
 
 **Learn more:** [Async Programming section below](#9-asynchronous-programming)
 
@@ -202,9 +202,9 @@ Ruby uses a module system for code organization and the `require`/`load` system 
 - `$LOAD_PATH` for module resolution
 
 **Compare with:**
-- [Python's modules](python-language-index.md#10-modules-and-packages)
-- [Go's packages](go-index.md#10-modules-and-packages)
-- [TypeScript's modules](typescript.md#10-modules-and-packages)
+- [Python's modules](../python/python-index.md#10-modules-and-packages)
+- [Go's packages](../go/go-index.md#10-modules-and-packages)
+- [TypeScript's modules](../javascript/typescript-index.md#10-modules-and-packages)
 
 **Learn more:** [Modules section below](#10-modules-and-packages)
 
@@ -221,9 +221,9 @@ Ruby uses automatic garbage collection with a mark-and-sweep collector. Memory i
 - Object finalization with `ObjectSpace`
 
 **Compare with:**
-- [Python's memory management](python-language-index.md#11-memory-management)
-- [Go's memory management](go-index.md#11-memory-management)
-- [TypeScript's memory management](typescript.md#11-memory-management)
+- [Python's memory management](../python/python-index.md#11-memory-management)
+- [Go's memory management](../go/go-index.md#11-memory-management)
+- [TypeScript's memory management](../javascript/typescript-index.md#11-memory-management)
 
 **Learn more:** [Memory Management section below](#11-memory-management)
 
@@ -240,9 +240,9 @@ Ruby provides pattern matching through case statements and regular expressions. 
 - Guard clauses with `if`/`unless`
 
 **Compare with:**
-- [Python's pattern matching](python-language-index.md#12-pattern-matching)
-- [Go's pattern matching](go-index.md#12-pattern-matching)
-- [TypeScript's pattern matching](typescript.md#12-pattern-matching)
+- [Python's pattern matching](../python/python-index.md#12-pattern-matching)
+- [Go's pattern matching](../go/go-index.md#12-pattern-matching)
+- [TypeScript's pattern matching](../javascript/typescript-index.md#12-pattern-matching)
 
 **Learn more:** [Pattern Matching section below](#12-pattern-matching)
 
@@ -259,9 +259,9 @@ Ruby excels at metaprogramming, providing extensive capabilities for runtime cod
 - Method missing and dynamic method dispatch
 
 **Compare with:**
-- [Python's metaprogramming](python-language-index.md#13-metaprogramming)
-- [Go's metaprogramming](go-index.md#13-metaprogramming)
-- [TypeScript's metaprogramming](typescript.md#13-metaprogramming)
+- [Python's metaprogramming](../python/python-index.md#13-metaprogramming)
+- [Go's metaprogramming](../go/go-index.md#13-metaprogramming)
+- [TypeScript's metaprogramming](../javascript/typescript-index.md#13-metaprogramming)
 
 **Learn more:** [Metaprogramming section below](#13-metaprogramming)
 
@@ -278,9 +278,9 @@ Ruby's standard library is comprehensive, covering file I/O, networking, data st
 - Extensive string and array manipulation
 
 **Compare with:**
-- [Python's standard library](python-language-index.md#14-standard-library-highlights)
-- [Go's standard library](go-index.md#14-standard-library-highlights)
-- [TypeScript's standard library](typescript.md#14-standard-library-highlights)
+- [Python's standard library](../python/python-index.md#14-standard-library-highlights)
+- [Go's standard library](../go/go-index.md#14-standard-library-highlights)
+- [TypeScript's standard library](../javascript/typescript-index.md#14-standard-library-highlights)
 
 **Learn more:** [Standard Library section below](#14-standard-library-highlights)
 
@@ -297,9 +297,9 @@ Ruby is an interpreted language that compiles source code to bytecode, which is 
 - Cross-platform compatibility
 
 **Compare with:**
-- [Python's compilation](python-language-index.md#15-compilation-and-runtime)
-- [Go's compilation](go-index.md#15-compilation-and-runtime)
-- [TypeScript's compilation](typescript.md#15-compilation-and-runtime)
+- [Python's compilation](../python/python-index.md#15-compilation-and-runtime)
+- [Go's compilation](../go/go-index.md#15-compilation-and-runtime)
+- [TypeScript's compilation](../javascript/typescript-index.md#15-compilation-and-runtime)
 
 **Learn more:** [Compilation section below](#15-compilation-and-runtime)
 
@@ -316,11 +316,11 @@ Ruby has excellent testing support through frameworks like RSpec, Minitest, and 
 - Profiling with `ruby-prof`
 
 **Compare with:**
-- [Python's testing](python-language-index.md#16-testing-and-debugging)
-- [Go's testing](go-index.md#16-testing-and-debugging)
-- [TypeScript's testing](typescript.md#16-testing-and-debugging)
+- [Python's testing](../python/python-index.md#16-testing-and-debugging)
+- [Go's testing](../go/go-index.md#16-testing-and-debugging)
+- [TypeScript's testing](../javascript/typescript-index.md#16-testing-and-debugging)
 
-**Learn more:** {{ link_with_abstract("ruby_rspec.md") }}
+**Learn more:** [Ruby: RSpec](ruby_rspec.md)
 
 ---
 
@@ -335,9 +335,9 @@ Ruby has established idioms and best practices that emphasize readability, elega
 - Community style guides
 
 **Compare with:**
-- [Python's best practices](python-language-index.md#17-best-practices-and-idioms)
-- [Go's best practices](go-index.md#17-best-practices-and-idioms)
-- [TypeScript's best practices](typescript.md#17-best-practices-and-idioms)
+- [Python's best practices](../python/python-index.md#17-best-practices-and-idioms)
+- [Go's best practices](../go/go-index.md#17-best-practices-and-idioms)
+- [TypeScript's best practices](../javascript/typescript-index.md#17-best-practices-and-idioms)
 
 **Learn more:** [Best Practices section below](#17-best-practices-and-idioms)
 
@@ -348,7 +348,7 @@ Ruby has established idioms and best practices that emphasize readability, elega
 ### Blocks and Iterators
 Ruby's block syntax provides elegant iteration and functional programming constructs. Blocks can be passed to methods and provide a powerful way to customize behavior.
 
-**Learn more:** [Blocks section below](#blocks)
+**Learn more:** [Blocks section below](#blocks-and-iterators)
 
 ### Metaprogramming
 Ruby's extensive metaprogramming capabilities allow for dynamic code modification, method definition, and class manipulation at runtime.
@@ -358,17 +358,17 @@ Ruby's extensive metaprogramming capabilities allow for dynamic code modificatio
 ### Mixins and Modules
 Ruby's module system provides a powerful way to share code through mixins, avoiding the complexity of multiple inheritance.
 
-**Learn more:** {{ link_with_abstract("ruby_object_model.md") }}
+**Learn more:** [MRI Ruby internals and the Ruby Object Model](ruby_object_model.md)
 
 ### RubyGems
 Ruby's package management system provides a simple way to distribute and install Ruby libraries and applications.
 
-**Learn more:** {{ link_with_abstract("ruby_bundler_gem_rubygems.md") }}
+**Learn more:** [Ruby: Bundler, gem and Rubygems](ruby_bundler_gem_rubygems.md)
 
 ### Rails Framework
 Ruby on Rails is a popular web application framework that demonstrates Ruby's capabilities for rapid application development.
 
-**Learn more:** {{ link_with_abstract("ruby_rails.md") }}
+**Learn more:** [Ruby: Ruby On Rails](ruby_rails.md)
 
 ---
 
@@ -376,4 +376,4 @@ Ruby on Rails is a popular web application framework that demonstrates Ruby's ca
 
 - [Official Ruby Documentation](http://www.ruby-doc.org/)
 - [Ruby Learning Resources](ruby_links_collection.md)
-- {{ link_with_abstract("languages-concept-comparison.md") }}
+- [languages-concept-comparison.md](../cross-languages-concept-comparison.md)

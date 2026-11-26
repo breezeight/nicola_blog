@@ -31,9 +31,9 @@ Elixir is a dynamic, functional programming language built on the Erlang Virtual
 - Runs on the Erlang Virtual Machine (BEAM)
 
 **Compare with:**
-- [Python's philosophy](python-language-index.md#1-overview--philosophy)
-- [Go's philosophy](go-index.md#1-overview--philosophy)
-- [TypeScript's philosophy](typescript.md#1-overview--philosophy)
+- [Python's philosophy](../python/python-index.md#1-overview-philosophy)
+- [Go's philosophy](../go/go-index.md#1-overview-philosophy)
+- [TypeScript's philosophy](../javascript/typescript-index.md#1-overview-philosophy)
 
 **Learn more:** [Official Elixir Documentation](https://elixir-lang.org/docs.html)
 
@@ -50,9 +50,9 @@ Elixir uses dynamic typing with pattern matching for type checking. While there 
 - No explicit type annotations
 
 **Compare with:**
-- [Python's type system](python-language-index.md#2-type-systems)
-- [Go's type system](go-index.md#2-type-systems)
-- [TypeScript's type system](typescript.md#2-type-systems)
+- [Python's type system](../python/python-index.md#2-type-systems)
+- [Go's type system](../go/go-index.md#2-type-systems)
+- [TypeScript's type system](../javascript/typescript-index.md#2-type-systems)
 
 **Learn more:** [Type System section below](#2-type-systems)
 
@@ -69,9 +69,9 @@ Elixir treats functions as first-class citizens with support for closures, highe
 - Higher-order functions and closures
 
 **Compare with:**
-- [Python's functions](python-language-index.md#3-functions-and-closures)
-- [Go's functions](go-index.md#3-functions-and-closures)
-- [TypeScript's functions](typescript.md#3-functions-and-closures)
+- [Python's functions](../python/python-index.md#3-functions-and-closures)
+- [Go's functions](../go/go-index.md#3-functions-and-closures)
+- [TypeScript's functions](../javascript/typescript-index.md#3-functions-and-closures)
 
 **Learn more:** [Functions section below](#3-functions-and-closures)
 
@@ -88,9 +88,9 @@ Elixir uses lexical scoping with immutable variables. Variables are bound to val
 - Variable shadowing in different scopes
 
 **Compare with:**
-- [Python's scoping](python-language-index.md#4-variables-and-scoping)
-- [Go's scoping](go-index.md#4-variables-and-scoping)
-- [TypeScript's scoping](typescript.md#4-variables-and-scoping)
+- [Python's scoping](../python/python-index.md#4-variables-and-scoping)
+- [Go's scoping](../go/go-index.md#4-variables-and-scoping)
+- [TypeScript's scoping](../javascript/typescript-index.md#4-variables-and-scoping)
 
 **Learn more:** [Variables section below](#4-variables-and-scoping)
 
@@ -107,9 +107,9 @@ Elixir provides a rich set of built-in data types including atoms, integers, flo
 - Structs for custom data types
 
 **Compare with:**
-- [Python's data types](python-language-index.md#5-data-types-and-literals)
-- [Go's data types](go-index.md#5-data-types-and-literals)
-- [TypeScript's data types](typescript.md#5-data-types-and-literals)
+- [Python's data types](../python/python-index.md#5-data-types-and-literals)
+- [Go's data types](../go/go-index.md#5-data-types-and-literals)
+- [TypeScript's data types](../javascript/typescript-index.md#5-data-types-and-literals)
 
 **Learn more:** [Data Types section below](#5-data-types-and-literals)
 
@@ -126,9 +126,9 @@ Elixir provides control flow through pattern matching, guards, and case expressi
 - `with` for pipeline operations
 
 **Compare with:**
-- [Python's control flow](python-language-index.md#6-control-flow)
-- [Go's control flow](go-index.md#6-control-flow)
-- [TypeScript's control flow](typescript.md#6-control-flow)
+- [Python's control flow](../python/python-index.md#6-control-flow)
+- [Go's control flow](../go/go-index.md#6-control-flow)
+- [TypeScript's control flow](../javascript/typescript-index.md#6-control-flow)
 
 **Learn more:** [Control Flow section below](#6-control-flow)
 
@@ -145,9 +145,9 @@ Elixir uses a "let it crash" philosophy for error handling, relying on supervisi
 - Process isolation and fault tolerance
 
 **Compare with:**
-- [Python's error handling](python-language-index.md#7-error-handling)
-- [Go's error handling](go-index.md#7-error-handling)
-- [TypeScript's error handling](typescript.md#7-error-handling)
+- [Python's error handling](../python/python-index.md#7-error-handling)
+- [Go's error handling](../go/go-index.md#7-error-handling)
+- [TypeScript's error handling](../javascript/typescript-index.md#7-error-handling)
 
 **Learn more:** [Error Handling section below](#7-error-handling)
 
@@ -164,9 +164,9 @@ Elixir is a functional language and doesn't have traditional object-oriented pro
 - Functional programming paradigm
 
 **Compare with:**
-- [Python's OOP](python-language-index.md#8-object-oriented-programming)
-- [Go's OOP](go-index.md#8-object-oriented-programming)
-- [TypeScript's OOP](typescript.md#8-object-oriented-programming)
+- [Python's OOP](../python/python-index.md#8-object-oriented-programming)
+- [Go's OOP](../go/go-index.md#8-object-oriented-programming)
+- [TypeScript's OOP](../javascript/typescript-index.md#8-object-oriented-programming)
 
 **Learn more:** [OOP section below](#8-object-oriented-programming)
 
@@ -183,9 +183,9 @@ Elixir's concurrency model is built around lightweight processes (actors) that c
 - Built-in fault tolerance
 
 **Compare with:**
-- [Python's async model](python-language-index.md#9-asynchronous-programming)
-- [Go's concurrency](go-index.md#9-asynchronous-programming)
-- [TypeScript's async model](typescript.md#9-asynchronous-programming)
+- [Python's async model](../python/python-index.md#9-asynchronous-programming)
+- [Go's concurrency](../go/go-index.md#9-asynchronous-programming)
+- [TypeScript's async model](../javascript/typescript-index.md#9-asynchronous-programming)
 
 **Learn more:** [Concurrency section below](#9-asynchronous-programming)
 
@@ -202,9 +202,9 @@ Elixir uses modules for code organization and Mix for project management. The la
 - Hierarchical module structure
 
 **Compare with:**
-- [Python's modules](python-language-index.md#10-modules-and-packages)
-- [Go's packages](go-index.md#10-modules-and-packages)
-- [TypeScript's modules](typescript.md#10-modules-and-packages)
+- [Python's modules](../python/python-index.md#10-modules-and-packages)
+- [Go's packages](../go/go-index.md#10-modules-and-packages)
+- [TypeScript's modules](../javascript/typescript-index.md#10-modules-and-packages)
 
 **Learn more:** [Modules section below](#10-modules-and-packages)
 
@@ -221,9 +221,9 @@ Elixir uses automatic garbage collection with per-process heaps. Each lightweigh
 - Efficient memory management for actors
 
 **Compare with:**
-- [Python's memory management](python-language-index.md#11-memory-management)
-- [Go's memory management](go-index.md#11-memory-management)
-- [TypeScript's memory management](typescript.md#11-memory-management)
+- [Python's memory management](../python/python-index.md#11-memory-management)
+- [Go's memory management](../go/go-index.md#11-memory-management)
+- [TypeScript's memory management](../javascript/typescript-index.md#11-memory-management)
 
 **Learn more:** [Memory Management section below](#11-memory-management)
 
@@ -240,9 +240,9 @@ Pattern matching is a core feature of Elixir, used for control flow, variable as
 - Guards for additional conditions
 
 **Compare with:**
-- [Python's pattern matching](python-language-index.md#12-pattern-matching)
-- [Go's pattern matching](go-index.md#12-pattern-matching)
-- [TypeScript's pattern matching](typescript.md#12-pattern-matching)
+- [Python's pattern matching](../python/python-index.md#12-pattern-matching)
+- [Go's pattern matching](../go/go-index.md#12-pattern-matching)
+- [TypeScript's pattern matching](../javascript/typescript-index.md#12-pattern-matching)
 
 **Learn more:** [Pattern Matching section below](#12-pattern-matching)
 
@@ -259,9 +259,9 @@ Elixir provides extensive metaprogramming capabilities through macros and compil
 - Compile-time metaprogramming
 
 **Compare with:**
-- [Python's metaprogramming](python-language-index.md#13-metaprogramming)
-- [Go's metaprogramming](go-index.md#13-metaprogramming)
-- [TypeScript's metaprogramming](typescript.md#13-metaprogramming)
+- [Python's metaprogramming](../python/python-index.md#13-metaprogramming)
+- [Go's metaprogramming](../go/go-index.md#13-metaprogramming)
+- [TypeScript's metaprogramming](../javascript/typescript-index.md#13-metaprogramming)
 
 **Learn more:** [Metaprogramming section below](#13-metaprogramming)
 
@@ -278,9 +278,9 @@ Elixir's standard library is comprehensive, covering data manipulation, concurre
 - System and process management
 
 **Compare with:**
-- [Python's standard library](python-language-index.md#14-standard-library-highlights)
-- [Go's standard library](go-index.md#14-standard-library-highlights)
-- [TypeScript's standard library](typescript.md#14-standard-library-highlights)
+- [Python's standard library](../python/python-index.md#14-standard-library-highlights)
+- [Go's standard library](../go/go-index.md#14-standard-library-highlights)
+- [TypeScript's standard library](../javascript/typescript-index.md#14-standard-library-highlights)
 
 **Learn more:** [Standard Library section below](#14-standard-library-highlights)
 
@@ -297,9 +297,9 @@ Elixir compiles to bytecode for the Erlang Virtual Machine (BEAM). The compilati
 - Cross-platform BEAM runtime
 
 **Compare with:**
-- [Python's compilation](python-language-index.md#15-compilation-and-runtime)
-- [Go's compilation](go-index.md#15-compilation-and-runtime)
-- [TypeScript's compilation](typescript.md#15-compilation-and-runtime)
+- [Python's compilation](../python/python-index.md#15-compilation-and-runtime)
+- [Go's compilation](../go/go-index.md#15-compilation-and-runtime)
+- [TypeScript's compilation](../javascript/typescript-index.md#15-compilation-and-runtime)
 
 **Learn more:** [Compilation section below](#15-compilation-and-runtime)
 
@@ -316,9 +316,9 @@ Elixir provides excellent testing support through ExUnit, a built-in testing fra
 - Property-based testing support
 
 **Compare with:**
-- [Python's testing](python-language-index.md#16-testing-and-debugging)
-- [Go's testing](go-index.md#16-testing-and-debugging)
-- [TypeScript's testing](typescript.md#16-testing-and-debugging)
+- [Python's testing](../python/python-index.md#16-testing-and-debugging)
+- [Go's testing](../go/go-index.md#16-testing-and-debugging)
+- [TypeScript's testing](../javascript/typescript-index.md#16-testing-and-debugging)
 
 **Learn more:** [Testing section below](#16-testing-and-debugging)
 
@@ -335,9 +335,9 @@ Elixir has established idioms and best practices that emphasize functional progr
 - Consistent naming conventions
 
 **Compare with:**
-- [Python's best practices](python-language-index.md#17-best-practices-and-idioms)
-- [Go's best practices](go-index.md#17-best-practices-and-idioms)
-- [TypeScript's best practices](typescript.md#17-best-practices-and-idioms)
+- [Python's best practices](../python/python-index.md#17-best-practices-and-idioms)
+- [Go's best practices](../go/go-index.md#17-best-practices-and-idioms)
+- [TypeScript's best practices](../javascript/typescript-index.md#17-best-practices-and-idioms)
 
 **Learn more:** [Elixir Style Guide](https://github.com/rrrene/elixir-style-guide)
 
@@ -348,27 +348,27 @@ Elixir has established idioms and best practices that emphasize functional progr
 ### Actor Model and Processes
 Elixir's concurrency model is built around lightweight processes that communicate through message passing. This provides excellent scalability and fault tolerance.
 
-**Learn more:** [Processes section below](#processes)
+**Learn more:** [Processes section below](#actor-model-and-processes)
 
 ### Supervision Trees
 Elixir uses supervision trees to manage process lifecycles and provide fault tolerance. When a process crashes, its supervisor can restart it or escalate the failure.
 
-**Learn more:** [Supervision section below](#supervision)
+**Learn more:** [Supervision section below](#supervision-trees)
 
 ### GenServer and OTP
 Elixir provides GenServer and other OTP behaviors for building robust, fault-tolerant applications. These abstractions handle common patterns in concurrent programming.
 
-**Learn more:** [OTP section below](#otp)
+**Learn more:** [OTP section below](#genserver-and-otp)
 
 ### Phoenix Framework
 Phoenix is a popular web framework for Elixir that demonstrates the language's capabilities for building real-time, fault-tolerant web applications.
 
-**Learn more:** [Phoenix section below](#phoenix)
+**Learn more:** [Phoenix section below](#phoenix-framework)
 
 ### Mix Build Tool
 Mix is Elixir's build tool that handles compilation, testing, and dependency management. It provides a simple interface for common development tasks.
 
-**Learn more:** [Mix section below](#mix)
+**Learn more:** [Mix section below](#mix-build-tool)
 
 ---
 
@@ -376,4 +376,4 @@ Mix is Elixir's build tool that handles compilation, testing, and dependency man
 
 - [Official Elixir Documentation](https://elixir-lang.org/docs.html)
 - [Elixir Learning Resources](elixir.md)
-- {{ link_with_abstract("languages-concept-comparison.md") }}
+- [languages-concept-comparison.md](../cross-languages-concept-comparison.md)

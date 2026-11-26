@@ -66,11 +66,11 @@ This document explains the rationale, philosophy, and strategic thinking behind 
 
 ## References
 
-- {{ link_with_abstract("nicola-routines.md") }} - Reference document with routine listings
-- {{ link_with_abstract("nicola-routines-architecture.md") }} - System architecture and design
-- {{ link_with_abstract("nicola-routines-principles.md") }} - Core principles that guide routines
-- {{ link_with_abstract("nicola-routines-personas.md") }} - Persona definitions and activation
-- {{ link_with_abstract("nicola-routines-entry-points.md") }} - Entry point catalog
-- {{ link_with_abstract("nicola-routines-howto-define-routine.md") }} - How to define routines
-- {{ link_with_abstract("nicola-routines-howto-review-routines.md") }} - How to review and update routines
+- [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. - Reference document with routine listings
+- [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. - System architecture and design
+- [Nicola's Routines Core Principles](nicola-routines-principles.md): Core principles that guide routine definition and execution, ensuring consistency, effectiveness, and alignment with personal and professional goals. - Core principles that guide routines
+- [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona. - Persona definitions and activation
+- [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. - Entry point catalog
+- [How to Define a Routine](nicola-routines-howto-define-routine.md): Step-by-step guide for defining new routines in Nicola's routines system, including persona assignment, entry point configuration, and metadata requirements. - How to define routines
+- [How to Review and Update Routines](nicola-routines-howto-review-routines.md): Step-by-step guide for reviewing and updating routines in Nicola's routines system, including effectiveness evaluation, usage analysis, and change management. - How to review and update routines
 - [Task Management](https://docs.google.com/document/d/1pqpudk1zsh2APZGZ1RjIKj6W_vMg4-Tz-MH9IX70F4g/edit?tab=t.0#heading=h.2et92p0)

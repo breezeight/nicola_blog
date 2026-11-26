@@ -9,7 +9,7 @@ type: howto
 # How to Activate a Persona
 
 > [!NOTE]
-> For persona definitions and activation rules, see {{ link_with_abstract("nicola-routines-personas.md") }}. For system architecture, see {{ link_with_abstract("nicola-routines-architecture.md") }}.
+> For persona definitions and activation rules, see [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona.. For system architecture, see [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles..
 
 ## 📘 Purpose & Scope
 
@@ -17,9 +17,9 @@ This guide provides step-by-step instructions for activating personas in Nicola'
 
 ## Prerequisites
 
-- Understanding of persona model (see {{ link_with_abstract("nicola-routines-personas.md") }})
-- Understanding of entry point system (see {{ link_with_abstract("nicola-routines-entry-points.md") }})
-- Understanding of priority rules (see {{ link_with_abstract("nicola-routines-architecture.md") }})
+- Understanding of persona model (see [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona.)
+- Understanding of entry point system (see [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines.)
+- Understanding of priority rules (see [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles.)
 
 ## Automatic Persona Activation
 
@@ -362,7 +362,7 @@ This guide provides step-by-step instructions for activating personas in Nicola'
 
 ## References
 
-- {{ link_with_abstract("nicola-routines-personas.md") }} - Persona definitions and activation rules
-- {{ link_with_abstract("nicola-routines-architecture.md") }} - System architecture including persona model
-- {{ link_with_abstract("nicola-routines-entry-points.md") }} - Entry point catalog
-- {{ link_with_abstract("nicola-routines.md") }} - Routine reference organized by persona
+- [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona. - Persona definitions and activation rules
+- [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. - System architecture including persona model
+- [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. - Entry point catalog
+- [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. - Routine reference organized by persona

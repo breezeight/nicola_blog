@@ -11,45 +11,45 @@ This index provides organized access to all JavaScript and TypeScript resources,
 
 ## Learning Paths
 
-{{ link_with_abstract("javascript-typescript-learningpaths.md") }}
+[JavaScript and TypeScript Index](javascript-typescript-learningpaths.md): Comprehensive learning paths for JavaScript and TypeScript, covering beginner to advanced topics and practical implementation guides.
 
 ## Core JavaScript Resources
 
-{{ link_with_abstract("javascript.md") }}
+[Javascript](javascript.md): Comprehensive JavaScript reference covering core concepts, modern ES6+ features, best practices, and essential resources for web development.
 
 ## Essential JavaScript Concepts
 
 ### Functions and Modularity
-{{ link_with_abstract("javascript_functions.md") }}
+[JavaScript Functions](javascript_functions.md): Deep dive into JavaScript functions covering function definitions, closures, functional programming patterns, and advanced function concepts.
 
-{{ link_with_abstract("javascript_modularity.md") }}
+[JavaScript Modularity](javascript_modularity.md): Complete guide to JavaScript modularity covering modules, prototypes, inheritance, object-oriented patterns, and modern module systems.
 
 ### Asynchronous Programming
-{{ link_with_abstract("javascript_asynchronicity.md") }}
+[JavaScript Asynchronicity](javascript_asynchronicity.md): Comprehensive guide to asynchronous JavaScript programming covering callbacks, promises, async/await, and modern asynchronous patterns.
 
 ### Testing
-{{ link_with_abstract("javascript_testing.md") }}
+[JavaScript Testing](javascript_testing.md): Complete JavaScript testing guide covering Jest fundamentals, unit testing, integration testing, mocking strategies, and testing best practices.
 
 ## Frontend Frameworks
 
 ### React Ecosystem
-{{ link_with_abstract("react/react-index.md") }}
+[React and React Native](react/react-index.md): React and React Native development resources covering component architecture, hooks, state management, and cross-platform mobile development.
 
 ## TypeScript
 
-{{ link_with_abstract("typescript.md") }}
+[typescript.md](typescript-index.md)
 
 ### Setup Guides
 
-{{ link_with_abstract("how-to-configure-vscode-typescript.md") }}
+[How to Configure VS Code for TypeScript](how-to-configure-vscode-typescript.md): Step-by-step guide to setting up VS Code with TypeScript extensions and TSServer integration for optimal development experience.
 
-{{ link_with_abstract("how-to-configure-vite-typescript.md") }}
+[How to Configure Vite with TypeScript](how-to-configure-vite-typescript.md): Step-by-step guide to setting up Vite projects with TypeScript for modern frontend development with fast HMR and optimized builds.
 
-{{ link_with_abstract("how-to-configure-typescript-project.md") }}
+[How to Configure TypeScript Project](how-to-configure-typescript-project.md): Comprehensive guide to initializing and configuring TypeScript projects for different use cases including libraries, CLI tools, and build systems.
 
 ### Tutorials
 
-{{ link_with_abstract("tutorial-typescript-compilation.md") }}
+[Understanding TypeScript Compilation](tutorial-typescript-compilation.md): Hands-on tutorial exploring how TypeScript compiles to JavaScript, covering compiler configuration, target settings, and practical compilation examples.
 
 ## Learning Paths
 

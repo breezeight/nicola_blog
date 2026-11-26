@@ -25,10 +25,10 @@ As of jan 2026, there are two distinct approaches to using artificial intelligen
 * **AI-Assisted Development (AIAD):** is the structured approach to working with AI, distinct from vibe coding. It is a way to work with AI that is more structured and predictable.
 * **Vibe coding:** is an AI-led approach to development where a user, often a non-technical individual or someone exploring ideas, uses natural language prompts to have the AI generate large sections, or even entire applications.
 
-Learn more here: {{ link_with_abstract("aiad-vs-vibe-coding.md") }}
+Learn more here: [aiad-vs-vibe-coding.md](aiad-vs-vibe-coding.md)
 
 ## Local AI Models
 
 Learn how to run AI models locally for privacy, cost control, and offline access. Covers hardware considerations (laptop vs server), OS limitations, and practical solutions like Ollama and LocalAI.
 
-Learn more here: {{ link_with_abstract("local-ai/local-ai.md") }}
+Learn more here: local AI notes (TODO: `local-ai/` page not written yet)

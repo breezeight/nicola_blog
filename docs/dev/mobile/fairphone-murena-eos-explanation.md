@@ -11,7 +11,7 @@ type: explanation
 
 ## 📘 Purpose & Scope
 
-This document clarifies the **roles of organizations and products** that often get conflated when discussing “a Fairphone with /e/OS”: the **e Foundation**, **/e/OS**, **Murena**, and **Fairphone**. It focuses on meaning and trade-offs (support, price, warranty), not step-by-step installation. For a broader introduction to Fairphone as hardware, see {{ link_with_abstract("fairphone-explanation.md") }}.
+This document clarifies the **roles of organizations and products** that often get conflated when discussing “a Fairphone with /e/OS”: the **e Foundation**, **/e/OS**, **Murena**, and **Fairphone**. It focuses on meaning and trade-offs (support, price, warranty), not step-by-step installation. For a broader introduction to Fairphone as hardware, see [Fairphone Explanation](fairphone-explanation.md): High-level explanation of Fairphone (hardware, longevity, Fairphone OS) and how it relates to deGoogled Android options; links to a dedicated note on Murena and /e/OS..
 
 ## The key difference: who does what
 

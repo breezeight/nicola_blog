@@ -16,7 +16,7 @@ This guide covers setting up TypeScript projects for different scenarios: librar
 **When**: Building web applications, SPAs, or frontend-heavy projects
 **Why**: Fast development server, excellent TypeScript support, modern tooling
 
-**Setup Guide**: {{ link_with_abstract("how-to-configure-vite-typescript.md") }}
+**Setup Guide**: [How to Configure Vite with TypeScript](how-to-configure-vite-typescript.md): Step-by-step guide to setting up Vite projects with TypeScript for modern frontend development with fast HMR and optimized builds.
 
 ### Libraries → Use tsup or Rollup
 **When**: Creating npm packages, reusable components, or libraries
@@ -30,7 +30,7 @@ This guide covers setting up TypeScript projects for different scenarios: librar
 
 For learning purposes or simple projects, you can use the TypeScript compiler directly:
 
-**Tutorial**: {{ link_with_abstract("tutorial-typescript-compilation.md") }}
+**Tutorial**: [Understanding TypeScript Compilation](tutorial-typescript-compilation.md): Hands-on tutorial exploring how TypeScript compiles to JavaScript, covering compiler configuration, target settings, and practical compilation examples.
 
 ### Basic Setup
 

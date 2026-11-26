@@ -9,7 +9,7 @@ type: howto
 # How to Configure Entry Points
 
 > [!NOTE]
-> For entry point catalog and definitions, see {{ link_with_abstract("nicola-routines-entry-points.md") }}. For system architecture, see {{ link_with_abstract("nicola-routines-architecture.md") }}.
+> For entry point catalog and definitions, see [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines.. For system architecture, see [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles..
 
 ## 📘 Purpose & Scope
 
@@ -17,8 +17,8 @@ This guide provides step-by-step instructions for configuring entry points in Ni
 
 ## Prerequisites
 
-- Understanding of entry point system (see {{ link_with_abstract("nicola-routines-entry-points.md") }})
-- Understanding of routine system (see {{ link_with_abstract("nicola-routines.md") }})
+- Understanding of entry point system (see [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines.)
+- Understanding of routine system (see [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes.)
 - Access to external systems (calendar, notifications, etc.)
 
 ## Step 1: Identify Entry Point Need
@@ -52,7 +52,7 @@ This guide provides step-by-step instructions for configuring entry points in Ni
 **Action**: Check if suitable entry point already exists.
 
 **Process**:
-1. Review entry point catalog (see {{ link_with_abstract("nicola-routines-entry-points.md") }})
+1. Review entry point catalog (see [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines.)
 2. Search for similar entry points
 3. Check if existing entry point can be reused
 4. Determine if new entry point is needed
@@ -276,7 +276,7 @@ This guide provides step-by-step instructions for configuring entry points in Ni
 **Action**: Add entry point to catalog.
 
 **Process**:
-1. Open entry point catalog (see {{ link_with_abstract("nicola-routines-entry-points.md") }})
+1. Open entry point catalog (see [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines.)
 2. Add entry point to appropriate type section
 3. Add entry point to persona section
 4. Update entry point statistics
@@ -365,7 +365,7 @@ Add to Notification-Based Entry Points table:
 
 ## References
 
-- {{ link_with_abstract("nicola-routines-entry-points.md") }} - Entry point catalog
-- {{ link_with_abstract("nicola-routines-architecture.md") }} - System architecture including entry point system
-- {{ link_with_abstract("nicola-routines.md") }} - Routines organized by entry point
-- {{ link_with_abstract("nicola-routines-personas.md") }} - Personas organized by entry point
+- [Nicola's Routines Entry Points Catalog](nicola-routines-entry-points.md): Reference catalog of all entry points in Nicola's routines system, organized by type, with trigger conditions, associated personas, and triggered routines. - Entry point catalog
+- [Nicola's Routines System Architecture](nicola-routines-architecture.md): Architectural design document explaining the persona/agent model, entry point system, and overall architecture of Nicola's routines system for managing different life roles. - System architecture including entry point system
+- [Nicola's Routines](nicola-routines.md): Reference document listing all routines organized by persona, frequency, and entry point, with complete metadata including priority, estimated time, dependencies, and outcomes. - Routines organized by entry point
+- [Nicola's Routines Personas Reference](nicola-routines-personas.md): Reference document defining all personas in Nicola's routines system, including activation triggers, context boundaries, routines, and entry points for each persona. - Personas organized by entry point

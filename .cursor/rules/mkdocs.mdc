@@ -1,13 +1,15 @@
 ---
-description: Use uv for Python packages, justfile for commands, and follow MkDocs development workflow
+description: Use uv for Python packages, justfile for commands, and follow the Zensical site development workflow
 alwaysApply: false
 ---
-# MkDocs Development Rules
+# Site Development Rules (Zensical)
+
+The site is built with [Zensical](https://zensical.org/), which reads `mkdocs.yml` directly. MkDocs is no longer installed.
 
 ## Package Management & Command Rules
 
 ### ALWAYS use `uv` for Python package management
-- Use `uv run` prefix for all Python commands (e.g., `uv run mkdocs build`)
+- Use `uv run` prefix for all Python commands (e.g., `uv run zensical build`)
 - Use `uv add` to add dependencies instead of `pip install`
 - Use `uv sync` to install dependencies from pyproject.toml
 - Use `uv lock` to update lock file
@@ -27,18 +29,16 @@ alwaysApply: false
 - **Start dev server**: `just serve` (default port 8000) or `just serve 8080`
 - **Start external server**: `just serve-external` (port 8001, accessible externally)
 - **Build site**: `just build`
-- **Build and serve**: `just build-serve`
 - **Update dependencies**: `just update`
 - **Show dependencies**: `just deps`
 - **Clean build artifacts**: `just clean`
 - **Check configuration**: `just check` (non-strict) or `just check-strict`
 - **Deploy to GitHub Pages**: `just deploy`
-- **Run macros**: `just macros`
-- **Full dev workflow**: `just dev` (install + macros + serve)
+- **Full dev workflow**: `just dev` (install + serve)
 
 ### Development Workflow
 1. Use `just install` or `uv sync` to ensure dependencies are installed
-2. Use `just dev` for full development workflow (install + macros + serve)
+2. Use `just dev` for full development workflow (install + serve)
 3. Use `just serve` for quick local development
 4. Use `just build` to test production builds
 5. All Python scripts should be run with `uv run` prefix
@@ -56,15 +56,15 @@ alwaysApply: false
 - Use `uv sync` before running any Python commands
 - Use `uv run` to ensure the correct Python environment is used
 
-## MkDocs Build Commands
-- **Build**: `uv run mkdocs build`
-- **Serve locally**: `uv run mkdocs serve --dev-addr=127.0.0.1:8001`
-- **Deploy to GitHub Pages**: `uv run mkdocs gh-deploy`
+## Zensical Build Commands
+- **Build**: `uv run zensical build --clean`
+- **Serve locally**: `uv run zensical serve --dev-addr=127.0.0.1:8000`
+- **Deploy to GitHub Pages**: `just deploy` (Zensical has no `gh-deploy`; the recipe builds and pushes `site/` with `ghp-import`)
 
 ## Configuration Files
-- Main config: `mkdocs.yml`
+- Main config: `mkdocs.yml` (read by Zensical)
 - Dependencies: `pyproject.toml`
-- Macros script: `main.py`
+- Macros script: `main.py` (only `github_code_ref`; link pages with plain Markdown links)
 
 ## Content Structure
 - Documentation files in `docs/` directory
@@ -78,6 +78,6 @@ alwaysApply: false
 
 ## Development Process
 1. Make changes to markdown files in `docs/`
-2. Test locally with `uv run mkdocs serve --dev-addr=127.0.0.1:8001`
-3. Build with `uv run mkdocs build` to check for errors
-4. Deploy with `uv run mkdocs gh-deploy` when ready
+2. Test locally with `just serve`
+3. Build with `just check` to check for errors and broken links
+4. Deploy with `just deploy` when ready

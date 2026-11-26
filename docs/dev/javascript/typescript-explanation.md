@@ -33,7 +33,7 @@ Where possible, we connect **core TypeScript concepts** to **practical use cases
 
 [Nicola's Typescript MindMap](https://drive.mindmup.com/map/1uicYTMNK7U71-HbLoRRtGa7ntRHBwXbI) 
 
-({{ link_with_abstract("javascript-typescript-learningpaths.md") }})
+([JavaScript and TypeScript Index](javascript-typescript-learningpaths.md): Comprehensive learning paths for JavaScript and TypeScript, covering beginner to advanced topics and practical implementation guides.)
 
 ## 🧠 Why Does TypeScript Exist?
 
@@ -121,7 +121,7 @@ TypeScript also provides:
 The heart of TypeScript is its **type system**.
 Understanding it is key to using TypeScript effectively — not just writing `.ts` files.
 
-➡️ [Next: How the Type System Works →](#bookmark=id.7h89pm2d6b35)
+➡️ Next: How the Type System Works →
 
 ## Typescript compilation
 
@@ -194,15 +194,15 @@ Understanding the compilation context helps you control TypeScript's behavior ac
 
 VS Code has excellent built-in TypeScript support through TSServer, which provides autocomplete, type checking, and navigation. The editor shows inferred types on hover, helping you understand how TypeScript narrows types in conditionals and infers generic parameters.
 
-For detailed setup instructions, see: {{ link_with_abstract("how-to-configure-vscode-typescript.md") }}
+For detailed setup instructions, see: [How to Configure VS Code for TypeScript](how-to-configure-vscode-typescript.md): Step-by-step guide to setting up VS Code with TypeScript extensions and TSServer integration for optimal development experience.
 
 #### Project Configuration
 
-**Frontend Projects**: {{ link_with_abstract("how-to-configure-vite-typescript.md") }}
+**Frontend Projects**: [How to Configure Vite with TypeScript](how-to-configure-vite-typescript.md): Step-by-step guide to setting up Vite projects with TypeScript for modern frontend development with fast HMR and optimized builds.
 
-**Libraries & CLI Tools**: {{ link_with_abstract("how-to-configure-typescript-project.md") }}
+**Libraries & CLI Tools**: [How to Configure TypeScript Project](how-to-configure-typescript-project.md): Comprehensive guide to initializing and configuring TypeScript projects for different use cases including libraries, CLI tools, and build systems.
 
-**Understanding Compilation**: {{ link_with_abstract("tutorial-typescript-compilation.md") }}
+**Understanding Compilation**: [Understanding TypeScript Compilation](tutorial-typescript-compilation.md): Hands-on tutorial exploring how TypeScript compiles to JavaScript, covering compiler configuration, target settings, and practical compilation examples.
 
 
 

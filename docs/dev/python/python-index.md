@@ -15,7 +15,7 @@ This reference provides a structured overview of Python's core concepts, designe
 ## References
 
 - [Official Python Documentation](https://docs.python.org/3/)
-- {{ link_with_abstract("python-language-reference-nicola/python-learning.md") }}
+- [python-language-reference-nicola/python-learning.md](../python-language-reference-nicola/python-learning.md)
 
 ---
 
@@ -30,11 +30,11 @@ Python is a high-level, interpreted programming language that emphasizes code re
 - Strong support for multiple programming paradigms (OOP, functional, procedural)
 
 **Compare with:**
-- [Go's philosophy](go/go-index.md#1-overview--philosophy)
-- [TypeScript's philosophy](javascript/typescript-index.md#1-overview--philosophy)
-- [Ruby's philosophy](ruby/ruby-index.md#1-overview--philosophy)
+- [Go's philosophy](../go/go-index.md#1-overview-philosophy)
+- [TypeScript's philosophy](../javascript/typescript-index.md#1-overview-philosophy)
+- [Ruby's philosophy](../ruby/ruby-index.md#1-overview-philosophy)
 
-**Learn more:** {{ link_with_abstract("python-overview-and-learning-paths.md") }}
+**Learn more:** [python-overview-and-learning-paths.md](../python-overview-and-learning-paths.md)
 
 ---
 
@@ -49,11 +49,11 @@ Python uses dynamic typing with optional static type hints introduced in Python 
 - Structural typing with `typing.Protocol`
 
 **Compare with:**
-- [Go's type system](go/go-index.md#2-type-systems)
-- [TypeScript's type system](javascript/typescript-index.md#2-type-systems)
-- [Ruby's type system](ruby/ruby-index.md#2-type-systems)
+- [Go's type system](../go/go-index.md#2-type-systems)
+- [TypeScript's type system](../javascript/typescript-index.md#2-type-systems)
+- [Ruby's type system](../ruby/ruby-index.md#2-type-systems)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/stdlib-devtools-typing-explanation.md") }}
+**Learn more:** [python-language-reference-nicola/stdlib-devtools-typing-explanation.md](../python-language-reference-nicola/stdlib-devtools-typing-explanation.md)
 
 ---
 
@@ -68,11 +68,11 @@ Python treats functions as first-class objects, supporting closures, higher-orde
 - Lambda expressions for simple anonymous functions
 
 **Compare with:**
-- [Go's functions](go-index.md#3-functions-and-closures)
-- [TypeScript's functions](typescript.md#3-functions-and-closures)
-- [Ruby's functions](ruby-index.md#3-functions-and-closures)
+- [Go's functions](../go/go-index.md#3-functions-and-closures)
+- [TypeScript's functions](../javascript/typescript-index.md#3-functions-and-closures)
+- [Ruby's functions](../ruby/ruby-index.md#3-functions-and-closures)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/functions.md") }}
+**Learn more:** [python-language-reference-nicola/functions.md](../python-language-reference-nicola/functions.md)
 
 ---
 
@@ -87,11 +87,11 @@ Python uses lexical scoping with explicit `global` and `nonlocal` keywords. Vari
 - Namespace-based scoping system
 
 **Compare with:**
-- [Go's scoping](go-index.md#4-variables-and-scoping)
-- [TypeScript's scoping](typescript.md#4-variables-and-scoping)
-- [Ruby's scoping](ruby-index.md#4-variables-and-scoping)
+- [Go's scoping](../go/go-index.md#4-variables-and-scoping)
+- [TypeScript's scoping](../javascript/typescript-index.md#4-variables-and-scoping)
+- [Ruby's scoping](../ruby/ruby-index.md#4-variables-and-scoping)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/scopes-and-namespaces.md") }}
+**Learn more:** [python-language-reference-nicola/scopes-and-namespaces.md](../python-language-reference-nicola/scopes-and-namespaces.md)
 
 ---
 
@@ -106,11 +106,11 @@ Python provides rich built-in data types including numeric types, sequences (str
 - Mutable types: lists, dictionaries, sets
 
 **Compare with:**
-- [Go's data types](go-index.md#5-data-types-and-literals)
-- [TypeScript's data types](typescript.md#5-data-types-and-literals)
-- [Ruby's data types](ruby-index.md#5-data-types-and-literals)
+- [Go's data types](../go/go-index.md#5-data-types-and-literals)
+- [TypeScript's data types](../javascript/typescript-index.md#5-data-types-and-literals)
+- [Ruby's data types](../ruby/ruby-index.md#5-data-types-and-literals)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/data-types-and-literals.md") }}
+**Learn more:** [python-language-reference-nicola/data-types-and-literals.md](../python-language-reference-nicola/data-types-and-literals.md)
 
 ---
 
@@ -126,11 +126,11 @@ Python provides standard control flow constructs including if/elif/else, for/whi
 - `match/case` pattern matching (Python 3.10+)
 
 **Compare with:**
-- [Go's control flow](go-index.md#6-control-flow)
-- [TypeScript's control flow](typescript.md#6-control-flow)
-- [Ruby's control flow](ruby-index.md#6-control-flow)
+- [Go's control flow](../go/go-index.md#6-control-flow)
+- [TypeScript's control flow](../javascript/typescript-index.md#6-control-flow)
+- [Ruby's control flow](../ruby/ruby-index.md#6-control-flow)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/control-flow.md") }}
+**Learn more:** [python-language-reference-nicola/control-flow.md](../python-language-reference-nicola/control-flow.md)
 
 ---
 
@@ -145,11 +145,11 @@ Python uses exceptions for error handling with try/except/finally blocks. The ph
 - Context managers for resource cleanup
 
 **Compare with:**
-- [Go's error handling](go-index.md#7-error-handling)
-- [TypeScript's error handling](typescript.md#7-error-handling)
-- [Ruby's error handling](ruby-index.md#7-error-handling)
+- [Go's error handling](../go/go-index.md#7-error-handling)
+- [TypeScript's error handling](../javascript/typescript-index.md#7-error-handling)
+- [Ruby's error handling](../ruby/ruby-index.md#7-error-handling)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/exception-handling-and-with.md") }}
+**Learn more:** [python-language-reference-nicola/exception-handling-and-with.md](../python-language-reference-nicola/exception-handling-and-with.md)
 
 ---
 
@@ -164,11 +164,11 @@ Python supports full object-oriented programming with classes, inheritance, poly
 - Properties and descriptors for attribute access control
 
 **Compare with:**
-- [Go's OOP](go-index.md#8-object-oriented-programming)
-- [TypeScript's OOP](typescript.md#8-object-oriented-programming)
-- [Ruby's OOP](ruby-index.md#8-object-oriented-programming)
+- [Go's OOP](../go/go-index.md#8-object-oriented-programming)
+- [TypeScript's OOP](../javascript/typescript-index.md#8-object-oriented-programming)
+- [Ruby's OOP](../ruby/ruby-index.md#8-object-oriented-programming)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/classes-and-objects.md") }}
+**Learn more:** [python-language-reference-nicola/classes-and-objects.md](../python-language-reference-nicola/classes-and-objects.md)
 
 ---
 
@@ -183,11 +183,11 @@ Python supports asynchronous programming through `asyncio`, coroutines, and asyn
 - GIL limitations for CPU-bound tasks
 
 **Compare with:**
-- [Go's concurrency](go-index.md#9-asynchronous-programming)
-- [TypeScript's async model](typescript.md#9-asynchronous-programming)
-- [Ruby's async model](ruby-index.md#9-asynchronous-programming)
+- [Go's concurrency](../go/go-index.md#9-asynchronous-programming)
+- [TypeScript's async model](../javascript/typescript-index.md#9-asynchronous-programming)
+- [Ruby's async model](../ruby/ruby-index.md#9-asynchronous-programming)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/functions-and-functional-programming.md") }}
+**Learn more:** [python-language-reference-nicola/functions-and-functional-programming.md](../python-language-reference-nicola/functions-and-functional-programming.md)
 
 ---
 
@@ -202,11 +202,11 @@ Python's module system allows code organization through files and packages. The 
 - `pip` and `uv` for package management
 
 **Compare with:**
-- [Go's packages](go-index.md#10-modules-and-packages)
-- [TypeScript's modules](typescript.md#10-modules-and-packages)
-- [Ruby's modules](ruby-index.md#10-modules-and-packages)
+- [Go's packages](../go/go-index.md#10-modules-and-packages)
+- [TypeScript's modules](../javascript/typescript-index.md#10-modules-and-packages)
+- [Ruby's modules](../ruby/ruby-index.md#10-modules-and-packages)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/modules-and-packages.md") }}
+**Learn more:** [python-language-reference-nicola/modules-and-packages.md](../python-language-reference-nicola/modules-and-packages.md)
 
 ---
 
@@ -221,11 +221,11 @@ Python uses automatic memory management with reference counting and cyclic garba
 - No manual memory management
 
 **Compare with:**
-- [Go's memory management](go-index.md#11-memory-management)
-- [TypeScript's memory management](typescript.md#11-memory-management)
-- [Ruby's memory management](ruby-index.md#11-memory-management)
+- [Go's memory management](../go/go-index.md#11-memory-management)
+- [TypeScript's memory management](../javascript/typescript-index.md#11-memory-management)
+- [Ruby's memory management](../ruby/ruby-index.md#11-memory-management)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/python-learning.md") }}
+**Learn more:** [python-language-reference-nicola/python-learning.md](../python-language-reference-nicola/python-learning.md)
 
 ---
 
@@ -240,11 +240,11 @@ Python 3.10 introduced structural pattern matching with `match/case` statements,
 - Type and value pattern matching
 
 **Compare with:**
-- [Go's pattern matching](go-index.md#12-pattern-matching)
-- [TypeScript's pattern matching](typescript.md#12-pattern-matching)
-- [Ruby's pattern matching](ruby-index.md#12-pattern-matching)
+- [Go's pattern matching](../go/go-index.md#12-pattern-matching)
+- [TypeScript's pattern matching](../javascript/typescript-index.md#12-pattern-matching)
+- [Ruby's pattern matching](../ruby/ruby-index.md#12-pattern-matching)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/control-flow.md") }}
+**Learn more:** [python-language-reference-nicola/control-flow.md](../python-language-reference-nicola/control-flow.md)
 
 ---
 
@@ -259,11 +259,11 @@ Python provides extensive metaprogramming capabilities through introspection, de
 - `exec()` and `eval()` for dynamic code execution
 
 **Compare with:**
-- [Go's metaprogramming](go-index.md#13-metaprogramming)
-- [TypeScript's metaprogramming](typescript.md#13-metaprogramming)
-- [Ruby's metaprogramming](ruby-index.md#13-metaprogramming)
+- [Go's metaprogramming](../go/go-index.md#13-metaprogramming)
+- [TypeScript's metaprogramming](../javascript/typescript-index.md#13-metaprogramming)
+- [Ruby's metaprogramming](../ruby/ruby-index.md#13-metaprogramming)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/decorators.md") }}
+**Learn more:** [python-language-reference-nicola/decorators.md](../python-language-reference-nicola/decorators.md)
 
 ---
 
@@ -278,11 +278,11 @@ Python's "batteries included" philosophy provides an extensive standard library 
 - `unittest` for testing framework
 
 **Compare with:**
-- [Go's standard library](go-index.md#14-standard-library-highlights)
-- [TypeScript's standard library](typescript.md#14-standard-library-highlights)
-- [Ruby's standard library](ruby-index.md#14-standard-library-highlights)
+- [Go's standard library](../go/go-index.md#14-standard-library-highlights)
+- [TypeScript's standard library](../javascript/typescript-index.md#14-standard-library-highlights)
+- [Ruby's standard library](../ruby/ruby-index.md#14-standard-library-highlights)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/python-learning.md") }}
+**Learn more:** [python-language-reference-nicola/python-learning.md](../python-language-reference-nicola/python-learning.md)
 
 ---
 
@@ -297,11 +297,11 @@ Python is an interpreted language that compiles source code to bytecode, which i
 - Cross-platform bytecode compatibility
 
 **Compare with:**
-- [Go's compilation](go-index.md#15-compilation-and-runtime)
-- [TypeScript's compilation](typescript.md#15-compilation-and-runtime)
-- [Ruby's compilation](ruby-index.md#15-compilation-and-runtime)
+- [Go's compilation](../go/go-index.md#15-compilation-and-runtime)
+- [TypeScript's compilation](../javascript/typescript-index.md#15-compilation-and-runtime)
+- [Ruby's compilation](../ruby/ruby-index.md#15-compilation-and-runtime)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/python-learning.md") }}
+**Learn more:** [python-language-reference-nicola/python-learning.md](../python-language-reference-nicola/python-learning.md)
 
 ---
 
@@ -316,11 +316,11 @@ Python provides built-in testing support through `unittest` and external framewo
 - Rich ecosystem of testing tools
 
 **Compare with:**
-- [Go's testing](go-index.md#16-testing-and-debugging)
-- [TypeScript's testing](typescript.md#16-testing-and-debugging)
-- [Ruby's testing](ruby-index.md#16-testing-and-debugging)
+- [Go's testing](../go/go-index.md#16-testing-and-debugging)
+- [TypeScript's testing](../javascript/typescript-index.md#16-testing-and-debugging)
+- [Ruby's testing](../ruby/ruby-index.md#16-testing-and-debugging)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/python-learning.md") }}
+**Learn more:** [python-language-reference-nicola/python-learning.md](../python-language-reference-nicola/python-learning.md)
 
 ---
 
@@ -335,11 +335,11 @@ Python follows PEP 8 style guidelines and has established idioms for common patt
 - Context managers for resource management
 
 **Compare with:**
-- [Go's best practices](go-index.md#17-best-practices-and-idioms)
-- [TypeScript's best practices](typescript.md#17-best-practices-and-idioms)
-- [Ruby's best practices](ruby-index.md#17-best-practices-and-idioms)
+- [Go's best practices](../go/go-index.md#17-best-practices-and-idioms)
+- [TypeScript's best practices](../javascript/typescript-index.md#17-best-practices-and-idioms)
+- [Ruby's best practices](../ruby/ruby-index.md#17-best-practices-and-idioms)
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/python-learning.md") }}
+**Learn more:** [python-language-reference-nicola/python-learning.md](../python-language-reference-nicola/python-learning.md)
 
 ---
 
@@ -348,32 +348,32 @@ Python follows PEP 8 style guidelines and has established idioms for common patt
 ### List Comprehensions
 Python's list comprehensions provide a concise way to create lists based on existing iterables, combining mapping and filtering operations in a single expression.
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/control-flow.md") }}
+**Learn more:** [python-language-reference-nicola/control-flow.md](../python-language-reference-nicola/control-flow.md)
 
 ### Context Managers
 Context managers enable proper resource management through the `with` statement, ensuring cleanup code runs even if exceptions occur.
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/context-managers.md") }}
+**Learn more:** [python-language-reference-nicola/context-managers.md](../python-language-reference-nicola/context-managers.md)
 
 ### Decorators
 Decorators are a powerful metaprogramming feature that allows modification of functions or classes without changing their source code.
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/decorators.md") }}
+**Learn more:** [python-language-reference-nicola/decorators.md](../python-language-reference-nicola/decorators.md)
 
 ### Generators and Iterators
 Python's generator functions and iterator protocol provide memory-efficient iteration over large datasets without loading everything into memory.
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/iterators-iterables-generators.md") }}
+**Learn more:** [python-language-reference-nicola/iterators-iterables-generators.md](../python-language-reference-nicola/iterators-iterables-generators.md)
 
 ### Package Management with uv
 Modern Python package management using `uv`, a fast Python package installer and resolver written in Rust.
 
-**Learn more:** {{ link_with_abstract("python-language-reference-nicola/uv-explanation.md") }}
+**Learn more:** [python-language-reference-nicola/uv-explanation.md](../python-language-reference-nicola/uv-explanation.md)
 
 ---
 
 ## References
 
 - [Official Python Documentation](https://docs.python.org/3/)
-- [Python Learning Paths](python-nicola-personal-learning-path.md)
-- {{ link_with_abstract("languages-concept-comparison.md") }}
+- [Python Learning Paths](../python-nicola-personal-learning-path.md)
+- [languages-concept-comparison.md](../cross-languages-concept-comparison.md)

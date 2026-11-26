@@ -132,7 +132,7 @@ echo 'Review PR #$1 with priority $2 and assign to $3' > .claude/commands/review
 
 https://code.claude.com/docs/en/slash-commands#bash-command-execution
 
-As you can see in the [Templating example](#templating-example), you can use "!`<bash-command>`" shell commands to inject the output of the command into the prompt.
+As you can see in the [Templating example](#templating-command-example), you can use "!`<bash-command>`" shell commands to inject the output of the command into the prompt.
 
 It's important that allowed tools are set in the command definition file, example:
 
