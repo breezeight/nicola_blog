@@ -139,9 +139,9 @@ Our language documentation follows the Diátaxis framework with:
 - **Cross-language comparison**: Side-by-side concept comparisons
 
 **Related Rules:**
-- [Language Documentation Structure Rules](mdc:.cursor/rules/content-guidelines-language-structure.mdc) - 18-section standardized structure for language indexes
-- [Cross-Language Comparison Rules](mdc:.cursor/rules/content-guidelines-cross-language.mdc) - Requirements for comparison tables and consistency
-- [Diátaxis Framework Rules](mdc:.cursor/rules/content-guidelines-diataxis.mdc) - Document type classification and naming conventions
+- [Language Documentation Structure Rules](https://github.com/breezeight/nik-kh/blob/develop/guidelines/content/language-structure.md) - 18-section standardized structure for language indexes
+- [Cross-Language Comparison Rules](https://github.com/breezeight/nik-kh/blob/develop/guidelines/content/cross-language.md) - Requirements for comparison tables and consistency
+- [Diátaxis Framework Rules](https://github.com/breezeight/nik-kh/blob/develop/guidelines/content/diataxis.md) - Document type classification and naming conventions
 
 ### JavaScript and TypeScript
 

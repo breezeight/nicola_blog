@@ -1,0 +1,7 @@
+---
+description: Guidelines for the Ansible notes (docs/dev/ansible*.md)
+globs: docs/dev/ansible*.md
+alwaysApply: false
+---
+
+@guidelines/content/ansible.md

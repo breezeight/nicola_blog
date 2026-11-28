@@ -1,17 +1,12 @@
----
-description: 
-globs: 
-alwaysApply: false
----
 # Ansible Notes Guidelines
 
 ## File Structure
-- **Main Guide**: [ansible.md](mdc:docs/dev/ansible.md) - Comprehensive Ansible reference
-- **Tutorials**: [ansible_tutorials.md](mdc:docs/dev/ansible_tutorials.md) - Hands-on tutorials
+- **Main Guide**: [ansible.md](../../docs/dev/ansible.md) - Comprehensive Ansible reference
+- **Tutorials**: [ansible_tutorials.md](../../docs/dev/ansible_tutorials.md) - Hands-on tutorials
 
 ## Content Organization
 
-### Main Guide Structure ([ansible.md](mdc:docs/dev/ansible.md))
+### Main Guide Structure ([ansible.md](../../docs/dev/ansible.md))
 1. **Getting Started** - Installation, setup, basic concepts
 2. **Tutorials** - Index linking to specific tutorials
 3. **Core Concepts** - Fundamental Ansible terminology and architecture
@@ -20,7 +15,7 @@ alwaysApply: false
 6. **Resources** - External links, references, tools
 
 ### Tutorial Management
-- Keep tutorials in [ansible_tutorials.md](mdc:docs/dev/ansible_tutorials.md)
+- Keep tutorials in [ansible_tutorials.md](../../docs/dev/ansible_tutorials.md)
 - Update the tutorials index in the main guide when adding new content
 - Use clear anchor links for direct navigation
 - Include step-by-step instructions with code examples

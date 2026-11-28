@@ -1,8 +1,3 @@
----
-glob: "docs/**/*.md"
-auto-attach: "docs/dev/**/*.md"
----
-
 # General Project Rules
 
 ## Repository Purpose

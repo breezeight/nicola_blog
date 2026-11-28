@@ -1,0 +1,79 @@
+# Site Development Rules (Zensical)
+
+The site is built with [Zensical](https://zensical.org/), which reads `mkdocs.yml` directly. MkDocs is no longer installed.
+
+## Package Management & Command Rules
+
+### ALWAYS use `uv` for Python package management
+- Use `uv run` prefix for all Python commands (e.g., `uv run zensical build`)
+- Use `uv add` to add dependencies instead of `pip install`
+- Use `uv sync` to install dependencies from pyproject.toml
+- Use `uv lock` to update lock file
+
+### Package Management Commands
+- **Add dependency**: `uv add package-name`
+- **Add dev dependency**: `uv add --dev package-name`
+- **Remove dependency**: `uv remove package-name`
+- **Sync dependencies**: `uv sync`
+- **Update lock file**: `uv lock`
+- **Run Python script**: `uv run script.py`
+- **Run Python module**: `uv run -m module_name`
+
+### Justfile Command Management
+- **Show available commands**: `just` (or `just --list`)
+- **Install dependencies**: `just install`
+- **Start dev server**: `just serve` (default port 8000) or `just serve 8080`
+- **Start external server**: `just serve-external` (port 8001, accessible externally)
+- **Build site**: `just build`
+- **Update dependencies**: `just update`
+- **Show dependencies**: `just deps`
+- **Clean build artifacts**: `just clean`
+- **Check configuration**: `just check` (non-strict) or `just check-strict`
+- **Deploy**: GitHub Actions deploys `main` to Cloudflare Pages; `just deploy` for a manual preview
+- **Full dev workflow**: `just dev` (install + serve)
+
+### Development Workflow
+1. Use `just install` or `uv sync` to ensure dependencies are installed
+2. Use `just dev` for full development workflow (install + serve)
+3. Use `just serve` for quick local development
+4. Use `just build` to test production builds
+5. All Python scripts should be run with `uv run` prefix
+6. Use `uv add` when adding new packages to the project
+7. Use `uv lock` to update the lock file after dependency changes
+
+### Command Management Best Practices
+- **Prefer justfile commands** over direct `uv` commands for common tasks
+- Use `just` to see all available commands
+- Use `just dev` for complete development setup
+- Use `just serve-external` when you need external access to the dev server
+- Use `just check-strict` for thorough validation before deployment
+- Always use `uv` instead of `pip` for consistency
+- Keep `pyproject.toml` as the single source of truth for dependencies
+- Use `uv sync` before running any Python commands
+- Use `uv run` to ensure the correct Python environment is used
+
+## Zensical Build Commands
+- **Build**: `uv run zensical build --clean`
+- **Serve locally**: `uv run zensical serve --dev-addr=127.0.0.1:8000`
+- **Deploy to Cloudflare Pages**: push to `main` (GitHub Actions), or `just deploy` for a manual preview
+
+## Configuration Files
+- Main config: `mkdocs.yml` (read by Zensical)
+- Dependencies: `pyproject.toml`
+- Macros script: `main.py` (only `github_code_ref`; link pages with plain Markdown links)
+
+## Content Structure
+- Documentation files in `docs/` directory
+- Static assets in `docs/images/` and other subdirectories
+- Navigation defined in `mkdocs.yml`
+
+## Special Files
+- `docs/regex.md`: Contains regex patterns formatted as code blocks
+- Do not modify the markdown linting disable comment at the top of regex.md
+- Regex patterns are intentionally wrapped in backticks to prevent MkDocs link warnings
+
+## Development Process
+1. Make changes to markdown files in `docs/`
+2. Test locally with `just serve`
+3. Build with `just check` to check for errors and broken links
+4. Deploy with `just deploy` when ready

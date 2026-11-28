@@ -81,7 +81,7 @@ Link pages with plain, relative Markdown links. Index pages add the target's tit
 - [How-to: Pull images in K8S clusters from Amazon ECR](k8s-registry-auth-howto.md): Pull ECR images from EKS and non-AWS clusters.
 ```
 
-The former `link_with_abstract` macro has been removed: Zensical's macros environment does not expose the current page, so relative paths could not be resolved. Plain links also work on GitHub and in Obsidian. See [the linking rule](.cursor/rules/content-guidelines-linking.mdc).
+The former `link_with_abstract` macro has been removed: Zensical's macros environment does not expose the current page, so relative paths could not be resolved. Plain links also work on GitHub and in Obsidian. See [the linking rule](guidelines/content/linking.md).
 
 `main.py` still defines `github_code_ref(repo_path, start_line, end_line, language)`, which renders a link to lines in a GitHub repository. Pages that contain literal `{{ ... }}` (for example Helm templates) need `render_macros: false` in their front matter.
 
@@ -110,7 +110,12 @@ Tagged pages are listed on the [Tags](docs/tags.md) page.
 │   ├── stylesheets/      # extra.css
 │   ├── index.md          # Home page
 │   └── tags.md           # Tags index
-├── .cursor/rules/        # Cursor rules (content guidelines, MkDocs conventions)
+├── guidelines/           # Content and site rules for humans and agents (index: CONTENT.md)
+├── .cursor/rules/        # Cursor pointer rules (front matter + @guidelines/...)
+├── .agents/skills/       # Agent skills: source (Codex reads it directly)
+├── .claude/skills/       # Claude Code skills (symlinks to .agents/skills, plus speckit-*)
+├── .specify/             # Spec Kit: constitution, templates, scripts
+├── specs/                # Spec Kit feature specs, plans, tasks
 ├── main.py               # Macros (github_code_ref)
 ├── mkdocs.yml            # Site configuration (read by Zensical)
 ├── justfile              # Entry point, imports justfile.zensical
@@ -128,6 +133,37 @@ Follow the content guidelines listed in [CONTENT.md](CONTENT.md). In short:
 3. Add the page to `nav` in `mkdocs.yml` when it should appear in the navigation.
 4. Use plain relative Markdown links (no `[[wikilinks]]`).
 5. Preview with `just serve` and validate with `just check`.
+
+## AI Agents Setup
+
+Agent instructions live in [AGENTS.md](AGENTS.md): what each agent must read, where the skills are,
+and which MCP servers to connect. This section explains how to set them up.
+
+### Connect the MCP servers
+
+The list of servers and their purpose is in the MCP table in [AGENTS.md](AGENTS.md#mcp-servers).
+
+- **Claude Code**: servers such as ClickUp are claude.ai connectors. Connect them once in claude.ai
+  under *Settings → Connectors*. If a session starts with a connector unauthenticated, run `/mcp`,
+  pick the server (e.g. *claude.ai ClickUp*) and log in. `claude mcp list` shows the status.
+- **Codex**: add and log in to each server (OAuth):
+  ```bash
+  codex mcp add clickup --url https://mcp.clickup.com/mcp
+  codex mcp login clickup
+  codex mcp list
+  ```
+
+### Skills
+
+- Project skills have **one source**: `.agents/skills/<name>/SKILL.md`, which Codex reads.
+- Claude Code reads `.claude/skills/`, where each project skill is a relative symlink:
+  ```bash
+  ln -s ../../.agents/skills/<name> .claude/skills/<name>
+  ```
+- `speckit-*` skills are installed by Spec Kit as separate copies in both folders. Do not edit them
+  by hand; update them with the Specify CLI.
+- To add a skill: create `.agents/skills/<name>/SKILL.md` (front matter `name` and `description`,
+  then the instructions, in English), add the symlink, and list it in [AGENTS.md](AGENTS.md#skills).
 
 ## Deployment
 

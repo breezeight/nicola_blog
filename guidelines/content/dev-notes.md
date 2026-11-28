@@ -1,8 +1,3 @@
----
-description: 
-globs: docs/dev/**/*.md
-alwaysApply: false
----
 # Development Notes Guidelines
 
 ## Technical Documentation Standards
