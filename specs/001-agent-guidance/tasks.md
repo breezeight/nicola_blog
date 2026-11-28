@@ -61,8 +61,8 @@ directed to them.
 
 ## Phase 7: Polish
 
-- [ ] T018 Run quickstart.md §1–7 that can be checked locally; record results; `just check-strict`
-- [ ] T019 Commit remaining changes (README, specs, AGENTS, DEVELOPMENT, constitution) and push `spec-kit-setup`
+- [X] T018 Run quickstart.md §1–7 that can be checked locally; record results; `just check-strict`
+- [X] T019 Commit remaining changes (README, specs, AGENTS, DEVELOPMENT, constitution) and push `spec-kit-setup`
 
 ## Dependencies
 
