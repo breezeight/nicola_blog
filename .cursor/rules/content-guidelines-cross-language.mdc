@@ -1,0 +1,6 @@
+---
+alwaysApply: true
+description: Master rule coordinating all language documentation guidelines including cross-language comparison
+---
+
+@guidelines/content/cross-language.md

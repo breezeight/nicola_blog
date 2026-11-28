@@ -1,0 +1,7 @@
+---
+description: General rules for documentation pages (structure, naming, formatting)
+globs: docs/**/*.md
+alwaysApply: false
+---
+
+@guidelines/content/general.md

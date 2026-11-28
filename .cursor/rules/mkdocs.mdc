@@ -1,0 +1,6 @@
+---
+description: Use uv for Python packages, justfile for commands, and follow the Zensical site development workflow
+alwaysApply: false
+---
+
+@guidelines/site/zensical.md

@@ -1,0 +1,6 @@
+---
+alwaysApply: true
+description: Maintain standardized language documentation structure across all programming language files
+---
+
+@guidelines/content/language-structure.md

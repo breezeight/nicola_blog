@@ -1,0 +1,6 @@
+---
+description: Guidelines for the TypeScript documentation pages
+alwaysApply: false
+---
+
+@guidelines/content/typescript-docs.md

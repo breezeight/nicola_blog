@@ -1,0 +1,10 @@
+---
+description: How to link between documentation pages (plain Markdown links, no link macros)
+globs:
+  - 'main.py'
+  - 'docs/**/*.md'
+  - 'mkdocs.yml'
+alwaysApply: true
+---
+
+@guidelines/content/linking.md

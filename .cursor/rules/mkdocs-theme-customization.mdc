@@ -1,0 +1,6 @@
+---
+description: apply when required to update the site theme
+alwaysApply: false
+---
+
+@guidelines/site/theme-customization.md

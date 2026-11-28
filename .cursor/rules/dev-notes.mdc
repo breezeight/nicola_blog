@@ -1,0 +1,6 @@
+---
+globs: docs/dev/**/*.md
+alwaysApply: false
+---
+
+@guidelines/content/dev-notes.md
