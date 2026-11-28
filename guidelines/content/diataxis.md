@@ -1,8 +1,4 @@
----
-globs: docs/dev/**/*.md
-alwaysApply: false
----
-# General Project Rules — Diátaxis Framework (Integrated MDC Rule)
+# Diátaxis Framework — Document Classification and Structure
 
 ## 📚 Repository Purpose
 This repository is a **personal knowledge base** structured using the **Diátaxis Documentation Framework**, created by [Daniele Procida](https://vurt.eu/work-in-documentation/).  

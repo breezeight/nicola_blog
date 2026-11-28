@@ -1,21 +1,16 @@
----
-alwaysApply: true
-description: Maintain standardized language documentation structure across all programming language files
----
-
 # Language Documentation Structure Rules
 
 ## Overview
 This rule enforces the standardized 18-section structure for all programming language documentation files to maintain consistency and enable cross-language comparison.
 
 **Related Rules:**
-- [content-guidelines-diataxis.mdc](mdc:.cursor/rules/content-guidelines-diataxis.mdc) - Diátaxis framework compliance
-- [content-guidelines-master.mdc](mdc:.cursor/rules/content-guidelines-master.mdc) - Master coordination and cross-language comparison rules
+- [diataxis.md](diataxis.md) - Diátaxis framework compliance
+- [cross-language.md](cross-language.md) - Master coordination and cross-language comparison rules
 
 ## Diátaxis Framework Compliance
 
 ### Document Type Requirements
-All language index files must follow Diátaxis framework principles as defined in [content-guidelines-diataxis.mdc](mdc:.cursor/rules/content-guidelines-diataxis.mdc):
+All language index files must follow Diátaxis framework principles as defined in [diataxis.md](diataxis.md):
 
 - **Type**: Must be classified as `reference` documents
 - **Tone**: Factual, objective, structured organization
@@ -92,19 +87,19 @@ Each section must follow this format:
 
 ### Mandatory Cross-References
 Every section must include "Compare with" links to equivalent sections in other language documents:
-- Python: [python-index.md](mdc:docs/dev/python/python-index.md)
-- TypeScript: [typescript-index.md](mdc:docs/dev/javascript/typescript-index.md)
-- Go: [go-index.md](mdc:docs/dev/go/go-index.md)
-- Ruby: [ruby-index.md](mdc:docs/dev/ruby/ruby-index.md)
-- Elixir: [elixir-index.md](mdc:docs/dev/elixir/elixir-index.md)
+- Python: [python-index.md](../../docs/dev/python/python-index.md)
+- TypeScript: [typescript-index.md](../../docs/dev/javascript/typescript-index.md)
+- Go: [go-index.md](../../docs/dev/go/go-index.md)
+- Ruby: [ruby-index.md](../../docs/dev/ruby/ruby-index.md)
+- Elixir: [elixir-index.md](../../docs/dev/elixir/elixir-index.md)
 
 ### Link Format
 Use this format for cross-references:
 ```markdown
 **Compare with:**
-- [Python's [concept]](python-language-index.md#[section-number]-[section-name])
-- [Go's [concept]](go-index.md#[section-number]-[section-name])
-- [TypeScript's [concept]](typescript.md#[section-number]-[section-name])
+- [Python's [concept]](../python/python-index.md#[section-number]-[section-name])
+- [Go's [concept]](../go/go-index.md#[section-number]-[section-name])
+- [TypeScript's [concept]](../javascript/typescript-index.md#[section-number]-[section-name])
 ```
 
 ## Content Guidelines
@@ -149,7 +144,7 @@ When adding or modifying language documentation:
 - [ ] Links use correct anchor format (#section-number-section-name)
 - [ ] Language-specific features section includes 3-5 unique features
 - [ ] All internal links point to existing files (`just check` reports broken ones)
-- [ ] Navigation in [mkdocs.yml](mdc:mkdocs.yml) is updated
+- [ ] Navigation in [mkdocs.yml](../../mkdocs.yml) is updated
 - [ ] Build passes with `just build`
 
 ## Enforcement Rules

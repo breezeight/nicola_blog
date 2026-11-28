@@ -1,9 +1,3 @@
----
-description: "Nicola's routines system architecture and management rules"
-globs: ["docs/nicola-routines/**/*.md"]
-alwaysApply: true
----
-
 # Nicola's Routines System Rules
 
 This rule file defines the architecture and management rules for Nicola's routines system. All AI agents and users working with routines MUST follow these rules.
@@ -311,8 +305,8 @@ This rule file defines the architecture and management rules for Nicola's routin
 
 ## References
 
-- [nicola-routines-architecture.md](mdc:docs/nicola-routines/nicola-routines-architecture.md) - System architecture
-- [nicola-routines-principles.md](mdc:docs/nicola-routines/nicola-routines-principles.md) - Core principles
-- [nicola-routines.md](mdc:docs/nicola-routines/nicola-routines.md) - Routine reference
-- [nicola-routines-personas.md](mdc:docs/nicola-routines/nicola-routines-personas.md) - Persona definitions
-- [nicola-routines-entry-points.md](mdc:docs/nicola-routines/nicola-routines-entry-points.md) - Entry point catalog
+- [nicola-routines-architecture.md](../../docs/nicola-routines/nicola-routines-architecture.md) - System architecture
+- [nicola-routines-principles.md](../../docs/nicola-routines/nicola-routines-principles.md) - Core principles
+- [nicola-routines.md](../../docs/nicola-routines/nicola-routines.md) - Routine reference
+- [nicola-routines-personas.md](../../docs/nicola-routines/nicola-routines-personas.md) - Persona definitions
+- [nicola-routines-entry-points.md](../../docs/nicola-routines/nicola-routines-entry-points.md) - Entry point catalog

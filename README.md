@@ -1,57 +1,39 @@
-## Zensical
+# nik-kh — Nicola's Knowledge Hub
 
-The site is built with [Zensical](https://zensical.org/), which reads `mkdocs.yml`. See [DEVELOPMENT.md](DEVELOPMENT.md).
+Personal knowledge base built with [Zensical](https://zensical.org/) and published, behind
+Cloudflare Access, at <https://nik-kh.pages.dev>.
 
-### Quick Start
+## Just cloned this repo?
 
-Install dependencies and start the development server:
+| I want to… | Go to |
+|---|---|
+| Run the site locally | `just install && just serve`, then open <http://localhost:8000>. Details in [DEVELOPMENT.md](DEVELOPMENT.md) |
+| Write or edit a page | [CONTENT.md](CONTENT.md): the content rules (Diátaxis, structure, linking) |
+| Work with an AI agent (Claude Code, Codex, Cursor) | [AGENTS.md](AGENTS.md): agent instructions, skills, MCP servers to connect |
+| Change tooling, CI or deployment | [DEVELOPMENT.md](DEVELOPMENT.md), then a spec with Spec Kit (`/speckit-specify`) |
+| Deploy | Push to `main`: GitHub Actions builds and deploys. See [DEVELOPMENT.md § Deployment](DEVELOPMENT.md#deployment) |
 
-```bash
-just install
-just serve
-```
+## What's where
 
-Open `http://localhost:8000` in your browser
+| Path | Contents |
+|---|---|
+| [docs/](docs/) | The site content; [docs/index.md](docs/index.md) is the home page |
+| [mkdocs.yml](mkdocs.yml) | Site configuration and navigation (read by Zensical) |
+| [main.py](main.py) | Macros available in pages (`github_code_ref`) |
+| [justfile](justfile) | Commands: `serve`, `build`, `check-strict`, `deploy`, … |
+| [.specify/memory/constitution.md](.specify/memory/constitution.md) | Non-negotiable project principles |
+| [specs/](specs/) | Spec Kit feature specs, plans and tasks |
+| `.agents/skills/`, `.claude/skills/` | Agent skills (see [AGENTS.md](AGENTS.md)) |
+| `.githooks/`, `.github/workflows/` | Pre-commit strict build and CI/deploy |
 
-### Development
+## Task tracking
 
-TODO review the development guide
+Personal tasks (including learning) live in ClickUp; Addictive work lives in
+[Linear](https://linear.app/addictivedev/settings/teams/NBP). The two are never mixed; see
+[AGENTS.md](AGENTS.md).
 
-## Task Management
+## Editing tips
 
-TMP additive:
-https://linear.app/addictivedev/settings/teams/NBP
-
-TODO create a personal linear and migrate the tasks there
-
-TODO: migrate the clickup tasks to linear https://app.clickup.com/2194902/v/l/6-901519460495-1
-
-## Content Guidelines
-
-SEE [CONTENT GUIDELINES](CONTENT.md) for more details.
-
-This project follows structured content guidelines to maintain consistency and quality across all documentation:
-
-### Core Guidelines
-- **[Content Guidelines - Diátaxis Framework](.cursor/rules/content-guidelines-diataxis.mdc)** - Document classification and structure using the Diátaxis framework
-- **[Content Guidelines - Cross-Language](.cursor/rules/content-guidelines-cross-language.mdc)** - Rules for cross-language documentation and comparison tables
-- **[Content Guidelines - Language Structure](.cursor/rules/content-guidelines-language-structure.mdc)** - Standardized structure for programming language documentation
-
-### Specialized Guidelines
-- **[Content Guidelines - Linking](.cursor/rules/content-guidelines-linking.mdc)** - Dynamic content generation and cross-project linking with MkDocs macros
-- **[Content Guidelines - TypeScript Docs](.cursor/rules/content-guidelines-typescript-docs.mdc)** - Specific guidelines for TypeScript documentation
-
-### Development Guidelines
-- **[Site Development (Zensical)](.cursor/rules/mkdocs.mdc)** - Development workflow with uv package management and justfile commands
-- **[MkDocs Theme Customization](.cursor/rules/mkdocs-theme-customization.mdc)** - Theme customization and styling guidelines
-
-## Markdown Conventions and Editing Tips 
- 
-For images and vscode see: [docs/dev/markdown-editing-tools.md](docs/dev/markdown-editing-tools.md)
-
-
-Tips to move a page from one location to another in the docs and keep all the images in the same relative path.
-
-### Use the AD internal docs cli to move and update the links
-
-See [ADDICTIVE/ad-internal-docs-cli](https://github.com/addictivedev/ad-internal-docs-cli) for more details.
+- Images and VS Code setup: [docs/dev/markdown-editing-tools.md](docs/dev/markdown-editing-tools.md).
+- Moving a page and updating its links: [ad-internal-docs-cli](https://github.com/addictivedev/ad-internal-docs-cli);
+  run `just check-strict` afterwards.

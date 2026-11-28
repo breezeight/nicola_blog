@@ -1,13 +1,4 @@
----
-description: How to link between documentation pages (plain Markdown links, no link macros)
-globs:
-  - 'main.py'
-  - 'docs/**/*.md'
-  - 'mkdocs.yml'
-alwaysApply: true
----
-
-## Linking Between Pages
+# Linking Between Pages
 
 The site is built with Zensical, which reads `mkdocs.yml`. Link pages with **plain, relative Markdown links**, so the same files work on GitHub, in Obsidian and in any editor.
 

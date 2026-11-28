@@ -1,7 +1,3 @@
----
-description: Use uv for Python packages, justfile for commands, and follow the Zensical site development workflow
-alwaysApply: false
----
 # Site Development Rules (Zensical)
 
 The site is built with [Zensical](https://zensical.org/), which reads `mkdocs.yml` directly. MkDocs is no longer installed.

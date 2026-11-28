@@ -1,11 +1,16 @@
----
-description: apply when required to update the mkdocs theme
-alwaysApply: false
----
-# MkDocs Material Theme Customization
+# Theme Customization (Zensical)
 
 ## Overview
-This rule covers how to customize the Material for MkDocs theme using CSS, JavaScript, and theme extensions.
+This rule covers how to customize the site theme using CSS, JavaScript, and theme extensions.
+
+The site is built with Zensical, which reads `mkdocs.yml` and renders `theme: name: material` with
+its Material-compatible theme. Custom CSS lives in `docs/stylesheets/extra.css` (loaded through
+`extra_css`) and targets the `md-*` classes described below.
+
+> [!WARNING]
+> The "Theme Extension" section (`custom_dir: overrides`, template blocks and partials) comes from
+> Material for MkDocs and has **not been verified with Zensical**. The repository has no
+> `overrides/` folder today. Test with `just serve` before relying on it.
 
 ## Adding Assets
 

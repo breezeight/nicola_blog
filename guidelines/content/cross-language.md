@@ -1,8 +1,3 @@
----
-alwaysApply: true
-description: Master rule coordinating all language documentation guidelines including cross-language comparison
----
-
 # Language Documentation Master Rules
 
 ## Overview
@@ -12,24 +7,24 @@ This master rule coordinates all language documentation guidelines to ensure con
 
 ### Core Rules Hierarchy
 ```
-content-guidelines-language-structure.mdc (Structure)
-├── content-guidelines-diataxis.mdc (Framework)
-└── content-guidelines-master.mdc (Master + Cross-Language)
+language-structure.md (Structure)
+├── diataxis.md (Framework)
+└── cross-language.md (Master + Cross-Language)
 ```
 
 ### Rule Responsibilities
 
-#### 1. **Structure Rule** ([content-guidelines-language-structure.mdc](mdc:.cursor/rules/content-guidelines-language-structure.mdc))
+#### 1. **Structure Rule** ([language-structure.md](language-structure.md))
 - **Scope**: All language index files (`*-index.md`, `typescript-index.md`)
 - **Purpose**: Enforce 18-section standardized structure
 - **Dependencies**: References Diátaxis and Cross-Language rules
 
-#### 2. **Diátaxis Rule** ([content-guidelines-diataxis.mdc](mdc:.cursor/rules/content-guidelines-diataxis.mdc))
+#### 2. **Diátaxis Rule** ([diataxis.md](diataxis.md))
 - **Scope**: All documentation files
 - **Purpose**: Ensure proper document type classification and tone
 - **Dependencies**: Foundation for all other rules
 
-#### 3. **Master Rule** ([content-guidelines-master.mdc](mdc:.cursor/rules/content-guidelines-master.mdc))
+#### 3. **Master Rule** ([cross-language.md](cross-language.md))
 - **Scope**: Cross-language comparison document (`languages-concept-comparison.md`) + coordination
 - **Purpose**: Maintain comparison table consistency and coordinate all rules
 - **Dependencies**: References Structure and Diátaxis rules
@@ -289,11 +284,11 @@ Each comparison table must include all 5 languages:
 
 #### Links to Language Documents
 Must include links to all language index files:
-- [Python Reference](mdc:docs/dev/python/python-index.md)
-- [TypeScript Reference](mdc:docs/dev/javascript/typescript-index.md)
-- [Go Reference](mdc:docs/dev/go/go-index.md)
-- [Ruby Reference](mdc:docs/dev/ruby/ruby-index.md)
-- [Elixir Reference](mdc:docs/dev/elixir/elixir-index.md)
+- [Python Reference](../../docs/dev/python/python-index.md)
+- [TypeScript Reference](../../docs/dev/javascript/typescript-index.md)
+- [Go Reference](../../docs/dev/go/go-index.md)
+- [Ruby Reference](../../docs/dev/ruby/ruby-index.md)
+- [Elixir Reference](../../docs/dev/elixir/elixir-index.md)
 
 #### Link Format
 Use consistent link format:
