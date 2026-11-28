@@ -92,7 +92,29 @@ Omit a section only if it would be empty. The site URL is the page path without 
 2. **Check for duplicates**: search the list for a similar topic, going through **all result pages**
    and **including closed tasks** (the list has 100+ tasks). If you find one, show it as a link and
    offer: update it, create a new one anyway, or cancel.
-3. **Prepare the preview**: name, Motivation, description, status `backlog`, proposed Main Area.
+3. **Show the preview** under the heading **ClickUp task preview**. Use this Markdown table and
+   include every row. Replace placeholders with the proposed values. Use **Blank** for a field
+   that will be left empty, **Unavailable** for a field that is unavailable in ClickUp, and
+   **Calculated by ClickUp** for the RICE Index.
+
+   | Field | Proposed value |
+   |---|---|
+   | Task name | <topic> |
+   | List | Nicola Learning |
+   | Status | backlog |
+   | 🎯 Motivation | <motivation> |
+   | Description | Shown in full below |
+   | Main Area | <proposed option> |
+   | Impact | Blank |
+   | Reach | Blank |
+   | Planning | Blank |
+   | Deadline | Blank |
+   | Priority | Blank |
+   | Start date | Blank |
+   | Due date | Blank |
+   | RICE Index | Calculated by ClickUp |
+
+   Show the full formatted description below the table before asking for confirmation.
 4. **Ask about optional fields** (Impact, Reach, Planning, Deadline, priority, start/due date), with
    suggestions where the conversation implies a value.
 5. **Wait for confirmation**, then create the task with the confirmed values only.
