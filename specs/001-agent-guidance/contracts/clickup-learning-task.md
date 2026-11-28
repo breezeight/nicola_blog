@@ -25,7 +25,12 @@
    `codex mcp login clickup`) and stop. No fallback tracker.
 3. **Duplicate search**: search list `901519460495` (all pages, closed included) for a similar
    topic. If found → show it and offer: update it / create anyway / cancel.
-4. **Preview**: show name, Motivation, description, status and Main Area. Then ask whether to fill
+4. **Preview**: show a Markdown table headed **ClickUp task preview** with one row each for Task
+   name, List, Status, 🎯 Motivation, Description, Main Area, Impact, Reach, Planning, Deadline,
+   Priority, Start date, Due date, and RICE Index. Use **Blank** for fields that will be left
+   empty, **Unavailable** for fields unavailable in ClickUp, and **Calculated by ClickUp** for
+   RICE Index. Use **Shown in full below** in the Description row and show the full formatted
+   description below the table. Then ask whether to fill
    Impact, Reach, Planning, Deadline, priority and start/due date, listing any values the
    conversation suggests as *suggested* (e.g. "Deadline: 2026-12-15 — suggested, you mentioned
    mid-December"). Unconfirmed suggestions are left empty.

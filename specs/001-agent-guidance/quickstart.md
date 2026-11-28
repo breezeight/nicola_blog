@@ -36,9 +36,11 @@ In Codex, `$clickup-learning-task` is offered.
 
 ## 5. Learning task flow (US2, SC-003, SC-004)
 
-Ask: "Create a learning task for <a new topic>". Expected: preview with name, Motivation,
-description, Main Area; nothing created until "yes"; then exactly one task in Nicola Learning,
-status `backlog`. Ask again for the same topic: the agent finds the existing task and offers to
+Ask: "Create a learning task for <a new topic>". Expect a preview table with every field listed
+in the [ClickUp contract](contracts/clickup-learning-task.md) and the full description below it.
+Check that the table distinguishes blank, unavailable, and calculated fields where applicable.
+After you say "yes", verify exactly one task appears in Nicola Learning with status
+`backlog`. Ask again for the same topic: the agent finds the existing task and offers to
 update it. Ask for an Addictive work task: the agent declines and points to Linear.
 Delete the test task afterwards.
 

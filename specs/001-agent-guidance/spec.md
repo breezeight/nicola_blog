@@ -56,7 +56,8 @@ one task appears in the learning list with the agreed fields.
 **Acceptance Scenarios**:
 
 1. **Given** the owner asks for a learning task, **When** the agent prepares it, **Then** it shows
-   name, description and fields and waits for confirmation before creating anything.
+   a table with every field and the full description below it, then waits for confirmation
+   before creating anything.
 2. **Given** a task with a similar topic already exists in the list, **When** the owner asks for a
    new one, **Then** the agent shows the existing task and offers to update it instead.
 3. **Given** a request for a work-related (company) task, **When** the agent evaluates it, **Then**
@@ -143,7 +144,8 @@ Diátaxis type; version is 1.1.0.
 - **FR-010**: A skill named `clickup-learning-task`, written in English, MUST create personal
   learning tasks in ClickUp list `901519460495` following these rules:
   - only on explicit request; the agent may propose a task but never create one unprompted;
-  - always show a preview and wait for confirmation;
+  - before creating a task, show every field in a preview table, show the full description
+    below it, and wait for confirmation;
   - search the list for a similar task first and offer to update it;
   - task name is the topic only;
   - the "why" (1–2 lines) goes in the **🎯 Motivation** field; the description contains external
